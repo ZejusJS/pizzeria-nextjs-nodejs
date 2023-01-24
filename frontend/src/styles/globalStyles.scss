@@ -1,16 +1,105 @@
-.pizza-thumbnail {
-    width: 250px;
-    height: 150px;
+nav {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 70px;
+    // background-color: rgba(255, 255, 255, 0.521);
+    backdrop-filter: blur(10px);
+
+    .logo {
+        height: 100%;
+    }
+    h1 {
+        font-size: 40px;
+        display: inline-block;
+        white-space: nowrap;
+    }
+    a {
+        position: fixed;
+        display: flex;
+        align-items: center;
+        height: 100%;
+        text-decoration: none;
+        color: black;
+    }
 }
 
-.pizza-thumbnail {
-    background-color: red;
+main {
+    padding: 70px 0 0 0;
+}
 
-    img {
-        width: 100%;
-        height: auto;
+.pizzas-showcase {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    row-gap: 5px;
+    column-gap: 10px;
+    max-width: 1500px;
+    margin: 0 auto;
+
+    overflow: hidden;
+
+    .pizza-thumbnail {
+        display: flex;
+        flex-direction: column;
+        width: 400px;
+        height: 150px;
+
+        .pizza-thumbnail-info {
+            display: flex;
+            flex-direction: row;
+
+            img {
+                width: 120px;
+                height: 200px;
+                height: auto;
+            }
+
+            p {
+                width: 100%;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 2;
+            }
+
+            // p:hover {
+            //     -webkit-line-clamp: 10;
+            // }
+
+            h3 {
+                font-size: 20px;
+            }
+        }
+
+        div.ingredients {
+            list-style-type: none;
+            padding: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 1;
+
+            .ingr {
+                display: inline-block;
+            }
+
+            .dot {
+                margin: 0 3px;
+            }
+
+            .dot:last-child {
+                display: none;
+            }
+        }
     }
-    h3 {
-        font-size: 25px;
+}
+
+section.about {
+    .about-container {
+        margin-bottom: 20px;
     }
 }

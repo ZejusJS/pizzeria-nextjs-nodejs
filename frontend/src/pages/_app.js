@@ -2,6 +2,7 @@ import { Quicksand, Karla } from '@next/font/google'
 import Meta from '../components/Meta'
 import { server } from '../config/config'
 import styles from '../styles/globalStyles.scss'
+import Navbar from '@/components/Navbar'
 
 const quicksand = Quicksand({
   weight: ['400', '600', '700'],
@@ -32,7 +33,10 @@ export default function App({ Component, pageProps }) {
         `}
       </style>
       <Meta />
-      <Component {...pageProps} />
+      <Navbar />
+      <main>
+        <Component {...pageProps} />
+      </main>
     </>
   )
 }

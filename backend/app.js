@@ -21,6 +21,7 @@ const QRCode = require('qrcode')
 const speakeasy = require('speakeasy')
 const multer = require('multer') // multer je middleware pro files
 const os = require("os");
+const cors = require('cors')
 const { cloudinary } = require('./cloudinary/index')
 const { storageCampImg } = require('./cloudinary/index')
 
@@ -65,13 +66,38 @@ app.use(session({
     }
 }));
 
+const User = require('./models/user');
 
+app.use(cors({
+    credentials: true,
+    origin: 'http://localhost:3000' // změnit v produkci
+}))
 
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy({ usernameField: 'email' }, User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 
 const pizzaRoute = require('./routes/pizza')
+const userRoute = require('./routes/user')
 
 app.use('/pizza', pizzaRoute)
+app.use('/user', userRoute)
+
+app.use(async (err, req, res, next) => {
+    try {
+        const { status = 500 } = err;
+        if (!err.message) err.message = 'Internal Server Error';
+        console.log(err);
+
+        res.status(status).json(err)
+    } catch (e) {
+        console.log('ERROR!!!!!!!!!!!!!', e)
+        res.status(400).json({ msg: 'Server Error' })
+    }
+});
 
 
 app.listen(port, () => {

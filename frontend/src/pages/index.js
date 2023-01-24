@@ -3,14 +3,16 @@ import Image from 'next/image'
 import Meta from '../components/Meta'
 import { server } from '../config/config'
 import axios from "axios";
-import Pizzalist from '@/components/Pizzalist';
+import Pizzalist from '@/components/pizza/Pizzalist';
+import Navbar from '@/components/Navbar';
+import React, { useState, useEffect } from 'react';
 
 export default function Home({ pizzas }) {
+  const [cart, setCart] = useState([])
+
   return (
     <>
-      <main>
-        <Pizzalist pizzas={pizzas} />
-      </main>
+      <Pizzalist pizzas={pizzas} />
     </>
   )
 }

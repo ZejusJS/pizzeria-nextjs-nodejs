@@ -15,10 +15,16 @@ router.get('/all', catchAsync(async function (req, res, next) {
             description: pizza.description,
             images: pizza.images,
             price: pizza.price,
-            key: pizza.key
+            ingredients: pizza.ingredients,
+            key: pizza.key,
+            _id: pizza._id
         }
     })
     res.status(200).json(sendPizzas)
+}))
+
+router.get('/cart', catchAsync(async function (req,res, next) {
+    
 }))
 
 

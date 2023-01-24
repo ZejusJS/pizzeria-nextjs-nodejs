@@ -22,6 +22,11 @@ const PizzaSchema = new Schema({
     description: {
         type: String
     },
+    ingredients: [
+        {
+            type: String
+        }
+    ],
     key: {
         type: String
     }
