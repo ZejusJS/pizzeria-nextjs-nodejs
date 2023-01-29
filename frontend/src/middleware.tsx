@@ -7,17 +7,16 @@ import { server } from './config/config'
 export async function middleware(req: NextRequest) {
     const url = req.nextUrl
     const res = NextResponse.next();
-    const getCookies = req.cookies.getAll()
-    let cookies = ''
-    getCookies.map(cook => {
-        cookies += cook.name + '='
-        cookies += cook.value + ';'
-    })
-
     // console.log('MW... ', cookies)
     if (req.cookies.has("cart")) {
         return res;
     } else {
+        const getCookies = req.cookies.getAll()
+        let cookies = ''
+        getCookies.map(cook => {
+            cookies += cook.name + '='
+            cookies += cook.value + ';'
+        })
         const getCart = await fetch(`${server}/cart/getIdCart`, {
             method: 'get',
             mode: 'cors',

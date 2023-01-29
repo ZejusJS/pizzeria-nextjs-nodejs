@@ -1,27 +1,32 @@
 import IngrItem from './IngrItem'
+import Image from 'next/image';
 
-const Pizza = ({ pizza, updtCart }) => {
+const Pizza = ({ pizza, updtCart, viewItem }) => {
+  let ingredients = ''
+  pizza.ingredients.map(ingr => {
+      ingredients += ingr + ', '
+  })
+  ingredients = ingredients.slice(-0, -2)
+
   return (
-    <div className='pizza-thumbnail'>
+    <div className='pizza-thumbnail' onClick={(e) => viewItem(e, pizza)}>
       <div className='pizza-thumbnail-info'>
-        <div>
+        <div className='pizza-img-container'>
           <img src={pizza.images[0].url} alt="" />
         </div>
-        <div>
+        <div className='pizza-info'>
           <h3>{pizza.title}</h3>
-          <p>{pizza.description}</p>
-          <Button pizza={pizza} onClick={updtCart}>Add to cart</Button>
+          {pizza.ingredients.length ?
+            <div className='ingredients' key="fd">
+              {ingredients}
+            </div>
+            : ''}
+          <div className='pizza-action'>
+          </div>
         </div>
       </div>
       <div>
-        {pizza.ingredients.length ?
-          (<div className='ingredients' key="fd">
-            {pizza.ingredients.map(ingr => (
-              <IngrItem ingr={ingr} key={Math.random()} />
-            )
-            )}
-          </div>)
-          : ''}
+
       </div>
     </div>
   )
@@ -29,7 +34,7 @@ const Pizza = ({ pizza, updtCart }) => {
 
 const Button = ({ onClick, children, pizza }) => {
   return (
-    <button data-id={pizza._id} type="button" onClick={onClick}>
+    <button className="add-to-cart" data-id={pizza._id} type="button" onClick={onClick}>
       {children}
     </button>
   );

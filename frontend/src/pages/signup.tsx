@@ -38,32 +38,34 @@ const signup = () => {
     }
 
     return (
-        <div>
-            <form noValidate onSubmit={handleSubmit}>
-                <input
-                    type="text"
-                    placeholder='username'
-                    onChange={handleChange}
-                    name="username"
-                    value={signData.username}
-                />
-                <input
-                    type="email"
-                    placeholder='email'
-                    onChange={handleChange}
-                    name="email"
-                    value={signData.email}
-                />
-                <input
-                    type="password"
-                    placeholder='password'
-                    onChange={handleChange}
-                    name="password"
-                    value={signData.password}
-                />
-                <button type='submit'>Sign Up</button>
-            </form>
-        </div>
+        <main>
+            <div>
+                <form noValidate onSubmit={handleSubmit}>
+                    <input
+                        type="text"
+                        placeholder='username'
+                        onChange={handleChange}
+                        name="username"
+                        value={signData.username}
+                    />
+                    <input
+                        type="email"
+                        placeholder='email'
+                        onChange={handleChange}
+                        name="email"
+                        value={signData.email}
+                    />
+                    <input
+                        type="password"
+                        placeholder='password'
+                        onChange={handleChange}
+                        name="password"
+                        value={signData.password}
+                    />
+                    <button type='submit'>Sign Up</button>
+                </form>
+            </div>
+        </main>
     )
 }
 

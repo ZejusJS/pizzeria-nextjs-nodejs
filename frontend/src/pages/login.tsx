@@ -38,23 +38,25 @@ const login = () => {
   }
 
   return (
-    <form noValidate onSubmit={handleSubmit}>
-      <input
-        type="email"
-        placeholder='email'
-        onChange={handleChange}
-        name="email"
-        value={loginData.email}
-      />
-      <input
-        type="password"
-        placeholder='password'
-        onChange={handleChange}
-        name="password"
-        value={loginData.password}
-      />
-      <button type='submit'>Log In</button>
-    </form>
+    <main>
+      <form noValidate onSubmit={handleSubmit}>
+        <input
+          type="email"
+          placeholder='email'
+          onChange={handleChange}
+          name="email"
+          value={loginData.email}
+        />
+        <input
+          type="password"
+          placeholder='password'
+          onChange={handleChange}
+          name="password"
+          value={loginData.password}
+        />
+        <button type='submit'>Log In</button>
+      </form>
+    </main>
   )
 }
 
