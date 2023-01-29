@@ -1,8 +1,11 @@
+declare module "*.module.css";
+declare module "*.module.scss";
 import { Quicksand, Karla } from '@next/font/google'
 import Meta from '../components/Meta'
 import { server } from '../config/config'
-import styles from '../styles/globalStyles.scss'
-import Navbar from '@/components/Navbar'
+import '../styles/globalStyles.scss'
+import Navbar from '../components/Navbar'
+import Link from 'next/link'
 
 const quicksand = Quicksand({
   weight: ['400', '600', '700'],
@@ -36,6 +39,21 @@ export default function App({ Component, pageProps }) {
       <Navbar />
       <main>
         <Component {...pageProps} />
+        <Link href='/about'>
+          About
+        </Link> <br />
+        <Link href='/signup'>
+          Sign Up
+        </Link> <br />
+        <Link href='/login'>
+          Log in
+        </Link> <br />
+        <Link href='/'>
+          Home page
+        </Link> <br />
+        <Link href='/cart'>
+          Cart
+        </Link>
       </main>
     </>
   )

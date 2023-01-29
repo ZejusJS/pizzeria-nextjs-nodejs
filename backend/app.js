@@ -24,6 +24,7 @@ const os = require("os");
 const cors = require('cors')
 const { cloudinary } = require('./cloudinary/index')
 const { storageCampImg } = require('./cloudinary/index')
+const cookieParser = require('cookie-parser')
 
 const ExpressError = require('./utils/ExpressError');
 const catchAsync = require('./utils/catchAsync');
@@ -73,18 +74,37 @@ app.use(cors({
     origin: 'http://localhost:3000' // změnit v produkci
 }))
 
+app.use(cookieParser())
+
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStrategy({ usernameField: 'email' }, User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
+app.use(function (req, res, next) {
+    // console.log(req.session)
+    res.locals.currentUser = req.user; // Každá ejs stránka má přístup k informaci o uživateli (použit např. v navbar)
+    next();
+});
 
 const pizzaRoute = require('./routes/pizza')
 const userRoute = require('./routes/user')
+const cartRoute = require('./routes/cart')
+
+// app.use(function (req, res, next) {
+//     console.log('------------------------')
+//     console.log('isAuthenticated... ', req.isAuthenticated())
+//     console.log('cookies... ', req.cookies)
+//     console.log('passport... ', req.passport)
+//     console.log('user... ', req.user)
+//     console.log('------------------------')
+//     next()
+// })
 
 app.use('/pizza', pizzaRoute)
 app.use('/user', userRoute)
+app.use('/cart', cartRoute)
 
 app.use(async (err, req, res, next) => {
     try {

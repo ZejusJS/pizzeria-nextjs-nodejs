@@ -10,11 +10,13 @@ nav {
     .logo {
         height: 100%;
     }
+
     h1 {
         font-size: 40px;
         display: inline-block;
         white-space: nowrap;
     }
+
     a {
         position: fixed;
         display: flex;
@@ -39,61 +41,61 @@ main {
     margin: 0 auto;
 
     overflow: hidden;
+}
 
-    .pizza-thumbnail {
+.pizza-thumbnail {
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+    height: 150px;
+
+    .pizza-thumbnail-info {
         display: flex;
-        flex-direction: column;
-        width: 400px;
-        height: 150px;
+        flex-direction: row;
 
-        .pizza-thumbnail-info {
-            display: flex;
-            flex-direction: row;
-
-            img {
-                width: 120px;
-                height: 200px;
-                height: auto;
-            }
-
-            p {
-                width: 100%;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                display: -webkit-box;
-                -webkit-box-orient: vertical;
-                -webkit-line-clamp: 2;
-            }
-
-            // p:hover {
-            //     -webkit-line-clamp: 10;
-            // }
-
-            h3 {
-                font-size: 20px;
-            }
+        img {
+            width: 120px;
+            height: 200px;
+            height: auto;
         }
 
-        div.ingredients {
-            list-style-type: none;
-            padding: 0;
+        p {
+            width: 100%;
             overflow: hidden;
             text-overflow: ellipsis;
             display: -webkit-box;
             -webkit-box-orient: vertical;
-            -webkit-line-clamp: 1;
+            -webkit-line-clamp: 2;
+        }
 
-            .ingr {
-                display: inline-block;
-            }
+        // p:hover {
+        //     -webkit-line-clamp: 10;
+        // }
 
-            .dot {
-                margin: 0 3px;
-            }
+        h3 {
+            font-size: 20px;
+        }
+    }
 
-            .dot:last-child {
-                display: none;
-            }
+    div.ingredients {
+        list-style-type: none;
+        padding: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 1;
+
+        .ingr {
+            display: inline-block;
+        }
+
+        .dot {
+            margin: 0 3px;
+        }
+
+        .dot:last-child {
+            display: none;
         }
     }
 }

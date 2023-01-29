@@ -1,6 +1,6 @@
 import IngrItem from './IngrItem'
 
-const Pizza = ({ pizza }) => {
+const Pizza = ({ pizza, updtCart }) => {
   return (
     <div className='pizza-thumbnail'>
       <div className='pizza-thumbnail-info'>
@@ -10,7 +10,7 @@ const Pizza = ({ pizza }) => {
         <div>
           <h3>{pizza.title}</h3>
           <p>{pizza.description}</p>
-          <button onClick type='button'>Add to cart</button>
+          <Button pizza={pizza} onClick={updtCart}>Add to cart</Button>
         </div>
       </div>
       <div>
@@ -26,5 +26,13 @@ const Pizza = ({ pizza }) => {
     </div>
   )
 }
+
+const Button = ({ onClick, children, pizza }) => {
+  return (
+    <button data-id={pizza._id} type="button" onClick={onClick}>
+      {children}
+    </button>
+  );
+};
 
 export default Pizza

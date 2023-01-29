@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import { server } from '@/config/config'
+import { server } from '../config/config'
 
 const signup = () => {
     const [signData, setSignData] = useState({
@@ -29,7 +29,7 @@ const signup = () => {
             url: `${server}/user/signup`,
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded",
-                'Access-Control-Allow-Origin': `http://localhost:8000`
+                'Access-Control-Allow-Origin': `${server}`
             },
             data: signData
         })

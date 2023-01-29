@@ -15,9 +15,6 @@ const About = () => {
           <p>Phone number: 506 254 675</p>
           <p>Email: contact@mamma.mia</p>
         </div>
-        <Link href='/'>
-          Home page
-        </Link>
       </section>
     </>
   )
