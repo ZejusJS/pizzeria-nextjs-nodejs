@@ -13,7 +13,7 @@ const Product = ({ item, updateCart, cart, deleteItem }) => {
     if (ingredients.length > 2) ingredients = ingredients.slice(-0, -2)
 
     useEffect(()=> {
-        console.log('JOULOUUUUU ',cart)
+        // console.log('JOULOUUUUU ',cart)
         setIsInCart(() => {
             let isItemInCart = false
             cart.items.map(it => {
@@ -23,9 +23,7 @@ const Product = ({ item, updateCart, cart, deleteItem }) => {
             return isItemInCart
         }
         )
-        console.log('lllllllllllllllllllllllllllllllllllll')
     }, [cart])
-    console.log('xddddddddddddddddddddddd')
 
     return (
         <div className='view-product'>

@@ -9,7 +9,7 @@ const Cart = require('../models/cart')
 
 router.post('/singleAdd', catchAsync(async function (req, res, next) {
     const productId = req.body.productId
-    const cartId = req.cookies.cart
+    const cartId = req.user && req.user.interaction && req.user.interaction.cart || req.cookies.cart
     const product = await Pizza.findById(productId)
     const cart = await Cart.findById(cartId).populate('items.item')
     if (cart && product) {
@@ -39,9 +39,7 @@ router.post('/singleAdd', catchAsync(async function (req, res, next) {
 router.delete('/deleteItem', catchAsync(async function (req, res, next) {
     const productId = req.body.productId
     const cartId = req.cookies.cart
-    console.log(productId)
-    console.log(cartId)
-    const cart = await Cart.findByIdAndUpdate(cartId, { $pull: { items: { item: productId } } })
+    const cart = await Cart.findByIdAndUpdate(cartId, { $pull: { items: { item: productId } } }, { new: true }).populate('items.item')
     res.json(cart)
 }))
 
@@ -67,15 +65,20 @@ router.post('/changeQuantity', catchAsync(async function (req, res, next) {
 }))
 
 router.get('/getCart', catchAsync(async function (req, res, next) {
-    console.log('USERRRR... ', req.user)
-    const cart = await Cart.findById(req.cookies.cart).populate('items.item')
+    console.log('USER... ', req.user)
+    let cart = {}
+    if (req.user && req.user.interaction && req.user.interaction.cart) {
+        const findCart = await Cart.findById(req.user.interaction.cart)
+        cart = findCart
+    } else {
+        cart = await Cart.findById(req.cookies.cart).populate('items.item')
+    }
     res.status(200).json(cart)
 }))
 
 router.get('/getIdCart', catchAsync(async function (req, res, next) {
     console.log('USERRRR... ', req.user)
     const cart = new Cart()
-    if (req.user) cart.user = req.user._id
     await cart.save()
     res.json({ cart: cart._id })
 }))

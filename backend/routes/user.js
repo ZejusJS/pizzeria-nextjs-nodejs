@@ -6,10 +6,20 @@ const catchAsync = require('../utils/catchAsync');
 const ExpressError = require('../utils/ExpressError');
 
 const User = require('../models/user')
+const Cart = require('../models/cart')
 
 router.post('/signup', catchAsync(async function (req, res, next) {
     const { email, username, password } = req.body;
     const user = new User({ username, email });
+    if (req.cookies.cart) {
+        user.interaction.cart = req.cookies.cart
+        res.clearCookie("cart");
+    } else {
+        const cart = new Cart()
+        cart.user = req.user._id
+        await cart.save()
+        user.interaction.cart = cart._id
+    } 
     try {
         const registeredUser = await User.register(user, password);
         req.login(user, function (err) {
@@ -29,8 +39,30 @@ router.post('/signup', catchAsync(async function (req, res, next) {
 router.post('/login', passport.authenticate('local', {
     keepSessionInfo: true // pro zachování req.session.returnTo (původní URL, kam jsme se chtěli dostat ještě než nás to přesměrovalo)
 }), catchAsync(async function (req, res, next) {
-    console.log(req.body)
-    res.json({msg: 'logged in'})
+    if (req.user && !req.user.interaction && !req.user.interaction.cart) {
+        const cart = new Cart()
+        cart.user = req.user._id
+        const user = await User.findById(req.user._id)
+        user.interaction.cart = cart._id
+        await user.save()
+        await cart.save()
+    }
+    res.status(200).json({ msg: 'logged in' })
+}))
+
+router.get('/logout', catchAsync(async function (req, res, next) {
+    if (req.user && req.user._id) {
+        // req.logout(function (err) {
+        //     if (err) return next(err)
+        //     res.clearCookie("mamma-mia");
+        //     res.redirect(process.env.FRONTEND)
+        // });
+        req.session.destroy(function (err) {
+            res.redirect(process.env.FRONTEND); //Inside a callback… bulletproof!
+        });
+    } else {
+        res.redirect(process.env.FRONTEND)
+    }
 }))
 
 module.exports = router

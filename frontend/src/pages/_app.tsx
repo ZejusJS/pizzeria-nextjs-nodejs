@@ -30,18 +30,19 @@ export default function App({ Component, pageProps }) {
         <Link href='/about'>
           About
         </Link> <br />
+        <Link href='/'>
+          Home page
+        </Link> <br />
+        <Link href='/cart'>
+          Cart
+        </Link> <br />
         <Link href='/signup'>
           Sign Up
         </Link> <br />
         <Link href='/login'>
           Log in
         </Link> <br />
-        <Link href='/'>
-          Home page
-        </Link> <br />
-        <Link href='/cart'>
-          Cart
-        </Link>
+        <a href={`${server}/user/logout`}>Logout</a>
       </>
     </>
   )

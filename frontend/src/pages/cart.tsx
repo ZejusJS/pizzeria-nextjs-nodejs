@@ -14,6 +14,8 @@ const cart = ({ cartData }) => {
 
     if (qnt > 15) {
       qnt = 15
+    } else if (qnt < 1) {
+      qnt = 1
     } else {
       setCart(prevCart => {
         prevCart.items = prevCart.items.map(it => {

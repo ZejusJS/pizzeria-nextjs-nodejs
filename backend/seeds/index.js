@@ -14,6 +14,7 @@ db.once('open', () => {
 });
 
 const Pizza = require('../models/pizza')
+const User = require('../models/user')
 
 const lorem = new LoremIpsum({
     sentencesPerParagraph: {
@@ -51,4 +52,9 @@ async function addPizzas(num) {
     }
 }
 
-addPizzas(10)
+async function deleteAllUsers() {
+    await User.deleteMany()
+}
+
+// addPizzas(10)
+deleteAllUsers()

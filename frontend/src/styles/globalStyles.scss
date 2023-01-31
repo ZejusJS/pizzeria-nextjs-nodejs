@@ -136,7 +136,6 @@ div.ingredients {
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
-    margin: 0 4px 2px 4px;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 4;
 
@@ -234,4 +233,8 @@ section.about {
     .about-container {
         margin-bottom: 20px;
     }
+}
+
+body:has(div.view-product) {
+    overflow: hidden;
 }

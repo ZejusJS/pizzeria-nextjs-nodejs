@@ -21,7 +21,7 @@ export default function Home({ pizzas, cartData }) {
     const productId = piz._id
     // console.log(productId)
 
-    const newCart = await axios({
+    await axios({
       method: 'post',
       url: `${server}/cart/singleAdd`,
       headers: {
@@ -33,6 +33,8 @@ export default function Home({ pizzas, cartData }) {
         productId
       }
     })
+      .then(res => setCart(res.data))
+      .catch(e => window.location.href = '/')
     // setCart(prevCart => {
     //   prevCart.items = prevCart.items.map(it => {
     //     if (it.item._id !== productId) return it
@@ -40,9 +42,6 @@ export default function Home({ pizzas, cartData }) {
     //   })
     //   return { ...prevCart }
     // })
-
-    console.log(newCart.data)
-    setCart(newCart.data)
   }
 
   async function deleteItem(e, item) {
@@ -61,6 +60,7 @@ export default function Home({ pizzas, cartData }) {
       }
     })
 
+    console.warn(res.data)
     setCart(res.data)
   }
 
@@ -94,7 +94,6 @@ export const getServerSideProps = async (context) => {
   const pizz = await axios({
     method: 'get',
     url: `${server}/pizza/all`,
-    withCredentials: true,
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
       'Access-Control-Allow-Origin': `${server}`

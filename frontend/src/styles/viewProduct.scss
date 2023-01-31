@@ -43,7 +43,8 @@
                 width: 80%;
             }
             @media (max-width: 350px) {
-                width: 100%; 
+                width: 100%;
+                padding: 1px 1px 5px 1px;
             }
         }
 
@@ -93,6 +94,7 @@
         pointer-events: auto;
         -webkit-line-clamp: 10;
         font-weight: 600;
+        margin: 0px 4px 5px 4px;
     }
 
     .add-to-cart-container {
