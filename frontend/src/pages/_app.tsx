@@ -6,6 +6,7 @@ import { server } from '../config/config'
 import '../styles/globalStyles.scss'
 import '../styles/changeDefault.scss'
 import '../styles/viewProduct.scss'
+import '../styles/checkout.scss'
 import Navbar from '../components/Navbar'
 import Link from 'next/link'
 
@@ -19,7 +20,6 @@ const karla = Karla({
   subsets: ['latin']
 })
 
-
 export default function App({ Component, pageProps }) {
   return (
     <>
@@ -27,6 +27,7 @@ export default function App({ Component, pageProps }) {
       <Navbar />
       <>
         <Component {...pageProps} />
+        <hr />
         <Link href='/about'>
           About
         </Link> <br />

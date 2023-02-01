@@ -20,10 +20,17 @@ const Item = ({ item, changeQnt, viewItem }) => {
                     <div className='pizza-info'>
                         <h3>{item.item.title}</h3>
                         <p>{item.item.description}</p>
+                        <div>
+                            {item.item.ingredients.length ?
+                                (<div className='ingredients' key="fd">
+                                    {ingredients}
+                                </div>)
+                                : ''}
+                        </div>
                     </div>
                     <div className='qnt-change' onClick={(e) => e.stopPropagation()}>
                         <button onClick={(e) => changeQnt(e, item.quantity + 1, item)} className='btn-qnt' type='button'>
-                            <Triangle  operation='plus-qnt'/>
+                            <Triangle operation='plus-qnt' />
                         </button>
                         <input
                             type="number"
@@ -35,13 +42,6 @@ const Item = ({ item, changeQnt, viewItem }) => {
                             <Triangle operation='minus-qnt' />
                         </button>
                     </div>
-                </div>
-                <div>
-                    {item.item.ingredients.length ?
-                        (<div className='ingredients' key="fd">
-                            {ingredients}
-                        </div>)
-                        : ''}
                 </div>
             </div>
         </>

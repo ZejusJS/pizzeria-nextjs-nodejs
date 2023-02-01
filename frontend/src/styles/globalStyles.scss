@@ -61,7 +61,19 @@ main {
     overflow: hidden;
 }
 
+
+.pizza-thumbnail:hover {
+    cursor: pointer;
+    box-shadow: 0px 0px 13px -8px black;
+
+    .pizza-img-container img {
+        width: 200px;
+        object-fit: scale-down;
+    }
+}
+
 .pizza-thumbnail {
+
     pointer-events: all;
     position: relative;
     display: flex;
@@ -72,8 +84,8 @@ main {
     border-radius: 10px;
     overflow: hidden;
 
-    :hover {
-        cursor: pointer;
+    ::shadow {
+        color: aqua;
     }
 
     @media (max-width: 880px) {
@@ -123,12 +135,17 @@ main {
     .pizza-img-container {
         display: flex;
         width: 170px;
+        min-width: 170px;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
 
         img {
             height: 100%;
             height: auto;
             width: 170px;
             object-fit: cover;
+            transition: width 150ms;
         }
 
         .svg-cart {
@@ -217,6 +234,22 @@ div.ingredients {
             -webkit-box-orient: vertical;
             -webkit-line-clamp: 2;
         }
+
+        div.ingredients {
+            -webkit-line-clamp: 2;
+            font-weight: 500;
+            margin: 0px 3px 1px 3px;
+        }
+
+        @media (max-width: 500px) {
+            div.ingredients {
+                -webkit-line-clamp: 4;
+            }
+
+            p {
+                display: none;
+            }
+        }
     }
 
     .btn-qnt {
@@ -225,7 +258,7 @@ div.ingredients {
         border: 0;
         background-color: transparent;
         padding: 0;
-        cursor: auto;
+        cursor: pointer;
     }
 
     .qnt-change {
@@ -233,6 +266,11 @@ div.ingredients {
         display: flex;
         flex-direction: column;
         justify-content: space-evenly;
+        cursor: auto;
+
+        input {
+            cursor: auto;
+        }
     }
 
     .svg {
@@ -255,12 +293,6 @@ div.ingredients {
         border: 0;
         outline: 1px solid rgb(110, 110, 110);
         border-radius: 2px;
-    }
-
-    div.ingredients {
-        -webkit-line-clamp: 2;
-        font-weight: 500;
-        margin: 0px 3px 1px 3px;
     }
 }
 

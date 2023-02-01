@@ -1,13 +1,14 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
-import { server } from '../config/config'
-import Item from '../components/cart/Item'
-import Product from '../components/pizza/Product';
-import Unfocus from '../components/Unfocus';
-import deleteItemFunc from '../utils/deleteItem'
-import singleAddFunc from '../utils/singleAdd'
-import changeQntFunc from '../utils/changeQnt';
+import { server } from '../../config/config'
+import Item from '../../components/cart/CartPizza'
+import Product from '../../components/pizza/Product';
+import Unfocus from '../../components/Unfocus';
+import deleteItemFunc from '../../utils/deleteItem'
+import singleAddFunc from '../../utils/singleAdd'
+import changeQntFunc from '../../utils/changeQnt';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 const cart = ({ cartData }) => {
   const [cart, setCart] = useState(cartData)
@@ -55,6 +56,12 @@ const cart = ({ cartData }) => {
             />
           })}
         </section>
+        <Link href={{
+            pathname: '/cart/checkout',
+            query: { cart: cartData._id },
+          }}>
+          Check out
+        </Link>
       </main>
     </>
   )

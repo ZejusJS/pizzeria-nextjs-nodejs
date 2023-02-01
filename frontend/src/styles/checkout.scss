@@ -1,0 +1,28 @@
+.cart-items {
+    width: 100%;
+    max-width: 600px;
+
+    .checkout-item {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        column-gap: 5px;
+        width: 100%;
+
+        .image-container {
+            min-width: 70px;
+            width: 70px;
+            height: 70px;
+            min-height: 70px;
+            display: flex;
+            align-items: center;
+
+            img {
+                width: 100%;
+                height: auto;
+                object-fit: contain;
+                border-radius: 10px;
+            }
+        }
+    }
+}
