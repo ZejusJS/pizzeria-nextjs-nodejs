@@ -1,53 +1,62 @@
 import axios from 'axios'
-import React, { useEffect, useState, useRef } from 'react'
+import { useEffect, useState } from 'react'
 import { server } from '../config/config'
 import Item from '../components/cart/Item'
+import Product from '../components/pizza/Product';
+import Unfocus from '../components/Unfocus';
+import deleteItemFunc from '../utils/deleteItem'
+import singleAddFunc from '../utils/singleAdd'
+import changeQntFunc from '../utils/changeQnt';
+import { useRouter } from 'next/router';
 
 const cart = ({ cartData }) => {
   const [cart, setCart] = useState(cartData)
+  const [viewProduct, setViewProduct] = useState(false)
+  const [itemToView, setItemToView] = useState({})
+
+  const router = useRouter()
+
+  function viewItem(e, item) {
+    setItemToView(item)
+    setViewProduct(true)
+  }
+
+  function unViewItem(e) {
+    e.stopPropagation()
+    e.preventDefault();
+    setItemToView({})
+    setViewProduct(false)
+  }
+
+  async function singleAdd(e, piz) {
+    setCart(await singleAddFunc(e, piz))
+  }
+
+  async function deleteItem(e, piz) {
+    setCart(await deleteItemFunc(e, piz))
+  }
 
   async function changeQnt(e, qnt, item) {
-    if (qnt === 'input') {
-      qnt = e.target.value
-      qnt = parseInt(qnt)
-    }
-
-    if (qnt > 15) {
-      qnt = 15
-    } else if (qnt < 1) {
-      qnt = 1
-    } else {
-      setCart(prevCart => {
-        prevCart.items = prevCart.items.map(it => {
-          if (it.item._id !== item.item._id) return it
-          return { ...it, quantity: qnt }
-        })
-        return { ...prevCart }
-      })
-      const data = await axios({
-        method: 'post',
-        url: `${server}/cart/changeQuantity`,
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-          'Access-Control-Allow-Origin': `${server}`,
-        },
-        data: {
-          quantity: qnt,
-          productId: item.item._id
-        },
-        withCredentials: true
-      })
-    }
+    changeQntFunc(e, qnt, item, setCart)
   }
 
   return (
-    <main>
-      <section className='cart-items'>
-        {cart.items.map(item => {
-          return <Item changeQnt={changeQnt} item={item} key={item._id} />
-        })}
-      </section>
-    </main>
+    <>
+      {viewProduct ? <Unfocus onClick={unViewItem} /> : ''}
+      {viewProduct ? <Product onClick={(e) => unViewItem(e)} item={itemToView} cart={cart} deleteItem={(e, piz) => deleteItem(e, piz)} singleAdd={(e, piz) => singleAdd(e, piz)} /> : ''}
+      <main>
+        <section className='cart-items'>
+          {cart.items.map(item => {
+            return <Item
+              changeQnt={(e, item, qnt) => changeQnt(e, item, qnt)}
+              item={item}
+              key={item._id}
+              viewItem={(e) => viewItem(e, item.item)}
+            />
+          })}
+        </section>
+      </main>
+    </>
   )
 }
 

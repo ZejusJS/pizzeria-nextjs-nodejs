@@ -11,17 +11,19 @@ const Cart = require('../models/cart')
 router.post('/signup', catchAsync(async function (req, res, next) {
     const { email, username, password } = req.body;
     const user = new User({ username, email });
-    if (req.cookies.cart) {
-        user.interaction.cart = req.cookies.cart
-        res.clearCookie("cart");
-    } else {
-        const cart = new Cart()
-        cart.user = req.user._id
-        await cart.save()
-        user.interaction.cart = cart._id
-    } 
     try {
         const registeredUser = await User.register(user, password);
+        if (req.cookies.cart) {
+            registeredUser.interaction.cart = req.cookies.cart
+            await registeredUser.save()
+            res.clearCookie("cart");
+        } else {
+            const cart = new Cart()
+            cart.user = req.user._id
+            await cart.save()
+            await registeredUser.save()
+            registeredUser.interaction.cart = cart._id
+        }
         req.login(user, function (err) {
             if (err) { return next(err); }
             return res.status(200).json({ msg: 'Signed up', context: 'Signed in and Logged in' })
@@ -47,6 +49,7 @@ router.post('/login', passport.authenticate('local', {
         await user.save()
         await cart.save()
     }
+    if (req.cookies.cart) res.clearCookie("cart");
     res.status(200).json({ msg: 'logged in' })
 }))
 
@@ -58,6 +61,7 @@ router.get('/logout', catchAsync(async function (req, res, next) {
         //     res.redirect(process.env.FRONTEND)
         // });
         req.session.destroy(function (err) {
+            res.clearCookie("mamma-mia");
             res.redirect(process.env.FRONTEND); //Inside a callback… bulletproof!
         });
     } else {

@@ -1,18 +1,40 @@
 import IngrItem from './IngrItem'
 import Image from 'next/image';
+import { useState, useEffect } from 'react';
+import CartRemove from '../../images/CartRemove'
 
-const Pizza = ({ pizza, updtCart, viewItem }) => {
+const Pizza = ({ pizza, singleAdd, viewItem, cart }) => {
+  const [isInCart, setIsInCart] = useState(false)
   let ingredients = ''
   pizza.ingredients.map(ingr => {
-      ingredients += ingr + ', '
+    ingredients += ingr + ', '
   })
   ingredients = ingredients.slice(-0, -2)
+
+  useEffect(() => {
+    // console.log('JOULOUUUUU ',cart)
+    setIsInCart(() => {
+      let isItemInCart = false
+      cart.items.map(it => {
+        console.log(it.item._id, pizza._id)
+        if (it.item._id === pizza._id) isItemInCart = true
+      })
+      return isItemInCart
+    }
+    )
+  }, [cart])
 
   return (
     <div className='pizza-thumbnail' onClick={(e) => viewItem(e, pizza)}>
       <div className='pizza-thumbnail-info'>
         <div className='pizza-img-container'>
           <img src={pizza.images[0].url} alt="" />
+          {isInCart ?
+            <>
+              <div className='behind-cart'></div>
+              <CartRemove color={'#00c216'} />
+            </>
+            : ''}
         </div>
         <div className='pizza-info'>
           <h3>{pizza.title}</h3>

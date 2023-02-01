@@ -5,63 +5,44 @@ import { server } from '../config/config'
 import axios from "axios";
 import Pizzalist from '../components/pizza/Pizzalist';
 import Navbar from '../components/Navbar';
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Product from '../components/pizza/Product';
 import Unfocus from '../components/Unfocus';
+import deleteItemFunc from '../utils/deleteItem'
+import singleAddFunc from '../utils/singleAdd'
 
 export default function Home({ pizzas, cartData }) {
   const [cart, setCart] = useState(cartData)
   const [viewProduct, setViewProduct] = useState(false)
   const [itemToView, setItemToView] = useState({})
 
-  async function updateCart(e, piz) {
-    // console.log(e)
-    // console.log(piz)
-    const productId = piz._id
-    // console.log(productId)
+  // async function updateCart(e, piz) {
+  //   e.stopPropagation()
+  //   const productId = piz._id
 
-    await axios({
-      method: 'post',
-      url: `${server}/cart/singleAdd`,
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-        'Access-Control-Allow-Origin': `${server}`
-      },
-      withCredentials: true,
-      data: {
-        productId
-      }
-    })
-      .then(res => setCart(res.data))
-      .catch(e => window.location.href = '/')
-    // setCart(prevCart => {
-    //   prevCart.items = prevCart.items.map(it => {
-    //     if (it.item._id !== productId) return it
-    //     return { ...it, quantity: it.quantity + 1 }
-    //   })
-    //   return { ...prevCart }
-    // })
+  //   await axios({
+  //     method: 'post',
+  //     url: `${server}/cart/singleAdd`,
+  //     headers: {
+  //       "Content-Type": "application/x-www-form-urlencoded",
+  //       'Access-Control-Allow-Origin': `${server}`
+  //     },
+  //     withCredentials: true,
+  //     data: {
+  //       productId
+  //     }
+  //   })
+  //     .then(res => setCart(res.data))
+  //     .catch(e => window.location.href = '/')
+  // }
+
+  async function singleAdd(e, piz) {
+    setCart(await singleAddFunc(e, piz))
   }
 
-  async function deleteItem(e, item) {
-    const productId = item._id
-
-    const res = await axios({
-      method: 'delete',
-      url: `${server}/cart/deleteItem`,
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-        'Access-Control-Allow-Origin': `${server}`
-      },
-      withCredentials: true,
-      data: {
-        productId
-      }
-    })
-
-    console.warn(res.data)
-    setCart(res.data)
+  async function deleteItem(e, piz) {
+    setCart(await deleteItemFunc(e, piz))
   }
 
   console.log('Cart.... ', cart)
@@ -72,7 +53,9 @@ export default function Home({ pizzas, cartData }) {
     setViewProduct(true)
   }
 
-  function unViewItem() {
+  function unViewItem(e) {
+    e.stopPropagation()
+    e.preventDefault();
     setItemToView({})
     setViewProduct(false)
   }
@@ -80,11 +63,14 @@ export default function Home({ pizzas, cartData }) {
   return (
     <>
       {viewProduct ? <Unfocus onClick={unViewItem} /> : ''}
-      {viewProduct ? <Product item={itemToView} cart={cart} deleteItem={(e, piz) => deleteItem(e, piz)} updateCart={(e, piz) => updateCart(e, piz)} /> : ''}
-      <Pizzalist
-        updtCart={(e, piz) => updateCart(e, piz)}
-        viewItem={(e, i) => viewItem(e, i)}
-        pizzas={pizzas} />
+      {viewProduct ? <Product onClick={(e) => unViewItem(e)} item={itemToView} cart={cart} deleteItem={(e, piz) => deleteItem(e, piz)} singleAdd={(e, piz) => singleAdd(e, piz)} /> : ''}
+      <main>
+        <Pizzalist
+          cart={cart}
+          singleAdd={(e, piz) => singleAdd(e, piz)}
+          viewItem={(e, i) => viewItem(e, i)}
+          pizzas={pizzas} />
+      </main>
     </>
   )
 }

@@ -1,7 +1,7 @@
 import React from 'react'
 import axios from 'axios'
 import { server } from '../config/config'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 
 const login = () => {
   const [loginData, setLoginData] = useState({

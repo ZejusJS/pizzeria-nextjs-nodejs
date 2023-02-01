@@ -3,7 +3,7 @@ import Image from 'next/image'
 import IngrItem from '../pizza/IngrItem'
 import Triangle from '../../images/Triangle'
 
-const Item = ({ item, changeQnt }) => {
+const Item = ({ item, changeQnt, viewItem }) => {
     let ingredients = ''
     item.item.ingredients.map(ingr => {
         ingredients += ingr + ', '
@@ -12,16 +12,16 @@ const Item = ({ item, changeQnt }) => {
 
     return (
         <>
-            <div className='pizza-thumbnail cart'>
+            <div className='pizza-thumbnail cart' onClick={(e) => viewItem(e)}>
                 <div className='pizza-thumbnail-info cart'>
                     <div className='pizza-img-container'>
                         <img src={item.item.images[0].url} alt="" />
                     </div>
-                    <div>
+                    <div className='pizza-info'>
                         <h3>{item.item.title}</h3>
                         <p>{item.item.description}</p>
                     </div>
-                    <div className='qnt-change'>
+                    <div className='qnt-change' onClick={(e) => e.stopPropagation()}>
                         <button onClick={(e) => changeQnt(e, item.quantity + 1, item)} className='btn-qnt' type='button'>
                             <Triangle  operation='plus-qnt'/>
                         </button>
