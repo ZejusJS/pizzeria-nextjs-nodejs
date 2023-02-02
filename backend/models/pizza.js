@@ -19,6 +19,9 @@ const PizzaSchema = new Schema({
     price: {
         type: Number
     },
+    currency: {
+        type: String
+    },
     description: {
         type: String
     },

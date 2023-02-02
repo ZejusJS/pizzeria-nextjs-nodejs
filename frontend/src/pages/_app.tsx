@@ -1,24 +1,25 @@
 declare module "*.module.css";
 declare module "*.module.scss";
-import { Quicksand, Karla } from '@next/font/google'
+// import { Quicksand, Karla } from '@next/font/google'
 import Meta from '../components/Meta'
 import { server } from '../config/config'
 import '../styles/globalStyles.scss'
 import '../styles/changeDefault.scss'
 import '../styles/viewProduct.scss'
 import '../styles/checkout.scss'
+import '../styles/statics.scss'
 import Navbar from '../components/Navbar'
 import Link from 'next/link'
 
-const quicksand = Quicksand({
-  weight: ['400', '600', '700'],
-  subsets: ['latin'],
-})
+// const quicksand = Quicksand({
+//   weight: ['400', '600', '700'],
+//   subsets: ['latin'],
+// })
 
-const karla = Karla({
-  weight: ['200', '300', '400', '500', '600', '700', '800'],
-  subsets: ['latin']
-})
+// const karla = Karla({
+//   weight: ['200', '300', '400', '500', '600', '700', '800'],
+//   subsets: ['latin']
+// })
 
 export default function App({ Component, pageProps }) {
   return (

@@ -1,17 +1,18 @@
-const mongoose = require('mongoose');
-const LoremIpsum = require("lorem-ipsum").LoremIpsum;
-
 if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config();
 }
 
-const dbUrl = process.env.DB_URL  // 'mongodb://localhost:27017/yelp-camp'
+const mongoose = require('mongoose');
+const LoremIpsum = require("lorem-ipsum").LoremIpsum;
+
+const dbUrl = process.env.DB_URL 
 mongoose.connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true, useUnifiedTopology: true });
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error'));
 db.once('open', () => {
     console.log('Database connected');
 });
+mongoose.set('strictQuery', true);
 
 const Pizza = require('../models/pizza')
 const User = require('../models/user')
@@ -46,6 +47,7 @@ async function addPizzas(num) {
             key: Math.floor(Math.random() * 5000),
             description: lorem.generateSentences(Math.floor(Math.random() * 15) + 1),
             price: Math.floor(Math.random() * 120) + 1,
+            currency: "CZK",
             ingredients: ingrs
         })
         await pizza.save()
@@ -56,5 +58,5 @@ async function deleteAllUsers() {
     await User.deleteMany()
 }
 
-// addPizzas(10)
+addPizzas(10)
 deleteAllUsers()

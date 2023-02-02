@@ -43,6 +43,7 @@ const Pizza = ({ pizza, singleAdd, viewItem, cart }) => {
               {ingredients}
             </div>
             : ''}
+            <div>{pizza.price} {pizza.currency}</div>
           <div className='pizza-action'>
           </div>
         </div>

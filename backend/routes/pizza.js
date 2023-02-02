@@ -17,7 +17,8 @@ router.get('/all', catchAsync(async function (req, res, next) {
             price: pizza.price,
             ingredients: pizza.ingredients,
             key: pizza.key,
-            _id: pizza._id
+            _id: pizza._id,
+            currency: pizza.currency
         }
     })
     res.status(200).json(sendPizzas)

@@ -12,9 +12,9 @@ const checkout = ({ cartData }) => {
                         return <CheckoutPizza
                             item={item}
                             key={item._id}
-                            viewItem={(e) => viewItem(e, item.item)}
                         />
                     })}
+                    {cartData.totalCartPrice} CZK
                 </section>
             </main>
         </>
@@ -34,7 +34,7 @@ export const getServerSideProps = async (context) => {
     })
 
     const cartData = data.data
-    // console.log(cartData)
+    console.log(cartData)
 
     return {
         props: {

@@ -29,7 +29,7 @@ const cookieParser = require('cookie-parser')
 const ExpressError = require('./utils/ExpressError');
 const catchAsync = require('./utils/catchAsync');
 
-const dbUrl = process.env.DB_URL  // 'mongodb://localhost:27017/yelp-camp'
+const dbUrl = process.env.DB_URL 
 mongoose.connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true, useUnifiedTopology: true });
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error'));

@@ -19,7 +19,6 @@ const Item = ({ item, changeQnt, viewItem }) => {
                     </div>
                     <div className='pizza-info'>
                         <h3>{item.item.title}</h3>
-                        <p>{item.item.description}</p>
                         <div>
                             {item.item.ingredients.length ?
                                 (<div className='ingredients' key="fd">
@@ -27,6 +26,7 @@ const Item = ({ item, changeQnt, viewItem }) => {
                                 </div>)
                                 : ''}
                         </div>
+                        <div>{item.item.price} {item.item.currency}</div>
                     </div>
                     <div className='qnt-change' onClick={(e) => e.stopPropagation()}>
                         <button onClick={(e) => changeQnt(e, item.quantity + 1, item)} className='btn-qnt' type='button'>

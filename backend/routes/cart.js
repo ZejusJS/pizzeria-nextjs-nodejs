@@ -9,7 +9,7 @@ const Cart = require('../models/cart')
 
 router.post('/singleAdd', catchAsync(async function (req, res, next) {
     const productId = req.body.productId
-    const cartId = function() {
+    const cartId = function () {
         if (req.user && req.user.interaction && req.user.interaction.cart) return req.user.interaction.cart
         return req.cookies.cart
     }
@@ -28,7 +28,7 @@ router.post('/singleAdd', catchAsync(async function (req, res, next) {
                 return item
             })
         } else {
-            cart.items.push({ item: product._id, quantity: 1 })
+            cart.items.push({ item: product._id, quantity: 1, totalPrice: product.price, price: product.price })
         }
 
         await cart.save()
@@ -41,7 +41,7 @@ router.post('/singleAdd', catchAsync(async function (req, res, next) {
 
 router.delete('/deleteItem', catchAsync(async function (req, res, next) {
     const productId = req.body.productId
-    const cartId = function() {
+    const cartId = function () {
         if (req.user && req.user.interaction && req.user.interaction.cart) return req.user.interaction.cart
         return req.cookies.cart
     }
@@ -52,17 +52,18 @@ router.delete('/deleteItem', catchAsync(async function (req, res, next) {
 router.post('/changeQuantity', catchAsync(async function (req, res, next) {
     const productId = req.body.productId
     const quantity = req.body.quantity
-    const cartId = function() {
+    const cartId = function () {
         if (req.user && req.user.interaction && req.user.interaction.cart) return req.user.interaction.cart
         return req.cookies.cart
     }
     const product = await Pizza.findById(productId)
     const cart = await Cart.findById(cartId())
-    if (quantity > 15) return res.status(400).json({ msg: 'Maximum quantity is 15' })
+    if (quantity > 15 || quantity < 1) return res.status(400).json({ msg: 'Quantity of product must be between 15 and 1' })
     if (cart && product) {
         let prevProduct = cart.items.filter(pro => pro.item.equals(productId))[0]
+        prevProduct.quantity = quantity
+        prevProduct.totalPrice = quantity * prevProduct.price
         cart.items = cart.items.map(item => {
-            prevProduct.quantity = quantity
             if (item.item === prevProduct.item) return prevProduct
             return item
         })
