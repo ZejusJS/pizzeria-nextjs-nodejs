@@ -56,12 +56,19 @@ const Product = ({ item, singleAdd, cart, deleteItem, onClick }) => {
                         }
                         isInCart={isInCart}
                     >
-                        {
-                            isInCart ? 
-                            <CartRemove color={'#00c216'} /> 
-                            : 
-                            <CartAdd />
-                        }
+                        <>
+                            {
+                                isInCart ?
+                                    <CartRemove color={'#00c216'} />
+                                    :
+                                    <CartAdd />
+                            }
+                            <div className='spinner-container'>
+                                <div className="spinner-border" role="status">
+                                    <span className="visually-hidden"></span>
+                                </div>
+                            </div>
+                        </>
                     </Button>
                 </div>
             </div>

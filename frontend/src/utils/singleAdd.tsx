@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { server } from '../config/config'
+import NProgress from 'nprogress'
 
 export default async function singleAdd(e, piz) {
     e.stopPropagation()
@@ -14,6 +15,14 @@ export default async function singleAdd(e, piz) {
             'Access-Control-Allow-Origin': `${server}`
         },
         withCredentials: true,
+        onUploadProgress: function (progressEvent) {
+            e.target.classList.add('btn-cart-loading')
+            NProgress.start()
+        },
+        onDownloadProgress: function (progressEvent) {
+            e.target.classList.remove('btn-cart-loading')
+            NProgress.done(false)
+        },
         data: {
             productId
         }

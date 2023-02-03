@@ -1,0 +1,38 @@
+.loading-page {
+    position: fixed;
+    z-index: 4000;
+    width: 100%;
+    height: 100%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.466);
+
+    .spinner-container {
+        position: relative;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .spinner-border {
+        width: 50vw;
+        height: 50vw;
+        max-width: 150px;
+        max-height: 150px;
+        border-color: rgb(255, 255, 255);
+        border-right-color: transparent;
+    }
+}
+
+$spinner-border-width: 13px;
+
+@import "../../node_modules/bootstrap/scss/functions";
+@import "../../node_modules/bootstrap/scss/variables";
+@import "../../node_modules/bootstrap/scss/maps";
+@import "../../node_modules/bootstrap/scss/mixins";
+@import "../../node_modules/bootstrap/scss/utilities";
+@import "../../node_modules/bootstrap/scss/spinners";

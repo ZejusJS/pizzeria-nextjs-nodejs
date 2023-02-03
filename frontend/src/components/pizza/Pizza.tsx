@@ -16,7 +16,6 @@ const Pizza = ({ pizza, singleAdd, viewItem, cart }) => {
     setIsInCart(() => {
       let isItemInCart = false
       cart.items.map(it => {
-        console.log(it.item._id, pizza._id)
         if (it.item._id === pizza._id) isItemInCart = true
       })
       return isItemInCart

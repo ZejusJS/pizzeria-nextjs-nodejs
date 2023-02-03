@@ -50,6 +50,7 @@
             @media (max-width: 500px) {
                 width: 80%;
             }
+
             @media (max-width: 350px) {
                 width: 100%;
                 padding: 1px 1px 5px 1px;
@@ -63,7 +64,7 @@
             height: fit-content;
             background-color: white;
             border: 0;
-            
+
             :hover {
                 cursor: auto;
             }
@@ -75,6 +76,7 @@
                     height: 200px;
                 }
             }
+
             @media (max-width: 650px) {
                 width: 100%;
             }
@@ -83,6 +85,7 @@
         .pizza-info {
             pointer-events: auto;
             padding: 5px;
+
             p {
                 width: 100%;
                 overflow: hidden;
@@ -121,6 +124,8 @@
         align-items: center;
         justify-content: center;
         padding: 10px;
+        pointer-events: auto;
+
 
         .add-to-cart {
             cursor: pointer;
@@ -130,10 +135,45 @@
             background-color: white;
             padding: 6px;
             border-radius: 30px;
+            width: 110px;
+            height: 110px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
 
             svg {
+                pointer-events: none;
                 width: 90px;
                 height: 90px;
+            }
+
+            .spinner-container {
+                display: none;
+                width: 90px;
+                height: 90px;
+                justify-content: center;
+                align-items: center;
+                overflow: hidden;
+                position: absolute;
+            }
+
+            .spinner-border {
+                width: 60px;
+                height: 60px;
+                border-width: 7px;
+            }
+
+            &.btn-cart-loading {
+                // svg {
+                //     display: none;
+                // }
+                pointer-events: none;
+                background-color: rgb(190, 190, 190);
+
+                .spinner-container {
+                    display: flex;
+                }
             }
         }
     }

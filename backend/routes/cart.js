@@ -19,11 +19,16 @@ router.post('/singleAdd', catchAsync(async function (req, res, next) {
     if (cart && product) {
         let prevProduct = cart.items.filter(pro => pro.item.equals(productId))[0]
         // console.log(prevProduct)
+        if (cart.user && !req.user.interaction.cart.equals(cart._id)) {
+            return res.status(400).json({ msg: `You don't have permisson to edit this cart.` })
+        }
+        
         if (prevProduct) {
             prevProduct.quantity += 1
             if (prevProduct.quantity > 15 || prevProduct.quantity < 1) {
                 return res.status(400).json({ msg: 'Quantity of product must be between 15 and 1' })
             }
+            prevProduct.totalPrice = prevProduct.price * prevProduct.quantity
             cart.items = cart.items.map(item => {
                 if (item.item === prevProduct.item) return prevProduct
                 return item
@@ -41,13 +46,23 @@ router.post('/singleAdd', catchAsync(async function (req, res, next) {
     }
 }))
 
-router.delete('/deleteItem', hasCookieCartUser, catchAsync(async function (req, res, next) {
+router.delete('/deleteItem', catchAsync(async function (req, res, next) {
     const productId = req.body.productId
     const cartId = function () {
         if (req.user && req.user.interaction && req.user.interaction.cart) return req.user.interaction.cart
         return req.cookies.cart
     }
-    const cart = await Cart.findByIdAndUpdate(cartId(), { $pull: { items: { item: productId } } }, { new: true }).populate('items.item')
+    const cart = await Cart.findById(cartId()).populate('items.item') 
+    if (cart.user && user.interaction && user.interaction.cart && !user.interaction.cart.equals(cart._id)) {
+        return res.status(400).json({ msg: `You don't have permission to edit this cart` })
+    }
+    cart.items = cart.items.filter(item => {
+        if (!item.item.equals(productId)) return item 
+    })
+    await cart.save()
+    console.log(cart)
+    // console.log(cart)
+    // , { $pull: { items: { item: productId } } }, { new: true }
     res.json(cart)
 }))
 
@@ -84,17 +99,17 @@ router.get('/getCart', catchAsync(async function (req, res, next) {
         cart = findCart
     } else {
         try {
-            findCart = await Cart.findById(req.cookies.cart).populate('items.item')
+            const findCart = await Cart.findById(req.cookies.cart).populate('items.item')
+            if (!findCart.user) cart = findCart
+            else {
+                const cart = new Cart()
+                await cart.save()
+                return res.status(400).json({ cart: cart._id, msg: `You don't have permission to view this cart` })
+            }
         } catch (e) {
             const cart = new Cart()
             await cart.save()
             return res.status(400).json({ cart: cart._id, msg: `Bad cart id` })
-        }
-        if (!findCart.user) cart = findCart
-        else {
-            const cart = new Cart()
-            await cart.save()
-            return res.status(400).json({ cart: cart._id, msg: `You don't have permission to view this cart` })
         }
     }
     res.status(200).json(cart)

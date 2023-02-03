@@ -11,7 +11,7 @@ const hasCookieCartUser = async function (req, res, next) {
             if (!findCart.user) {
                 next()
             } else {
-                res.status(400).json({ msg: 'This cart own an user. You can delete cookie "cart" or log in to an accont.' })
+                res.status(400).json({ msg: 'Some user own this cart. You can delete cookie "cart" or log in to an accont.' })
             }
         } else {
             next()

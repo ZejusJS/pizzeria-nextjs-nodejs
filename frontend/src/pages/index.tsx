@@ -17,26 +17,6 @@ export default function Home({ pizzas, cartData }) {
   const [viewProduct, setViewProduct] = useState(false)
   const [itemToView, setItemToView] = useState({})
 
-  // async function updateCart(e, piz) {
-  //   e.stopPropagation()
-  //   const productId = piz._id
-
-  //   await axios({
-  //     method: 'post',
-  //     url: `${server}/cart/singleAdd`,
-  //     headers: {
-  //       "Content-Type": "application/x-www-form-urlencoded",
-  //       'Access-Control-Allow-Origin': `${server}`
-  //     },
-  //     withCredentials: true,
-  //     data: {
-  //       productId
-  //     }
-  //   })
-  //     .then(res => setCart(res.data))
-  //     .catch(e => window.location.href = '/')
-  // }
-
   async function singleAdd(e, piz) {
     setCart(await singleAddFunc(e, piz))
   }
@@ -117,19 +97,19 @@ export const getServerSideProps = async (context) => {
       error = true
     })
 
-    if(error) {
-      return {
-        redirect: {
-          permanent: false,
-          destination: '/'
-        }
-      }
-    } else {
-      return {
-        props: {
-          pizzas,
-          cartData
-        }
+  if (error) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: '/'
       }
     }
+  } else {
+    return {
+      props: {
+        pizzas,
+        cartData
+      }
+    }
+  }
 }
