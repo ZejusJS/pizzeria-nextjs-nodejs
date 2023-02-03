@@ -1,11 +1,12 @@
 import axios from 'axios'
-import {server } from '../config/config'
+import { server } from '../config/config'
 
 export default async function deleteItem(e, item) {
-    const productId = item._id
     e.stopPropagation()
+    const productId = item._id
+    let cartData
 
-    const res = await axios({
+    await axios({
         method: 'delete',
         url: `${server}/cart/deleteItem`,
         headers: {
@@ -17,8 +18,12 @@ export default async function deleteItem(e, item) {
             productId
         }
     })
+        .then(res => cartData = res.data)
+        .catch(e => console.log(e))
 
-    // console.warn(res.data)
-    // setCart(res.data)
-    return res.data
+    if (cartData) {
+        return cartData
+    } else {
+        window.location.replace('/')
+    }
 }

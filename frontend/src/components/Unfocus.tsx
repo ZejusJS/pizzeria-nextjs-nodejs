@@ -2,7 +2,7 @@ import React from 'react'
 
 const Unfocus = ({ onClick }) => {
   return (
-    <div className='unfocus' onClick={onClick}></div>
+    <div className='unfocus' onClick={(e) => onClick(e)}></div>
   )
 }
 

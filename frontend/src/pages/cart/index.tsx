@@ -43,8 +43,15 @@ const cart = ({ cartData }) => {
 
   return (
     <>
-      {viewProduct ? <Unfocus onClick={unViewItem} /> : ''}
-      {viewProduct ? <Product onClick={(e) => unViewItem(e)} item={itemToView} cart={cart} deleteItem={(e, piz) => deleteItem(e, piz)} singleAdd={(e, piz) => singleAdd(e, piz)} /> : ''}
+      {viewProduct ? <Unfocus onClick={(e) => unViewItem(e)} /> : ''}
+      {viewProduct ?
+        <Product
+          onClick={(e) => unViewItem(e)}
+          item={itemToView}
+          cart={cart}
+          deleteItem={(e, piz) => deleteItem(e, piz)}
+          singleAdd={(e, piz) => singleAdd(e, piz)} />
+        : ''}
       <main>
         <section className='cart-items'>
           {cart.items.map(item => {
@@ -57,9 +64,9 @@ const cart = ({ cartData }) => {
           })}
         </section>
         <Link href={{
-            pathname: '/cart/checkout',
-            query: { cart: cartData._id },
-          }}>
+          pathname: '/cart/checkout',
+          query: { cart: cartData._id },
+        }}>
           Check out
         </Link>
       </main>
@@ -67,8 +74,12 @@ const cart = ({ cartData }) => {
   )
 }
 
+import * as cookie from 'cookie'
+
 export const getServerSideProps = async (context) => {
-  const data = await axios({
+  let cartData: object
+  let error
+  await axios({
     method: 'get',
     url: `${server}/cart/getCart`,
     withCredentials: true,
@@ -78,13 +89,28 @@ export const getServerSideProps = async (context) => {
       Cookie: context.req.headers.cookie
     }
   })
+    .then(res => cartData = res.data)
+    .catch(e => {
+      const res = e.response.data
+      context.res.setHeader('Set-Cookie', cookie.serialize('cart', res.cart, {
+        httpOnly: true
+      }));
+      error = true
+    })
 
-  const cartData = data.data
   // console.log(cartData)
-
-  return {
-    props: {
-      cartData
+  if (error) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: '/cart'
+      }
+    }
+  } else {
+    return {
+      props: {
+        cartData
+      }
     }
   }
 }

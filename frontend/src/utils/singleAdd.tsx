@@ -1,11 +1,12 @@
 import axios from 'axios'
-import {server } from '../config/config'
+import { server } from '../config/config'
 
 export default async function singleAdd(e, piz) {
     e.stopPropagation()
     const productId = piz._id
+    let cartData
 
-    const res = await axios({
+    await axios({
         method: 'post',
         url: `${server}/cart/singleAdd`,
         headers: {
@@ -17,7 +18,12 @@ export default async function singleAdd(e, piz) {
             productId
         }
     })
-        .catch(e => window.location.href = '/')
+        .then(res => cartData = res.data)
+        .catch(e => console.log(e))
 
-    return res.data
+    if (cartData) {
+        return cartData
+    } else {
+        window.location.replace('/')
+    }
 }

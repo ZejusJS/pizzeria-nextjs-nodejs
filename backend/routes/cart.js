@@ -3,6 +3,7 @@ const router = express.Router({ mergeParams: true });
 
 const catchAsync = require('../utils/catchAsync');
 const ExpressError = require('../utils/ExpressError');
+const hasCookieCartUser = require('../utils/hasCookieCartUser')
 
 const Pizza = require('../models/pizza')
 const Cart = require('../models/cart')
@@ -35,11 +36,12 @@ router.post('/singleAdd', catchAsync(async function (req, res, next) {
         await cart.populate('items.item')
         res.status(200).json(cart)
     } else {
+        console.log('xdddddddddddddddd')
         res.status(400).json({ msg: 'ProductID or CartID was not found' })
     }
 }))
 
-router.delete('/deleteItem', catchAsync(async function (req, res, next) {
+router.delete('/deleteItem', hasCookieCartUser, catchAsync(async function (req, res, next) {
     const productId = req.body.productId
     const cartId = function () {
         if (req.user && req.user.interaction && req.user.interaction.cart) return req.user.interaction.cart
@@ -81,7 +83,19 @@ router.get('/getCart', catchAsync(async function (req, res, next) {
         const findCart = await Cart.findById(req.user.interaction.cart).populate('items.item')
         cart = findCart
     } else {
-        cart = await Cart.findById(req.cookies.cart).populate('items.item')
+        try {
+            findCart = await Cart.findById(req.cookies.cart).populate('items.item')
+        } catch (e) {
+            const cart = new Cart()
+            await cart.save()
+            return res.status(400).json({ cart: cart._id, msg: `Bad cart id` })
+        }
+        if (!findCart.user) cart = findCart
+        else {
+            const cart = new Cart()
+            await cart.save()
+            return res.status(400).json({ cart: cart._id, msg: `You don't have permission to view this cart` })
+        }
     }
     res.status(200).json(cart)
 }))

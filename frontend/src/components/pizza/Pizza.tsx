@@ -25,7 +25,7 @@ const Pizza = ({ pizza, singleAdd, viewItem, cart }) => {
   }, [cart])
 
   return (
-    <div className='pizza-thumbnail' onClick={(e) => viewItem(e, pizza)}>
+    <div className='pizza-thumbnail index' onClick={(e) => viewItem(e, pizza)}>
       <div className='pizza-thumbnail-info'>
         <div className='pizza-img-container'>
           <img src={pizza.images[0].url} alt="" />
@@ -43,7 +43,7 @@ const Pizza = ({ pizza, singleAdd, viewItem, cart }) => {
               {ingredients}
             </div>
             : ''}
-            <div>{pizza.price} {pizza.currency}</div>
+            <div className='price fw-600'>{pizza.price} {pizza.currency}</div>
           <div className='pizza-action'>
           </div>
         </div>

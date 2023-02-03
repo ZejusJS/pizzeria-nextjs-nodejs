@@ -1,4 +1,5 @@
 #view-product {
+    word-break: break-word;
     position: absolute;
     position: fixed;
     // background-color: rgba(3, 3, 3, 0.712);
@@ -8,6 +9,7 @@
 
     width: 100%;
     height: 100%;
+
     // pointer-events: none;
 
     hr {
@@ -89,6 +91,17 @@
                 -webkit-box-orient: vertical;
                 -webkit-line-clamp: 40;
             }
+        }
+
+        .price {
+            pointer-events: auto;
+            background-color: green;
+            color: white;
+            width: fit-content;
+            font-size: 23px;
+            margin: 10px auto;
+            padding: 5px;
+            border-radius: 8px;
         }
 
         @media (max-width: 640px) {

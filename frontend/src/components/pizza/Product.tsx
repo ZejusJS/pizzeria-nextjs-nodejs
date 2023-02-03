@@ -45,6 +45,9 @@ const Product = ({ item, singleAdd, cart, deleteItem, onClick }) => {
                             : ''}
                     </div>
                 </div>
+                <div className='price fw-500' onClick={(e) => e.stopPropagation()}>
+                    {item.price} {item.currency}
+                </div>
                 <div className='add-to-cart-container'>
                     <Button
                         pizza={item}

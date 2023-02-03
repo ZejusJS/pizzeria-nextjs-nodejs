@@ -30,7 +30,7 @@ export async function middleware(req: NextRequest) {
         const data = await getCart.json()
         // console.log(data)
         const response = NextResponse.redirect(url)
-        response.cookies.set("cart", data.cart);
+        response.cookies.set("cart", data.cart, {httpOnly: true});
         return response
     }
 }

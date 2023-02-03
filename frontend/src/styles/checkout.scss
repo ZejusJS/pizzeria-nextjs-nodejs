@@ -27,15 +27,17 @@
                 min-height: 55px;
             }
 
-            @media (max-width: 250px) {
-                display: none;
-            }
-
             img {
                 width: 120%;
                 height: auto;
                 object-fit: cover;
                 border-radius: 10px;
+            }
+        }
+
+        .pizza-info {
+            p {
+                margin: 1px 0;
             }
         }
     }

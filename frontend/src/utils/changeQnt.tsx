@@ -6,9 +6,7 @@ export default async function (e, qnt, item, setCart) {
         qnt = e.target.value
         qnt = parseInt(qnt)
     }
-    if (qnt > 15) {
-        return false
-    } else if (qnt < 1) {
+    if (qnt > 15 || qnt < 1) {
         return false
     } else {
         setCart(prevCart => {
@@ -18,7 +16,9 @@ export default async function (e, qnt, item, setCart) {
             })
             return { ...prevCart }
         })
-        return await axios({
+
+        let cartData
+        await axios({
             method: 'post',
             url: `${server}/cart/changeQuantity`,
             headers: {
@@ -31,5 +31,13 @@ export default async function (e, qnt, item, setCart) {
             },
             withCredentials: true
         })
+            .then(res => cartData = res.data)
+            .catch(e => console.log(e))
+
+        if (cartData) {
+            return cartData
+        } else {
+            window.location.replace('/')
+        }
     }
 }

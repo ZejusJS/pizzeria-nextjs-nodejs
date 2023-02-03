@@ -107,6 +107,7 @@ app.use('/user', userRoute)
 app.use('/cart', cartRoute)
 
 app.use(async (err, req, res, next) => {
+    // console.log(err)
     try {
         const { status = 500 } = err;
         if (!err.message) err.message = 'Internal Server Error';
@@ -115,7 +116,7 @@ app.use(async (err, req, res, next) => {
         res.status(status).json(err)
     } catch (e) {
         console.log('ERROR!!!!!!!!!!!!!', e)
-        res.status(400).json({ msg: 'Server Error' })
+        res.status(500).json({ msg: 'Server Error' })
     }
 });
 

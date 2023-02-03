@@ -45,8 +45,8 @@ export default function Home({ pizzas, cartData }) {
     setCart(await deleteItemFunc(e, piz))
   }
 
-  console.log('Cart.... ', cart)
-  console.log('Item.... ', itemToView)
+  // console.log('Cart.... ', cart)
+  // console.log('Item.... ', itemToView)
 
   function viewItem(e, item) {
     setItemToView(item)
@@ -63,7 +63,12 @@ export default function Home({ pizzas, cartData }) {
   return (
     <>
       {viewProduct ? <Unfocus onClick={unViewItem} /> : ''}
-      {viewProduct ? <Product onClick={(e) => unViewItem(e)} item={itemToView} cart={cart} deleteItem={(e, piz) => deleteItem(e, piz)} singleAdd={(e, piz) => singleAdd(e, piz)} /> : ''}
+      {viewProduct ? <Product
+        onClick={(e) => unViewItem(e)}
+        item={itemToView}
+        cart={cart}
+        deleteItem={(e, piz) => deleteItem(e, piz)}
+        singleAdd={(e, piz) => singleAdd(e, piz)} /> : ''}
       <main>
         <Pizzalist
           cart={cart}
@@ -75,9 +80,14 @@ export default function Home({ pizzas, cartData }) {
   )
 }
 
+import * as cookie from 'cookie'
+
 export const getServerSideProps = async (context) => {
-  // console.log('GSSD... ', context.req.headers.cookie)
-  const pizz = await axios({
+  // console.log('GSSD... ', context.req.headers.cookie)ˇ
+  let cartData
+  let pizzas
+  let error
+  await axios({
     method: 'get',
     url: `${server}/pizza/all`,
     headers: {
@@ -85,8 +95,10 @@ export const getServerSideProps = async (context) => {
       'Access-Control-Allow-Origin': `${server}`
     }
   })
+    .then(res => pizzas = res.data)
+    .catch(e => '')
 
-  const cart = await axios({
+  await axios({
     method: 'get',
     url: `${server}/cart/getCart`,
     withCredentials: true,
@@ -96,15 +108,28 @@ export const getServerSideProps = async (context) => {
       Cookie: context.req.headers.cookie
     }
   })
+    .then(res => cartData = res.data)
+    .catch(e => {
+      const res = e.response.data
+      context.res.setHeader('Set-Cookie', cookie.serialize('cart', res.cart, {
+        httpOnly: true
+      }));
+      error = true
+    })
 
-  const cartData = cart.data
-
-  const pizzas = pizz.data
-
-  return {
-    props: {
-      pizzas,
-      cartData
+    if(error) {
+      return {
+        redirect: {
+          permanent: false,
+          destination: '/'
+        }
+      }
+    } else {
+      return {
+        props: {
+          pizzas,
+          cartData
+        }
+      }
     }
-  }
 }

@@ -26,7 +26,7 @@ const Item = ({ item, changeQnt, viewItem }) => {
                                 </div>)
                                 : ''}
                         </div>
-                        <div>{item.item.price} {item.item.currency}</div>
+                        <div className='price fw-600'>{item.item.price} {item.item.currency}</div>
                     </div>
                     <div className='qnt-change' onClick={(e) => e.stopPropagation()}>
                         <button onClick={(e) => changeQnt(e, item.quantity + 1, item)} className='btn-qnt' type='button'>
@@ -42,6 +42,11 @@ const Item = ({ item, changeQnt, viewItem }) => {
                             <Triangle operation='minus-qnt' />
                         </button>
                     </div>
+                </div>
+                <div>
+                    <div className='total-price fw-500'>
+                        Total Price: <span className='c-green fw-600'>{item.totalPrice} CZK</span>
+                        </div>
                 </div>
             </div>
         </>
