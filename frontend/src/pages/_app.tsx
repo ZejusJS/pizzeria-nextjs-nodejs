@@ -9,6 +9,7 @@ import '../styles/changeDefault.scss'
 import '../styles/globalStyles.scss'
 import '../styles/viewProduct.scss'
 import '../styles/checkout.scss'
+import '../styles/new-pizza.scss'
 import '../styles/statics.scss'
 import Navbar from '../components/Navbar'
 import Link from 'next/link'
@@ -87,6 +88,9 @@ export default function App({ Component, pageProps }) {
         </Link> <br />
         <Link href='/login'>
           Log in
+        </Link> <br />
+        <Link href='/admin/new-pizza'>
+          Create a new pizza
         </Link> <br />
         <a href={`${server}/user/logout`}>Logout</a>
       </>

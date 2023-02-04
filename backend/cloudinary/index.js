@@ -12,7 +12,7 @@ const storagePizzaImg = new CloudinaryStorage({
     params: {
         folder: 'pizzas',
         // format: ['jpeg', 'png', 'jpg'],
-        // upload_preset: 'campgroundPhotos'
+        upload_preset: 'pizza'
     }
 });
 

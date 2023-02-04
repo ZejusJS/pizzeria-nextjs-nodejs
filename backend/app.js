@@ -29,7 +29,7 @@ const cookieParser = require('cookie-parser')
 const ExpressError = require('./utils/ExpressError');
 const catchAsync = require('./utils/catchAsync');
 
-const dbUrl = process.env.DB_URL 
+const dbUrl = process.env.DB_URL
 mongoose.connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true, useUnifiedTopology: true });
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error'));
@@ -91,6 +91,7 @@ app.use(function (req, res, next) {
 const pizzaRoute = require('./routes/pizza')
 const userRoute = require('./routes/user')
 const cartRoute = require('./routes/cart')
+const adminRoute = require('./routes/admin')
 
 // app.use(function (req, res, next) {
 //     console.log('------------------------')
@@ -105,6 +106,7 @@ const cartRoute = require('./routes/cart')
 app.use('/pizza', pizzaRoute)
 app.use('/user', userRoute)
 app.use('/cart', cartRoute)
+app.use('/admin', adminRoute)
 
 app.use(async (err, req, res, next) => {
     // console.log(err)
@@ -112,6 +114,13 @@ app.use(async (err, req, res, next) => {
         const { status = 500 } = err;
         if (!err.message) err.message = 'Internal Server Error';
         console.log(err);
+
+        if (req.files && req.files.length) { // pro odstranění souborů, který zbyly po erroru
+            images = req.files.map(f => ({ url: f.path, filename: f.filename }));
+            for (let img of images) {
+                await cloudinary.uploader.destroy(img.filename);
+            }
+        }
 
         res.status(status).json(err)
     } catch (e) {

@@ -69,7 +69,7 @@ main {
 
     .pizza-img-container img {
         width: 200px;
-        object-fit: scale-down;
+        object-fit: contain;
     }
 }
 
@@ -85,10 +85,6 @@ main {
     border-radius: 10px;
     overflow: hidden;
     white-space: pre-wrap;
-
-    ::shadow {
-        color: aqua;
-    }
 
     @media (max-width: 880px) {
         width: 95%;
@@ -146,12 +142,12 @@ main {
         justify-content: center;
         align-items: center;
         overflow: hidden;
+        background-color: rgb(235, 235, 235);
 
         img {
-            height: 100%;
-            height: auto;
+            // height: auto;
             width: 170px;
-            object-fit: cover;
+            object-fit: contain;
             transition: width 150ms;
         }
 
@@ -300,6 +296,7 @@ div.ingredients {
         padding: 10px 0px 10px 10px;
         box-sizing: border-box;
         align-items: flex-start;
+        background-color: transparent;
 
         img {
             width: 100%;

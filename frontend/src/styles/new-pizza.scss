@@ -1,0 +1,142 @@
+.form-newpizza {
+    display: flex;
+    gap: 5px;
+    flex-direction: column;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 7px;
+
+    $input-border: 1px solid black;
+
+    .invalid {
+        border-color: #ff2424 !important;
+        outline: 1px solid #ff2424 !important;
+    }
+
+    .price-continer {
+        display: flex;
+        justify-content: center;
+    }
+
+    input,
+    textarea,
+    select {
+        font-size: 18px;
+        height: 35px;
+        border: $input-border;
+    }
+
+    textarea {
+        height: 200px;
+        resize: none;
+    }
+
+    input,
+    textarea {
+        border-radius: 7px;
+    }
+
+    .price {
+        border-radius: 7px 0 0 7px;
+    }
+
+    .currency {
+        border-radius: 0 7px 7px 0;
+    }
+
+    input:focus,
+    textarea:focus {
+        outline: 2px solid rgb(168, 168, 168);
+        border: $input-border;
+    }
+
+    .price {
+        width: 100px;
+    }
+
+
+    label.pizza-img {
+        margin: 15px auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        word-break: break-all;
+
+        :hover {
+            cursor: pointer;
+        }
+    }
+
+    .img-label {
+        background-color: rgb(255, 191, 14);
+        color: rgb(0, 0, 0);
+        width: 150px;
+        text-align: center;
+        padding: 7px 15px;
+        border-radius: 7px;
+        margin: 12px auto 0 auto;
+
+        &:hover {
+            cursor: pointer;
+            background-color: rgb(228, 170, 10);
+        }
+    }
+
+    .img-input {
+        border: 0;
+        outline: 0;
+        display: none;
+    }
+
+    img.pizza-img {
+        width: 70%;
+        border-radius: 7px;
+        outline: 3px solid rgb(255, 191, 14);
+
+        @media (max-width: 500px) {
+            width: 95%;
+        }
+    }
+
+    .errors {
+        p {
+            color: rgb(255, 23, 23);
+            font-size: 18px;
+        }
+    }
+
+    .submit {
+        max-width: 210px;
+        min-width: 100px;
+        padding: 10px 20px;
+        font-size: 17.5px;
+
+        background-color: rgb(8, 102, 224);
+        border: 0;
+        border-radius: 7px;
+        color: white;
+        font-weight: 400;
+        margin: 12px auto;
+
+        &:hover {
+            cursor: pointer;
+            background-color: rgb(28, 100, 194);
+        }
+
+        &:active {
+            outline: 2.5px solid #91919181;
+            outline-offset: 1.5px;
+        }
+    }
+}
+
+.input-container {
+    display: flex;
+    flex-direction: column;
+
+    label {
+        font-size: 18px;
+        font-weight: 500;
+    }
+}

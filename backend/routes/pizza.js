@@ -24,6 +24,4 @@ router.get('/all', catchAsync(async function (req, res, next) {
     res.status(200).json(sendPizzas)
 }))
 
-
-
 module.exports = router

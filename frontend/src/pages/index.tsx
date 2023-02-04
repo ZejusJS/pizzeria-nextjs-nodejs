@@ -24,10 +24,7 @@ export default function Home({ pizzas, cartData }) {
   async function deleteItem(e, piz) {
     setCart(await deleteItemFunc(e, piz))
   }
-
-  // console.log('Cart.... ', cart)
-  // console.log('Item.... ', itemToView)
-
+  
   function viewItem(e, item) {
     setItemToView(item)
     setViewProduct(true)
