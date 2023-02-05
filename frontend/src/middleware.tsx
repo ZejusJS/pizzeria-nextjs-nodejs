@@ -16,7 +16,6 @@ export async function middleware(req: NextRequest) {
         })
         return cookies
     }
-    
     if (url.pathname.startsWith('/admin')) {
         const cookies = cookiesParse()
         const res = await fetch(`${server}/admin/isAdmin`, {
