@@ -1,7 +1,7 @@
 # Mamma mia
 first project with nextjs + nodejs
 
-#### To do:
+### To-do list:
 1. Completly rebuild auth with JWT for easier accessing basic info of user.
 2. Learn how payment gateway works
 3. Implement sandbox gateway (maybe from ČSOB)
