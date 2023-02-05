@@ -12,12 +12,12 @@ export default async function (e, qnt, item, setCart) {
         setCart(prevCart => {
             prevCart.items = prevCart.items.map(it => {
                 if (it.item._id !== item.item._id) return it
-                return { ...it, quantity: qnt }
+                return { ...it, quantity: qnt, totalPrice: qnt * it.price }
             })
             return { ...prevCart }
         })
 
-        let cartData
+        let newQnt
         await axios({
             method: 'post',
             url: `${server}/cart/changeQuantity`,
@@ -31,13 +31,7 @@ export default async function (e, qnt, item, setCart) {
             },
             withCredentials: true
         })
-            .then(res => cartData = res.data)
+            .then(res => newQnt = res.data)
             .catch(e => console.log(e))
-
-        if (cartData) {
-            return cartData
-        } else {
-            window.location.replace('/')
-        }
     }
 }

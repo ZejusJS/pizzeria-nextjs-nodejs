@@ -1,4 +1,4 @@
-const { options } = require('joi');
+const { options, boolean } = require('joi');
 const mongoose = require('mongoose');
 const passportLocalMongoose = require('passport-local-mongoose');
 const ExpressError = require('../utils/ExpressError');
@@ -14,6 +14,9 @@ const UserSchema = new mongoose.Schema({
             ref: 'Cart'
         }
     },
+    admin: {
+        type: Boolean
+    }
 })
 
 UserSchema.plugin(passportLocalMongoose, {

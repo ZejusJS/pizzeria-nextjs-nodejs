@@ -1,6 +1,7 @@
 const { cloudinary } = require('../cloudinary/index')
+const catchAsync = require('../utils/catchAsync')
 
-async function deleteCloudinary(req, res, next) {
+const deleteCloudinary = catchAsync(async function (req, res, next) {
     if (req.files && req.files.length) { // pro odstranění souborů, který zbyly po erroru
         images = req.files.map(f => ({ url: f.path, filename: f.filename }));
         for (let img of images) {
@@ -8,7 +9,7 @@ async function deleteCloudinary(req, res, next) {
         }
     }
     return true
-}
+})
 
 module.exports = {
     deleteCloudinary

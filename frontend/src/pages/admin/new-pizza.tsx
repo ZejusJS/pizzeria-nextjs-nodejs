@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import axios from 'axios'
 import { server } from '../../config/config'
 import NProgress from 'nprogress'
+import { useRouter } from 'next/router'
 
 const NewPizza = () => {
     const initialStatePizza = {
@@ -28,6 +29,9 @@ const NewPizza = () => {
     const description = useRef(null)
     const ingredients = useRef(null)
     const price = useRef(null)
+    const submitBtn = useRef(null)
+
+    let router = useRouter()
 
     function updateForm(e) {
         const name = e.target.name
@@ -94,13 +98,17 @@ const NewPizza = () => {
     }
 
     async function sendForm(e) {
+        submitBtn.current.disabled = true
         e.preventDefault()
 
         let isError = false
         for (let value of Object.values(errors)) {
             if (value === true) isError = true
         }
-        if (isError || !newPizza.image) return false
+        if (isError || !newPizza.image) {
+            submitBtn.current.disabled = false
+            return false
+        }
 
         await axios({
             method: 'post',
@@ -132,19 +140,26 @@ const NewPizza = () => {
                     setErrors(prevErrs => {
                         return { ...prevErrs, img: true }
                     })
+                    submitBtn.current.disabled = false
                 } else {
                     setErrors(prevErrs => {
                         return { ...prevErrs, img: false }
                     })
+                    submitBtn.current.disabled = false
                 }
                 if (e.response.data.err === 'invalid') {
                     setErrors(prevErrs => {
                         return { ...prevErrs, invalid: true }
                     })
+                    submitBtn.current.disabled = false
                 } else {
                     setErrors(prevErrs => {
                         return { ...prevErrs, ivalid: false }
                     })
+                    submitBtn.current.disabled = false
+                }
+                if (e.response.status === 401 || 403) {
+                    router.push('/login')
                 }
             })
     }
@@ -242,7 +257,12 @@ const NewPizza = () => {
                             ''
                     }
                 </div>
-                <button type="submit" className='submit'>Submit New Pizza</button>
+                <button
+                    ref={submitBtn}
+                    type="submit"
+                    className='submit'>
+                    Submit New Pizza
+                </button>
             </form>
         </main>
     )

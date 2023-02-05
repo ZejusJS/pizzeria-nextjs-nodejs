@@ -2,7 +2,9 @@ const Pizza = require('../models/pizza')
 const Cart = require('../models/cart')
 const User = require('../models/user')
 
-const hasCookieCartUser = async function (req, res, next) {
+const catchAsync = require('../utils/catchAsync')
+
+const hasCookieCartUser = catchAsync(async function (req, res, next) {
     if (req.user) {
         next()
     } else {
@@ -17,6 +19,6 @@ const hasCookieCartUser = async function (req, res, next) {
             next()
         }
     }
-}
+})
 
 module.exports = hasCookieCartUser;

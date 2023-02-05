@@ -1,22 +1,43 @@
 import React from 'react'
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
-import axios from 'axios'
 import { server } from './config/config'
 
 export async function middleware(req: NextRequest) {
     const url = req.nextUrl
     const res = NextResponse.next();
-    // console.log('MW... ', cookies)
-    if (req.cookies.has("cart")) {
-        return res;
-    } else {
+    console.log(url)
+    function cookiesParse() {
         const getCookies = req.cookies.getAll()
         let cookies = ''
         getCookies.map(cook => {
             cookies += cook.name + '='
             cookies += cook.value + ';'
         })
+        return cookies
+    }
+    
+    if (url.pathname.startsWith('/admin')) {
+        const cookies = cookiesParse()
+        const res = await fetch(`${server}/admin/isAdmin`, {
+            method: 'get',
+            mode: 'cors',
+            headers: {
+                'Access-Control-Allow-Origin': `${server}`,
+                Domain: `${server}`,
+                Cookie: cookies
+            },
+            credentials: 'include',
+        })
+        if (res.status !== 200) {
+            url.pathname = '/'
+            const response = NextResponse.redirect(url)
+            return response
+        }
+    } else if (req.cookies.has("cart")) {
+        return res;
+    } else {
+        const cookies = cookiesParse()
         const getCart = await fetch(`${server}/cart/getIdCart`, {
             method: 'get',
             mode: 'cors',
@@ -28,9 +49,8 @@ export async function middleware(req: NextRequest) {
             credentials: 'include',
         })
         const data = await getCart.json()
-        // console.log(data)
         const response = NextResponse.redirect(url)
-        response.cookies.set("cart", data.cart, {httpOnly: true});
+        response.cookies.set("cart", data.cart, { httpOnly: true });
         return response
     }
 }

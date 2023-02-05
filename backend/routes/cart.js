@@ -96,10 +96,12 @@ router.get('/getCart', catchAsync(async function (req, res, next) {
     let cart = {}
     if (req.user && req.user.interaction && req.user.interaction.cart) {
         const findCart = await Cart.findById(req.user.interaction.cart).populate('items.item')
+        console.log(findCart)
         cart = findCart
     } else {
         try {
             const findCart = await Cart.findById(req.cookies.cart).populate('items.item')
+            // console.log(findCart)
             if (!findCart.user) cart = findCart
             else {
                 const cart = new Cart()
@@ -116,7 +118,6 @@ router.get('/getCart', catchAsync(async function (req, res, next) {
 }))
 
 router.get('/getIdCart', catchAsync(async function (req, res, next) {
-    console.log('USERRRR... ', req.user)
     const cart = new Cart()
     await cart.save()
     res.json({ cart: cart._id })

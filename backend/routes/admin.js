@@ -7,6 +7,7 @@ const ExpressError = require('../utils/ExpressError');
 const hasCookieCartUser = require('../utils/hasCookieCartUser')
 const { mwUploadPizzaImg } = require('../utils/mw-uploadPizzaImg')
 const { deleteCloudinary } = require('../utils/deleteCloudinary')
+const { mwIsAdmin, mwIsAdminGet } = require('../utils/mw-isAdmin')
 
 const Pizza = require('../models/pizza')
 const Cart = require('../models/cart')
@@ -46,5 +47,6 @@ router.post('/new-pizza', mwUploadPizzaImg, catchAsync(async function (req, res,
 
 }))
 
+router.get('/isAdmin', mwIsAdminGet)
 
 module.exports = router
