@@ -6,7 +6,6 @@ import { server } from './config/config'
 export async function middleware(req: NextRequest) {
     const url = req.nextUrl
     const res = NextResponse.next();
-    console.log(url)
     function cookiesParse() {
         const getCookies = req.cookies.getAll()
         let cookies = ''
