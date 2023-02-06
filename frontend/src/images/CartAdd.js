@@ -1,5 +1,3 @@
-import React from 'react'
-
 export default function Cartadd() {
     return (
         <svg height="800px" id="svg5" width="800px" version="1.1" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">

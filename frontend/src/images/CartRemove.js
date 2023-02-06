@@ -1,5 +1,3 @@
-import React from 'react'
-
 export default function Cartremove({ color }) {
     const fill = color || "#000000"
     return (

@@ -11,12 +11,14 @@ import '../styles/viewProduct.scss'
 import '../styles/checkout.scss'
 import '../styles/new-pizza.scss'
 import '../styles/statics.scss'
+import '../styles/navbar.scss'
 import Navbar from '../components/Navbar'
 import Link from 'next/link'
-import React, { useEffect, useState } from 'react'
+import React, { createContext, useEffect, useState } from 'react'
 import Router, { useRouter } from 'next/router';
 import bootstrap from 'bootstrap'
 import NProgress from 'nprogress'
+import axios from 'axios'
 
 // const quicksand = Quicksand({
 //   weight: ['400', '600', '700'],
@@ -28,17 +30,9 @@ import NProgress from 'nprogress'
 //   subsets: ['latin']
 // })
 
-export default function App({ Component, pageProps }) {
-  // const router = useRouter();
-  // const [pageLoading, setPageLoading] = React.useState<boolean>(false);
-  // React.useEffect(() => {
-  //   const handleStart = () => { setPageLoading(true); };
-  //   const handleComplete = () => { setPageLoading(false); };
-
-  //   router.events.on('routeChangeStart', handleStart);
-  //   router.events.on('routeChangeComplete', handleComplete);
-  //   router.events.on('routeChangeError', handleComplete);
-  // }, [router]);
+export default function App({ Component, pageProps, cartData }) {
+  const [cart, setCart] = useState(cartData)
+  const [expanded, setExpanded] = useState(false)
 
   Router.events.on("routeChangeStart", (url) => {
     NProgress.start()
@@ -51,49 +45,52 @@ export default function App({ Component, pageProps }) {
   return (
     <>
       <Meta />
-      {/* {
-        (pageLoading)
-          ?
-          <div className='loading-page'>
-            <div className='spinner-container'>
-              <div className="spinner-border" role="status">
-                <span className="sr-only"></span>
-              </div>
-            </div>
-          </div>
-          :
-          <div className='loading-page'>
-            <div className='spinner-container'>
-              <div className="spinner-border" role="status">
-                <span className="sr-only"></span>
-              </div>
-            </div>
-          </div>
-      } */}
-      <Navbar />
-      <>
-        <Component {...pageProps} />
-        <hr />
-        <Link href='/about'>
-          About
-        </Link> <br />
-        <Link href='/'>
-          Home page
-        </Link> <br />
-        <Link href='/cart'>
-          Cart
-        </Link> <br />
-        <Link href='/signup'>
-          Sign Up
-        </Link> <br />
-        <Link href='/login'>
-          Log in
-        </Link> <br />
-        <Link href='/admin/new-pizza'>
-          Create a new pizza
-        </Link> <br />
-        <a href={`${server}/user/logout`}>Logout</a>
-      </>
+      <Navbar cart={cart} expanded={expanded} setExpanded={setExpanded} />
+      <div onClick={expanded ? () => setExpanded(!expanded) : (a) => (a)}>
+        <Component {...pageProps} setCart={setCart} cart={cart} />
+      </div>
     </>
   )
+}
+
+import * as cookie from 'cookie'
+
+App.getInitialProps = async ({ Component, ctx }) => {
+  let cartData
+  let error
+
+  await axios({
+    method: 'get',
+    url: `${server}/cart/getCart`,
+    withCredentials: true,
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      'Access-Control-Allow-Origin': `${server}`,
+      Cookie: ctx.req.headers.cookie
+    }
+  })
+    .then(res => cartData = res.data)
+    .catch(e => {
+      const res = e.response.data
+      ctx.res.setHeader('Set-Cookie', cookie.serialize('cart', res.cart, {
+        httpOnly: true
+      }));
+      error = true
+    })
+
+  let pageProps = {};
+  if (Component.getInitialProps) {
+    pageProps = await Component.getInitialProps(ctx);
+  }
+
+  if (error) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: '/'
+      }
+    }
+  } else {
+    return { pageProps, cartData }
+  }
 }

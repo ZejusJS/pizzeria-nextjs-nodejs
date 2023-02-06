@@ -1,5 +1,3 @@
-import React from 'react'
-
 export default function Triangle({ operation }) {
   return (
     <svg className={'svg ' + operation} height="800px" id="Capa_1" width="800px" version="1.1" viewBox="0 0 490 490" xmlns="http://www.w3.org/2000/svg" xmlSpace="preserve">

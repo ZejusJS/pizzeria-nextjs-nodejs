@@ -1,0 +1,139 @@
+nav {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-height: 70px;
+    // max-height: 300px;
+    z-index: 1299;
+    // background-color: rgba(255, 255, 255, 0.521);
+    background-color: rgb(255, 255, 255);
+    box-shadow: 0 0 30px -10px black;
+    align-items: center;
+    overflow: hidden;
+
+    .nav-container {
+        position: relative;
+        width: 100%;
+        max-height: 300px;
+        min-height: 70px;
+        height: 70px;
+
+
+        transition: min-height 300ms;
+
+        &.expanded {
+            min-height: 390px;
+            // overflow: auto;
+            overflow: overlay;
+
+            &::-webkit-scrollbar {
+                width: 0px;
+            }
+
+            @media (max-height: 500px) {
+                min-height: 100vh;
+            }
+        }
+    }
+
+
+    .logo-name {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        a {
+            display: flex;
+            align-items: center;
+            height: 100%;
+            text-decoration: none;
+            color: black;
+            margin: 0;
+
+            img {
+                width: 90px;
+            }
+        }
+
+        h1 {
+            font-size: 40px;
+            display: inline-block;
+            white-space: nowrap;
+
+            @media (max-width: 500px) {
+                display: none;
+            }
+        }
+
+        .options-container {
+            display: flex;
+            gap: 10px;
+
+            .cart {
+                position: relative;
+                width: 50px;
+
+                svg {
+                    width: 100%;
+                    height: auto;
+                }
+
+                .items-count {
+                    position: absolute;
+                    bottom: 0;
+                    right: 0px;
+                    background-color: rgb(255, 203, 33);
+                    padding: 4px;
+                    border-radius: 10px;
+                    line-height: 13px;
+                }
+            }
+
+            .expand-nav {
+                width: 50px;
+                margin: 0;
+                flex-shrink: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                :hover {
+                    cursor: pointer;
+                }
+
+                svg {
+                    width: 100%;
+                    height: auto;
+                }
+            }
+        }
+    }
+
+    .links {
+        margin: 5px auto 0 auto;
+        display: flex;
+        justify-content: space-evenly;
+        align-items: flex-end;
+        gap: 7px;
+        top: 80px;
+        flex-direction: column;
+        overflow: auto;
+
+        flex-wrap: wrap;
+
+        div {
+            // border: 1px solid black;
+            padding: 6px 15px 6px 6px;
+            width: 150px;
+            display: flex;
+            gap: 7px;
+            flex-direction: column;
+            text-align: right;
+
+            a {
+                font-size: 18px;
+            }
+        }
+    }
+}

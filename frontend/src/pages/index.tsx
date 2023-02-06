@@ -5,15 +5,15 @@ import { server } from '../config/config'
 import axios from "axios";
 import Pizzalist from '../components/pizza/Pizzalist';
 import Navbar from '../components/Navbar';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import Link from 'next/link';
 import Product from '../components/pizza/Product';
 import Unfocus from '../components/Unfocus';
 import deleteItemFunc from '../utils/deleteItem'
 import singleAddFunc from '../utils/singleAdd'
 
-export default function Home({ pizzas, cartData }) {
-  const [cart, setCart] = useState(cartData)
+export default function Home({ pizzas, setCart, cart }) {
+
   const [viewProduct, setViewProduct] = useState(false)
   const [itemToView, setItemToView] = useState({})
 
@@ -57,11 +57,8 @@ export default function Home({ pizzas, cartData }) {
   )
 }
 
-import * as cookie from 'cookie'
-
 export const getServerSideProps = async (context) => {
   // console.log('GSSD... ', context.req.headers.cookie)ˇ
-  let cartData
   let pizzas
   let error
   await axios({
@@ -75,25 +72,6 @@ export const getServerSideProps = async (context) => {
     .then(res => pizzas = res.data)
     .catch(e => '')
 
-  await axios({
-    method: 'get',
-    url: `${server}/cart/getCart`,
-    withCredentials: true,
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-      'Access-Control-Allow-Origin': `${server}`,
-      Cookie: context.req.headers.cookie
-    }
-  })
-    .then(res => cartData = res.data)
-    .catch(e => {
-      const res = e.response.data
-      context.res.setHeader('Set-Cookie', cookie.serialize('cart', res.cart, {
-        httpOnly: true
-      }));
-      error = true
-    })
-
   if (error) {
     return {
       redirect: {
@@ -104,8 +82,7 @@ export const getServerSideProps = async (context) => {
   } else {
     return {
       props: {
-        pizzas,
-        cartData
+        pizzas
       }
     }
   }

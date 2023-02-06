@@ -69,4 +69,12 @@ const signup = () => {
     )
 }
 
+export const getServerSideProps = async (context) => {
+    return {
+        props: {
+            
+        }
+    }
+}
+
 export default signup

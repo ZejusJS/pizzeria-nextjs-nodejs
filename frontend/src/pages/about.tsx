@@ -19,4 +19,12 @@ const About = () => {
   )
 }
 
+export const getServerSideProps = async (context) => {
+  return {
+    props: {
+
+    }
+  }
+}
+
 export default About

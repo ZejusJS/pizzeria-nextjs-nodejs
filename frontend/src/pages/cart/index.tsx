@@ -10,8 +10,7 @@ import changeQntFunc from '../../utils/changeQnt';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 
-const cart = ({ cartData }) => {
-  const [cart, setCart] = useState(cartData)
+const cart = ({ cart, setCart }) => {
   const [viewProduct, setViewProduct] = useState(false)
   const [itemToView, setItemToView] = useState({})
 
@@ -65,7 +64,7 @@ const cart = ({ cartData }) => {
         </section>
         <Link href={{
           pathname: '/cart/checkout',
-          query: { cart: cartData._id },
+          query: { cart: cart._id },
         }}>
           Check out
         </Link>

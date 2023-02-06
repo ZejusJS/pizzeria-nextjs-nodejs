@@ -60,4 +60,12 @@ const login = () => {
   )
 }
 
+export const getServerSideProps = async (context) => {
+  return {
+    props: {
+
+    }
+  }
+}
+
 export default login
