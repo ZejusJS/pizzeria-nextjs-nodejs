@@ -22,7 +22,7 @@ router.post('/singleAdd', catchAsync(async function (req, res, next) {
         if (cart.user && !req.user.interaction.cart.equals(cart._id)) {
             return res.status(400).json({ msg: `You don't have permisson to edit this cart.` })
         }
-        
+
         if (prevProduct) {
             prevProduct.quantity += 1
             if (prevProduct.quantity > 15 || prevProduct.quantity < 1) {
@@ -52,12 +52,12 @@ router.delete('/deleteItem', catchAsync(async function (req, res, next) {
         if (req.user && req.user.interaction && req.user.interaction.cart) return req.user.interaction.cart
         return req.cookies.cart
     }
-    const cart = await Cart.findById(cartId()).populate('items.item') 
+    const cart = await Cart.findById(cartId()).populate('items.item')
     if (cart.user && user.interaction && user.interaction.cart && !user.interaction.cart.equals(cart._id)) {
         return res.status(400).json({ msg: `You don't have permission to edit this cart` })
     }
     cart.items = cart.items.filter(item => {
-        if (!item.item.equals(productId)) return item 
+        if (!item.item.equals(productId)) return item
     })
     await cart.save()
     console.log(cart)
@@ -92,7 +92,6 @@ router.post('/changeQuantity', catchAsync(async function (req, res, next) {
 }))
 
 router.get('/getCart', catchAsync(async function (req, res, next) {
-    console.log('USER... ', req.user)
     let cart = {}
     if (req.user && req.user.interaction && req.user.interaction.cart) {
         const findCart = await Cart.findById(req.user.interaction.cart).populate('items.item')
@@ -115,6 +114,12 @@ router.get('/getCart', catchAsync(async function (req, res, next) {
         }
     }
     res.status(200).json(cart)
+}))
+
+router.get('/getCartCheckout', catchAsync(async function (req, res, next) {
+    const cartId = req.query.cart
+    const findCart = await Cart.findById(cartId).populate('items.item')
+    res.status(200).json(findCart)
 }))
 
 router.get('/getIdCart', catchAsync(async function (req, res, next) {

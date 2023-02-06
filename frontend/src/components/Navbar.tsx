@@ -28,7 +28,7 @@ const Navbar = ({ cart, setExpanded, expanded }) => {
       <div className={`nav-container ${expanded ? 'expanded' : ''}`}>
         <div>
           <div className='logo-name'>
-            <Link href='/'>
+            <Link href='/' className='logo-link'>
               <img className='logo' src="/favicon.svg" alt="" />
               <h1>Mamma Mia</h1>
             </Link>

@@ -43,7 +43,7 @@ nav {
         justify-content: space-between;
         align-items: center;
 
-        a {
+        .logo-link {
             display: flex;
             align-items: center;
             height: 100%;
@@ -106,6 +106,16 @@ nav {
                     width: 100%;
                     height: auto;
                 }
+            }
+        }
+
+
+        @media (max-width: 200px) {
+            .logo-link {
+                display: none;
+            }
+            .options-container {
+                margin: 5px auto;
             }
         }
     }

@@ -3,7 +3,7 @@ first project with nextjs + nodejs
 
 ### To-do list:
 - [ ] Completly rebuild auth with JWT for easier accessing basic info of user
-- [ ] Repair checkout page, so it will fetch cart from query
+- [x] Repair checkout page, so it will fetch cart from query
 - [ ] Build links in nav and style it
 - [ ] Do middlewares in backend for checking cart's user
 - [ ] Calculate total price in CZK (maybe from someone's api)

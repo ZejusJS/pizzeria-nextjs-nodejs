@@ -22,25 +22,43 @@ const checkout = ({ cartData }) => {
 }
 
 export const getServerSideProps = async (context) => {
+    let error = false
+
+    let cartData = {}
+
     const data = await axios({
         method: 'get',
-        url: `${server}/cart/getCart`,
+        url: `${server}/cart/getCartCheckout`,
         withCredentials: true,
+        params: {
+            cart: context.query.cart
+        },
         headers: {
             "Content-Type": "application/x-www-form-urlencoded",
             'Access-Control-Allow-Origin': `${server}`,
             Cookie: context.req.headers.cookie
         }
     })
+        .then(res =>  cartData = res.data)
+        .catch(e => {
+            error = true
+        })
 
-    const cartData = data.data
-    console.log(cartData)
+    if (error) {
+        return {
+            redirect: {
+                permanent: false,
+                destination: "/cart",
+            },
+        }
+    }
 
     return {
         props: {
             cartData
         }
     }
+
 }
 
 export default checkout
