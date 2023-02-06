@@ -25,13 +25,15 @@ const cors = require('cors')
 const { cloudinary } = require('./cloudinary/index')
 const { storageCampImg } = require('./cloudinary/index')
 const cookieParser = require('cookie-parser')
+const jwt = require('jsonwebtoken')
 
 const ExpressError = require('./utils/ExpressError');
 const catchAsync = require('./utils/catchAsync');
 const { mwIsAdmin, mwIsAdminGet } = require('./utils/mw-isAdmin')
+const mwFindUser = require('./utils/mw-findUser')
 
 const dbUrl = process.env.DB_URL
-mongoose.connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true, useUnifiedTopology: true });
+mongoose.connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true });
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error'));
 db.once('open', () => {
@@ -55,37 +57,48 @@ app.use(flash());
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('method-override'));
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(session({
-    store: sessionStore,
-    name: "mamma-mia",
-    secret: process.env.SECRET, // 'secretword'
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-        httpOnly: true,
-        // secure: true,
-        maxAge: 1000 * 60 * 60 * 24 * 30
-    }
-}));
+// app.use(session({
+//     store: sessionStore,
+//     name: "mamma-mia",
+//     secret: process.env.SECRET, // 'secretword'
+//     resave: false,
+//     saveUninitialized: false,
+//     cookie: {
+//         httpOnly: true,
+//         // secure: true,
+//         maxAge: 1000 * 60 * 60 * 24 * 30
+//     }
+// }));
 
 const User = require('./models/user');
 
 app.use(cors({
     credentials: true,
-    origin: 'http://localhost:3000' // změnit v produkci
+    origin: process.env.FRONTEND
+}))
+app.use(cookieParser(process.env.SECRET))
+
+app.use(catchAsync(async function (req, res, next) {
+    const authHeader = req.headers['authorization']
+    const token = authHeader && authHeader.split(' ')[1]
+    if (token == null) req.user = undefined
+    else {
+        jwt.verify(token, process.env.SECRET_JWT_ACCESS, (err, user) => {
+            if (err) req.user = undefined
+            else req.user = user
+        })
+    }
+    next()
 }))
 
-app.use(cookieParser())
-
-app.use(passport.initialize());
-app.use(passport.session());
-passport.use(new LocalStrategy({ usernameField: 'email' }, User.authenticate()));
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
+// app.use(passport.initialize());
+// app.use(passport.session());
+// passport.use(new LocalStrategy({ usernameField: 'email' }, User.authenticate()));
+// passport.serializeUser(User.serializeUser());
+// passport.deserializeUser(User.deserializeUser());
 
 app.use(function (req, res, next) {
     // console.log(req.session)
-    res.locals.currentUser = req.user; // Každá ejs stránka má přístup k informaci o uživateli (použit např. v navbar)
     next();
 });
 
@@ -105,9 +118,9 @@ const adminRoute = require('./routes/admin')
 // })
 
 app.use('/pizza', pizzaRoute)
-app.use('/user', userRoute)
-app.use('/cart', cartRoute)
-app.use('/admin', mwIsAdmin, adminRoute)
+app.use('/user', mwFindUser, userRoute)
+app.use('/cart', mwFindUser, cartRoute)
+app.use('/admin', mwFindUser, mwIsAdmin, adminRoute)
 
 app.use(async (err, req, res, next) => {
     // console.log(err)

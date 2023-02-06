@@ -92,6 +92,7 @@ router.post('/changeQuantity', catchAsync(async function (req, res, next) {
 }))
 
 router.get('/getCart', catchAsync(async function (req, res, next) {
+    console.log(req.user)
     let cart = {}
     if (req.user && req.user.interaction && req.user.interaction.cart) {
         const findCart = await Cart.findById(req.user.interaction.cart).populate('items.item')

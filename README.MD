@@ -3,6 +3,7 @@ first project with nextjs + nodejs
 
 ### To-do list:
 - [ ] Completly rebuild auth with JWT for easier accessing basic info of user
+- [ ] Verify every request with Joi... check if user email is taken, req.body is full 
 - [x] Repair checkout page, so it will fetch cart from query
 - [ ] Build links in nav and style it
 - [ ] Do middlewares in backend for checking cart's user

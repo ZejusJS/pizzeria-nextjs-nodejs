@@ -30,9 +30,11 @@ import axios from 'axios'
 //   subsets: ['latin']
 // })
 
-export default function App({ Component, pageProps, cartData }) {
+export default function App({ Component, pageProps, cartData, userData }) {
   const [cart, setCart] = useState(cartData)
   const [expanded, setExpanded] = useState(false)
+
+  console.log(userData)
 
   Router.events.on("routeChangeStart", (url) => {
     NProgress.start()
@@ -54,10 +56,28 @@ export default function App({ Component, pageProps, cartData }) {
 }
 
 import * as cookie from 'cookie'
+import jwt from 'jsonwebtoken'
 
 App.getInitialProps = async ({ Component, ctx }) => {
   let cartData
   let error
+  let userData = false
+
+  function cookiesParse() {
+    const getCookies = ctx.req.headers.cookie
+    let cookies = {}
+    let cookiesArray = getCookies.split('; ')
+    cookiesArray.map(cook => {
+      let cks = cook.split('=')
+      let name = cks[0]
+      let value = cks[1]
+      cookies = { ...cookies, [name]: value }
+    })
+    return cookies
+  }
+
+  const cookies:any = cookiesParse()
+  userData = cookies.mammamia ? jwt.decode(cookies.mammamia) : false
 
   await axios({
     method: 'get',
@@ -91,6 +111,6 @@ App.getInitialProps = async ({ Component, ctx }) => {
       }
     }
   } else {
-    return { pageProps, cartData }
+    return { pageProps, cartData, userData }
   }
 }

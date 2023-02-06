@@ -4,7 +4,7 @@ import { server } from '../config/config'
 
 const signup = () => {
     const [signData, setSignData] = useState({
-        username: '',
+        name: '',
         email: '',
         password: ''
     })
@@ -45,8 +45,8 @@ const signup = () => {
                         type="text"
                         placeholder='username'
                         onChange={handleChange}
-                        name="username"
-                        value={signData.username}
+                        name="name"
+                        value={signData.name}
                     />
                     <input
                         type="email"
