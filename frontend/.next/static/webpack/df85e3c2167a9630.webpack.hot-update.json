@@ -1,1 +1,0 @@
-{"c":["webpack"],"r":["pages/cart"],"m":["./node_modules/next/dist/build/webpack/loaders/next-client-pages-loader.js?absolutePagePath=C%3A%5C_Developing%5Creact%2Bnextjs%5Cpizzeria%5Cfrontend%5Csrc%5Cpages%5Ccart%5Cindex.tsx&page=%2Fcart!","./src/components/cart/CartPizza.tsx","./src/images/Triangle.js","./src/pages/cart/index.tsx","./src/utils/changeQnt.tsx"]}
