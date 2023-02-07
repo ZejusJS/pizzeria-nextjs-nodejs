@@ -77,11 +77,12 @@ import * as cookie from 'cookie'
 
 export const getServerSideProps = async (context) => {
   return {
-    props: {
-
-    }
+      props: {
+          '1': 1
+      }
   }
 }
+
 
 
 export default cart

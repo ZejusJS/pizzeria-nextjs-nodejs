@@ -76,9 +76,10 @@ const signup = ({ setUser, user, setCart }) => {
 export const getServerSideProps = async (context) => {
     return {
         props: {
-
+            '1': 1
         }
     }
 }
+
 
 export default signup

@@ -271,7 +271,7 @@ const NewPizza = () => {
 export const getServerSideProps = async (context) => {
     return {
         props: {
-
+            '1': 1
         }
     }
 }

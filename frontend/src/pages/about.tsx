@@ -22,9 +22,10 @@ const About = () => {
 export const getServerSideProps = async (context) => {
   return {
     props: {
-
+      '1': 1
     }
   }
 }
+
 
 export default About

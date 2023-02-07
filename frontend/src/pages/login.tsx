@@ -67,9 +67,10 @@ const login = ({ user, setUser, setCart }) => {
 export const getServerSideProps = async (context) => {
   return {
     props: {
-
+      '1': 1
     }
   }
 }
+
 
 export default login
