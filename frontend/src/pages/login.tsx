@@ -3,7 +3,7 @@ import axios from 'axios'
 import { server } from '../config/config'
 import { useState } from 'react'
 
-const login = () => {
+const login = ({ user, setUser, setCart }) => {
   const [loginData, setLoginData] = useState({
     email: '',
     password: ''
@@ -33,7 +33,11 @@ const login = () => {
       },
       data: loginData
     })
-      .then(res => console.log(res))
+      .then(res => {
+        setUser(prevUser => res.data.user)
+        setCart(prevCart => res.data.cart)
+        console.log(res)
+      })
       .catch(e => console.log(e))
   }
 

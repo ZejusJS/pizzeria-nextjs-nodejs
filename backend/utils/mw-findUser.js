@@ -6,8 +6,8 @@ const ExpressError = require('./ExpressError');
 
 module.exports = catchAsync(async function (req, res, next) {
     const jwtToken = req.cookies.mammamia
-    console.log(jwtToken)
-    console.log(req.signedCookies)
+    // console.log(jwtToken)
+    // console.log(req.signedCookies)
 
     let token
 
@@ -16,9 +16,12 @@ module.exports = catchAsync(async function (req, res, next) {
             token = jwtToken
 
             const decoded = jwt.verify(token, process.env.SECRET_JWT_ACCESS)
-
+            console.log(decoded)
+            
             req.user = await User.findById(decoded.id).select('-password')
-            console.log(req.user)
+            console.log('.......')
+            console.log('req.user.......', req.user)
+            console.log('.......')
 
             return next()
         } catch (err) {

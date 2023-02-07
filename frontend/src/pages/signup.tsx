@@ -2,7 +2,7 @@ import { useState } from 'react'
 import axios from 'axios'
 import { server } from '../config/config'
 
-const signup = () => {
+const signup = ({ setUser, user, setCart }) => {
     const [signData, setSignData] = useState({
         name: '',
         email: '',
@@ -33,7 +33,11 @@ const signup = () => {
             },
             data: signData
         })
-            .then(res => console.log(res))
+            .then(res => {
+                setUser(prevUser => res.data.user)
+                setCart(prevCart => res.data.cart)
+                console.log(res)
+            })
             .catch(e => console.log(e))
     }
 
@@ -72,7 +76,7 @@ const signup = () => {
 export const getServerSideProps = async (context) => {
     return {
         props: {
-            
+
         }
     }
 }

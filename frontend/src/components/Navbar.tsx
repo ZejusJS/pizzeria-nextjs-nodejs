@@ -5,7 +5,7 @@ import NavSvg from '../images/Nav'
 import CartSvg from '../images/Cart'
 import { useRouter } from 'next/router'
 
-const Navbar = ({ cart, setExpanded, expanded }) => {
+const Navbar = ({ cart, setExpanded, expanded, user }) => {
   let itemsCount = 0
   cart.items.map(item => {
     itemsCount += item.quantity
@@ -62,19 +62,32 @@ const Navbar = ({ cart, setExpanded, expanded }) => {
             </Link>
           </div>
           <div>
-            <Link href='/signup'>
-              Sign Up
-            </Link>
-            <Link href='/login'>
-              Log in
-            </Link>
-            <a href={`${server}/user/logout`}>Logout</a>
+            {!user.email ?
+              <>
+                <Link href='/signup'>
+                  Sign Up
+                </Link>
+                <Link href='/login'>
+                  Log in
+                </Link>
+              </>
+              : ''
+            }
+            {/* <a href={`${server}/user/logout`}>Logout</a> */}
+            {user.email ?
+              <form className='log-out' action={`${server}/user/logout`} method='post'>
+                <button type='submit'>Log Out</button>
+              </form>
+              : ''
+            }
           </div>
+          {user.roles?.admin ?
           <div>
             <Link href='/admin/new-pizza'>
               Create a new pizza
             </Link>
-          </div>
+          </div> 
+          : ''}
         </div>
       </div>
     </nav>

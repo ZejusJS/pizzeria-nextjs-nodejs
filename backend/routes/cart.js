@@ -91,12 +91,11 @@ router.post('/changeQuantity', catchAsync(async function (req, res, next) {
     }
 }))
 
-router.get('/getCart', catchAsync(async function (req, res, next) {
-    console.log(req.user)
+router.get('/getCartAndUser', catchAsync(async function (req, res, next) {
     let cart = {}
     if (req.user && req.user.interaction && req.user.interaction.cart) {
         const findCart = await Cart.findById(req.user.interaction.cart).populate('items.item')
-        console.log(findCart)
+        // console.log(findCart)
         cart = findCart
     } else {
         try {
@@ -114,7 +113,14 @@ router.get('/getCart', catchAsync(async function (req, res, next) {
             return res.status(400).json({ cart: cart._id, msg: `Bad cart id` })
         }
     }
-    res.status(200).json(cart)
+
+    const user = {
+        email: req.user?.email,
+        name: req.user?.name,
+        roles: req.user?.roles
+    }
+    console.log(user)
+    res.status(200).json({ cart: cart, user })
 }))
 
 router.get('/getCartCheckout', catchAsync(async function (req, res, next) {

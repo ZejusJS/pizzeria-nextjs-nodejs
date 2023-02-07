@@ -57,18 +57,19 @@ app.use(flash());
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('method-override'));
 app.use(express.static(path.join(__dirname, 'public')));
-// app.use(session({
-//     store: sessionStore,
-//     name: "mamma-mia",
-//     secret: process.env.SECRET, // 'secretword'
-//     resave: false,
-//     saveUninitialized: false,
-//     cookie: {
-//         httpOnly: true,
-//         // secure: true,
-//         maxAge: 1000 * 60 * 60 * 24 * 30
-//     }
-// }));
+app.use(session({
+    store: sessionStore,
+    name: "mammamia",
+    secret: process.env.SECRET, // 'secretword'
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        httpOnly: true,
+        // secure: true,
+        maxAge: 1000 * 60 * 60 * 24 * 20,
+        sameSite: 'strict'
+    }
+}));
 
 const User = require('./models/user');
 
@@ -91,36 +92,32 @@ app.use(catchAsync(async function (req, res, next) {
     next()
 }))
 
-// app.use(passport.initialize());
-// app.use(passport.session());
-// passport.use(new LocalStrategy({ usernameField: 'email' }, User.authenticate()));
-// passport.serializeUser(User.serializeUser());
-// passport.deserializeUser(User.deserializeUser());
-
-app.use(function (req, res, next) {
-    // console.log(req.session)
-    next();
-});
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy({ usernameField: 'email' }, User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 const pizzaRoute = require('./routes/pizza')
 const userRoute = require('./routes/user')
 const cartRoute = require('./routes/cart')
 const adminRoute = require('./routes/admin')
 
-// app.use(function (req, res, next) {
-//     console.log('------------------------')
-//     console.log('isAuthenticated... ', req.isAuthenticated())
-//     console.log('cookies... ', req.cookies)
-//     console.log('passport... ', req.passport)
-//     console.log('user... ', req.user)
-//     console.log('------------------------')
-//     next()
-// })
+app.use(function (req, res, next) {
+    console.log('------------------------')
+    // console.log('isAuthenticated... ', req.isAuthenticated())
+    // console.log('cookies... ', req.cookies)
+    // console.log('passport... ', req.passport)
+    // console.log('user... ', req.user)
+    // console.log(req.signedCookies)
+    console.log('------------------------')
+    next()
+})
 
 app.use('/pizza', pizzaRoute)
-app.use('/user', mwFindUser, userRoute)
-app.use('/cart', mwFindUser, cartRoute)
-app.use('/admin', mwFindUser, mwIsAdmin, adminRoute)
+app.use('/user', userRoute)// mwFindUser
+app.use('/cart', cartRoute) // mwFindUser
+app.use('/admin', mwIsAdmin, adminRoute) // mwFindUser
 
 app.use(async (err, req, res, next) => {
     // console.log(err)

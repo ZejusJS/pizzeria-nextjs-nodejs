@@ -32,9 +32,10 @@ import axios from 'axios'
 
 export default function App({ Component, pageProps, cartData, userData }) {
   const [cart, setCart] = useState(cartData)
+  const [user, setUser] = useState(userData)
   const [expanded, setExpanded] = useState(false)
-
-  console.log(userData)
+  // console.log(user)
+  // console.log(cart)
 
   Router.events.on("routeChangeStart", (url) => {
     NProgress.start()
@@ -47,41 +48,35 @@ export default function App({ Component, pageProps, cartData, userData }) {
   return (
     <>
       <Meta />
-      <Navbar cart={cart} expanded={expanded} setExpanded={setExpanded} />
+      <Navbar
+        cart={cart}
+        expanded={expanded}
+        setExpanded={setExpanded}
+        user={user}
+      />
       <div onClick={expanded ? () => setExpanded(!expanded) : (a) => (a)}>
-        <Component {...pageProps} setCart={setCart} cart={cart} />
+        <Component
+          {...pageProps}
+          setCart={setCart}
+          cart={cart}
+          user={user}
+          setUser={setUser}
+        />
       </div>
     </>
   )
 }
 
 import * as cookie from 'cookie'
-import jwt from 'jsonwebtoken'
 
 App.getInitialProps = async ({ Component, ctx }) => {
   let cartData
   let error
   let userData = false
 
-  function cookiesParse() {
-    const getCookies = ctx.req.headers.cookie
-    let cookies = {}
-    let cookiesArray = getCookies.split('; ')
-    cookiesArray.map(cook => {
-      let cks = cook.split('=')
-      let name = cks[0]
-      let value = cks[1]
-      cookies = { ...cookies, [name]: value }
-    })
-    return cookies
-  }
-
-  const cookies:any = cookiesParse()
-  userData = cookies.mammamia ? jwt.decode(cookies.mammamia) : false
-
   await axios({
     method: 'get',
-    url: `${server}/cart/getCart`,
+    url: `${server}/cart/getCartAndUser`,
     withCredentials: true,
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
@@ -89,7 +84,10 @@ App.getInitialProps = async ({ Component, ctx }) => {
       Cookie: ctx.req.headers.cookie
     }
   })
-    .then(res => cartData = res.data)
+    .then(res => {
+      cartData = res.data.cart
+      userData = res.data.user
+    })
     .catch(e => {
       const res = e.response.data
       ctx.res.setHeader('Set-Cookie', cookie.serialize('cart', res.cart, {

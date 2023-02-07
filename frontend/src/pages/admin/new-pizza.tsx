@@ -268,4 +268,12 @@ const NewPizza = () => {
     )
 }
 
+export const getServerSideProps = async (context) => {
+    return {
+        props: {
+
+        }
+    }
+}
+
 export default NewPizza

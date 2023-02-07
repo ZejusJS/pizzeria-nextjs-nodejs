@@ -76,40 +76,9 @@ const cart = ({ cart, setCart }) => {
 import * as cookie from 'cookie'
 
 export const getServerSideProps = async (context) => {
-  let cartData: object
-  let error
-  await axios({
-    method: 'get',
-    url: `${server}/cart/getCart`,
-    withCredentials: true,
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-      'Access-Control-Allow-Origin': `${server}`,
-      Cookie: context.req.headers.cookie
-    }
-  })
-    .then(res => cartData = res.data)
-    .catch(e => {
-      const res = e.response.data
-      context.res.setHeader('Set-Cookie', cookie.serialize('cart', res.cart, {
-        httpOnly: true
-      }));
-      error = true
-    })
+  return {
+    props: {
 
-  // console.log(cartData)
-  if (error) {
-    return {
-      redirect: {
-        permanent: false,
-        destination: '/cart'
-      }
-    }
-  } else {
-    return {
-      props: {
-        cartData
-      }
     }
   }
 }

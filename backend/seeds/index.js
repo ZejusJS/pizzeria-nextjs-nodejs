@@ -1,11 +1,10 @@
-if (process.env.NODE_ENV !== 'production') {
-    require('dotenv').config();
-}
+
+require('dotenv').config();
 
 const mongoose = require('mongoose');
 const LoremIpsum = require("lorem-ipsum").LoremIpsum;
 
-const dbUrl = process.env.DB_URL 
+const dbUrl = process.env.DB_URL
 mongoose.connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true, useUnifiedTopology: true });
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error'));
@@ -32,7 +31,7 @@ async function addPizzas(num) {
     await Pizza.deleteMany()
     for (let i = 0; i < num; i++) {
         let ingrs = []
-        for (let j = 0; j < Math.floor(Math.random() * 13) + 5; j++){
+        for (let j = 0; j < Math.floor(Math.random() * 13) + 5; j++) {
             ingrs.push(lorem.generateWords(1))
         }
 
@@ -58,5 +57,5 @@ async function deleteAllUsers() {
     await User.deleteMany()
 }
 
-addPizzas(10)
+// addPizzas(10)
 deleteAllUsers()
