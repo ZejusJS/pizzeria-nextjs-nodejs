@@ -13,10 +13,7 @@ const NewPizza = () => {
         ingredients: [],
         image: ''
     }
-    const initialStateImage = { url: '', name: '' }
-    const [newPizza, setNewPizza] = useState(initialStatePizza)
-    const [image, setImage] = useState(initialStateImage)
-    const [errors, setErrors] = useState({
+    const initialStateErrors = {
         img: false,
         currency: false,
         invalid: false,
@@ -24,7 +21,11 @@ const NewPizza = () => {
         description: true,
         ingredients: true,
         price: false
-    })
+    }
+    const initialStateImage = { url: '', name: '' }
+    const [newPizza, setNewPizza] = useState(initialStatePizza)
+    const [image, setImage] = useState(initialStateImage)
+    const [errors, setErrors] = useState(initialStateErrors)
     const title = useRef(null)
     const description = useRef(null)
     const ingredients = useRef(null)
@@ -67,35 +68,20 @@ const NewPizza = () => {
             }
         } else {
             setErrors(prevErr => { return { ...prevErr, invalid: false } })
-            if (value.length < 1 && name === 'price') {
-                price.current.classList.add('invalid')
-                setErrors(prevErr => { return { ...prevErr, price: true } })
-            }
-            else if (value.length >= 1 && name === 'price') {
-                price.current.classList.remove('invalid')
-                setErrors(prevErr => { return { ...prevErr, price: false } })
-            }
-            else if (value.length < 1 && name === 'title') {
-                title.current.classList.add('invalid')
-                setErrors(prevErr => { return { ...prevErr, title: true } })
-            }
-            else if (value.length >= 1 && name === 'title') {
-                title.current.classList.remove('invalid')
-                setErrors(prevErr => { return { ...prevErr, title: false } })
-            }
-            else if (value.length < 1 && name === 'description') {
-                description.current.classList.add('invalid')
-                setErrors(prevErr => { return { ...prevErr, description: true } })
-            }
-            else if (value.length >= 1 && name === 'description') {
-                description.current.classList.remove('invalid')
-                setErrors(prevErr => { return { ...prevErr, description: false } })
+            if (e.target.value < 1) {
+                e.target.classList.add('invalid')
+                setErrors(prevErr => { return { ...prevErr, [e.target.name]: true } })
+            } else {
+                e.target.classList.remove('invalid')
+                setErrors(prevErr => { return { ...prevErr, [e.target.name]: false } })
             }
             setNewPizza(prevPizza => {
                 return { ...prevPizza, [name]: value }
             })
         }
     }
+
+    console.log(errors)
 
     async function sendForm(e) {
         submitBtn.current.disabled = true
@@ -132,7 +118,9 @@ const NewPizza = () => {
                 console.log(res)
                 setNewPizza(initialStatePizza)
                 setImage(initialStateImage)
-                e.target.reset();
+                setErrors(initialStateErrors)
+                e.target.reset()
+                submitBtn.current.disabled = false
             })
             .catch(e => {
                 console.log(e)

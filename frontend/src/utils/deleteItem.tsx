@@ -22,7 +22,9 @@ export default async function deleteItem(e, item) {
             NProgress.start()
         },
         onDownloadProgress: function (progressEvent) {
-            e.target.classList.remove('btn-cart-loading')
+            setTimeout(() => {
+                e.target.classList.remove('btn-cart-loading')
+            }, 150);
             NProgress.done(false)
         },
         data: {

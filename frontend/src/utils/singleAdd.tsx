@@ -8,7 +8,6 @@ export default async function singleAdd(e, piz) {
     const productId = piz._id
     let cartData
 
-    console.log(server)
     await axios({
         method: 'post',
         // url: `${server}/cart/singleAdd`,
@@ -23,7 +22,9 @@ export default async function singleAdd(e, piz) {
             NProgress.start()
         },
         onDownloadProgress: function (progressEvent) {
-            e.target.classList.remove('btn-cart-loading')
+            setTimeout(() => {
+                e.target.classList.remove('btn-cart-loading')
+            }, 150);
             NProgress.done(false)
         },
         data: {
@@ -32,21 +33,6 @@ export default async function singleAdd(e, piz) {
     })
         .then(res => cartData = res.data)
         .catch(e => console.log(e))
-
-    // await fetch(`${server}/cart/singleAdd`, {
-    //     method: 'post',
-    //     credentials: 'include',
-    //     mode: 'cors',
-    //     headers: {
-    //         "Content-Type": "application/json",
-    //         'Access-Control-Allow-Origin': `${server}`
-    //     },
-    //     body: JSON.stringify({
-    //         productId
-    //     })
-    // })
-    //     .then(res => res.json()).then(res => cartData = res)
-    //     .catch(e => console.error(e))
 
     if (cartData) {
         return cartData
