@@ -68,7 +68,7 @@ app.use(session({
         httpOnly: true,
         // secure: true,
         maxAge: 1000 * 60 * 60 * 24 * 20,
-        // sameSite: 'strict'
+        sameSite: 'strict'
     }
 }));
 

@@ -75,7 +75,7 @@ const Navbar = ({ cart, setExpanded, expanded, user }) => {
             }
             {/* <a href={`${server}/user/logout`}>Logout</a> */}
             {user.email ?
-              <form className='log-out' action={`api/user/logout`} method='post'>
+              <form className='log-out' action={`${server}/user/logout`} method='post'>
                 <button type='submit'>Log Out</button>
               </form>
               : ''

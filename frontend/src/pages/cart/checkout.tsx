@@ -29,7 +29,7 @@ export const getServerSideProps = async (context) => {
     const data = await axios({
         method: 'get',
         // url: `${server}/cart/getCartCheckout`,
-        url: `api/cart/getCartCheckout`,
+        url: `/api/cart/getCartCheckout`,
         withCredentials: true,
         params: {
             cart: context.query.cart
@@ -37,7 +37,7 @@ export const getServerSideProps = async (context) => {
         headers: {
             "Content-Type": "application/x-www-form-urlencoded",
             'Access-Control-Allow-Origin': `${server}`,
-            Cookie: context.req.headers.cookie
+            // Cookie: context.req.headers.cookie
         }
     })
         .then(res =>  cartData = res.data)

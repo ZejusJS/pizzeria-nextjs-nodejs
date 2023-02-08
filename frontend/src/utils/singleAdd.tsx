@@ -12,7 +12,7 @@ export default async function singleAdd(e, piz) {
     await axios({
         method: 'post',
         // url: `${server}/cart/singleAdd`,
-        url: `api/cart/singleAdd`,
+        url: `/api/cart/singleAdd`,
         headers: {
             "Content-Type": "application/json",
             'Access-Control-Allow-Origin': `${server}`

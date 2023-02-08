@@ -10,7 +10,7 @@ export default async function deleteItem(e, item) {
     await axios({
         method: 'delete',
         // url: `${server}/cart/deleteItem`,
-        url: `api/cart/deleteItem`,
+        url: `/api/cart/deleteItem`,
         headers: {
             "Content-Type": "application/json",
             'Access-Control-Allow-Origin': `${server}`
