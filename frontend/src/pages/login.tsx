@@ -3,6 +3,7 @@ import axios from 'axios'
 import { server } from '../config/config'
 import { useState } from 'react'
 import NProgress from 'nprogress'
+import router from 'next/router'
 
 const login = ({ user, setUser, setCart }) => {
   const [loginData, setLoginData] = useState({
@@ -45,6 +46,7 @@ const login = ({ user, setUser, setCart }) => {
         setUser(prevUser => res.data.user)
         setCart(prevCart => res.data.cart)
         console.log(res)
+        router.push('/')
       })
       .catch(e => console.log(e))
   }

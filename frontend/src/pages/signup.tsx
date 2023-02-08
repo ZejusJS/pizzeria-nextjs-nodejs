@@ -2,6 +2,7 @@ import { useState } from 'react'
 import axios from 'axios'
 import { server } from '../config/config'
 import NProgress from 'nprogress'
+import { useRouter } from 'next/router'
 
 const signup = ({ setUser, user, setCart }) => {
     const [signData, setSignData] = useState({
@@ -9,6 +10,8 @@ const signup = ({ setUser, user, setCart }) => {
         email: '',
         password: ''
     })
+
+    let router = useRouter()
 
     function handleChange(e) {
         const { name, value } = e.target
@@ -45,6 +48,7 @@ const signup = ({ setUser, user, setCart }) => {
                 setUser(prevUser => res.data.user)
                 setCart(prevCart => res.data.cart)
                 console.log(res)
+                router.push('/')
             })
             .catch(e => console.log(e))
     }
