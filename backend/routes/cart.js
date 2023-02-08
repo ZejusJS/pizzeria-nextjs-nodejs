@@ -51,6 +51,7 @@ router.post('/singleAdd', catchAsync(async function (req, res, next) {
 router.delete('/deleteItem', catchAsync(async function (req, res, next) {
     const productId = req.body.productId
     console.log('productId...... ', productId)
+    console.log('req.body...... ', req.body)
     const cartId = function () {
         if (req.user && req.user.interaction && req.user.interaction.cart) return req.user.interaction.cart
         return req.cookies.cart
