@@ -92,7 +92,7 @@ const Navbar = ({ cart, setExpanded, expanded, user }) => {
                   Sign Up
                 </Link>
                 <Link href='/login'>
-                  Log in
+                  Log In
                 </Link>
               </>
               : ''

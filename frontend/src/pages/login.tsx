@@ -51,22 +51,30 @@ const login = ({ user, setUser, setCart }) => {
 
   return (
     <main>
-      <form noValidate onSubmit={handleSubmit}>
-        <input
-          type="email"
-          placeholder='email'
-          onChange={handleChange}
-          name="email"
-          value={loginData.email}
-        />
-        <input
-          type="password"
-          placeholder='password'
-          onChange={handleChange}
-          name="password"
-          value={loginData.password}
-        />
-        <button type='submit'>Log In</button>
+      <form noValidate className='auth-form' onSubmit={handleSubmit}>
+        <div className='input-container'>
+          <label htmlFor="email">Email:</label>
+          <input
+            id='email'
+            type="email"
+            placeholder='E-mail'
+            onChange={handleChange}
+            name="email"
+            value={loginData.email}
+          />
+        </div>
+        <div className='input-container'>
+          <label htmlFor="password">Password:</label>
+          <input
+            id='password'
+            type="password"
+            placeholder='Password'
+            onChange={handleChange}
+            name="password"
+            value={loginData.password}
+          />
+        </div>
+        <button className='submit-btn' type='submit'>Log In</button>
       </form>
     </main>
   )

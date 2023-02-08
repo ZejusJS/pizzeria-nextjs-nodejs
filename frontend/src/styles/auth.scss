@@ -1,0 +1,36 @@
+.auth-form {
+    padding: 2px;
+    max-width: 450px;
+    display: flex;
+    flex-direction: column;
+    margin: 40px auto;
+    gap: 15px;
+    font-size: 18px;
+
+    input {
+        font-size: 18px;
+        padding: 4px;
+    }
+
+    .submit-btn {
+        width: 200px;
+        padding: 7px 5px;
+        margin: 0 auto;
+        border: 0;
+        background-color: rgb(15, 172, 15);
+        color: rgb(255, 255, 255);
+        border-radius: 8px;
+        font-weight: 500;
+        font-size: 18px;
+
+        &:hover {
+            cursor: pointer;
+            background-color: rgb(13, 150, 13);
+        }
+
+        &:active {
+            outline: 2px solid rgba(99, 99, 99, 0.459);
+            outline-offset: 1px;
+        }
+    }
+}

@@ -52,29 +52,41 @@ const signup = ({ setUser, user, setCart }) => {
     return (
         <main>
             <div>
-                <form noValidate onSubmit={handleSubmit}>
-                    <input
-                        type="text"
-                        placeholder='username'
-                        onChange={handleChange}
-                        name="name"
-                        value={signData.name}
-                    />
-                    <input
-                        type="email"
-                        placeholder='email'
-                        onChange={handleChange}
-                        name="email"
-                        value={signData.email}
-                    />
-                    <input
-                        type="password"
-                        placeholder='password'
-                        onChange={handleChange}
-                        name="password"
-                        value={signData.password}
-                    />
-                    <button type='submit'>Sign Up</button>
+                <form noValidate className='auth-form' onSubmit={handleSubmit}>
+                    <div className='input-container'>
+                        <label htmlFor="name">Username:</label>
+                        <input
+                            type="text"
+                            placeholder='Username'
+                            onChange={handleChange}
+                            name="name"
+                            id='name'
+                            value={signData.name}
+                        />
+                    </div>
+                    <div className='input-container'>
+                        <label htmlFor="email">Email:</label>
+                        <input
+                            type="email"
+                            placeholder='E-mail'
+                            onChange={handleChange}
+                            name="email"
+                            id='email'
+                            value={signData.email}
+                        />
+                    </div>
+                    <div className='input-container'>
+                        <label htmlFor="password">Password:</label>
+                        <input
+                            type="password"
+                            placeholder='Password'
+                            onChange={handleChange}
+                            name="password"
+                            id='password'
+                            value={signData.password}
+                        />
+                    </div>
+                    <button type='submit' className='submit-btn'>Sign Up</button>
                 </form>
             </div>
         </main>
