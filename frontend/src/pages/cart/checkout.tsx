@@ -28,8 +28,8 @@ export const getServerSideProps = async (context) => {
 
     const data = await axios({
         method: 'get',
-        // url: `${server}/cart/getCartCheckout`,
-        url: `/api/cart/getCartCheckout`,
+        url: `${server}/cart/getCartCheckout`,
+        // url: `/api/cart/getCartCheckout`,
         withCredentials: true,
         params: {
             cart: context.query.cart
