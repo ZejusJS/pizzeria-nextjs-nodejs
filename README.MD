@@ -14,3 +14,9 @@ first project with nextjs + nodejs
 - [x] Clear the ducking mess in the new-pizza's form validation code!!!!! 
 - [ ] Paginate pizzas
 - [x] Style login and signup pages
+
+
+### Links:
+(long waiting for fresh starts, free tiers, maybe frontend isn't in sync with backend - I didn't deploy server aswell)
+**Frontend**: https://effortless-cupcake-860fb7.netlify.app/
+**Backend**: https://pizzeria-backend-4vij.onrender.com/
