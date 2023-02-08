@@ -48,7 +48,7 @@ router.post('/singleAdd', catchAsync(async function (req, res, next) {
     }
 }))
 
-router.delete('/deleteItem', catchAsync(async function (req, res, next) {
+router.post('/deleteItem', catchAsync(async function (req, res, next) {
     const productId = req.body.productId
     console.log('productId...... ', productId)
     console.log('req.body...... ', req.body)
