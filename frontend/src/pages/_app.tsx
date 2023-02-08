@@ -77,6 +77,7 @@ App.getInitialProps = async ({ Component, ctx }) => {
   await axios({
     method: 'get',
     url: `${server}/cart/getCartAndUser`,
+    // url: `api/cart/getCartAndUser`,
     withCredentials: true,
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",

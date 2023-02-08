@@ -26,9 +26,10 @@ const login = ({ user, setUser, setCart }) => {
 
     await axios({
       method: 'post',
-      url: `${server}/user/login`,
+      // url: `${server}/user/login`,
+      url: `api/user/login`,
       headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
+        "Content-Type": "application/json",
         'Access-Control-Allow-Origin': `${server}`
       },
       data: loginData

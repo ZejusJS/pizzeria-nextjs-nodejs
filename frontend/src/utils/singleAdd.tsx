@@ -9,43 +9,44 @@ export default async function singleAdd(e, piz) {
     let cartData
 
     console.log(server)
-    // await axios({
-    //     method: 'post',
-    //     url: `${server}/cart/singleAdd`,
-    //     headers: {
-    //         "Content-Type": "application/x-www-form-urlencoded",
-    //         'Access-Control-Allow-Origin': `${server}`
-    //     },
-    //     withCredentials: true,
-    //     onUploadProgress: function (progressEvent) {
-    //         e.target.classList.add('btn-cart-loading')
-    //         NProgress.start()
-    //     },
-    //     onDownloadProgress: function (progressEvent) {
-    //         e.target.classList.remove('btn-cart-loading')
-    //         NProgress.done(false)
-    //     },
-    //     data: {
-    //         productId
-    //     },
-    // })
-    //     .then(res => cartData = res.data)
-    //     .catch(e => console.log(e))
-
-    await fetch(`${server}/cart/singleAdd`, {
+    await axios({
         method: 'post',
-        credentials: 'include',
-        mode: 'cors',
+        // url: `${server}/cart/singleAdd`,
+        url: `api/cart/singleAdd`,
         headers: {
             "Content-Type": "application/json",
             'Access-Control-Allow-Origin': `${server}`
         },
-        body: JSON.stringify({
+        withCredentials: true,
+        onUploadProgress: function (progressEvent) {
+            e.target.classList.add('btn-cart-loading')
+            NProgress.start()
+        },
+        onDownloadProgress: function (progressEvent) {
+            e.target.classList.remove('btn-cart-loading')
+            NProgress.done(false)
+        },
+        data: {
             productId
-        })
+        },
     })
-        .then(res => res.json()).then(res => cartData = res)
-        .catch(e => console.error(e))
+        .then(res => cartData = res.data)
+        .catch(e => console.log(e))
+
+    // await fetch(`${server}/cart/singleAdd`, {
+    //     method: 'post',
+    //     credentials: 'include',
+    //     mode: 'cors',
+    //     headers: {
+    //         "Content-Type": "application/json",
+    //         'Access-Control-Allow-Origin': `${server}`
+    //     },
+    //     body: JSON.stringify({
+    //         productId
+    //     })
+    // })
+    //     .then(res => res.json()).then(res => cartData = res)
+    //     .catch(e => console.error(e))
 
     if (cartData) {
         return cartData

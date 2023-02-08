@@ -20,9 +20,10 @@ export default async function (e, qnt, item, setCart) {
         let newQnt
         await axios({
             method: 'post',
-            url: `${server}/cart/changeQuantity`,
+            // url: `${server}/cart/changeQuantity`,
+            url: `api/cart/changeQuantity`,
             headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
+                "Content-Type": "application/json",
                 'Access-Control-Allow-Origin': `${server}`,
             },
             data: {

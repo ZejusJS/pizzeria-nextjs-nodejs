@@ -64,6 +64,7 @@ export const getServerSideProps = async (context) => {
   await axios({
     method: 'get',
     url: `${server}/pizza/all`,
+    // url: `api/pizza/all`,
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
       'Access-Control-Allow-Origin': `${server}`

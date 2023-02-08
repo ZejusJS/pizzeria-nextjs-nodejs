@@ -13,6 +13,14 @@ const nextConfig = {
   images: {
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+  },
+  async rewrites() {
+    return [
+      {
+        source: '/api/:path*',
+        destination: 'https://pizzeria-backend-4vij.onrender.com/:path*' // Proxy to Backend
+      }
+    ]
   }
 }
 

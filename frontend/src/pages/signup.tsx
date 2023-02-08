@@ -26,9 +26,10 @@ const signup = ({ setUser, user, setCart }) => {
 
         await axios({
             method: 'post',
-            url: `${server}/user/signup`,
+            // url: `${server}/user/signup`,
+            url: `api/user/signup`,
             headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
+                "Content-Type": "application/json",
                 'Access-Control-Allow-Origin': `${server}`
             },
             data: signData

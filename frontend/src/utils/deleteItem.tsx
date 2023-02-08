@@ -9,9 +9,10 @@ export default async function deleteItem(e, item) {
 
     await axios({
         method: 'delete',
-        url: `${server}/cart/deleteItem`,
+        // url: `${server}/cart/deleteItem`,
+        url: `api/cart/deleteItem`,
         headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
+            "Content-Type": "application/json",
             'Access-Control-Allow-Origin': `${server}`
         },
         withCredentials: true,
