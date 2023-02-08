@@ -17,6 +17,6 @@ first project with nextjs + nodejs
 
 
 ### Links:
-- (long waiting for fresh starts, free tiers, maybe frontend isn't in sync with backend - I didn't deploy server aswell)
+(long waiting for fresh starts, free tiers, maybe frontend isn't in sync with backend - I didn't deploy server aswell) <br>
 - **Frontend**: https://effortless-cupcake-860fb7.netlify.app/
 - **Backend**: https://pizzeria-backend-4vij.onrender.com/
