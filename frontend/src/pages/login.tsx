@@ -2,6 +2,7 @@ import React from 'react'
 import axios from 'axios'
 import { server } from '../config/config'
 import { useState } from 'react'
+import NProgress from 'nprogress'
 
 const login = ({ user, setUser, setCart }) => {
   const [loginData, setLoginData] = useState({
@@ -31,6 +32,12 @@ const login = ({ user, setUser, setCart }) => {
       headers: {
         "Content-Type": "application/json",
         'Access-Control-Allow-Origin': `${server}`
+      },
+      onUploadProgress: function (progressEvent) {
+        NProgress.start()
+      },
+      onDownloadProgress: function (progressEvent) {
+        NProgress.done(false)
       },
       data: loginData
     })

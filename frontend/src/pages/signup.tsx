@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import axios from 'axios'
 import { server } from '../config/config'
+import NProgress from 'nprogress'
 
 const signup = ({ setUser, user, setCart }) => {
     const [signData, setSignData] = useState({
@@ -31,6 +32,12 @@ const signup = ({ setUser, user, setCart }) => {
             headers: {
                 "Content-Type": "application/json",
                 'Access-Control-Allow-Origin': `${server}`
+            },
+            onUploadProgress: function (progressEvent) {
+                NProgress.start()
+            },
+            onDownloadProgress: function (progressEvent) {
+                NProgress.done(false)
             },
             data: signData
         })

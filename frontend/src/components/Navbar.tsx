@@ -37,11 +37,9 @@ const Navbar = ({ cart, setExpanded, expanded, user }) => {
       },
       withCredentials: true,
       onUploadProgress: function (progressEvent) {
-        e.target.classList.add('btn-cart-loading')
         NProgress.start()
       },
       onDownloadProgress: function (progressEvent) {
-        e.target.classList.remove('btn-cart-loading')
         NProgress.done(false)
       },
     })

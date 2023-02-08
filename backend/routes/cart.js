@@ -50,10 +50,12 @@ router.post('/singleAdd', catchAsync(async function (req, res, next) {
 
 router.delete('/deleteItem', catchAsync(async function (req, res, next) {
     const productId = req.body.productId
+    console.log('productId...... ', productId)
     const cartId = function () {
         if (req.user && req.user.interaction && req.user.interaction.cart) return req.user.interaction.cart
         return req.cookies.cart
     }
+    console.log('cartId...... ', cartId())
     const cart = await Cart.findById(cartId()).populate('items.item')
     if (cart.user && user.interaction && user.interaction.cart && !user.interaction.cart.equals(cart._id)) {
         return res.status(400).json({ msg: `You don't have permission to edit this cart` })
@@ -62,7 +64,6 @@ router.delete('/deleteItem', catchAsync(async function (req, res, next) {
         if (!item.item.equals(productId)) return item
     })
     await cart.save()
-    console.log(cart)
     // console.log(cart)
     // , { $pull: { items: { item: productId } } }, { new: true }
     res.json(cart)
