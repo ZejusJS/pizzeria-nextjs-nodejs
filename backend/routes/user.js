@@ -75,7 +75,7 @@ router.post('/logout', catchAsync(async function (req, res, next) {
         // });
         req.session.destroy(function (err) {
             res.clearCookie("mammamia");
-            res.redirect(process.env.FRONTEND); //Inside a callback… bulletproof!
+            res.sendStatus(200); 
         });
     } else {
         res.redirect(process.env.FRONTEND)

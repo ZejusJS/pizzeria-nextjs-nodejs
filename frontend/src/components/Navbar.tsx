@@ -4,6 +4,8 @@ import { server } from '../config/config'
 import NavSvg from '../images/Nav'
 import CartSvg from '../images/Cart'
 import { useRouter } from 'next/router'
+import NProgress from 'nprogress'
+import axios from 'axios'
 
 const Navbar = ({ cart, setExpanded, expanded, user }) => {
   let itemsCount = 0
@@ -22,6 +24,30 @@ const Navbar = ({ cart, setExpanded, expanded, user }) => {
       setExpanded(!expanded);
     }
   }, [router.asPath]);
+
+  async function logout(e) {
+    e.preventDefault()
+    await axios({
+      method: 'post',
+      // url: `${server}/cart/singleAdd`,
+      url: `/api/user/logout`,
+      headers: {
+        "Content-Type": "application/json",
+        'Access-Control-Allow-Origin': `${server}`
+      },
+      withCredentials: true,
+      onUploadProgress: function (progressEvent) {
+        e.target.classList.add('btn-cart-loading')
+        NProgress.start()
+      },
+      onDownloadProgress: function (progressEvent) {
+        e.target.classList.remove('btn-cart-loading')
+        NProgress.done(false)
+      },
+    })
+      .then(res => window.location.replace('/'))
+      .catch(e => console.log(e))
+  }
 
   return (
     <nav>
@@ -75,19 +101,19 @@ const Navbar = ({ cart, setExpanded, expanded, user }) => {
             }
             {/* <a href={`${server}/user/logout`}>Logout</a> */}
             {user.email ?
-              <form className='log-out' action={`${server}/user/logout`} method='post'>
+              <form className='log-out' onSubmit={(e) => logout(e)}>
                 <button type='submit'>Log Out</button>
               </form>
               : ''
             }
           </div>
           {user.roles?.admin ?
-          <div>
-            <Link href='/admin/new-pizza'>
-              Create a new pizza
-            </Link>
-          </div> 
-          : ''}
+            <div>
+              <Link href='/admin/new-pizza'>
+                Create a new pizza
+              </Link>
+            </div>
+            : ''}
         </div>
       </div>
     </nav>
