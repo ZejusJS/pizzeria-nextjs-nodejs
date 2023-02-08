@@ -1,12 +1,14 @@
 import axios from 'axios'
 import { server } from '../config/config'
 import NProgress from 'nprogress'
+import { setCookie, getCookie, getCookies, hasCookie } from 'cookies-next';
 
 export default async function singleAdd(e, piz) {
     e.stopPropagation()
     const productId = piz._id
     let cartData
 
+    console.log(server)
     await axios({
         method: 'post',
         url: `${server}/cart/singleAdd`,
