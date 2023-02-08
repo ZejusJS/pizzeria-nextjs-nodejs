@@ -13,7 +13,7 @@ export default async function deleteItem(e, item) {
         // url: `${server}/cart/deleteItem`,
         url: `/api/cart/deleteItem`,
         headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "application/x-www-form-urlencoded",
             'Access-Control-Allow-Origin': `${server}`
         },
         withCredentials: true,
