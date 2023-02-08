@@ -17,7 +17,7 @@ router.post('/singleAdd', catchAsync(async function (req, res, next) {
     const product = await Pizza.findById(productId)
     const cart = await Cart.findById(cartId()).populate('items.item')
     console.log('req.body.productId ----- ', req.body.productId)
-    console.log('req.cookies.cart------ ', req.cookies.cart)
+    console.log('req.cookies.cart ------ ', req.cookies.cart)
     if (cart && product) {
         let prevProduct = cart.items.filter(pro => pro.item.equals(productId))[0]
         // console.log(prevProduct)

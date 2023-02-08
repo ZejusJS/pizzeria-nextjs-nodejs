@@ -9,28 +9,43 @@ export default async function singleAdd(e, piz) {
     let cartData
 
     console.log(server)
-    await axios({
+    // await axios({
+    //     method: 'post',
+    //     url: `${server}/cart/singleAdd`,
+    //     headers: {
+    //         "Content-Type": "application/x-www-form-urlencoded",
+    //         'Access-Control-Allow-Origin': `${server}`
+    //     },
+    //     withCredentials: true,
+    //     onUploadProgress: function (progressEvent) {
+    //         e.target.classList.add('btn-cart-loading')
+    //         NProgress.start()
+    //     },
+    //     onDownloadProgress: function (progressEvent) {
+    //         e.target.classList.remove('btn-cart-loading')
+    //         NProgress.done(false)
+    //     },
+    //     data: {
+    //         productId
+    //     },
+    // })
+    //     .then(res => cartData = res.data)
+    //     .catch(e => console.log(e))
+
+    await fetch(`${server}/cart/singleAdd`, {
         method: 'post',
-        url: `${server}/cart/singleAdd`,
+        credentials: 'include',
+        mode: 'cors',
         headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
+            "Content-Type": "application/json",
             'Access-Control-Allow-Origin': `${server}`
         },
-        withCredentials: true,
-        onUploadProgress: function (progressEvent) {
-            e.target.classList.add('btn-cart-loading')
-            NProgress.start()
-        },
-        onDownloadProgress: function (progressEvent) {
-            e.target.classList.remove('btn-cart-loading')
-            NProgress.done(false)
-        },
-        data: {
+        body: JSON.stringify({
             productId
-        }
+        })
     })
-        .then(res => cartData = res.data)
-        .catch(e => console.log(e))
+        .then(res => res.json()).then(res => cartData = res)
+        .catch(e => console.error(e))
 
     if (cartData) {
         return cartData

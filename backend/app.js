@@ -26,6 +26,7 @@ const { cloudinary } = require('./cloudinary/index')
 const { storageCampImg } = require('./cloudinary/index')
 const cookieParser = require('cookie-parser')
 const jwt = require('jsonwebtoken')
+const bodyparser = require('body-parser')
 
 const ExpressError = require('./utils/ExpressError');
 const catchAsync = require('./utils/catchAsync');
@@ -78,6 +79,7 @@ app.use(cors({
     origin: process.env.FRONTEND
 }))
 app.use(cookieParser(process.env.SECRET))
+app.use(bodyparser.json())
 
 app.use(catchAsync(async function (req, res, next) {
     const authHeader = req.headers['authorization']
