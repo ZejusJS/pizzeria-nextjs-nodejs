@@ -24,7 +24,7 @@ router.post('/signup', catchAsync(async function (req, res, next) {
             await cart.save()
             await registeredUser.save()
         }
-        req.login(user, function (err) {
+        req.login(user, async function (err) {
             if (err) { return next(err); }
             const user = {
                 email: req.user?.email,
@@ -32,7 +32,7 @@ router.post('/signup', catchAsync(async function (req, res, next) {
                 admin: req.user?.roles?.admin
             }
             console.log(user)
-            const cart = Cart.findById(registeredUser.interaction.cart).populate('items.item')
+            const cart = await Cart.findById(registeredUser.interaction.cart).populate('items.item')
             return res.status(201).json({ msg: 'Signed up', context: 'Signed in and Logged in', user, cart })
         });
     } catch (e) {
