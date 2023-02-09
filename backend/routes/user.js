@@ -4,7 +4,7 @@ const passport = require('passport')
 
 const catchAsync = require('../utils/catchAsync');
 const ExpressError = require('../utils/ExpressError');
-const { mwIsLoggedIn } = require('../utils/mw-IsLoggedIn');
+const { mwIsLoggedIn } = require('../utils/mw-isLoggedIn');
 
 const User = require('../models/user')
 const Cart = require('../models/cart')
