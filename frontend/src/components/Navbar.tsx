@@ -18,7 +18,6 @@ const Navbar = ({ cart, setExpanded, expanded, user }) => {
   }
 
   const router = useRouter();
-
   useEffect(() => {
     if (expanded) {
       setExpanded(!expanded);

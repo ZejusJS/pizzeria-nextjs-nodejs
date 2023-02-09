@@ -45,10 +45,11 @@ const signup = ({ setUser, user, setCart }) => {
             data: signData
         })
             .then(res => {
-                setUser(prevUser => res.data.user)
-                setCart(prevCart => res.data.cart)
+                // setUser(prevUser => res.data.user)
+                // setCart(prevCart => res.data.cart)
                 console.log(res)
-                router.push('/')
+                // router.replace('/')
+                window.location.href = "/"
             })
             .catch(e => console.log(e))
     }
