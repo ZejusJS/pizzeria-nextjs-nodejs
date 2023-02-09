@@ -4,6 +4,7 @@ const passport = require('passport')
 
 const catchAsync = require('../utils/catchAsync');
 const ExpressError = require('../utils/ExpressError');
+const { mwIsLoggedIn } = require('../utils/mw-IsLoggedIn');
 
 const User = require('../models/user')
 const Cart = require('../models/cart')
@@ -75,11 +76,23 @@ router.post('/logout', catchAsync(async function (req, res, next) {
         // });
         req.session.destroy(function (err) {
             res.clearCookie("mammamia");
-            res.sendStatus(200); 
+            res.sendStatus(200);
         });
     } else {
         res.redirect(process.env.FRONTEND)
     }
+}))
+
+//
+
+router.get('/getUser', mwIsLoggedIn, catchAsync(async function (req, res, next) {
+    const user = {
+        name: req.user?.name,
+        email: req.user?.email,
+        roles: req.user?.roles,
+        id: req.user?._id,
+    }
+    res.status(200).json(user)
 }))
 
 module.exports = router

@@ -71,7 +71,55 @@ const Navbar = ({ cart, setExpanded, expanded, user }) => {
             </div>
           </div>
         </div>
-        <div className='links'>
+        <div className='links-row linky'>
+          <div>
+            <Link href='/'>
+              Home page
+            </Link>
+          </div>
+          <div>
+            <Link href='/about'>
+              About
+            </Link>
+          </div>
+          <div>
+            <Link href='/cart'>
+              Cart
+            </Link>
+          </div>
+          {!user.email ?
+            <>
+              <div className='auth'>
+                <Link href='/user/signup'>
+                  Sign Up
+                </Link>
+              </div>
+              <div className='auth'> 
+                <Link href='/user/login'>
+                  Log In
+                </Link>
+              </div>
+            </>
+            : ''
+          }
+          {/* <a href={`${server}/user/logout`}>Logout</a> */}
+          {user.email ?
+            <div>
+              <form className='log-out' onSubmit={(e) => logout(e)}>
+                <button type='submit'>Log Out</button>
+              </form>
+            </div>
+            : ''
+          }
+          {user.roles?.admin ?
+            <div>
+              <Link href='/admin/new-pizza'>
+                Create a new pizza
+              </Link>
+            </div>
+            : ''}
+        </div>
+        <div className='links linky'>
           <div>
             <Link href='/'>
               Home page
@@ -88,10 +136,10 @@ const Navbar = ({ cart, setExpanded, expanded, user }) => {
           <div>
             {!user.email ?
               <>
-                <Link href='/signup'>
+                <Link href='/user/signup'>
                   Sign Up
                 </Link>
-                <Link href='/login'>
+                <Link href='/user/login'>
                   Log In
                 </Link>
               </>

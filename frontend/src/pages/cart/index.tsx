@@ -10,31 +10,12 @@ import changeQntFunc from '../../utils/changeQnt';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 
-const cart = ({ cart, setCart }) => {
-  const [viewProduct, setViewProduct] = useState(false)
-  const [itemToView, setItemToView] = useState({})
+const cart = ({ cart, setCart,
+  viewItem, unViewItem,
+  singleAdd, deleteItem,
+  viewProduct, itemToView }) => {
 
   const router = useRouter()
-
-  function viewItem(e, item) {
-    setItemToView(item)
-    setViewProduct(true)
-  }
-
-  function unViewItem(e) {
-    e.stopPropagation()
-    e.preventDefault();
-    setItemToView({})
-    setViewProduct(false)
-  }
-
-  async function singleAdd(e, piz) {
-    setCart(await singleAddFunc(e, piz))
-  }
-
-  async function deleteItem(e, piz) {
-    setCart(await deleteItemFunc(e, piz))
-  }
 
   async function changeQnt(e, qnt, item) {
     changeQntFunc(e, qnt, item, setCart)
@@ -77,9 +58,9 @@ import * as cookie from 'cookie'
 
 export const getServerSideProps = async (context) => {
   return {
-      props: {
-          '1': 1
-      }
+    props: {
+      '1': 1
+    }
   }
 }
 

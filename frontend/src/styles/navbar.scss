@@ -3,7 +3,7 @@ nav {
     display: flex;
     align-items: center;
     width: 100%;
-    min-height: 70px;
+    min-height: 85px;
     // max-height: 300px;
     z-index: 1299;
     // background-color: rgba(255, 255, 255, 0.521);
@@ -16,23 +16,126 @@ nav {
         position: relative;
         width: 100%;
         max-height: 300px;
-        min-height: 70px;
-        height: 70px;
+        min-height: 85px;
+        height: 85px;
 
 
         transition: min-height 300ms;
+    }
 
-        &.expanded {
-            min-height: 390px;
-            // overflow: auto;
-            overflow: overlay;
+    .linky {
+        a {
+            text-decoration: none;
+            color: rgb(155, 62, 0);
+            font-weight: 500;
 
-            &::-webkit-scrollbar {
-                width: 0px;
+
+        }
+    }
+
+    .log-out {
+        button {
+            background-color: transparent;
+            border: 0;
+            font-size: 18px;
+            color: rgb(255, 41, 41);
+            font-weight: 500;
+
+            &:hover {
+                cursor: pointer;
+                text-decoration: underline;
+            }
+        }
+    }
+
+    .links-row {
+        display: flex;
+        justify-content: space-around;
+        max-width: 750px;
+        margin: 0 auto;
+
+        div {
+            border-width: 0 1px 0 0;
+            border-color: rgba(134, 134, 134, 0.548);
+            border-style: solid;
+            gap: 7px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-height: 20px;
+            font-size: 17px;
+            padding: 0 0.5vw;
+
+            &:last-child {
+                border-width: 0 0 0 0;
+            }
+        }
+
+        a {
+            &:hover {
+                text-decoration: underline;
             }
 
-            @media (max-height: 500px) {
-                min-height: 100vh;
+            word-break: keep-all;
+            white-space: nowrap;
+        }
+
+        .log-out {
+            button {
+                font-size: 17px;
+                display: flex;
+                padding: 0;
+                height: 100%;
+                line-height: 20px;
+
+                color: black;
+            }
+        }
+
+        .auth {
+            a {
+                color: black;
+            }
+        }
+    }
+
+    .links {
+        margin: 5px auto 0 auto;
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        gap: 0px;
+        top: 80px;
+        flex-direction: column;
+        overflow: auto;
+        font-size: 23px;
+
+        flex-wrap: wrap;
+
+        div {
+            // border: 1px solid black;
+            padding: 6px 15px 6px 6px;
+            max-width: 200px;
+            min-width: 100px;
+            display: flex;
+            gap: 7px;
+            flex-direction: column;
+            text-align: center;
+
+            a {
+                font-size: 1em;
+                text-decoration: none;
+
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+        }
+
+        .log-out {
+            button {
+                font-size: 1em;
             }
         }
     }
@@ -42,6 +145,7 @@ nav {
         display: flex;
         justify-content: space-between;
         align-items: center;
+        height: 60px;
 
         .logo-link {
             display: flex;
@@ -91,10 +195,10 @@ nav {
             }
 
             .expand-nav {
+                display: none;
                 width: 50px;
                 margin: 0;
                 flex-shrink: 0;
-                display: flex;
                 align-items: center;
                 justify-content: center;
 
@@ -121,48 +225,37 @@ nav {
         }
     }
 
-    .links {
-        margin: 5px auto 0 auto;
-        display: flex;
-        justify-content: space-evenly;
-        align-items: flex-end;
-        gap: 0px;
-        top: 80px;
-        flex-direction: column;
-        overflow: auto;
 
-        flex-wrap: wrap;
+    @media (max-width: 600px) {
+        min-height: 60px;
 
-        .log-out {
-            button {
-                background-color: transparent;
-                border: 0;
-                font-size: 18px;
-                color: rgb(255, 41, 41);
-                font-weight: 500;
+        .nav-container {
+            min-height: 60px;
+            height: 60px;
 
-                &:hover {
-                    cursor: pointer;
-                    text-decoration: underline;
+            &.expanded {
+                min-height: 100vh;
+                // overflow: auto;
+                overflow: overlay;
+
+                &::-webkit-scrollbar {
+                    width: 0px;
+                }
+
+                @media (max-height: 500px) {
+                    min-height: 100vh;
                 }
             }
         }
 
-        div {
-            // border: 1px solid black;
-            padding: 6px 15px 6px 6px;
-            width: 150px;
-            display: flex;
-            gap: 7px;
-            flex-direction: column;
-            text-align: right;
+        .links-row {
+            display: none;
+        }
 
-            a {
-                font-size: 18px;
-                text-decoration: none;
-
-                &:hover {
-                    text-decoration: underline;
+        .logo-name {
+            .options-container {
+                .expand-nav {
+                    display: flex;
                 }
             }
         }

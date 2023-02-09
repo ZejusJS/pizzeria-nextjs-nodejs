@@ -9,33 +9,17 @@ import { useState, useEffect, useContext } from 'react';
 import Link from 'next/link';
 import Product from '../components/pizza/Product';
 import Unfocus from '../components/Unfocus';
-import deleteItemFunc from '../utils/deleteItem'
-import singleAddFunc from '../utils/singleAdd'
 
-export default function Home({ pizzas, setCart, cart }) {
-
-  const [viewProduct, setViewProduct] = useState(false)
-  const [itemToView, setItemToView] = useState({})
-
-  async function singleAdd(e, piz) {
-    setCart(await singleAddFunc(e, piz))
-  }
-
-  async function deleteItem(e, piz) {
-    setCart(await deleteItemFunc(e, piz))
-  }
-  
-  function viewItem(e, item) {
-    setItemToView(item)
-    setViewProduct(true)
-  }
-
-  function unViewItem(e) {
-    e.stopPropagation()
-    e.preventDefault();
-    setItemToView({})
-    setViewProduct(false)
-  }
+export default function Home({
+  pizzas,
+  setCart,
+  cart,
+  singleAdd,
+  unViewItem,
+  viewProduct,
+  deleteItem,
+  itemToView,
+  viewItem }) {
 
   return (
     <>

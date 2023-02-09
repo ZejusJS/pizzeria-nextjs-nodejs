@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import axios from 'axios'
-import { server } from '../config/config'
+import { server } from '../../config/config'
 import NProgress from 'nprogress'
 import { useRouter } from 'next/router'
 

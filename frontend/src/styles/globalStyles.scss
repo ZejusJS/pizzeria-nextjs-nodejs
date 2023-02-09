@@ -1,6 +1,10 @@
 main {
-    padding-top: 80px;
+    padding-top: 100px;
     z-index: 0;
+
+    @media (max-width: 600px) {
+        padding-top: 70px;
+    }
 }
 
 .pizzas-showcase {
@@ -402,8 +406,4 @@ section.about {
     .about-container {
         margin-bottom: 20px;
     }
-}
-
-body:has(div#view-product) {
-    overflow: hidden;
 }

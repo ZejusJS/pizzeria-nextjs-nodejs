@@ -20,6 +20,8 @@ import Router, { useRouter } from 'next/router';
 import bootstrap from 'bootstrap'
 import NProgress from 'nprogress'
 import axios from 'axios'
+import deleteItemFunc from '../utils/deleteItem'
+import singleAddFunc from '../utils/singleAdd'
 
 // const quicksand = Quicksand({
 //   weight: ['400', '600', '700'],
@@ -35,8 +37,18 @@ export default function App({ Component, pageProps, cartData, userData }) {
   const [cart, setCart] = useState(cartData)
   const [user, setUser] = useState(userData)
   const [expanded, setExpanded] = useState(false)
-  // console.log(user)
-  // console.log(cart)
+  const [viewProduct, setViewProduct] = useState(false)
+  const [itemToView, setItemToView] = useState({})
+
+  useEffect(() => {
+    if (viewProduct) document.body.classList.add('of-h')
+    if (!viewProduct) document.body.classList.remove('of-h')
+  }, [viewProduct])
+
+  useEffect(() => {
+    if (expanded) document.body.classList.add('of-h')
+    if (!expanded) document.body.classList.remove('of-h')
+  }, [expanded])
 
   Router.events.on("routeChangeStart", (url) => {
     NProgress.start()
@@ -45,6 +57,27 @@ export default function App({ Component, pageProps, cartData, userData }) {
   Router.events.on("routeChangeComplete", (url) => {
     NProgress.done(false)
   });
+
+
+  async function singleAdd(e, piz) {
+    setCart(await singleAddFunc(e, piz))
+  }
+
+  async function deleteItem(e, piz) {
+    setCart(await deleteItemFunc(e, piz))
+  }
+
+  function viewItem(e, item) {
+    setItemToView(item)
+    setViewProduct(true)
+  }
+
+  function unViewItem(e) {
+    e.stopPropagation()
+    e.preventDefault();
+    setItemToView({})
+    setViewProduct(false)
+  }
 
   return (
     <>
@@ -55,13 +88,22 @@ export default function App({ Component, pageProps, cartData, userData }) {
         setExpanded={setExpanded}
         user={user}
       />
-      <div onClick={expanded ? () => setExpanded(!expanded) : (a) => (a)}>
+      <div
+        onClick={expanded ? () => setExpanded(!expanded) : (a) => (a)}
+        className={`${viewProduct ? 'of-h' : 'sd'}`}
+      >
         <Component
           {...pageProps}
           setCart={setCart}
           cart={cart}
           user={user}
           setUser={setUser}
+          viewProduct={viewProduct}
+          itemToView={itemToView}
+          singleAdd={(e, piz) => singleAdd(e, piz)}
+          unViewItem={(e) => unViewItem(e)}
+          deleteItem={(e, piz) => deleteItem(e, piz)}
+          viewItem={(e, i) => viewItem(e, i)}
         />
       </div>
     </>

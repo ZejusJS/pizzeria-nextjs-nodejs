@@ -8,15 +8,20 @@ first project with nextjs + nodejs
 - [ ] Build links in nav and style it
 - [ ] Do middlewares in backend for checking cart's user
 - [ ] Calculate total price in CZK (maybe from someone's api)
-- [ ] Learn how payment gateway works
 - [ ] Implement sandbox gateway (maybe from ČSOB)
 - [ ] Try implement Google auth
 - [x] Clear the ducking mess in the new-pizza's form validation code!!!!! 
 - [ ] Paginate pizzas
 - [x] Style login and signup pages
-
+- [ ] User site for displaying and editing user's information, adress etc.
 
 ### Links:
-(long waiting for fresh starts, free tiers, maybe frontend isn't in sync with backend - I didn't deploy server aswell) <br>
+(long waiting for fresh starts, free tiers, maybe frontend isn't in sync with backend - I didn't deploy backend aswell) <br>
 - **Frontend**: https://effortless-cupcake-860fb7.netlify.app/
 - **Backend**: https://pizzeria-backend-4vij.onrender.com/
+
+### Stack:
+1. NextJS
+2. NodeJS
+3. Express
+4. MongoDB
