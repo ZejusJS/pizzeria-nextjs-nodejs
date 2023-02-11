@@ -16,6 +16,9 @@ const checkout = ({ cartData }) => {
                     })}
                     {cartData.totalCartPrice} CZK
                 </section>
+                <form action="/api/signature" method='post'>
+                    <button type="submit">Submit</button>
+                </form>
             </main>
         </>
     )
