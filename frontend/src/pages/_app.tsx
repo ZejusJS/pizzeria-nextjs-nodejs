@@ -15,8 +15,8 @@ import '../styles/navbar.scss'
 import '../styles/auth.scss'
 import Navbar from '../components/Navbar'
 import Link from 'next/link'
-import React, { createContext, useEffect, useState } from 'react'
-import Router, { useRouter } from 'next/router';
+import React, { useEffect, useState, useRef } from 'react'
+import Router from 'next/router';
 import bootstrap from 'bootstrap'
 import NProgress from 'nprogress'
 import axios from 'axios'
@@ -33,12 +33,45 @@ import singleAddFunc from '../utils/singleAdd'
 //   subsets: ['latin']
 // })
 
-export default function App({ Component, pageProps, cartData, userData }) {
-  const [cart, setCart] = useState(cartData)
-  const [user, setUser] = useState(userData)
+export default function App({ Component, pageProps }) {
+  const [cart, setCart] = useState({})
+  const [user, setUser] = useState({})
   const [expanded, setExpanded] = useState(false)
   const [viewProduct, setViewProduct] = useState(false)
   const [itemToView, setItemToView] = useState({})
+
+  const loader = useRef(null)
+
+  useEffect(() => {
+    // console.log('xddddddddddddddddddddddddd')
+    NProgress.start()
+    axios({
+      method: 'get',
+      url: `/api/cart/getCartAndUser`,
+      // url: `api/cart/getCartAndUser`,
+      withCredentials: true,
+      headers: {
+        'Access-Control-Allow-Origin': `${server}`,
+        // Cookie: ctx.req.headers.cookie
+      },
+      onDownloadProgress: function (progressEvent) {
+        NProgress.done(false)
+        loader.current.classList.add('loaded')
+      },
+    })
+      .then(res => {
+        setCart(res.data.cart)
+        setUser(res.data.user)
+      })
+      .catch(e => {
+        // const res = e.response?.data
+        // ctx.res.setHeader('Set-Cookie', cookie.serialize('cart', res.cart, {
+        //   httpOnly: true
+        // }));
+        // error = true
+        console.warn(e)
+      })
+  }, [])
 
   useEffect(() => {
     if (viewProduct) document.body.classList.add('of-h')
@@ -57,7 +90,6 @@ export default function App({ Component, pageProps, cartData, userData }) {
   Router.events.on("routeChangeComplete", (url) => {
     NProgress.done(false)
   });
-
 
   async function singleAdd(e, piz) {
     setCart(await singleAddFunc(e, piz))
@@ -89,8 +121,14 @@ export default function App({ Component, pageProps, cartData, userData }) {
         user={user}
       />
       <div
+        className='loader'
+        ref={loader}
+      >
+        <div className="spinner-border" role="status"></div>
+      </div>
+      <div
         onClick={expanded ? () => setExpanded(!expanded) : (a) => (a)}
-        className={`${viewProduct ? 'of-h' : 'sd'}`}
+      // className={`${viewProduct ? 'of-h' : ''}`}
       >
         <Component
           {...pageProps}
@@ -110,49 +148,48 @@ export default function App({ Component, pageProps, cartData, userData }) {
   )
 }
 
-import * as cookie from 'cookie'
+// App.getInitialProps = async ({ Component, ctx }) => {
+//   let cartData
+//   let error
+//   let userData = false
 
-App.getInitialProps = async ({ Component, ctx }) => {
-  let cartData
-  let error
-  let userData = false
+//   console.log('xddddddddddddddddddddddddd')
+//   await axios({
+//     method: 'get',
+//     url: `${server}/cart/getCartAndUser`,
+//     // url: `api/cart/getCartAndUser`,
+//     withCredentials: true,
+//     headers: {
+//       "Content-Type": "application/x-www-form-urlencoded",
+//       'Access-Control-Allow-Origin': `${server}`,
+//       Cookie: ctx.req.headers.cookie
+//     }
+//   })
+//     .then(res => {
+//       cartData = res.data.cart
+//       userData = res.data.user
+//     })
+//     .catch(e => {
+//       const res = e.response?.data
+//       ctx.res.setHeader('Set-Cookie', cookie.serialize('cart', res.cart, {
+//         httpOnly: true
+//       }));
+//       error = true
+//     })
 
-  await axios({
-    method: 'get',
-    url: `${server}/cart/getCartAndUser`,
-    // url: `api/cart/getCartAndUser`,
-    withCredentials: true,
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-      'Access-Control-Allow-Origin': `${server}`,
-      Cookie: ctx.req.headers.cookie
-    }
-  })
-    .then(res => {
-      cartData = res.data.cart
-      userData = res.data.user
-    })
-    .catch(e => {
-      const res = e.response.data
-      ctx.res.setHeader('Set-Cookie', cookie.serialize('cart', res.cart, {
-        httpOnly: true
-      }));
-      error = true
-    })
+//   let pageProps = {};
+//   if (Component.getInitialProps) {
+//     pageProps = await Component.getInitialProps(ctx);
+//   }
 
-  let pageProps = {};
-  if (Component.getInitialProps) {
-    pageProps = await Component.getInitialProps(ctx);
-  }
-
-  if (error) {
-    return {
-      redirect: {
-        permanent: false,
-        destination: '/'
-      }
-    }
-  } else {
-    return { pageProps, cartData, userData }
-  }
-}
+//   if (error) {
+//     return {
+//       redirect: {
+//         permanent: false,
+//         destination: '/'
+//       }
+//     }
+//   } else {
+//     return { pageProps, cartData, userData }
+//   }
+// }

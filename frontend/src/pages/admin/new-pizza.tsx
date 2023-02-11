@@ -208,8 +208,6 @@ const NewPizza = () => {
                         onChange={(e) => updateForm(e)}
                     >
                         <option value='CZK'>CZK</option>
-                        <option value='EUR'>EUR</option>
-                        <option value='USD'>USD</option>
                     </select>
                 </div>
                 <div className='input-container'>
@@ -256,12 +254,18 @@ const NewPizza = () => {
     )
 }
 
-export const getServerSideProps = async (context) => {
-    return {
-        props: {
-            '1': 1
-        }
-    }
-}
+// export const getServerSideProps = async (context) => {
+//     return {
+//         props: {
+//             '1': 1
+//         }
+//     }
+// }
+
+// export async function getStaticProps(context) {
+//     return {
+//         props: {},
+//     }
+// }
 
 export default NewPizza

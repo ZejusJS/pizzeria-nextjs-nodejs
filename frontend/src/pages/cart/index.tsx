@@ -34,7 +34,7 @@ const cart = ({ cart, setCart,
         : ''}
       <main>
         <section className='cart-items'>
-          {cart.items.map(item => {
+          {cart?.items?.map(item => {
             return <Item
               changeQnt={(e, item, qnt) => changeQnt(e, item, qnt)}
               item={item}
@@ -54,16 +54,21 @@ const cart = ({ cart, setCart,
   )
 }
 
-import * as cookie from 'cookie'
+// import * as cookie from 'cookie'
 
-export const getServerSideProps = async (context) => {
-  return {
-    props: {
-      '1': 1
-    }
-  }
-}
+// export const getServerSideProps = async (context) => {
+//   return {
+//     props: {
+//       '1': 1
+//     }
+//   }
+// }
 
 
+// export async function getStaticProps(context) {
+//   return {
+//     props: {}, 
+//   }
+// }
 
 export default cart

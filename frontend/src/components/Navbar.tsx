@@ -9,7 +9,7 @@ import axios from 'axios'
 
 const Navbar = ({ cart, setExpanded, expanded, user }) => {
   let itemsCount = 0
-  cart.items.map(item => {
+  cart?.items?.map(item => {
     itemsCount += item.quantity
   })
 

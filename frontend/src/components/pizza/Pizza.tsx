@@ -6,7 +6,7 @@ import CartRemove from '../../images/CartRemove'
 const Pizza = ({ pizza, singleAdd, viewItem, cart }) => {
   const [isInCart, setIsInCart] = useState(false)
   let ingredients = ''
-  pizza.ingredients.map(ingr => {
+  pizza?.ingredients?.map(ingr => {
     ingredients += ingr + ', '
   })
   ingredients = ingredients.slice(-0, -2)
@@ -15,7 +15,7 @@ const Pizza = ({ pizza, singleAdd, viewItem, cart }) => {
     // console.log('JOULOUUUUU ',cart)
     setIsInCart(() => {
       let isItemInCart = false
-      cart.items.map(it => {
+      cart?.items?.map(it => {
         if (it.item._id === pizza._id) isItemInCart = true
       })
       return isItemInCart

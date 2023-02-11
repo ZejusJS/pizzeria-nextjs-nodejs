@@ -5,11 +5,12 @@ const passport = require('passport')
 const catchAsync = require('../utils/catchAsync');
 const ExpressError = require('../utils/ExpressError');
 const { mwIsLoggedIn } = require('../utils/mw-isLoggedIn');
+const { validateRegister } = require('../utils/mw-validateAuth');
 
 const User = require('../models/user')
 const Cart = require('../models/cart')
 
-router.post('/signup', catchAsync(async function (req, res, next) {
+router.post('/signup', validateRegister, catchAsync(async function (req, res, next) {
     const { email, name, password } = req.body;
     const user = new User({ name, email });
     try {
@@ -42,13 +43,14 @@ router.post('/signup', catchAsync(async function (req, res, next) {
         if (e.message === 'email taken') { // email taken je změněno v user.js (chema user)
             errMsg = `Email "${email}" is already taken`
         }
-        res.status(400).json({ msg: errMsg, context: 'Bad signup' })
+        res.status(400).json({ msg: errMsg, context: 'Bad signup', code: 100 })
     }
 }))
 
 router.post('/login', passport.authenticate('local', {
     keepSessionInfo: true // pro zachování req.session.returnTo (původní URL, kam jsme se chtěli dostat ještě než nás to přesměrovalo)
 }), catchAsync(async function (req, res, next) {
+    console.log(req.query)
     if (req.user && !req.user.interaction && !req.user.interaction.cart) {
         const cart = new Cart()
         cart.user = req.user._id

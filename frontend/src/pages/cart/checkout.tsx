@@ -1,9 +1,45 @@
 import { server } from '../../config/config'
 import CheckoutPizza from '../../components/cart/CheckoutPizza'
 import axios from 'axios'
+import NProgress from 'nprogress'
+import { useState } from 'react'
 
 const checkout = ({ cartData }) => {
+    const [signData, setSignData] = useState({
+        name: '',
+        email: '',
+        password: ''
+    })
+
     console.log(cartData)
+    
+    async function handleSignUp(e) {
+        axios.defaults.withCredentials = true
+        e.stopPropagation()
+        e.preventDefault()
+
+        await axios({
+            method: 'post',
+            url: `/api/user/signup`,
+            headers: {
+                "Content-Type": "application/json",
+                'Access-Control-Allow-Origin': `${server}`
+            },
+            onUploadProgress: function (progressEvent) {
+                NProgress.start()
+            },
+            onDownloadProgress: function (progressEvent) {
+                NProgress.done(false)
+            },
+            data: signData
+        })
+            .then(res => {
+                console.log(res)
+                window.location.href = "/"
+            })
+            .catch(e => console.log(e))
+    }
+
     return (
         <>
             <main>
@@ -16,7 +52,7 @@ const checkout = ({ cartData }) => {
                     })}
                     {cartData.totalCartPrice} CZK
                 </section>
-                <form action="/api/signature" method='post'>
+                <form action="/api/payment/signature" method='post'>
                     <button type="submit">Submit</button>
                 </form>
             </main>
@@ -29,7 +65,7 @@ export const getServerSideProps = async (context) => {
 
     let cartData = {}
 
-    const data = await axios({
+    await axios({
         method: 'get',
         url: `${server}/cart/getCartCheckout`,
         // url: `/api/cart/getCartCheckout`,

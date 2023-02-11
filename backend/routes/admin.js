@@ -18,7 +18,7 @@ router.post('/new-pizza', mwUploadPizzaImg, catchAsync(async function (req, res,
     const { title, price, currency, description, ingredients } = req.body
     if (req.files.length) {
         const { filename, path } = req.files[0]
-        if (currency === 'CZK' || 'USD' || 'EUR') {
+        if (currency === 'CZK') {
             if (title.length && price.length && !isNaN(price) && description.length && ingredients.length && Array.isArray(ingredients)) {
                 const pizza = new Pizza({
                     title,

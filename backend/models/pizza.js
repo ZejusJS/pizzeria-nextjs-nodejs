@@ -29,10 +29,7 @@ const PizzaSchema = new Schema({
         {
             type: String
         }
-    ],
-    key: {
-        type: String
-    }
+    ]
 })
 
 module.exports = mongoose.model('Pizza', PizzaSchema);

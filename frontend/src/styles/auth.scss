@@ -33,4 +33,14 @@
             outline-offset: 1px;
         }
     }
+
+    .error {
+        display: none;
+        color: rgb(255, 56, 56);
+        font-weight: 500;
+        font-size: 16.5px;
+        &.shown {
+            display: inline-block;
+        }
+    }
 }

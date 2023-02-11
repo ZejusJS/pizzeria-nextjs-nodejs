@@ -28,4 +28,39 @@
     }
 }
 
+.loader {
+    position: fixed;
+    z-index: 9999;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(190, 190, 190, 0.438);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: left 300ms, opacity 200ms;
+    // left: 0%;
+    opacity: 1;
+
+    .spinner-border {
+        width: 50vw;
+        height: 50vw;
+        max-width: 150px;
+        max-height: 150px;
+        border-width: 5px;
+        border-color: rgb(0, 0, 0);
+        border-right-color: transparent;
+    }
+
+    &.loaded {
+        // left: 104%;
+        opacity: 0;
+        pointer-events: none;
+    }
+}
+
+.of-h-2 {
+    overflow: hidden;
+}
+
 $spinner-border-width: 13px;
