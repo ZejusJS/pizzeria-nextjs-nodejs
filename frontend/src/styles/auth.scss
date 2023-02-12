@@ -1,4 +1,4 @@
-.auth-form {
+.auth-form, .order-details--form {
     padding: 2px;
     max-width: 450px;
     display: flex;
@@ -10,6 +10,10 @@
     input {
         font-size: 18px;
         padding: 4px;
+
+        @media (max-width: 350px) {
+            font-size: 16px;
+        }
     }
 
     .submit-btn {
@@ -39,8 +43,13 @@
         color: rgb(255, 56, 56);
         font-weight: 500;
         font-size: 16.5px;
+
         &.shown {
             display: inline-block;
         }
+    }
+
+    .info {
+        text-align: center;
     }
 }

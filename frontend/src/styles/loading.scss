@@ -33,7 +33,7 @@
     z-index: 9999;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(190, 190, 190, 0.438);
+    background-color: rgb(34, 33, 33);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -48,7 +48,7 @@
         max-width: 150px;
         max-height: 150px;
         border-width: 5px;
-        border-color: rgb(0, 0, 0);
+        border-color: rgb(255, 255, 255);
         border-right-color: transparent;
     }
 

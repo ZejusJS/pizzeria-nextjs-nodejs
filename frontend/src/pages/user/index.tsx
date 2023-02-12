@@ -29,7 +29,6 @@ export const getServerSideProps = async (ctx) => {
     })
         .then(res => userData = res.data)
         .catch(e => {
-            console.error(e)
             error = true
         })
 
@@ -37,7 +36,7 @@ export const getServerSideProps = async (ctx) => {
         return {
             redirect: {
                 permanent: false,
-                destination: '/'
+                destination: '/user/login'
             }
         }
     }

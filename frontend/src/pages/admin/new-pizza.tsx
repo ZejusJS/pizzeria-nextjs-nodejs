@@ -98,7 +98,7 @@ const NewPizza = () => {
 
         await axios({
             method: 'post',
-            url: `${server}/admin/new-pizza`,
+            url: `/api/admin/new-pizza`,
             withCredentials: true,
             data: newPizza,
             headers: {

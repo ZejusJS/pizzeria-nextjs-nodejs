@@ -8,6 +8,32 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Please add a name']
     },
+    invoiceInfo: {
+        firstname: {
+            type: String,
+            required: true
+        },
+        lastname: {
+            type: String,
+            required: true
+        },
+        adress: {
+            type: String,
+            required: true
+        },
+        city: {
+            type: String,
+            required: true
+        },
+        zip: {
+            type: String,
+            required: true
+        },
+        country: {
+            type: String,
+            required: true
+        }
+    },
     interaction: {
         cart: {
             type: mongoose.Schema.Types.ObjectId,
@@ -26,8 +52,8 @@ UserSchema.plugin(passportLocalMongoose, {
     usernameField: 'email',
     usernameLowerCase: true,
     usernameCaseInsensitive: true,
-    limitAttempts: true,
-    maxAttempts: 6,
+    // limitAttempts: true,
+    // maxAttempts: 6,
     unlockInterval: 1000 * 60 * 5,
     errorMessages: {
         UserExistsError: 'email taken'

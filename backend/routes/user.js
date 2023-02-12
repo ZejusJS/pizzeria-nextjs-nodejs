@@ -5,14 +5,14 @@ const passport = require('passport')
 const catchAsync = require('../utils/catchAsync');
 const ExpressError = require('../utils/ExpressError');
 const { mwIsLoggedIn } = require('../utils/mw-isLoggedIn');
-const { validateRegister } = require('../utils/mw-validateAuth');
+const { validateRegister, validateLogin } = require('../utils/mw-validateAuth');
 
 const User = require('../models/user')
 const Cart = require('../models/cart')
 
 router.post('/signup', validateRegister, catchAsync(async function (req, res, next) {
-    const { email, name, password } = req.body;
-    const user = new User({ name, email });
+    const { email, name, password, firstname, lastname, adress, city, zip } = req.body;
+    const user = new User({ name, email, invoiceInfo: { firstname, lastname, adress, city, zip, country: 'Czech Republic' } });
     try {
         const registeredUser = await User.register(user, password);
         if (req.cookies.cart) {
@@ -33,9 +33,10 @@ router.post('/signup', validateRegister, catchAsync(async function (req, res, ne
                 name: req.user?.name,
                 admin: req.user?.roles?.admin
             }
+            const invoiceInfo = req.user?.invoiceInfo
             console.log(user)
             const cart = await Cart.findById(registeredUser.interaction.cart).populate('items.item')
-            return res.status(201).json({ msg: 'Signed up', context: 'Signed in and Logged in', user, cart })
+            return res.status(201).json({ msg: 'Signed up', context: 'Signed in and Logged in', user, cart, invoiceInfo })
         });
     } catch (e) {
         console.log(e)
@@ -47,7 +48,7 @@ router.post('/signup', validateRegister, catchAsync(async function (req, res, ne
     }
 }))
 
-router.post('/login', passport.authenticate('local', {
+router.post('/login', validateLogin, passport.authenticate('local', {
     keepSessionInfo: true // pro zachování req.session.returnTo (původní URL, kam jsme se chtěli dostat ještě než nás to přesměrovalo)
 }), catchAsync(async function (req, res, next) {
     console.log(req.query)
@@ -93,6 +94,7 @@ router.get('/getUser', mwIsLoggedIn, catchAsync(async function (req, res, next) 
         email: req.user?.email,
         roles: req.user?.roles,
         id: req.user?._id,
+        invoiceInfo: req.user?.invoiceInfo
     }
     res.status(200).json(user)
 }))

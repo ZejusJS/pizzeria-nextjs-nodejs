@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import axios from 'axios'
 import { server } from '../../config/config'
 import { useState } from 'react'
@@ -11,6 +11,10 @@ const login = ({ user, setUser, setCart }) => {
     password: ''
   })
 
+  const emailError = useRef(null)
+  const passwordError = useRef(null)
+  const authError = useRef(null)
+
   function handleChange(e) {
     const { name, value } = e.target
     setLoginData(prevData => {
@@ -19,6 +23,22 @@ const login = ({ user, setUser, setCart }) => {
         [name]: value
       }
     })
+    if (name === 'password') {
+      if (value.length < 8 || value.length > 40) {
+        passwordError?.current?.classList.add('shown')
+      } else {
+        passwordError?.current?.classList.remove('shown')
+      }
+    }
+    if (name === 'email') {
+      console.log(value)
+      if (value.length > 100) {
+        emailError?.current?.classList.add('shown')
+      } else {
+        emailError?.current?.classList.remove('shown')
+      }
+    }
+    authError?.current?.classList.remove('shown')
   }
 
   async function handleSubmit(e) {
@@ -49,7 +69,17 @@ const login = ({ user, setUser, setCart }) => {
         // router.replace('/')
         window.location.href = "/"
       })
-      .catch(e => console.log(e))
+      .catch(e => {
+        console.log(e)
+        if (e.response?.data?.code === 150) {
+          passwordError?.current?.classList.add('shown')
+        } else if (e.response?.data?.code === 250) {
+          emailError?.current?.classList.add('shown')
+        }
+        if (e.response?.status === 401) {
+          authError?.current?.classList.add('shown')
+        }
+      })
   }
 
   return (
@@ -65,6 +95,11 @@ const login = ({ user, setUser, setCart }) => {
             name="email"
             value={loginData.email}
           />
+          <div
+            ref={emailError}
+            className='error'>
+            <p>Email must be valid and cannot contain more than 100 characters.</p>
+          </div>
         </div>
         <div className='input-container'>
           <label htmlFor="password">Password:</label>
@@ -76,6 +111,16 @@ const login = ({ user, setUser, setCart }) => {
             name="password"
             value={loginData.password}
           />
+          <div
+            ref={passwordError}
+            className='error'>
+            <p>Password must contain only 8 to 40 characters.</p>
+          </div>
+          <div
+            ref={authError}
+            className='error'>
+            <p>Email or password is wrong.</p>
+          </div>
         </div>
         <button className='submit-btn' type='submit'>Log In</button>
       </form>
