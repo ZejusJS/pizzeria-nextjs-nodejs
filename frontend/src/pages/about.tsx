@@ -3,6 +3,10 @@ const About = () => {
     <>
       <main>
         <section className='about'>
+          <div className='about-container about-what'>
+            <h3>What are we?</h3>
+            <p>We are pizzerias across the whole Czech Republic</p>
+          </div>
           <div className='about-container about-place'>
             <h3>Where to find us?</h3>
             <p>K Závěrce 2471</p>

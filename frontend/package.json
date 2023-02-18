@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@next/font": "13.1.4",
+    "@react-hook/resize-observer": "^1.2.6",
     "@svgr/webpack": "^6.5.1",
     "@vespaiach/axios-fetch-adapter": "^0.3.1",
     "axios": "^1.2.3",
@@ -23,7 +24,8 @@
     "nprogress": "^0.2.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-router-dom": "^6.8.0"
+    "react-router-dom": "^6.8.0",
+    "resize-observer-polyfill": "^1.5.1"
   },
   "devDependencies": {
     "@types/node": "18.11.18",

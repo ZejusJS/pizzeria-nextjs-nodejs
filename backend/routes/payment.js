@@ -17,7 +17,7 @@ const Cart = require('../models/cart')
 
 router.post('/card', catchAsync(async function (req, res, next) {
     // const {}
-
+    console.log(req.body)
     const data = {
         merchantId: 'A3492UfuSm',
         orderNo: Math.floor(Math.random() * 9999999999) + 1,

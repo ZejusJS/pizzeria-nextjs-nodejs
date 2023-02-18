@@ -12,7 +12,7 @@ const Order = ({
     return (
         <>
             <form className='order-details--form'>
-                <h3>Order Details</h3>
+                <h3>Shipping Adress</h3>
                 <div className='input-container'>
                     <label htmlFor="firstname">First name:</label>
                     <input
