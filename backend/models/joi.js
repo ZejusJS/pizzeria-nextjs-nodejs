@@ -28,7 +28,7 @@ module.exports.payment =
         shipping: Joi.string().max(30).pattern(/^(fast|standard)$/).required(),
         paymentMethod: Joi.string().max(30).pattern(/^(card)$/).required(),
         cartData: Joi.object({
-            items: Joi.array.required(),
-            _id: Joi.string.required(),
+            items: Joi.array().required(),
+            _id: Joi.string().required(),
         }).required(),
     }).required()
