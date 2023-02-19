@@ -1,10 +1,11 @@
 const ExpressError = require('./ExpressError');
 
 const User = require('../models/user');
+const catchAsync = require('../utils/catchAsync')
 
 const { registerSchema, loginSchema } = require('../models/joi');
 
-module.exports.validateRegister = async function (req, res, next) {
+module.exports.validateRegister = catchAsync(async function (req, res, next) {
     const { error } = registerSchema.validate(req.body);
     if (error) {
         console.log(error.details[0])
@@ -22,14 +23,13 @@ module.exports.validateRegister = async function (req, res, next) {
     } else {
         next();
     }
-}
+})
 
-module.exports.validateLogin = async function (req, res, next) {
+module.exports.validateLogin = catchAsync(async function (req, res, next) {
     const { error } = loginSchema.validate(req.body);
     if (error) {
         console.log(error.details[0])
         const msg = error.details.map(el => el.message).join(',');
-        req.flash('error', msg);
         if (error.details[0].path[0] === 'password') {
             res.status(400).json({ code: 150 })
         } else if (error.details[0].path[0] === 'email') {
@@ -38,4 +38,4 @@ module.exports.validateLogin = async function (req, res, next) {
     } else {
         next();
     }
-}
+})

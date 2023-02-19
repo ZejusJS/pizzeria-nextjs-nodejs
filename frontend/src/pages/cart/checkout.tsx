@@ -108,7 +108,7 @@ const checkout = ({ cartData, setUser, user, userData }) => {
     }
 
     function handleSubmit(e) {
-        const data = {
+        const orderData = {
             ...orderDetails,
             shipping: shipping.name,
             paymentMethod: paymentMethod.name,
@@ -117,7 +117,22 @@ const checkout = ({ cartData, setUser, user, userData }) => {
                 _id: cartData._id
             }
         }
-        console.log(data)
+        console.log(orderData)
+
+        axios({
+            method: 'post',
+            url: '/api/payment/card',
+            withCredentials: true,
+            headers: {
+                "Content-Type": "application/json",
+                'Access-Control-Allow-Origin': `${server}`
+            },
+            data: orderData
+        })
+            .then(res => {
+                window.location.href = res.data.url
+            })
+            .catch(e => console.error(e))
     }
 
     // console.log(userData)

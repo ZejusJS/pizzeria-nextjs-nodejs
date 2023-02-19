@@ -18,7 +18,7 @@ module.exports.loginSchema =
         password: Joi.string().min(8).max(40).required()
     }).required()
 
-module.exports.payment =
+module.exports.paymentSchema =
     Joi.object({
         firstname: Joi.string().max(30).required(),
         lastname: Joi.string().max(30).required(),
