@@ -1,4 +1,4 @@
-.auth-form, .order-details--form {
+.auth-form, .order-details--form, .basic-form {
     padding: 2px;
     max-width: 450px;
     display: flex;
@@ -17,8 +17,8 @@
     }
 
     .submit-btn {
-        width: 200px;
-        padding: 7px 5px;
+        // width: 200px;
+        padding: 8px 12px;
         margin: 0 auto;
         border: 0;
         background-color: rgb(15, 172, 15);
@@ -35,6 +35,10 @@
         &:active {
             outline: 2px solid rgba(99, 99, 99, 0.459);
             outline-offset: 1px;
+        }
+
+        @media (max-width: 400px) {
+            width: 100%;
         }
     }
 

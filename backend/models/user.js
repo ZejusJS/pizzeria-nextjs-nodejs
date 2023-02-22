@@ -34,6 +34,26 @@ const UserSchema = new mongoose.Schema({
             required: true
         }
     },
+    shippingAdress: {
+        firstname: {
+            type: String
+        },
+        lastname: {
+            type: String
+        },
+        adress: {
+            type: String
+        },
+        city: {
+            type: String
+        },
+        zip: {
+            type: String
+        },
+        country: {
+            type: String
+        }
+    },
     interaction: {
         cart: {
             type: mongoose.Schema.Types.ObjectId,

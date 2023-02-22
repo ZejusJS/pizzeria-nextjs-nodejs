@@ -27,14 +27,16 @@ const checkout = ({ cartData, setUser, user, userData }) => {
     const [totalPrice, setTotalPrice] = useState(0)
 
     // console.log(orderDetails)
+    const invoiceInfo = userData.invoiceInfo
+    const shippingAdress = userData.shippingAdress
     useEffect(() => {
         if (userData?.invoiceInfo?.adress) {
             setOrderDetails({
-                firstname: userData.invoiceInfo.firstname,
-                lastname: userData.invoiceInfo.lastname,
-                adress: userData.invoiceInfo.adress,
-                city: userData.invoiceInfo.city,
-                zip: userData.invoiceInfo.zip
+                firstname: shippingAdress.firstname?.length ? shippingAdress.firstname : invoiceInfo.firstname,
+                lastname: shippingAdress.lastname?.length ? shippingAdress.lastname : invoiceInfo.lastname,
+                adress: shippingAdress.adress?.length ? shippingAdress.adress : invoiceInfo.adress,
+                city: shippingAdress.city?.length ? shippingAdress.city : invoiceInfo.city,
+                zip: shippingAdress.zip?.length ? shippingAdress.zip : invoiceInfo.zip
             })
         }
     }, [])

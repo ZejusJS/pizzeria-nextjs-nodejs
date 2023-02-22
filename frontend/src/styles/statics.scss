@@ -30,6 +30,35 @@
     overflow: hidden;
 }
 
+.btn-styled {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 12px;
+    font-size: 17px;
+    border: 0;
+    border-radius: 7px;
+
+    &:hover {
+        cursor: pointer;
+    }
+
+    &:active {
+        outline-offset: 2px;
+        outline: 2px solid transparent;
+    }
+
+    svg {
+        width: 30px;
+        height: auto;
+        flex-shrink: 0;
+    }
+}
+
+main {
+    word-break: break-word;
+}
+
 @import "../../node_modules/bootstrap/scss/functions";
 @import "../../node_modules/bootstrap/scss/variables";
 @import "../../node_modules/bootstrap/scss/maps";

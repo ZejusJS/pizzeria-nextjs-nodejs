@@ -6,6 +6,7 @@ const catchAsync = require('../utils/catchAsync');
 const ExpressError = require('../utils/ExpressError');
 const { mwIsLoggedIn } = require('../utils/mw-isLoggedIn');
 const { validateRegister, validateLogin } = require('../utils/mw-validateAuth');
+const { validateShippingAdress } = require('../utils/mw-validateAdress');
 
 const User = require('../models/user')
 const Cart = require('../models/cart')
@@ -94,9 +95,23 @@ router.get('/getUser', mwIsLoggedIn, catchAsync(async function (req, res, next) 
         email: req.user?.email,
         roles: req.user?.roles,
         id: req.user?._id,
-        invoiceInfo: req.user?.invoiceInfo
+        invoiceInfo: req.user?.invoiceInfo,
+        shippingAdress: req.user?.shippingAdress
     }
     res.status(200).json(user)
+}))
+
+router.post('/adress', mwIsLoggedIn, validateShippingAdress, catchAsync(async function(req,res,next) {
+    const userId = req.user?._id
+    const findUser = await User.findById(userId)
+    if (!findUser) return res.status(400).json({ code: 350 })
+
+    Object.entries(req.body).map(entry => {
+        findUser.shippingAdress[entry[0]] = entry[1]
+    })
+    await findUser.save()
+
+    return res.sendStatus(200)
 }))
 
 module.exports = router

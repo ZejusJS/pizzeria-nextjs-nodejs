@@ -123,8 +123,7 @@ router.post('/card', catchAsync(async function (req, res, next) {
     const signatureProcess = signProcess.toString('base64');
     const signatureProcessUri = encodeURIComponent(signatureProcess)
 
-    let url = `https://iapi.iplatebnibrana.csob.cz/api/v1.9/payment/process/
-    ${merchantIdBase64url}/${payIdBase64url}/${dttmBase64url}/${signatureProcessUri}`
+    let url = `https://iapi.iplatebnibrana.csob.cz/api/v1.9/payment/process/${merchantIdBase64url}/${payIdBase64url}/${dttmBase64url}/${signatureProcessUri}`
 
     // console.log(url)
     res.status(200).json({ url })

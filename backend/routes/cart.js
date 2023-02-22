@@ -123,7 +123,7 @@ router.get('/getCartAndUser', catchAsync(async function (req, res, next) {
         name: req.user?.name,
         roles: req.user?.roles
     }
-    console.log(user)
+    // console.log(user)
     res.status(200).json({ cart: cart, user })
 }))
 

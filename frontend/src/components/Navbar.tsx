@@ -51,7 +51,7 @@ const Navbar = ({ cart, setExpanded, expanded, user }) => {
       <div className={`nav-container ${expanded ? 'expanded' : ''}`}>
         <div>
           <div className='logo-name'>
-            <Link href='/' className='logo-link'>
+            <Link href='/' className='logo-link' shallow={true}>
               <img className='logo' src="/favicon.svg" alt="" />
               <h1>Mamma Mia</h1>
             </Link>
@@ -72,7 +72,7 @@ const Navbar = ({ cart, setExpanded, expanded, user }) => {
         </div>
         <div className='links-row linky'>
           <div>
-            <Link href='/'>
+            <Link href='/' shallow={true}>
               Home page
             </Link>
           </div>

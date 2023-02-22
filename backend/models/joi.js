@@ -32,3 +32,12 @@ module.exports.paymentSchema =
             _id: Joi.string().required(),
         }).required(),
     }).required()
+
+module.exports.adressShippingSchema =
+    Joi.object({
+        firstname: Joi.string().min(0).max(30),
+        lastname: Joi.string().min(0).max(30),
+        adress: Joi.string().min(0).max(50),
+        city: Joi.string().min(0).max(50),
+        zip: Joi.string().min(0).max(16),
+    }).required()

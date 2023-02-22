@@ -2,18 +2,18 @@
 first project with nextjs + nodejs
 
 ### To-do list:
-- [ ] ~~Completly rebuild auth with JWT for easier accessing basic info of user~~ - sessions are ok
-- [ ] Verify every request with Joi... check if user email is taken, req.body is complete, etc. - In progress
+- [x] ~~Completly rebuild auth with JWT for easier accessing basic info of user~~ - sessions are ok
+- [ ] Verify every request with Joi... check if user email is taken, req.body is complete, etc...... In progress
 - [x] Repair checkout page, so it will fetch cart from query
 - [x] Build links in nav and style it
 - [ ] Do middlewares in backend for checking cart's user
-- [ ] ~~Calculate total price in CZK (maybe from someone's api)~~ - Prices only in CZK
-- [ ] Implement sandbox gateway (maybe from ČSOB) - In progress
+- [x] ~~Calculate total price in CZK (maybe from someone's api)~~ - Prices only in CZK
+- [ ] Implement sandbox gateway (maybe from ČSOB)..... In progress
 - [ ] Try implement Google auth
 - [x] Clear the ducking mess in the new-pizza's form validation code!!!!! 
 - [ ] Paginate pizzas
 - [x] Style login and signup pages
-- [ ] User site for displaying and editing user's information, adress, orders etc.
+- [ ] User site for displaying and editing user's information, adress, orders etc..... In progress
 - [ ] CSP in NextJS
 - [ ] Admin page for all orders from users
 - [ ] Page after successful or failded payment

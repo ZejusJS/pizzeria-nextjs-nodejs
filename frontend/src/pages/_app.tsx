@@ -1,8 +1,17 @@
-declare module "*.module.css";
-declare module "*.module.scss";
+// declare module "*.module.css";
+// declare module "*.module.scss";
 // import { Quicksand, Karla } from '@next/font/google'
+import Router from 'next/router';
+import NProgress from 'nprogress'
+import axios from 'axios'
 import Meta from '../components/Meta'
 import { server } from '../config/config'
+import Navbar from '../components/Navbar'
+import React, { useEffect, useState, useRef } from 'react'
+
+import deleteItemFunc from '../utils/deleteItem'
+import singleAddFunc from '../utils/singleAdd'
+
 import '../styles/loading.scss'
 import '../styles/nprogress.scss'
 import '../styles/changeDefault.scss'
@@ -13,25 +22,7 @@ import '../styles/new-pizza.scss'
 import '../styles/statics.scss'
 import '../styles/navbar.scss'
 import '../styles/auth.scss'
-import Navbar from '../components/Navbar'
-import Link from 'next/link'
-import React, { useEffect, useState, useRef } from 'react'
-import Router from 'next/router';
-import bootstrap from 'bootstrap'
-import NProgress from 'nprogress'
-import axios from 'axios'
-import deleteItemFunc from '../utils/deleteItem'
-import singleAddFunc from '../utils/singleAdd'
-
-// const quicksand = Quicksand({
-//   weight: ['400', '600', '700'],
-//   subsets: ['latin'],
-// })
-
-// const karla = Karla({
-//   weight: ['200', '300', '400', '500', '600', '700', '800'],
-//   subsets: ['latin']
-// })
+import '../styles/user.scss'
 
 export default function App({ Component, pageProps }) {
   const [cart, setCart] = useState({})

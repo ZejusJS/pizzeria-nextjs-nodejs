@@ -288,6 +288,7 @@ input.radio-green[type=radio] {
 
     h3 {
         font-size: 20px;
+        text-align: center;
     }
 
     .details {
@@ -339,14 +340,4 @@ button.submit-order {
         outline-offset: 1px;
         outline: 2px solid rgba(68, 68, 68, 0.377);
     }
-}
-
-.iframe-payment {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 95vw;
-    height: 95vh;
-    z-index: 1500;
 }
