@@ -19,7 +19,7 @@ first project with nextjs + nodejs
 - [ ] Page after successful or failded payment
 - [ ] Error message when bad order in checkout
 
-### Links:
+### Links: (last update: 11.2.2023)
 (long waiting for fresh starts, free tiers, maybe frontend isn't in sync with backend - I didn't deploy backend aswell) <br>
 - **Frontend**: https://effortless-cupcake-860fb7.netlify.app/
 - **Backend**: https://pizzeria-backend-4vij.onrender.com/
