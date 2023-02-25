@@ -4,7 +4,7 @@ const About = () => {
       <main>
         <section className='about'>
           <div className='about-container about-what'>
-            <h3>What are we?</h3>
+            <h3>Who are we?</h3>
             <p>We are pizzerias across the whole Czech Republic</p>
           </div>
           <div className='about-container about-place'>

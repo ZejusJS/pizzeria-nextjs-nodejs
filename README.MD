@@ -17,6 +17,7 @@ first project with nextjs + nodejs
 - [ ] CSP in NextJS
 - [ ] Admin page for all orders from users
 - [ ] Page after successful or failded payment
+- [ ] Error message when bad order in checkout
 
 ### Links:
 (long waiting for fresh starts, free tiers, maybe frontend isn't in sync with backend - I didn't deploy backend aswell) <br>

@@ -7,6 +7,8 @@ const ExpressError = require('../utils/ExpressError');
 const { mwIsLoggedIn } = require('../utils/mw-isLoggedIn');
 const { validateRegister, validateLogin } = require('../utils/mw-validateAuth');
 const { validateShippingAdress } = require('../utils/mw-validateAdress');
+const { validateUserDetails } = require('../utils/mw-validateDetails');
+const { validateUserBilling } = require('../utils/mw-validateBilling');
 
 const User = require('../models/user')
 const Cart = require('../models/cart')
@@ -109,6 +111,32 @@ router.post('/adress', mwIsLoggedIn, validateShippingAdress, catchAsync(async fu
     Object.entries(req.body).map(entry => {
         findUser.shippingAdress[entry[0]] = entry[1]
     })
+    await findUser.save()
+
+    return res.sendStatus(200)
+}))
+
+router.post('/details', mwIsLoggedIn, validateUserDetails, catchAsync(async function(req,res,next) {
+    const userId = req.user?._id
+    const findUser = await User.findById(userId)
+    if (!findUser) return res.status(400).json({ code: 350 })
+
+    findUser.name = req.body.name
+    await findUser.save()
+
+    return res.sendStatus(200)
+}))
+
+router.post('/billing', mwIsLoggedIn, validateUserBilling, catchAsync(async function(req,res,next) {
+    const userId = req.user?._id
+    const findUser = await User.findById(userId)
+    if (!findUser) return res.status(400).json({ code: 350 })
+
+    findUser.invoiceInfo.adress = req.body.adress
+    findUser.invoiceInfo.zip = req.body.zip
+    findUser.invoiceInfo.city = req.body.city
+    findUser.invoiceInfo.firstname = req.body.firstname
+    findUser.invoiceInfo.lastname = req.body.lastname
     await findUser.save()
 
     return res.sendStatus(200)

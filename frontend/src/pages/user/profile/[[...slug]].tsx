@@ -1,13 +1,18 @@
 import axios from "axios"
 import Link from "next/link"
 import { useRouter } from "next/router"
-import { createContext, useRef, useState } from 'react'
+import { createContext } from 'react'
 
 import { server } from "../../../config/config"
+
 import UserSvg from "../../../images/User"
 import ArrowLeftSvg from "../../../images/ArrowLeft"
+import DollarSvg from "../../../images/Dollar"
+import HouseSvg from "../../../images/Houseadress"
 
 import Adress from '../../../components/user/Adress'
+import Details from '../../../components/user/Details'
+import Billing from '../../../components/user/Billing'
 
 export const UserContext = createContext('')
 
@@ -37,15 +42,20 @@ const index = ({ userData }) => {
 
                     {!slug[0]
                         ?
-                        <div className="navigation">
-                            <Link href={'/user/profile/adress'} shallow={true}>
-                                <div>
-                                    <span>Adress</span>
-                                </div>
-                            </Link>
+                        <div className="user-navigation">
                             <Link href={'/user/profile/details'} shallow={true}>
                                 <div>
-                                    <span>User details</span>
+                                    <UserSvg /><span>User details</span>
+                                </div>
+                            </Link>
+                            <Link href={'/user/profile/adress'} shallow={true}>
+                                <div>
+                                    <HouseSvg /><span>Shipping adress</span>
+                                </div>
+                            </Link>
+                            <Link href={'/user/profile/billing'} shallow={true}>
+                                <div>
+                                    <DollarSvg /><span>Billing</span>
                                 </div>
                             </Link>
                         </div>
@@ -57,7 +67,7 @@ const index = ({ userData }) => {
                                 onClick={() => router.push('/user/profile',
                                     null, { shallow: true })}
                             >
-                                <ArrowLeftSvg /> 
+                                <ArrowLeftSvg />
                                 <span>Back to navigation</span>
                             </button>
                         </>
@@ -65,11 +75,26 @@ const index = ({ userData }) => {
                     {
                         slug[0] === 'adress'
                             ?
-                            <Adress 
-                            shippingAdress={shippingAdress}
-                            router={router}
+                            <Adress
+                                shippingAdress={shippingAdress}
+                                router={router}
                             />
-                            : ''
+                            :
+                            slug[0] === 'details'
+                                ?
+                                <Details
+                                    router={router}
+                                    userData={userData}
+                                />
+                                :
+                                slug[0] === 'billing'
+                                    ?
+                                    <Billing
+                                        router={router}
+                                        userData={userData}
+                                    />
+                                    :
+                                    ''
                     }
                 </section>
             </main>

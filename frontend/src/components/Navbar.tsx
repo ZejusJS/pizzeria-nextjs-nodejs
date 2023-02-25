@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { server } from '../config/config'
-import NavSvg from '../images/Nav'
-import CartSvg from '../images/Cart'
 import { useRouter } from 'next/router'
 import NProgress from 'nprogress'
 import axios from 'axios'
+
+import UserCircleSvg from "../images/UserCircle"
+import NavSvg from '../images/Nav'
+import CartSvg from '../images/Cart'
 
 const Navbar = ({ cart, setExpanded, expanded, user }) => {
   let itemsCount = 0
@@ -93,22 +95,25 @@ const Navbar = ({ cart, setExpanded, expanded, user }) => {
                   Sign Up
                 </Link>
               </div>
-              <div className='auth'> 
+              <div className='auth'>
                 <Link href='/user/login'>
-                  Log In
+                  Login
                 </Link>
               </div>
             </>
-            : ''
-          }
-          {/* <a href={`${server}/user/logout`}>Logout</a> */}
-          {user.email ?
-            <div>
-              <form className='log-out' onSubmit={(e) => logout(e)}>
-                <button type='submit'>Log Out</button>
-              </form>
-            </div>
-            : ''
+            :
+            <>
+              <div>
+                <form className='log-out' onSubmit={(e) => logout(e)}>
+                  <button type='submit'>Log Out</button>
+                </form>
+              </div>
+              <div className='user'>
+                <Link href='/user/profile'>
+                  <UserCircleSvg />
+                </Link>
+              </div>
+            </>
           }
           {user.roles?.admin ?
             <div>
@@ -119,7 +124,7 @@ const Navbar = ({ cart, setExpanded, expanded, user }) => {
             : ''}
         </div>
         <div className='links linky'>
-          <div>
+          <div className='link'>
             <Link href='/'>
               Home page
             </Link>
@@ -127,33 +132,38 @@ const Navbar = ({ cart, setExpanded, expanded, user }) => {
               About
             </Link>
           </div>
-          <div>
+          <div className='link'>
             <Link href='/cart'>
               Cart
             </Link>
           </div>
-          <div>
+          <div className='link user-links'>
             {!user.email ?
               <>
                 <Link href='/user/signup'>
                   Sign Up
                 </Link>
                 <Link href='/user/login'>
-                  Log In
+                  Login
                 </Link>
               </>
-              : ''
-            }
-            {/* <a href={`${server}/user/logout`}>Logout</a> */}
-            {user.email ?
-              <form className='log-out' onSubmit={(e) => logout(e)}>
-                <button type='submit'>Log Out</button>
-              </form>
-              : ''
+              :
+              <>
+                <div>
+                  <form className='log-out' onSubmit={(e) => logout(e)}>
+                    <button type='submit'>Log Out</button>
+                  </form>
+                </div>
+                <div className='user'>
+                  <Link href='/user/profile'>
+                    <UserCircleSvg /> <span>{user.name}</span>
+                  </Link>
+                </div>
+              </>
             }
           </div>
           {user.roles?.admin ?
-            <div>
+            <div className='link'>
               <Link href='/admin/new-pizza'>
                 Create a new pizza
               </Link>

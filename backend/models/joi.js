@@ -41,3 +41,17 @@ module.exports.adressShippingSchema =
         city: Joi.string().min(0).max(50),
         zip: Joi.string().min(0).max(16),
     }).required()
+
+module.exports.userBillingSchema =
+    Joi.object({
+        firstname: Joi.string().max(30).required(),
+        lastname: Joi.string().max(30).required(),
+        adress: Joi.string().max(50).required(),
+        city: Joi.string().max(50).required(),
+        zip: Joi.string().max(16).required(),
+    }).required()
+
+module.exports.userDetailsSchema =
+    Joi.object({
+        name: Joi.string().max(24).required(),
+    }).required()

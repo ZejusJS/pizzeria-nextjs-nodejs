@@ -15,8 +15,10 @@ const Pizza = require('../models/pizza')
 const Cart = require('../models/cart')
 const User = require('../models/user')
 
+const { validatePayment } = require('../utils/mw-validatePayment')
 
-router.post('/card', catchAsync(async function (req, res, next) {
+
+router.post('/card', validatePayment, catchAsync(async function (req, res, next) {
     const { firstname, lastname, adress, city, zip } = req.body
     const items = []
     let totalPriceItems = 0
@@ -33,6 +35,7 @@ router.post('/card', catchAsync(async function (req, res, next) {
 
     for (let i = 0; i < itemsId.length; i++) {
         findPizza = await Pizza.findById(itemsId[i])
+        if (!findPizza) return res.status(400).json({ code: 300 })
         const findItemInCart = req.body.cartData.items.filter((item) => findPizza.equals(item.item._id))[0]
         totalPriceItems += (findPizza.price * findItemInCart.quantity)
         items.push(findPizza)
@@ -56,10 +59,10 @@ router.post('/card', catchAsync(async function (req, res, next) {
         returnMethod: 'GET',
         cart: [
             {
-                "name": "Purchase Mamma Mia",
+                "name": "Mamma Mia",
                 "quantity": 1,
                 "amount": totalPriceItems * 100,
-                "description": 'Purchase in Mamma Mia store' 
+                "description": 'Purchase in Mamma Mia store'
             },
             {
                 "name": "Shipping",
