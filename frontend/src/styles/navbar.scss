@@ -217,6 +217,7 @@ nav {
             .cart {
                 position: relative;
                 width: 50px;
+                margin-right: 20px;
 
                 svg {
                     width: 100%;
@@ -294,6 +295,11 @@ nav {
 
         .logo-name {
             .options-container {
+
+                .cart {
+                    margin: 0;
+                }
+
                 .expand-nav {
                     display: flex;
                 }

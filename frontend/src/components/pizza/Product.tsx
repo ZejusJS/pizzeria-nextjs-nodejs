@@ -27,49 +27,66 @@ const Product = ({ item, singleAdd, cart, deleteItem, onClick }) => {
 
     return (
         <div id='view-product' onClick={(e) => onClick(e)}>
+            <div
+                className='cross'
+                onClick={(e) => onClick(e)}
+            >
+                &#9587;
+            </div>
             <div className='product-center'>
                 <div className='pizza-img-container' onClick={(e) => e.stopPropagation()}>
                     <img src={item.images[0].url} alt="" />
                 </div>
-                <div className='pizza-thumbnail' onClick={(e) => e.stopPropagation()}>
-                    <div className='pizza-info'>
-                        <h3>{item.title}</h3>
-                        <p>{item.description}</p>
-                    </div>
-                    <hr />
-                    <div>
-                        {item.ingredients.length ?
-                            <div className='ingredients' key="fd">
-                                {ingredients}
-                            </div>
-                            : ''}
-                    </div>
-                </div>
-                <div className='price fw-500' onClick={(e) => e.stopPropagation()}>
-                    {item.price} {item.currency}
-                </div>
-                <div className='add-to-cart-container'>
-                    <Button
-                        pizza={item}
-                        onClick={
-                            isInCart ? (e, piz) => deleteItem(e, piz) : (e, piz) => singleAdd(e, piz)
-                        }
-                        isInCart={isInCart}
-                    >
-                        <>
-                            {
-                                isInCart ?
-                                    <CartRemove color={'#00c216'} />
-                                    :
-                                    <CartAdd />
-                            }
-                            <div className='spinner-container'>
-                                <div className="spinner-border" role="status">
-                                    <span className="visually-hidden"></span>
+                <div className='info-container'>
+                    <div className='pizza-thumbnail' onClick={(e) => e.stopPropagation()}>
+                        <div className='pizza-info'>
+                            <h3>{item.title}</h3>
+                            <p>{item.description}</p>
+                        </div>
+                        <hr />
+                        <div>
+                            {item.ingredients.length ?
+                                <div className='ingredients' key="fd">
+                                    {ingredients}
                                 </div>
-                            </div>
-                        </>
-                    </Button>
+                                : ''}
+                        </div>
+                    </div>
+                    <div className='cart-price-container'>
+                        <div className='price fw-500' onClick={(e) => e.stopPropagation()}>
+                            {item.price} {item.currency}
+                        </div>
+                        <div className='add-to-cart-container'>
+                            <Button
+                                pizza={item}
+                                onClick={
+                                    isInCart ? (e, piz) => deleteItem(e, piz) : (e, piz) => singleAdd(e, piz)
+                                }
+                                isInCart={isInCart}
+                            >
+                                <>
+                                    {
+                                        isInCart ?
+                                            <>
+                                                <CartRemove color={'#00c216'} />
+                                                <span>In Cart</span>
+                                            </>
+                                            :
+                                            <>
+                                                <CartAdd />
+                                                <span>Add to Cart</span>
+                                            </>
+
+                                    }
+                                    <div className='spinner-container'>
+                                        <div className="spinner-border" role="status">
+                                            <span className="visually-hidden"></span>
+                                        </div>
+                                    </div>
+                                </>
+                            </Button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

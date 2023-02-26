@@ -23,6 +23,7 @@ import '../styles/statics.scss'
 import '../styles/navbar.scss'
 import '../styles/auth.scss'
 import '../styles/user.scss'
+import '../styles/cart.scss'
 
 export default function App({ Component, pageProps }) {
   const [cart, setCart] = useState({})

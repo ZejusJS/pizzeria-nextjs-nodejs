@@ -1,14 +1,12 @@
-import axios from 'axios'
-import { useEffect, useState } from 'react'
-import { server } from '../../config/config'
+import { useRouter } from 'next/router';
+import Link from 'next/link';
+
 import Item from '../../components/cart/CartPizza'
 import Product from '../../components/pizza/Product';
 import Unfocus from '../../components/Unfocus';
-import deleteItemFunc from '../../utils/deleteItem'
-import singleAddFunc from '../../utils/singleAdd'
 import changeQntFunc from '../../utils/changeQnt';
-import { useRouter } from 'next/router';
-import Link from 'next/link';
+
+import CartThinSvg from '../../images/CartThin'
 
 const cart = ({ cart, setCart,
   viewItem, unViewItem,
@@ -33,22 +31,33 @@ const cart = ({ cart, setCart,
           singleAdd={(e, piz) => singleAdd(e, piz)} />
         : ''}
       <main>
-        <section className='cart-items'>
-          {cart?.items?.map(item => {
-            return <Item
-              changeQnt={(e, item, qnt) => changeQnt(e, item, qnt)}
-              item={item}
-              key={item._id}
-              viewItem={(e) => viewItem(e, item.item)}
-            />
-          })}
-        </section>
-        <Link href={{
-          pathname: '/cart/checkout',
-          query: { cart: cart._id },
-        }}>
-          Check out
-        </Link>
+        {cart?.items?.length > 0
+          ?
+          <>
+            <section className='cart-items'>
+              {cart?.items?.map(item => {
+                return <Item
+                  changeQnt={(e, item, qnt) => changeQnt(e, item, qnt)}
+                  item={item}
+                  key={item._id}
+                  viewItem={(e) => viewItem(e, item.item)}
+                />
+              })}
+            </section>
+            <Link href={{
+              pathname: '/cart/checkout',
+              query: { cart: cart._id },
+            }}>
+              Check out
+            </Link>
+          </>
+          :
+          <div className='empty-cart'>
+            <CartThinSvg />
+            <p>Your cart is empty</p>
+          </div>
+      }
+
       </main>
     </>
   )

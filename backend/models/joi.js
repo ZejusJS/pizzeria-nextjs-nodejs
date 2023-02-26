@@ -15,7 +15,8 @@ module.exports.registerSchema =
 module.exports.loginSchema =
     Joi.object({
         email: Joi.string().email({ tlds: { allow: false } }).max(100).required(),
-        password: Joi.string().min(8).max(40).required()
+        password: Joi.string().min(8).max(40).required(),
+        newCart: Joi.boolean().required()
     }).required()
 
 module.exports.paymentSchema =

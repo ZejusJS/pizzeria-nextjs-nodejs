@@ -43,6 +43,27 @@
     }
 }
 
+.change-auth {
+    font-size: 19px;
+    text-align: center;
+    
+    span {
+        margin: 0 3px;
+
+        &.selected {
+            font-weight: 500;
+            color: rgb(0, 84, 209);
+            text-decoration: underline;
+        }
+
+        &.mode:hover {
+            cursor: pointer;
+            text-decoration: underline;
+            color: rgb(0, 101, 252);
+        }
+    }
+}
+
 #order {
     word-break: break-word;
 }

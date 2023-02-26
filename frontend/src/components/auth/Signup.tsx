@@ -106,11 +106,14 @@ const Signup = ({ setUser, setOrderDetails }) => {
         invoiceError?.current?.classList.remove('shown')
     }
 
+    let submitting = false
     async function handleSubmit(e) {
         axios.defaults.withCredentials = true
         e.stopPropagation()
         e.preventDefault()
 
+        if (submitting) return
+        submitting = true
         await axios({
             method: 'post',
             // url: `${server}/user/signup`,
@@ -135,11 +138,13 @@ const Signup = ({ setUser, setOrderDetails }) => {
                 if (router.pathname === '/user/signup') {
                     window.location.href = "/"
                 } else if (router.pathname = '/cart/checkout') {
-                    console.log('signed up')
-                    setUser(res.data?.user)
-                    setOrderDetails(res.data?.invoiceInfo)
+                    // setUser(res.data?.user)
+                    // setOrderDetails(res.data?.invoiceInfo)
                     window.location.href = router.asPath
                 }
+                setTimeout(() => {
+                    submitting = false
+                }, 400);
             })
             .catch(e => {
                 console.log(e)
@@ -159,6 +164,9 @@ const Signup = ({ setUser, setOrderDetails }) => {
                     console.log('body incorrect')
                     invoiceError?.current?.classList.add('shown')
                 }
+                setTimeout(() => {
+                    submitting = false
+                }, 400);
             })
     }
 
@@ -222,10 +230,9 @@ const Signup = ({ setUser, setOrderDetails }) => {
 
                     <hr />
 
-                    <p className='info'>
-                        Please provide invoice informations.
-                        These informations can be used for delivery, too.
-                    </p>
+                    <h3 className='info fw-500'>
+                        Billing informations
+                    </h3>
 
                     <div className='input-container'>
                         <label htmlFor="firstname">First name:</label>
@@ -322,9 +329,9 @@ const Signup = ({ setUser, setOrderDetails }) => {
                     <div
                         ref={invoiceError}
                         className='error'>
-                        <p>Some fields in inovice information are missing or are invalid.</p>
+                        <p>Some fields in billing information are missing or are invalid.</p>
                     </div>
-                    <button type='submit' className='submit-btn'>Sign Up</button>
+                    <button type='submit' className='submit-btn'>Signup</button>
                 </form>
             </div>
         </>

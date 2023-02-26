@@ -55,7 +55,13 @@ router.post('/login', validateLogin, passport.authenticate('local', {
     keepSessionInfo: true // pro zachování req.session.returnTo (původní URL, kam jsme se chtěli dostat ještě než nás to přesměrovalo)
 }), catchAsync(async function (req, res, next) {
     console.log(req.query)
-    if (req.user && !req.user.interaction && !req.user.interaction.cart) {
+    const findCart = await Cart.findById(req.cookies?.cart)
+    console.log(findCart)
+    if (req.body.newCart === true && findCart?.items?.length) {
+        const user = await User.findById(req.user._id)
+        user.interaction.cart = req.cookies.cart
+        await user.save()
+    } else if (req.user && !req.user.interaction && !req.user.interaction.cart) {
         const cart = new Cart()
         cart.user = req.user._id
         const user = await User.findById(req.user._id)
@@ -63,6 +69,7 @@ router.post('/login', validateLogin, passport.authenticate('local', {
         await user.save()
         await cart.save()
     }
+
     if (req.cookies.cart) res.clearCookie("cart");
     const user = {
         email: req.user?.email,
@@ -72,7 +79,7 @@ router.post('/login', validateLogin, passport.authenticate('local', {
     const cart = await Cart.findById(req.user?.interaction?.cart).populate('items.item')
     res.status(200).json({ msg: 'logged in', user, cart })
 }))
-// 
+
 router.post('/logout', catchAsync(async function (req, res, next) {
     if (req.user && req.user._id) {
         // req.logout(function (err) {
@@ -103,7 +110,7 @@ router.get('/getUser', mwIsLoggedIn, catchAsync(async function (req, res, next) 
     res.status(200).json(user)
 }))
 
-router.post('/adress', mwIsLoggedIn, validateShippingAdress, catchAsync(async function(req,res,next) {
+router.post('/adress', mwIsLoggedIn, validateShippingAdress, catchAsync(async function (req, res, next) {
     const userId = req.user?._id
     const findUser = await User.findById(userId)
     if (!findUser) return res.status(400).json({ code: 350 })
@@ -116,7 +123,7 @@ router.post('/adress', mwIsLoggedIn, validateShippingAdress, catchAsync(async fu
     return res.sendStatus(200)
 }))
 
-router.post('/details', mwIsLoggedIn, validateUserDetails, catchAsync(async function(req,res,next) {
+router.post('/details', mwIsLoggedIn, validateUserDetails, catchAsync(async function (req, res, next) {
     const userId = req.user?._id
     const findUser = await User.findById(userId)
     if (!findUser) return res.status(400).json({ code: 350 })
@@ -127,7 +134,7 @@ router.post('/details', mwIsLoggedIn, validateUserDetails, catchAsync(async func
     return res.sendStatus(200)
 }))
 
-router.post('/billing', mwIsLoggedIn, validateUserBilling, catchAsync(async function(req,res,next) {
+router.post('/billing', mwIsLoggedIn, validateUserBilling, catchAsync(async function (req, res, next) {
     const userId = req.user?._id
     const findUser = await User.findById(userId)
     if (!findUser) return res.status(400).json({ code: 350 })

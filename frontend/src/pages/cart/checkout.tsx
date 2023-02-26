@@ -1,9 +1,9 @@
 import { server } from '../../config/config'
 import CheckoutPizza from '../../components/cart/CheckoutPizza'
 import axios from 'axios'
-import NProgress from 'nprogress'
-import { useRef, useState, useEffect, useCallback } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import Signup from '../../components/auth/Signup'
+import Login from '../../components/auth/Login'
 import Order from '../../components/checkout/Order'
 import Shipping from '../../components/checkout/Shipping'
 import PaymentMethods from '../../components/checkout/PaymentMethods'
@@ -14,7 +14,7 @@ import HouseAdressSvg from '../../images/Houseadress'
 import DollarSvg from '../../images/Dollar'
 import ShippingSvg from '../../images/Box'
 
-const checkout = ({ cartData, setUser, user, userData }) => {
+const checkout = ({ cartData, setUser, user, userData, setCart }) => {
     const [orderDetails, setOrderDetails] = useState({
         firstname: '',
         lastname: '',
@@ -25,6 +25,7 @@ const checkout = ({ cartData, setUser, user, userData }) => {
     const [shipping, setShipping] = useState({ name: 'standard', price: 70 })
     const [paymentMethod, setPaymentMethod] = useState({ name: 'card', price: 0 })
     const [totalPrice, setTotalPrice] = useState(0)
+    const [auth, setAuth] = useState(0)
 
     // console.log(orderDetails)
     const invoiceInfo = userData.invoiceInfo
@@ -200,10 +201,37 @@ const checkout = ({ cartData, setUser, user, userData }) => {
                 </section>
                 <div id='order'>
                     {!user?.email ?
-                        <Signup
-                            setUser={setUser}
-                            setOrderDetails={setOrderDetails}
-                        />
+                        <>
+                            <div className='change-auth'>
+                                <span
+                                    onClick={() => setAuth(0)}
+                                    className={`mode ${auth === 0 ? 'selected' : ''}`}
+                                >
+                                    Signup
+                                </span>
+                                <span>/</span> 
+                                <span
+                                    onClick={() => setAuth(1)}
+                                    className={`mode ${auth === 1 ? 'selected' : ''}`}
+                                >
+                                    Login
+                                </span>
+                            </div>
+                            {
+                                auth === 0
+                                    ?
+                                    <Signup
+                                        setUser={setUser}
+                                        setOrderDetails={setOrderDetails}
+                                    />
+                                    :
+                                    <Login
+                                    user={user}
+                                    setUser={setUser}
+                                    setCart={setCart}
+                                    />
+                            }
+                        </>
                         :
                         <>
                             <div className='slides-container'>
@@ -303,7 +331,7 @@ const checkout = ({ cartData, setUser, user, userData }) => {
 export const getServerSideProps = async (context) => {
     let error = false
 
-    let cartData = {}
+    let cartData = { items: [] }
     let userData = {}
 
     await axios({
@@ -324,6 +352,15 @@ export const getServerSideProps = async (context) => {
         .catch(e => {
             error = true
         })
+
+    if (!cartData?.items?.length) {
+        return {
+            redirect: {
+                permanent: false,
+                destination: "/cart",
+            },
+        }
+    }
 
     await axios({
         method: 'get',

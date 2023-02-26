@@ -1,0 +1,18 @@
+.empty-cart {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    svg {
+        width: 90%;
+        max-width: 200px;
+        height: auto;
+        flex-shrink: 0;
+    }
+
+    p {
+        font-size: 25px;
+        text-align: center;
+    }
+}

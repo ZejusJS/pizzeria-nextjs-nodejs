@@ -24,7 +24,7 @@ const Navbar = ({ cart, setExpanded, expanded, user }) => {
     if (expanded) {
       setExpanded(!expanded);
     }
-  }, [router.asPath]);
+  }, [router]);
 
   async function logout(e) {
     e.preventDefault()
@@ -72,6 +72,7 @@ const Navbar = ({ cart, setExpanded, expanded, user }) => {
             </div>
           </div>
         </div>
+
         <div className='links-row linky'>
           <div>
             <Link href='/' shallow={true}>
@@ -83,11 +84,11 @@ const Navbar = ({ cart, setExpanded, expanded, user }) => {
               About
             </Link>
           </div>
-          <div>
+          {/* <div>
             <Link href='/cart'>
               Cart
             </Link>
-          </div>
+          </div> */}
           {!user.email ?
             <>
               <div className='auth'>
@@ -125,7 +126,7 @@ const Navbar = ({ cart, setExpanded, expanded, user }) => {
         </div>
         <div className='links linky'>
           <div className='link'>
-            <Link href='/'>
+            <Link href='/' shallow={true}>
               Home page
             </Link>
             <Link href='/about'>

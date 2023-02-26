@@ -139,4 +139,25 @@
         font-size: 18px;
         font-weight: 500;
     }
+
+    &.checkbox {
+        flex-direction: row;
+        gap: 5px;
+        align-items: center;
+        justify-content: center;
+        input {
+            width: 20px;
+            height: 20px;
+        }
+
+        label:hover {
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        input:hover  {
+            cursor: pointer;
+            text-decoration: underline;
+        }
+    }
 }
