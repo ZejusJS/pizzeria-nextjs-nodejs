@@ -1,5 +1,3 @@
-import React from 'react'
-
 export default function Cartrepocomsvg() {
     return (
         <svg height="800px" width="800px" fill="none" stroke="#000000" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">

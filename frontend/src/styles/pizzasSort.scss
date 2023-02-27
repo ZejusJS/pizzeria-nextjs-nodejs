@@ -1,0 +1,42 @@
+.sort {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 7px;
+
+    .ingrs-sort {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        row-gap: 5px;
+        column-gap: 9px;
+
+        .ingr-pick {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            width: 40%;
+            word-break: break-all;
+
+            label {
+                overflow: hidden;
+                text-overflow: ellipsis;
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 1;
+            }
+        }
+
+        label:hover {
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        input[type=checkbox] {
+            cursor: pointer;
+        }
+
+        input[type=checkbox]:hover+label {
+            text-decoration: underline;
+        }
+    }
+}

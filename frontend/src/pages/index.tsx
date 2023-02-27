@@ -9,6 +9,7 @@ import { useState, useEffect, useContext } from 'react';
 import Link from 'next/link';
 import Product from '../components/pizza/Product';
 import Unfocus from '../components/Unfocus';
+import { useRouter } from 'next/router';
 
 export default function Home({
   pizzas,
@@ -20,6 +21,8 @@ export default function Home({
   deleteItem,
   itemToView,
   viewItem }) {
+    const [pizzasState, setPizzasState] = useState(pizzas)
+    const router = useRouter()
 
   return (
     <>
@@ -35,7 +38,9 @@ export default function Home({
           cart={cart}
           singleAdd={(e, piz) => singleAdd(e, piz)}
           viewItem={(e, i) => viewItem(e, i)}
-          pizzas={pizzas} />
+          pizzas={pizzasState} 
+          setPizzas={setPizzasState}
+          router={router}/>
       </main>
     </>
   )
@@ -45,6 +50,7 @@ export const getServerSideProps = async (context) => {
   // console.log('GSSD... ', context.req.headers.cookie)ˇ
   let pizzas
   let error
+  console.log(context.query)
   await axios({
     method: 'get',
     url: `${server}/pizza/all`,
@@ -52,7 +58,8 @@ export const getServerSideProps = async (context) => {
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
       'Access-Control-Allow-Origin': `${server}`
-    }
+    },
+    params: context.query
   })
     .then(res => pizzas = res.data)
     .catch(e => '')

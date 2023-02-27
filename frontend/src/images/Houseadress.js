@@ -1,5 +1,3 @@
-import React from 'react'
-
 export default function Houseadress() {
     return (
         <svg height="800px" width="800px" fill="#000000" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg">

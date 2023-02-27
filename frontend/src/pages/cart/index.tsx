@@ -7,6 +7,8 @@ import Unfocus from '../../components/Unfocus';
 import changeQntFunc from '../../utils/changeQnt';
 
 import CartThinSvg from '../../images/CartThin'
+import CartCheckoutSvg from '../../images/CartCheckout'
+import WindSvg from '../../images/Wind'
 
 const cart = ({ cart, setCart,
   viewItem, unViewItem,
@@ -43,20 +45,30 @@ const cart = ({ cart, setCart,
                   viewItem={(e) => viewItem(e, item.item)}
                 />
               })}
+              <div className='checkout-btn-container'>
+                <Link href={{
+                  pathname: '/cart/checkout',
+                  query: { cart: cart._id },
+                }}>
+                  <div className='checkout-btn'>
+                    <div>
+                      Check out
+                    </div>
+                    <div className='svgs'>
+                      <WindSvg className='wind' />
+                      <CartCheckoutSvg className='cart' />
+                    </div>
+                  </div>
+                </Link>
+              </div>
             </section>
-            <Link href={{
-              pathname: '/cart/checkout',
-              query: { cart: cart._id },
-            }}>
-              Check out
-            </Link>
           </>
           :
           <div className='empty-cart'>
             <CartThinSvg />
             <p>Your cart is empty</p>
           </div>
-      }
+        }
 
       </main>
     </>

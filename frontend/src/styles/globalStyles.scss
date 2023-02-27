@@ -140,8 +140,9 @@ main {
             left: -40px;
             width: 130px;
             height: 60px;
-            transform: rotate(42deg);
+            transform: rotate(45deg);
             background-color: white;
+            box-shadow: 0 0 10px -5px black;
         }
 
         @media (max-width: 500px) {

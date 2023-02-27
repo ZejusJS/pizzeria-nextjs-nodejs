@@ -16,3 +16,57 @@
         text-align: center;
     }
 }
+
+
+.checkout-btn-container {
+    display: flex;
+    justify-content: flex-end;
+    text-align: center;
+    a {
+        text-decoration: none;
+    }
+
+    .checkout-btn {
+        display: flex;
+        gap: 3px;
+        color: black;
+        align-items: center;
+        font-size: 19px;
+        background-color: rgb(255, 186, 58);
+        padding: 7px 10px;
+        border-radius: 7px;
+        width: fit-content;
+        // margin-right: 30px;
+
+        .svgs {
+            position: relative;
+            right: 7px;
+            display: flex;
+            width: 45px;
+
+
+            svg {
+                width: 30px;
+                height: auto;
+                flex-shrink: 0;
+            }
+
+            .wind {
+                position: relative;
+                left: 7px;
+                // right: 20px;
+                transform: rotate(180deg);
+                width: 23px;
+            }
+        }
+
+        &:hover {
+            background-color: rgb(255, 176, 30);
+        }
+
+        &:active {
+            outline: 2px solid rgb(255, 183, 50);
+            outline-offset: 2px;
+        }
+    }
+}

@@ -243,7 +243,7 @@ const checkout = ({ cartData, setUser, user, userData, setCart }) => {
                                         ref={prevBtnSlider}
                                         type='button'
                                     >
-                                        <span>1. Order Details</span><HouseAdressSvg />
+                                        <span>1. Adress</span><HouseAdressSvg />
                                     </button>
                                     <button
                                         name='1'
