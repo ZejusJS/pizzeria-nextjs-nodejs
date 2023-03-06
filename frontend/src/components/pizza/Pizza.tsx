@@ -16,7 +16,7 @@ const Pizza = ({ pizza, singleAdd, viewItem, cart }) => {
     setIsInCart(() => {
       let isItemInCart = false
       cart?.items?.map(it => {
-        if (it.item._id === pizza._id) isItemInCart = true
+        if (it?.item?._id === pizza._id) isItemInCart = true
       })
       return isItemInCart
     }
@@ -27,7 +27,7 @@ const Pizza = ({ pizza, singleAdd, viewItem, cart }) => {
     <div className='pizza-thumbnail index' onClick={(e) => viewItem(e, pizza)}>
       <div className='pizza-thumbnail-info'>
         <div className='pizza-img-container'>
-          <img src={pizza.images[0].url} alt="" />
+          <img src={pizza.images[0].url} alt="" loading='lazy' />
           {isInCart ?
             <>
               <div className='behind-cart'></div>

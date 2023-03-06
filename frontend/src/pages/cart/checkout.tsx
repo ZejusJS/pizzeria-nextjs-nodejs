@@ -192,10 +192,13 @@ const checkout = ({ cartData, setUser, user, userData, setCart }) => {
             <main>
                 <section className='cart-items'>
                     {cartData.items.map(item => {
-                        return <CheckoutPizza
+                        return item.item ?
+                         <CheckoutPizza
                             item={item}
                             key={item._id}
                         />
+                        :
+                        ''
                     })}
                     {cartData.totalCartPrice} CZK
                 </section>

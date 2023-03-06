@@ -31,12 +31,12 @@ router.post('/card', validatePayment, catchAsync(async function (req, res, next)
     const findUser = await User.findById(req.user._id)
     // const billingFullname = (findUser.invoiceInfo.firstname + ' ' + findUser.invoiceInfo.lastname).slice(0, 45)
 
-    const itemsId = req.body.cartData.items.map(item => item.item._id)
+    const itemsId = req.body.cartData.items.map(item => item.item?._id)
 
     for (let i = 0; i < itemsId.length; i++) {
         findPizza = await Pizza.findById(itemsId[i])
         if (!findPizza) return res.status(400).json({ code: 300 })
-        const findItemInCart = req.body.cartData.items.filter((item) => findPizza.equals(item.item._id))[0]
+        const findItemInCart = req.body.cartData.items.filter((item) => findPizza.equals(item.item?._id))[0]
         totalPriceItems += (findPizza.price * findItemInCart.quantity)
         items.push(findPizza)
     }

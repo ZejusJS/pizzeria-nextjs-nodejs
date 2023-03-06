@@ -3,40 +3,188 @@
     margin: 0 auto;
     padding: 7px;
 
-    .ingrs-sort {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        row-gap: 5px;
-        column-gap: 9px;
+    .sort-checks {
+        display: block;
+        max-height: 0;
+        overflow: hidden;
+        border: 0px solid rgb(105, 105, 105);
+        border-radius: 13px;
+        box-shadow: 0 0px 6px -2px black;
 
-        .ingr-pick {
+        transition: max-height 300ms, margin-top 550ms, padding 550ms;
+
+        .ingrs-sort {
             display: flex;
-            align-items: center;
-            gap: 3px;
-            width: 40%;
-            word-break: break-all;
+            flex-direction: row;
+            flex-wrap: wrap;
+            row-gap: 5px;
+            column-gap: 3px;
 
-            label {
-                overflow: hidden;
-                text-overflow: ellipsis;
-                display: -webkit-box;
-                -webkit-box-orient: vertical;
-                -webkit-line-clamp: 1;
+            .ingr-pick {
+                display: flex;
+                align-items: center;
+                gap: 1px;
+                width: 47%;
+                word-break: break-all;
+
+                label {
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    display: -webkit-box;
+                    -webkit-box-orient: vertical;
+                    -webkit-line-clamp: 1;
+                }
+            }
+
+            label:hover {
+                cursor: pointer;
+                text-decoration: underline;
+            }
+
+            input[type=checkbox] {
+                cursor: pointer;
+            }
+
+            input[type=checkbox]:hover + label {
+                text-decoration: underline;
+            }
+
+            input[type=checkbox]:checked + label {
+                font-weight: 500;
             }
         }
 
-        label:hover {
-            cursor: pointer;
-            text-decoration: underline;
+        &.visible {
+            padding: 5px;
+            margin-top: 6px;
+            max-height: 1300px;
+        }
+    }
+
+    .search-container {
+        display: flex;
+        flex-direction: row;
+        height: 33px;
+        justify-content: center;
+        max-width: 350px;
+        margin: 0 auto;
+
+        input {
+            height: 100%;
+            border: 1px solid rgb(160, 160, 160);
+            background-color: rgb(253, 253, 253);
+            width: 100%;
+            padding: 0;
+            font-size: 17.5px;
+            padding-left: 3px;
+            border-radius: 8px 0 0 8px;
+
+            &:focus {
+                outline: none;
+                border: 1px solid rgb(0, 0, 0);
+            }
+        }
+    }
+
+    .submit {
+        gap: 4px;
+        background-color: rgb(255, 196, 0);
+        padding: 0px 14px 0px 10px;
+        border-radius: 0 8px 8px 0;
+
+        svg {
+            width: 25px;
         }
 
-        input[type=checkbox] {
-            cursor: pointer;
+        &:hover {
+            background-color: rgb(255, 207, 50);
         }
 
-        input[type=checkbox]:hover+label {
-            text-decoration: underline;
+        &:active {
+            background-color: rgb(255, 196, 0);
         }
+
+        &.search {
+            padding: 0px 6px 0px 6px;
+        }
+    }
+
+    .searching-con {
+        max-width: 350px;
+        margin: 0 auto;
+    }
+
+    .btns-con {
+        display: flex;
+        gap: 5px;
+        flex-wrap: wrap;
+    }
+
+    .filter {
+        font-weight: 500;
+        padding: 3px 7px 3px 5px;
+        background-color: rgb(255, 214, 78);
+        gap: 1px;
+        margin-top: 3px;
+
+        &:hover {
+            background-color: rgb(255, 205, 40);
+        }
+    }
+
+    .filter-clear {
+        background-color: transparent;
+        color: rgb(255, 36, 36);
+        padding: 3px;
+        gap: 4px;
+        font-weight: 500;
+
+        span {
+            font-size: 16px;
+        }
+
+        div {
+            font-size: 18px;
+        }
+
+        &:hover {
+            text-decoration: underline;
+            
+        }
+    }
+
+    .sorting-con {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+    }
+
+    .btns-filter-con {
+        display: flex;
+        gap: 7px;
+    }
+
+    .submit-filter {
+        padding: 5px 7px;
+        gap: 2px;
+        background-color: rgb(255, 214, 78);
+        width: 80px;
+        font-size: 18px;
+
+        svg {
+            width: 23px;
+        }
+
+        &:hover {
+            background-color: rgb(255, 207, 50);
+        }
+
+        &:active {
+            background-color: rgb(255, 196, 0);
+        }
+    }
+
+    @media (max-width: 500px) {
+        padding: 7px 2px 7px 2px;
     }
 }

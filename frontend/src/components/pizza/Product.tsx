@@ -18,7 +18,8 @@ const Product = ({ item, singleAdd, cart, deleteItem, onClick }) => {
             let isItemInCart = false
             cart.items.map(it => {
                 // console.log(it.item._id, item._id)
-                if (it.item._id === item._id) isItemInCart = true
+                console.log(it)
+                if (it?.item?._id === item?._id) isItemInCart = true
             })
             return isItemInCart
         }

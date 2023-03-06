@@ -5,17 +5,23 @@ const catchAsync = require('../utils/catchAsync');
 const ExpressError = require('../utils/ExpressError');
 
 const Pizza = require('../models/pizza')
+const Ingredients = require('../models/ingredients')
 
 
 router.get('/all', catchAsync(async function (req, res, next) {
-    let { ingredients } = req.query
+    let { ingredients, q } = req.query
     if (ingredients?.length) ingredients = ingredients.split(',')
-    let pizzas
+    const config = {}
     if (ingredients?.length) {
-        pizzas = await Pizza.find({ ingredients: { $all: ingredients } }) // $all = musí splňovat vše
-    } else {
-        pizzas = await Pizza.find() // $all = musí splňovat vše
+        config.ingredients = { $all: ingredients } // $all = musí splňovat vše
     }
+    if (q?.length) {
+        config.$or = [
+            { 'title': { "$regex": q, "$options": "i" } },
+            { 'description': { "$regex": q, "$options": "i" } }
+        ]
+    }
+    let pizzas = await Pizza.find(config)
     const sendPizzas = pizzas.map(pizza => {
         return {
             title: pizza.title,
@@ -31,28 +37,16 @@ router.get('/all', catchAsync(async function (req, res, next) {
     res.status(200).json(sendPizzas)
 }))
 
+router.delete('/:id', catchAsync(async function(req,res,next) {
+    const id = req.params.id
+    const pizza = await Pizza.findByIdAndDelete(id)
+    res.status(200).json({msg: `Pizza "${pizza?.title}" deleted`})
+}))
+
 router.get('/all-ingredients', catchAsync(async function (req, res, next) {
-    const pizzas = await Pizza.find()
-    let ingredients = []
-    pizzas.map(pizza => {
-        pizza.ingredients.map(ingr => {
-            let prevIngrs = ingredients.filter(i => i.name === ingr)
-            if (prevIngrs.length) {
-                console.log(prevIngrs)
-                ingredients = ingredients.filter(i => i.name !== prevIngrs[0].name)
-                ingredients.push({
-                    name: ingr,
-                    nums: prevIngrs.length + 1
-                })
-            } else {
-                ingredients.push({
-                    name: ingr,
-                    nums: 1
-                })
-            }
-        })
-    })
-    res.status(200).json(ingredients)
+    const ingredients = await Ingredients.findOne()
+    console.log(ingredients)
+    res.status(200).json(ingredients.allIngredients)
 }))
 
 module.exports = router

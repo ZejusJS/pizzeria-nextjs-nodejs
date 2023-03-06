@@ -48,20 +48,23 @@ export default function App({ Component, pageProps }) {
         // Cookie: ctx.req.headers.cookie
       },
       onDownloadProgress: function (progressEvent) {
-        NProgress.done(false)
-        loader.current.classList.add('loaded')
+
       },
     })
       .then(res => {
-        setCart(res.data.cart)
+        const cartToSet = res.data.cart
+        cartToSet.items = res.data.cart.items.filter(item => item.item !== null)
+        console.log(cartToSet)
+        setCart(cartToSet)
         setUser(res.data.user)
+
+        NProgress.done(false)
+        loader?.current?.classList.add('loaded')
+        setTimeout(() => {
+          loader?.current?.remove()
+        }, 1500);
       })
       .catch(e => {
-        // const res = e.response?.data
-        // ctx.res.setHeader('Set-Cookie', cookie.serialize('cart', res.cart, {
-        //   httpOnly: true
-        // }));
-        // error = true
         console.warn(e)
       })
   }, [])

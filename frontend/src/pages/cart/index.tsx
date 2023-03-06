@@ -38,12 +38,15 @@ const cart = ({ cart, setCart,
           <>
             <section className='cart-items'>
               {cart?.items?.map(item => {
-                return <Item
+                return item.item ?
+                <Item
                   changeQnt={(e, item, qnt) => changeQnt(e, item, qnt)}
                   item={item}
                   key={item._id}
                   viewItem={(e) => viewItem(e, item.item)}
                 />
+                :
+                ''
               })}
               <div className='checkout-btn-container'>
                 <Link href={{

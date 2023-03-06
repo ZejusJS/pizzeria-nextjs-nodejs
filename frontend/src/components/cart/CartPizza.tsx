@@ -5,7 +5,7 @@ import Triangle from '../../images/Triangle'
 
 const Item = ({ item, changeQnt, viewItem }) => {
     let ingredients = ''
-    item.item.ingredients.map(ingr => {
+    item?.item?.ingredients.map(ingr => {
         ingredients += ingr + ', '
     })
     ingredients = ingredients.slice(-0, -2)
@@ -15,18 +15,18 @@ const Item = ({ item, changeQnt, viewItem }) => {
             <div className='pizza-thumbnail cart' onClick={(e) => viewItem(e)}>
                 <div className='pizza-thumbnail-info cart'>
                     <div className='pizza-img-container'>
-                        <img src={item.item.images[0].url} alt="" />
+                        <img src={item?.item?.images[0].url} alt="" />
                     </div>
                     <div className='pizza-info'>
-                        <h3>{item.item.title}</h3>
+                        <h3>{item?.item?.title}</h3>
                         <div>
-                            {item.item.ingredients.length ?
+                            {item?.item?.ingredients?.length ?
                                 (<div className='ingredients' key="fd">
                                     {ingredients}
                                 </div>)
                                 : ''}
                         </div>
-                        <div className='price fw-600'>{item.item.price} {item.item.currency}</div>
+                        <div className='price fw-600'>{item?.item?.price} {item?.item?.currency}</div>
                     </div>
                     <div className='qnt-change' onClick={(e) => e.stopPropagation()}>
                         <button onClick={(e) => changeQnt(e, item.quantity + 1, item)} className='btn-qnt' type='button'>

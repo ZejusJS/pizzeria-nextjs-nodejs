@@ -17,10 +17,6 @@ const Login = ({
 
     const router = useRouter()
 
-    useEffect(() => {
-        if (router.pathname !== '/cart/checkout') loginData.newCart = false
-    }, [])
-
     const emailError = useRef(null)
     const passwordError = useRef(null)
     const authError = useRef(null)
@@ -29,6 +25,7 @@ const Login = ({
         const { name, value } = e.target
         setLoginData(prevData => {
             if (name === 'cart') {
+                console.log(prevData.newCart)
                 return {
                     ...prevData,
                     newCart: !prevData.newCart

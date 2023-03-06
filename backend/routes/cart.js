@@ -130,6 +130,19 @@ router.get('/getCartAndUser', catchAsync(async function (req, res, next) {
 router.get('/getCartCheckout', catchAsync(async function (req, res, next) {
     const cartId = req.query.cart
     const findCart = await Cart.findById(cartId).populate('items.item')
+
+    findCart.items = findCart.items.filter(item => item.item !== null || undefined)
+
+    let totalPrice = 0
+    const itemsId = findCart.items.map(item => item.item?._id)
+    for (let i = 0; i < itemsId.length; i++) {
+        findPizza = await Pizza.findById(itemsId[i])
+        if (!findPizza) return res.status(400).json({ code: 300 })
+        const findItemInCart = findCart.items.filter((item) => findPizza.equals(item.item?._id))[0]
+        totalPrice += (findPizza.price * findItemInCart.quantity)
+    }
+    findCart.totalCartPrice = totalPrice
+    
     res.status(200).json(findCart)
 }))
 

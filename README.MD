@@ -18,7 +18,7 @@ first project with nextjs + nodejs
 - [ ] Admin page for all orders from users
 - [ ] Page after successful or failded payment
 - [ ] Error message when bad order details in checkout
-- [ ] Finding pizza by name, ingredients and price
+- [x] Finding pizza by name, ingredients and price
 - [ ] Pizza showcase move to another page and do new home page
 
 ### Links: (last update: 11.2.2023)
