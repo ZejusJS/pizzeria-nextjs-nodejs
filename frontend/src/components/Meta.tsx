@@ -15,8 +15,8 @@ const Meta = ({ title, keywords, description }) => {
 
 Meta.defaultProps = {
     title: 'Pizzeria Mamma Mia',
-    keywords: 'food, pizza, tomatoes',
-    description: 'The most delicious pizza in CZ.'
+    keywords: 'food, pizza, tomatoes, czech republic',
+    description: 'The most delicious pizzas in Czech Republic.'
 }
 
 export default Meta

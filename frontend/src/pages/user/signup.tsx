@@ -4,12 +4,16 @@
 // import NProgress from 'nprogress'
 // import { useRouter } from 'next/router'
 import Signup from '../../components/auth/Signup'
+import Meta from '../../components/Meta'
 
 const signup = ({ setUser, user, setCart }) => {
     return (
-        <main>
-            <Signup setOrderDetails setUser={setUser} />
-        </main>
+        <>
+        <Meta title='Mamma Mia | Signup' />
+            <main>
+                <Signup setOrderDetails setUser={setUser} />
+            </main>
+        </>
     )
 }
 

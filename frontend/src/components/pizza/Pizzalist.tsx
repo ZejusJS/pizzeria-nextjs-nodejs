@@ -9,8 +9,7 @@ import NoPizzasSvg from '../../images/NoPizzas'
 import NProgress from 'nprogress'
 import { useRouter } from "next/router";
 
-const Pizzalist = ({ pizzas, setPizzas, singleAdd, viewItem, cart }) => {
-    const router = useRouter()
+const Pizzalist = ({ pizzas, setPizzas, singleAdd, viewItem, cart, router }) => {
 
     const [ingrs, setIngrs] = useState([])
     const [selectedIngrs, setSelectedIngrs] = useState([])
@@ -63,33 +62,31 @@ const Pizzalist = ({ pizzas, setPizzas, singleAdd, viewItem, cart }) => {
     async function handleSubmit(e) {
         e?.preventDefault()
 
-        router.push({
+        await router.replace({
             pathname: router.pathname,
             query: { ...router.query, q: search, ingredients: selectedIngrs.toString() }
-        }, '', { shallow: true }).then(async res => {
+        }, '', { shallow: true })
 
-            // NProgress.start()
+        NProgress.start()
 
-            // let data = {}
-            // await axios({
-            //     method: 'get',
-            //     url: `/api/pizza/all`,
-            //     headers: {
-            //         "Content-Type": "application/json"
-            //     },
-            //     params: {
-            //         ingredients: router.query.ingredients,
-            //         q: router.query.q
-            //     },
-            // })
-            //     .then(res => {
-            //         data = res.data
-            //         NProgress.done(false)
-            //     })
-            //     .catch(e => NProgress.done(false))
-
-            // setPizzas(data)
-        })
+        // let data = {}
+        // axios({
+        //     method: 'get',
+        //     url: `/api/pizza/all`,
+        //     headers: {
+        //         "Content-Type": "application/json"
+        //     },
+        //     params: {
+        //         ingredients: selectedIngrs.toString(),
+        //         q: search
+        //     },
+        // })
+        //     .then(res => {
+        //         data = res.data
+        //         NProgress.done(false)
+        //         setPizzas(data)
+        //     })
+        //     .catch(e => NProgress.done(false))
 
     }
 
@@ -106,7 +103,7 @@ const Pizzalist = ({ pizzas, setPizzas, singleAdd, viewItem, cart }) => {
         } else {
             setSelectedIngrs([])
         }
-
+        console.log('query:.... ', router.query)
         setLoading(true)
         let data = {}
         axios({
@@ -116,8 +113,8 @@ const Pizzalist = ({ pizzas, setPizzas, singleAdd, viewItem, cart }) => {
                 "Content-Type": "application/json"
             },
             params: {
-                ingredients: router.query.ingredients,
-                q: router.query.q
+                ingredients: router?.query?.ingredients,
+                q: router?.query?.q
             },
         })
             .then(res => {
@@ -127,7 +124,6 @@ const Pizzalist = ({ pizzas, setPizzas, singleAdd, viewItem, cart }) => {
                 setLoading(false)
             })
             .catch(e => NProgress.done(false))
-
     }, [router.query])
 
     return (

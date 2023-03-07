@@ -37,6 +37,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
+    color: white;
+    gap: 10px;
+    overflow: auto;
 
     transition: left 300ms, opacity 200ms;
     // left: 0%;
@@ -45,6 +49,7 @@
     .spinner-border {
         width: 50vw;
         height: 50vw;
+        flex-shrink: 0;
         max-width: 150px;
         max-height: 150px;
         border-width: 5px;
@@ -52,10 +57,32 @@
         border-right-color: transparent;
     }
 
+    svg {
+        flex-shrink: 0;
+        max-width: 200px;
+        height: auto;
+    }
+
     &.loaded {
         // left: 104%;
         opacity: 0;
         pointer-events: none;
+    }
+
+    .msg {
+        font-size: 17px;
+        padding: 5px;
+        text-align: center;
+        display: none;
+
+        &.code {
+            color: rgb(255, 40, 40);
+            font-weight: 500;
+        }
+
+        &.visible {
+            display: block;
+        }
     }
 }
 

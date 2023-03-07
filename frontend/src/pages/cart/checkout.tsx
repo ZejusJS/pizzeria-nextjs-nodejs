@@ -7,6 +7,7 @@ import Login from '../../components/auth/Login'
 import Order from '../../components/checkout/Order'
 import Shipping from '../../components/checkout/Shipping'
 import PaymentMethods from '../../components/checkout/PaymentMethods'
+import Meta from '../../components/Meta'
 
 import MasterCardLogo from '../../images/MasterCardLogo'
 import VisaCardLogo from '../../images/VisaCardLogo'
@@ -189,6 +190,7 @@ const checkout = ({ cartData, setUser, user, userData, setCart }) => {
 
     return (
         <>
+        <Meta title='Mamma Mia | Checkout' />
             <main>
                 <section className='cart-items'>
                     {cartData.items.map(item => {

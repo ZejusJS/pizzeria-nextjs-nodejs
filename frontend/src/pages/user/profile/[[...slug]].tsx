@@ -13,6 +13,7 @@ import HouseSvg from "../../../images/Houseadress"
 import Adress from '../../../components/user/Adress'
 import Details from '../../../components/user/Details'
 import Billing from '../../../components/user/Billing'
+import Meta from '../../../components/Meta'
 
 export const UserContext = createContext('')
 
@@ -27,6 +28,7 @@ const index = ({ userData }) => {
 
     return (
         <>
+        <Meta title='Mamma Mia | Profile' />
             <main>
                 <section className="user-container">
                     <div className="user-card">

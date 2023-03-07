@@ -26,12 +26,16 @@ import '../styles/user.scss'
 import '../styles/cart.scss'
 import '../styles/pizzasSort.scss'
 
+import ErrorSvg from  '../images/Error'
+
 export default function App({ Component, pageProps }) {
   const [cart, setCart] = useState({})
   const [user, setUser] = useState({})
   const [expanded, setExpanded] = useState(false)
   const [viewProduct, setViewProduct] = useState(false)
   const [itemToView, setItemToView] = useState({})
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(0)
 
   const loader = useRef(null)
 
@@ -48,7 +52,7 @@ export default function App({ Component, pageProps }) {
         // Cookie: ctx.req.headers.cookie
       },
       onDownloadProgress: function (progressEvent) {
-
+        setLoading(false)
       },
     })
       .then(res => {
@@ -64,7 +68,8 @@ export default function App({ Component, pageProps }) {
         }, 1500);
       })
       .catch(e => {
-        console.warn(e)
+        console.error(e)
+        setError(e.response.status)
       })
   }, [])
 
@@ -119,25 +124,46 @@ export default function App({ Component, pageProps }) {
         className='loader'
         ref={loader}
       >
-        <div className="spinner-border" role="status"></div>
+        {!error ? <div className="spinner-border" role="status"></div> 
+        : 
+        <ErrorSvg />}
+        <p className={`msg ${error ? 'visible' : ''}`}>
+          Something went wrong...
+        </p>
+        <p className={`msg ${error ? 'visible' : ''}`}>
+          Try reloading a page. A problem can be also on our side.
+        </p>
+        <p className={`msg code ${error === 500 ? 'visible' : ''}`}>
+          Error code: <b>500</b> - A problem is on our servers.
+        </p>
+        <p className={`msg code ${error === 400 ? 'visible' : ''}`}>
+          Error code: <b>400</b> - Something went wrong on your side.
+        </p>
       </div>
       <div
         onClick={expanded ? () => setExpanded(!expanded) : (a) => (a)}
       // className={`${viewProduct ? 'of-h' : ''}`}
       >
-        <Component
-          {...pageProps}
-          setCart={setCart}
-          cart={cart}
-          user={user}
-          setUser={setUser}
-          viewProduct={viewProduct}
-          itemToView={itemToView}
-          singleAdd={(e, piz) => singleAdd(e, piz)}
-          unViewItem={(e) => unViewItem(e)}
-          deleteItem={(e, piz) => deleteItem(e, piz)}
-          viewItem={(e, i) => viewItem(e, i)}
-        />
+
+        {
+          !error ?
+            <Component
+              {...pageProps}
+              setCart={setCart}
+              cart={cart}
+              user={user}
+              setUser={setUser}
+              viewProduct={viewProduct}
+              itemToView={itemToView}
+              singleAdd={(e, piz) => singleAdd(e, piz)}
+              unViewItem={(e) => unViewItem(e)}
+              deleteItem={(e, piz) => deleteItem(e, piz)}
+              viewItem={(e, i) => viewItem(e, i)}
+            />
+            :
+            ''
+        }
+
       </div>
     </>
   )

@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Item from '../../components/cart/CartPizza'
 import Product from '../../components/pizza/Product';
 import Unfocus from '../../components/Unfocus';
+import Meta from '../../components/Meta'
 import changeQntFunc from '../../utils/changeQnt';
 
 import CartThinSvg from '../../images/CartThin'
@@ -23,6 +24,7 @@ const cart = ({ cart, setCart,
 
   return (
     <>
+    <Meta title='Mamma Mia | Cart' />
       {viewProduct ? <Unfocus onClick={(e) => unViewItem(e)} /> : ''}
       {viewProduct ?
         <Product

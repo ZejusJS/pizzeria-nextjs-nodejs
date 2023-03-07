@@ -7,10 +7,9 @@ import Pizzalist from '../components/pizza/Pizzalist';
 import { useState } from 'react';
 import Product from '../components/pizza/Product';
 import Unfocus from '../components/Unfocus';
+import { useRouter } from 'next/router';
 
 export default function Home({
-  pizzas,
-  setCart,
   cart,
   singleAdd,
   unViewItem,
@@ -19,7 +18,8 @@ export default function Home({
   itemToView,
   viewItem,
   user }) {
-  const [pizzasState, setPizzasState] = useState(pizzas)
+  const [pizzasState, setPizzasState] = useState([])
+  const router = useRouter()
 
   return (
     <>
@@ -32,13 +32,18 @@ export default function Home({
         singleAdd={(e, piz) => singleAdd(e, piz)}
         user={user} /> : ''}
       <main>
-        <Pizzalist
-          cart={cart}
-          singleAdd={(e, piz) => singleAdd(e, piz)}
-          viewItem={(e, i) => viewItem(e, i)}
-          pizzas={pizzasState}
-          setPizzas={setPizzasState}
-           />
+        {
+          router.isReady ?
+            <Pizzalist
+              cart={cart}
+              singleAdd={(e, piz) => singleAdd(e, piz)}
+              viewItem={(e, i) => viewItem(e, i)}
+              pizzas={pizzasState}
+              setPizzas={setPizzasState}
+              router={router}
+            />
+            : ''
+        }
       </main>
     </>
   )
