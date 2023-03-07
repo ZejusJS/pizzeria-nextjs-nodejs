@@ -16,6 +16,7 @@ const Pizzalist = ({ pizzas, setPizzas, singleAdd, viewItem, cart }) => {
     const [selectedIngrs, setSelectedIngrs] = useState([])
     const [viewSort, setViewSort] = useState(false)
     const [search, setSearch] = useState(router.query.q || '')
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
         if (!ingrs.length && viewSort) {
@@ -105,7 +106,8 @@ const Pizzalist = ({ pizzas, setPizzas, singleAdd, viewItem, cart }) => {
         } else {
             setSelectedIngrs([])
         }
-        
+
+        setLoading(true)
         let data = {}
         axios({
             method: 'get',
@@ -121,8 +123,8 @@ const Pizzalist = ({ pizzas, setPizzas, singleAdd, viewItem, cart }) => {
             .then(res => {
                 data = res.data
                 NProgress.done(false)
-                console.log('sd')
                 setPizzas(data)
+                setLoading(false)
             })
             .catch(e => NProgress.done(false))
 
@@ -204,26 +206,37 @@ const Pizzalist = ({ pizzas, setPizzas, singleAdd, viewItem, cart }) => {
                     </div>
                 </form>
             </div>
-            {pizzas?.length ?
-                <section className="pizzas-showcase">
-                    {pizzas?.map((pizza: {
-                        _id: Key
-                    }) => {
-                        return <Pizza
-                            cart={cart}
-                            singleAdd={(e) => singleAdd(e)}
-                            pizza={pizza}
-                            key={pizza._id}
-                            viewItem={(e, piz) => viewItem(e, piz)}
-                        />
-                    })}
-                </section>
-                :
-                <div className="pizzas-not-found">
-                    <NoPizzasSvg />
-                    <p>No pizzas found <span>:(</span></p>
-                    <p>Try different ingredients or keywords in search.</p>
-                </div>
+            {
+                pizzas?.length || loading ?
+                    <>
+                        <div className="pizzas-con">
+                            <div className={`spinner-pizza-con ${loading ? 'loading' : ''}`}>
+                                <div className={`spinner-border`} role="status">
+                                    <span className="sr-only"></span>
+                                </div>
+                            </div>
+                            <section
+                                className={`pizzas-showcase ${loading ? 'loading' : ''}`}>
+                                {pizzas?.map((pizza: {
+                                    _id: Key
+                                }) => {
+                                    return <Pizza
+                                        cart={cart}
+                                        singleAdd={(e) => singleAdd(e)}
+                                        pizza={pizza}
+                                        key={pizza._id}
+                                        viewItem={(e, piz) => viewItem(e, piz)}
+                                    />
+                                })}
+                            </section>
+                        </div>
+                    </>
+                    :
+                    <div className={`pizzas-not-found ${loading ? 'loading' : ''}`}>
+                        <NoPizzasSvg />
+                        <p>No pizzas found <span>:(</span></p>
+                        <p>Try different ingredients or keywords in search.</p>
+                    </div>
             }
         </>
     )

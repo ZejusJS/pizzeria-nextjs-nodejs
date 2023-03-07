@@ -44,36 +44,36 @@ export default function Home({
   )
 }
 
-export const getServerSideProps = async (context) => {
-  // console.log('GSSD... ', context.req.headers.cookie)ˇ
-  let pizzas
-  let error
-  await axios({
-    method: 'get',
-    url: `${server}/pizza/all`,
-    // url: `api/pizza/all`,
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-      'Access-Control-Allow-Origin': `${server}`
-    },
-    params: context.query
-  })
-    .then(res => pizzas = res.data)
-    .catch(e => '')
+// export const getServerSideProps = async (context) => {
+//   // console.log('GSSD... ', context.req.headers.cookie)ˇ
+//   let pizzas
+//   let error
+//   await axios({
+//     method: 'get',
+//     url: `${server}/pizza/all`,
+//     // url: `api/pizza/all`,
+//     headers: {
+//       "Content-Type": "application/x-www-form-urlencoded",
+//       'Access-Control-Allow-Origin': `${server}`
+//     },
+//     params: context.query
+//   })
+//     .then(res => pizzas = res.data)
+//     .catch(e => '')
 
-  console.log(context.query)
-  if (error) {
-    return {
-      redirect: {
-        permanent: false,
-        destination: '/'
-      }
-    }
-  } else {
-    return {
-      props: {
-        pizzas
-      }
-    }
-  }
-}
+//   console.log(context.query)
+//   if (error) {
+//     return {
+//       redirect: {
+//         permanent: false,
+//         destination: '/'
+//       }
+//     }
+//   } else {
+//     return {
+//       props: {
+//         pizzas
+//       }
+//     }
+//   }
+// }

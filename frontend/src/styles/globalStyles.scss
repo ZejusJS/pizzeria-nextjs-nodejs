@@ -18,6 +18,7 @@ main {
     margin: 0 auto;
     padding: 10px 15px 15px 15px;
     pointer-events: all;
+    transition: opacity 200ms;
 
     @media (max-width: 500px) {
         padding: 10px 2px 2px 2px;
@@ -49,6 +50,39 @@ main {
             }
         }
     }
+
+    &.loading {
+        opacity: 0.3;
+        pointer-events: none;
+    }
+}
+
+.pizzas-con {
+    position: relative;
+
+    .spinner-pizza-con {
+        transition: opacity 200ms;
+        position: absolute;
+        z-index: 10;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        pointer-events: none;
+        display: flex;
+        justify-content: center;
+
+        .spinner-border {
+            width: 140px;
+            height: 140px;
+            border-width: 7px;
+            margin-top: 30px;
+        }
+
+        &.loading {
+            pointer-events: auto;
+            opacity: 1;
+        }
+    }
 }
 
 .pizzas-not-found {
@@ -59,6 +93,8 @@ main {
     height: 200px;
     max-width: 310px;
     margin: 35px auto;
+    transition: opacity 200ms;
+    opacity: 1;
 
     p {
         max-width: 250px;
@@ -86,6 +122,10 @@ main {
         flex-shrink: 0;
         width: 120px;
         height: auto;
+    }
+
+    &.loading {
+        opacity: 0.3;
     }
 
     @media (max-width: 450px) {
@@ -291,8 +331,10 @@ main {
                     img {
                         width: 160px;
                         min-width: 160px;
+                        max-width: 160px;
                         border-radius: 10px;
-                        max-width: 170px;
+                        min-height: 100px;
+                        object-fit: cover;
                     }
 
                     .behind-cart {
