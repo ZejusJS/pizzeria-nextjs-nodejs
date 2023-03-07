@@ -10,10 +10,10 @@ const nextConfig = {
 
     return config
   },
-  images: {
-    dangerouslyAllowSVG: true,
-    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
-  },
+  // images: {
+  //   dangerouslyAllowSVG: true,
+  //   contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+  // },
   async rewrites() {
     return [
       {

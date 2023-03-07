@@ -13,7 +13,7 @@ import WindSvg from '../../images/Wind'
 const cart = ({ cart, setCart,
   viewItem, unViewItem,
   singleAdd, deleteItem,
-  viewProduct, itemToView }) => {
+  viewProduct, itemToView, user }) => {
 
   const router = useRouter()
 
@@ -30,7 +30,8 @@ const cart = ({ cart, setCart,
           item={itemToView}
           cart={cart}
           deleteItem={(e, piz) => deleteItem(e, piz)}
-          singleAdd={(e, piz) => singleAdd(e, piz)} />
+          singleAdd={(e, piz) => singleAdd(e, piz)}
+          user={user} />
         : ''}
       <main>
         {cart?.items?.length > 0
@@ -39,14 +40,14 @@ const cart = ({ cart, setCart,
             <section className='cart-items'>
               {cart?.items?.map(item => {
                 return item.item ?
-                <Item
-                  changeQnt={(e, item, qnt) => changeQnt(e, item, qnt)}
-                  item={item}
-                  key={item._id}
-                  viewItem={(e) => viewItem(e, item.item)}
-                />
-                :
-                ''
+                  <Item
+                    changeQnt={(e, item, qnt) => changeQnt(e, item, qnt)}
+                    item={item}
+                    key={item._id}
+                    viewItem={(e) => viewItem(e, item.item)}
+                  />
+                  :
+                  ''
               })}
               <div className='checkout-btn-container'>
                 <Link href={{

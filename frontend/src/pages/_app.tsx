@@ -52,11 +52,10 @@ export default function App({ Component, pageProps }) {
       },
     })
       .then(res => {
-        const cartToSet = res.data.cart
-        cartToSet.items = res.data.cart.items.filter(item => item.item !== null)
-        console.log(cartToSet)
+        const cartToSet = res?.data?.cart
+        cartToSet.items = res?.data?.cart?.items?.filter(item => item.item !== null)
         setCart(cartToSet)
-        setUser(res.data.user)
+        setUser(res?.data?.user)
 
         NProgress.done(false)
         loader?.current?.classList.add('loaded')

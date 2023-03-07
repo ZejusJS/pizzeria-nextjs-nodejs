@@ -53,6 +53,14 @@
         height: auto;
         flex-shrink: 0;
     }
+
+    &.danger {
+        background-color: rgb(255, 68, 68);
+
+        &:hover {
+            background-color: rgb(255, 50, 50);
+        }
+    }
 }
 
 main {

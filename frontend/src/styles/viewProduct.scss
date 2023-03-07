@@ -299,6 +299,16 @@
             }
         }
     }
+
+    .delete {
+        margin: 10px auto;
+        pointer-events: auto;
+
+        &:active {
+            outline-color: red;
+            outline-offset: 1px;
+        }
+    }
 }
 
 .unfocus {

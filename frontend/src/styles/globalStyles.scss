@@ -51,6 +51,100 @@ main {
     }
 }
 
+.pizzas-not-found {
+    display: flex;
+    gap: 5px;
+    position: relative;
+    overflow: visible;
+    height: 200px;
+    max-width: 310px;
+    margin: 35px auto;
+
+    p {
+        max-width: 250px;
+        font-size: 18px;
+        position: absolute;
+
+        &:nth-of-type(1) {
+            bottom: 120px;
+            left: 120px;
+            font-weight: 500;
+            font-size: 22px;
+            width: 200px;
+        }
+
+        &:nth-of-type(2) {
+            position: absolute;
+            bottom: 60px;
+            left: 50px;
+            width: 210px;
+        }
+    }
+
+    svg {
+        position: absolute;
+        flex-shrink: 0;
+        width: 120px;
+        height: auto;
+    }
+
+    @media (max-width: 450px) {
+        height: 160px;
+        max-width: 280px;
+        margin: 20px auto;
+
+        svg {
+            width: 60px;
+        }
+
+        p {
+            &:nth-of-type(1) {
+                left: 65px;
+                bottom: 125px;
+            }
+
+            &:nth-of-type(2) {
+                left: 35px;
+                bottom: 70px;
+                width: 210px;
+                font-size: 17px;
+            }
+        }
+    }
+
+    @media (max-width: 290px) {
+        max-width: 240px;
+
+        svg {
+            width: 50px;
+        }
+
+        p {
+            &:nth-of-type(1) {
+                top: 5px;
+                bottom: auto;
+                left: 50px;
+                font-size: 19px;
+                width: auto;
+                min-width: 100px;
+            }
+
+            &:nth-of-type(2) {
+                left: 15px;
+                top: 54px;
+                font-size: 17px;
+                width: auto;
+                max-width: 210px;
+                min-width: 100px;
+            }
+        }
+
+        span {
+            display: none;
+        }
+    }
+}
+
 .pizza-thumbnail {
 
     pointer-events: all;

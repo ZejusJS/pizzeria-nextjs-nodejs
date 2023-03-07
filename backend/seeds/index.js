@@ -28,7 +28,7 @@ const lorem = new LoremIpsum({
 });
 
 async function addPizzas(num) {
-    await Pizza.deleteMany()
+    // await Pizza.deleteMany()
     for (let i = 0; i < num; i++) {
         let ingrs = []
         for (let j = 0; j < Math.floor(Math.random() * 13) + 5; j++) {
@@ -57,5 +57,5 @@ async function deleteAllUsers() {
     await User.deleteMany()
 }
 
-// addPizzas(10)
-deleteAllUsers()
+addPizzas(20)
+// deleteAllUsers()

@@ -5,13 +5,17 @@ import Ingredients from "./Ingredients";
 import SearchSvg from '../../images/Search'
 import SettingsSvg from '../../images/Settings'
 import CheckedTickSvg from '../../images/CheckedTick'
+import NoPizzasSvg from '../../images/NoPizzas'
 import NProgress from 'nprogress'
+import { useRouter } from "next/router";
 
-const Pizzalist = ({ pizzas, setPizzas, singleAdd, viewItem, cart, router }) => {
+const Pizzalist = ({ pizzas, setPizzas, singleAdd, viewItem, cart }) => {
+    const router = useRouter()
+
     const [ingrs, setIngrs] = useState([])
     const [selectedIngrs, setSelectedIngrs] = useState([])
     const [viewSort, setViewSort] = useState(false)
-    const [search, setSearch] = useState('')
+    const [search, setSearch] = useState(router.query.q || '')
 
     useEffect(() => {
         if (!ingrs.length && viewSort) {
@@ -26,6 +30,15 @@ const Pizzalist = ({ pizzas, setPizzas, singleAdd, viewItem, cart, router }) => 
                 .catch(e => '')
         }
     }, [viewSort])
+
+    useEffect(() => {
+        const arrayIngrs = router?.query?.ingredients?.toString().split(',')
+        if (arrayIngrs && arrayIngrs[0]?.length > 0) {
+            setSelectedIngrs(prevIngrs => {
+                return arrayIngrs
+            })
+        }
+    }, [])
 
     function changeIngrs(e) {
         const { name, value } = e.target
@@ -47,31 +60,73 @@ const Pizzalist = ({ pizzas, setPizzas, singleAdd, viewItem, cart, router }) => 
     }
 
     async function handleSubmit(e) {
-        e.preventDefault()
+        e?.preventDefault()
 
-        let data = {}
+        router.push({
+            pathname: router.pathname,
+            query: { ...router.query, q: search, ingredients: selectedIngrs.toString() }
+        }, '', { shallow: true }).then(async res => {
+
+            // NProgress.start()
+
+            // let data = {}
+            // await axios({
+            //     method: 'get',
+            //     url: `/api/pizza/all`,
+            //     headers: {
+            //         "Content-Type": "application/json"
+            //     },
+            //     params: {
+            //         ingredients: router.query.ingredients,
+            //         q: router.query.q
+            //     },
+            // })
+            //     .then(res => {
+            //         data = res.data
+            //         NProgress.done(false)
+            //     })
+            //     .catch(e => NProgress.done(false))
+
+            // setPizzas(data)
+        })
+
+    }
+
+    useEffect(() => {
+
         NProgress.start()
-        await axios({
+
+        setSearch(router.query.q || '')
+        const arrayIngrs = router?.query?.ingredients?.toString().split(',')
+        if (arrayIngrs && arrayIngrs[0]?.length > 0) {
+            setSelectedIngrs(prevIngrs => {
+                return arrayIngrs
+            })
+        } else {
+            setSelectedIngrs([])
+        }
+        
+        let data = {}
+        axios({
             method: 'get',
-            url: `api/pizza/all`,
-            // url: `api/pizza/all`,
+            url: `/api/pizza/all`,
             headers: {
                 "Content-Type": "application/json"
             },
             params: {
-                ingredients: selectedIngrs.toString(),
-                q: search
+                ingredients: router.query.ingredients,
+                q: router.query.q
             },
         })
             .then(res => {
                 data = res.data
                 NProgress.done(false)
+                console.log('sd')
+                setPizzas(data)
             })
             .catch(e => NProgress.done(false))
 
-        console.log(data)
-        setPizzas(data)
-    }
+    }, [router.query])
 
     return (
         <>
@@ -149,19 +204,27 @@ const Pizzalist = ({ pizzas, setPizzas, singleAdd, viewItem, cart, router }) => 
                     </div>
                 </form>
             </div>
-            <section className="pizzas-showcase">
-                {pizzas?.map((pizza: {
-                    _id: Key
-                }) => {
-                    return <Pizza
-                        cart={cart}
-                        singleAdd={(e) => singleAdd(e)}
-                        pizza={pizza}
-                        key={pizza._id}
-                        viewItem={(e, piz) => viewItem(e, piz)}
-                    />
-                })}
-            </section>
+            {pizzas?.length ?
+                <section className="pizzas-showcase">
+                    {pizzas?.map((pizza: {
+                        _id: Key
+                    }) => {
+                        return <Pizza
+                            cart={cart}
+                            singleAdd={(e) => singleAdd(e)}
+                            pizza={pizza}
+                            key={pizza._id}
+                            viewItem={(e, piz) => viewItem(e, piz)}
+                        />
+                    })}
+                </section>
+                :
+                <div className="pizzas-not-found">
+                    <NoPizzasSvg />
+                    <p>No pizzas found <span>:(</span></p>
+                    <p>Try different ingredients or keywords in search.</p>
+                </div>
+            }
         </>
     )
 }

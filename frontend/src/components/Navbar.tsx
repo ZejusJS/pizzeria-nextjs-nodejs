@@ -75,7 +75,7 @@ const Navbar = ({ cart, setExpanded, expanded, user }) => {
 
         <div className='links-row linky'>
           <div>
-            <Link href='/' shallow={true}>
+            <Link href='/' shallow={true} >
               Home page
             </Link>
           </div>

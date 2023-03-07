@@ -4,12 +4,9 @@ import Meta from '../components/Meta'
 import { server } from '../config/config'
 import axios from "axios";
 import Pizzalist from '../components/pizza/Pizzalist';
-import Navbar from '../components/Navbar';
-import { useState, useEffect, useContext } from 'react';
-import Link from 'next/link';
+import { useState } from 'react';
 import Product from '../components/pizza/Product';
 import Unfocus from '../components/Unfocus';
-import { useRouter } from 'next/router';
 
 export default function Home({
   pizzas,
@@ -20,9 +17,9 @@ export default function Home({
   viewProduct,
   deleteItem,
   itemToView,
-  viewItem }) {
-    const [pizzasState, setPizzasState] = useState(pizzas)
-    const router = useRouter()
+  viewItem,
+  user }) {
+  const [pizzasState, setPizzasState] = useState(pizzas)
 
   return (
     <>
@@ -32,15 +29,16 @@ export default function Home({
         item={itemToView}
         cart={cart}
         deleteItem={(e, piz) => deleteItem(e, piz)}
-        singleAdd={(e, piz) => singleAdd(e, piz)} /> : ''}
+        singleAdd={(e, piz) => singleAdd(e, piz)}
+        user={user} /> : ''}
       <main>
         <Pizzalist
           cart={cart}
           singleAdd={(e, piz) => singleAdd(e, piz)}
           viewItem={(e, i) => viewItem(e, i)}
-          pizzas={pizzasState} 
+          pizzas={pizzasState}
           setPizzas={setPizzasState}
-          router={router}/>
+           />
       </main>
     </>
   )
@@ -50,7 +48,6 @@ export const getServerSideProps = async (context) => {
   // console.log('GSSD... ', context.req.headers.cookie)ˇ
   let pizzas
   let error
-  console.log(context.query)
   await axios({
     method: 'get',
     url: `${server}/pizza/all`,
@@ -64,6 +61,7 @@ export const getServerSideProps = async (context) => {
     .then(res => pizzas = res.data)
     .catch(e => '')
 
+  console.log(context.query)
   if (error) {
     return {
       redirect: {

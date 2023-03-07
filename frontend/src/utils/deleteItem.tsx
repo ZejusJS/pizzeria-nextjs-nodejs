@@ -6,7 +6,7 @@ export default async function deleteItem(e, item) {
     e.stopPropagation()
     const productId = item._id
     let cartData
-    console.log(productId)
+    // console.log(productId)
 
     await axios({
         method: 'post',

@@ -6,7 +6,7 @@ import { setCookie, getCookie, getCookies, hasCookie } from 'cookies-next';
 export default async function singleAdd(e, piz) {
     e.stopPropagation()
     const productId = piz._id
-    let cartData
+    let cartData: object
 
     await axios({
         method: 'post',

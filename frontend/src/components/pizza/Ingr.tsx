@@ -1,4 +1,4 @@
-const Ingr = ({ingr, selectedIngrs, changeIngrs}) => {
+const Ingr = ({ ingr, selectedIngrs, changeIngrs }) => {
     return (
         <>
             <div className="ingr-pick">
@@ -12,7 +12,8 @@ const Ingr = ({ingr, selectedIngrs, changeIngrs}) => {
                 <label
                     htmlFor={'ingr-' + ingr.name}
                 >
-                    {ingr.name + ' ' + ingr.nums}
+                    {ingr.name + ' '}
+                    <span>{ingr.nums + 'x'}</span>
                 </label>
             </div>
         </>

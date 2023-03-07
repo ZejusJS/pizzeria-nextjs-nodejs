@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react'
-import Image from 'next/image'
-import IngrItem from './IngrItem'
 import CartAdd from '../../images/CartAdd'
 import CartRemove from '../../images/CartRemove'
+import axios from 'axios'
+import { useRouter } from 'next/router'
 
-const Product = ({ item, singleAdd, cart, deleteItem, onClick }) => {
+const Product = ({ item, singleAdd, cart, deleteItem, onClick, user }) => {
     const [isInCart, setIsInCart] = useState(false)
     let ingredients = ''
     item.ingredients.map(ingr => {
         ingredients += ingr + ', '
     })
     if (ingredients.length > 2) ingredients = ingredients.slice(-0, -2)
+
+    const router = useRouter()
 
     useEffect(() => {
         // console.log('JOULOUUUUU ',cart)
@@ -25,6 +27,24 @@ const Product = ({ item, singleAdd, cart, deleteItem, onClick }) => {
         }
         )
     }, [cart])
+
+    async function deletePizza(e) {
+        e.stopPropagation()
+        
+        const answer = confirm(`Do you really want to delete pizza "${item.title}"?`)
+        switch (answer) {
+            case true:
+                await axios({
+                    method: 'delete',
+                    url: `/api/pizza/${item._id}`,
+                    withCredentials: true
+                })
+                    .then(res => {
+                        router.reload()
+                    })
+                    .catch(e => console.error(e))
+        }
+    }
 
     return (
         <div id='view-product' onClick={(e) => onClick(e)}>
@@ -53,6 +73,14 @@ const Product = ({ item, singleAdd, cart, deleteItem, onClick }) => {
                                 : ''}
                         </div>
                     </div>
+                    {user?.roles?.admin ?
+                        <button
+                            type='button'
+                            className='btn-styled danger delete'
+                            onClick={deletePizza}>
+                            Delete product
+                        </button>
+                        : ''}
                     <div className='cart-price-container'>
                         <div className='price fw-500' onClick={(e) => e.stopPropagation()}>
                             {item.price} {item.currency}
