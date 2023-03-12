@@ -6,7 +6,7 @@ first project with nextjs + nodejs
 - [x] Verify every request with Joi... check if user email is taken, req.body is complete, etc
 - [x] Repair checkout page, so it will fetch cart from query
 - [x] Build links in nav and style it
-- [ ] Do middlewares in backend for checking cart's user
+- [x] Do middlewares in backend for checking cart's user
 - [x] ~~Calculate total price in CZK (maybe from someone's api)~~ - Prices only in CZK
 - [ ] Implement sandbox gateway (maybe from ČSOB)..... In progress
 - [ ] Try implement Google auth
