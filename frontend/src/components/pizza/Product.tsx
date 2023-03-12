@@ -3,6 +3,7 @@ import CartAdd from '../../images/CartAdd'
 import CartRemove from '../../images/CartRemove'
 import axios from 'axios'
 import { useRouter } from 'next/router'
+import Link from 'next/link'
 
 const Product = ({ item, singleAdd, cart, deleteItem, onClick, user }) => {
     const [isInCart, setIsInCart] = useState(false)
@@ -30,13 +31,13 @@ const Product = ({ item, singleAdd, cart, deleteItem, onClick, user }) => {
 
     async function deletePizza(e) {
         e.stopPropagation()
-        
+
         const answer = confirm(`Do you really want to delete pizza "${item.title}"?`)
         switch (answer) {
             case true:
                 await axios({
                     method: 'delete',
-                    url: `/api/pizza/${item._id}`,
+                    url: `/api/admin/pizza/${item._id}`,
                     withCredentials: true
                 })
                     .then(res => {
@@ -74,12 +75,20 @@ const Product = ({ item, singleAdd, cart, deleteItem, onClick, user }) => {
                         </div>
                     </div>
                     {user?.roles?.admin ?
-                        <button
-                            type='button'
-                            className='btn-styled danger delete'
-                            onClick={deletePizza}>
-                            Delete product
-                        </button>
+                        <div className='admin-board'>
+                            <button
+                                type='button'
+                                className='btn-styled danger delete'
+                                onClick={deletePizza}>
+                                Delete product
+                            </button>
+                            <Link
+                                href={`/admin/edit-pizza/${item._id}`}
+                                className='btn-styled cyan edit'
+                            >
+                                Edit Product
+                            </Link>
+                        </div>
                         : ''}
                     <div className='cart-price-container'>
                         <div className='price fw-500' onClick={(e) => e.stopPropagation()}>
@@ -91,7 +100,6 @@ const Product = ({ item, singleAdd, cart, deleteItem, onClick, user }) => {
                                 onClick={
                                     isInCart ? (e, piz) => deleteItem(e, piz) : (e, piz) => singleAdd(e, piz)
                                 }
-                                isInCart={isInCart}
                             >
                                 <>
                                     {
@@ -122,7 +130,7 @@ const Product = ({ item, singleAdd, cart, deleteItem, onClick, user }) => {
     )
 }
 
-const Button = ({ onClick, children, pizza, isInCart }) => {
+const Button = ({ onClick, children, pizza }) => {
     return (
         <button className="add-to-cart" type="button" onClick={(e) => onClick(e, pizza)}>
             {children}

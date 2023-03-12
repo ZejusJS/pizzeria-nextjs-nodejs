@@ -8,6 +8,7 @@ import CheckedTickSvg from '../../images/CheckedTick'
 import NoPizzasSvg from '../../images/NoPizzas'
 import NProgress from 'nprogress'
 import { useRouter } from "next/router";
+import { server } from '../../config/config'
 
 const Pizzalist = ({ pizzas, setPizzas, singleAdd, viewItem, cart, router }) => {
 
@@ -21,7 +22,7 @@ const Pizzalist = ({ pizzas, setPizzas, singleAdd, viewItem, cart, router }) => 
         if (!ingrs.length && viewSort) {
             axios({
                 method: 'get',
-                url: `api/pizza/all-ingredients`,
+                url: `${server}/pizza/all-ingredients`,
                 headers: {
                     "Content-Type": "application/x-www-form-urlencoded",
                 }
@@ -68,26 +69,6 @@ const Pizzalist = ({ pizzas, setPizzas, singleAdd, viewItem, cart, router }) => 
         }, '', { shallow: true })
 
         NProgress.start()
-
-        // let data = {}
-        // axios({
-        //     method: 'get',
-        //     url: `/api/pizza/all`,
-        //     headers: {
-        //         "Content-Type": "application/json"
-        //     },
-        //     params: {
-        //         ingredients: selectedIngrs.toString(),
-        //         q: search
-        //     },
-        // })
-        //     .then(res => {
-        //         data = res.data
-        //         NProgress.done(false)
-        //         setPizzas(data)
-        //     })
-        //     .catch(e => NProgress.done(false))
-
     }
 
     useEffect(() => {
@@ -108,14 +89,14 @@ const Pizzalist = ({ pizzas, setPizzas, singleAdd, viewItem, cart, router }) => 
         let data = {}
         axios({
             method: 'get',
-            url: `/api/pizza/all`,
+            url: `${server}/pizza/all`,
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
             },
             params: {
                 ingredients: router?.query?.ingredients,
                 q: router?.query?.q
-            },
+            }
         })
             .then(res => {
                 data = res.data

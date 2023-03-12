@@ -44,7 +44,7 @@ PizzaSchema.post('save', async function () {
             let prevIngrs = ingredients.filter(i => i.name === ingr)
             if (!prevIngrs[0]?.pizzas.filter(prev => prev === pizza._id)?.length) {
                 if (prevIngrs.length) {
-                    console.log(prevIngrs)
+                    // console.log(prevIngrs) 
                     ingredients = ingredients.filter(i => i.name !== prevIngrs[0].name)
                     ingredients.push({
                         name: ingr,
@@ -68,7 +68,7 @@ PizzaSchema.post('save', async function () {
     await ingrs.save()
 });
 
-PizzaSchema.post('deleteOne', async function () {
+PizzaSchema.post('findOneAndDelete', async function () {
     const Pizza = this.model;
     const pizzas = await Pizza.find().exec();
     let ingredients = []

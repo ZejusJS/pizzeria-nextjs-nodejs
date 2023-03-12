@@ -16,9 +16,10 @@ const Cart = require('../models/cart')
 const User = require('../models/user')
 
 const { validatePayment } = require('../utils/mw-validatePayment')
+const { mwIsLoggedIn } = require('../utils/mw-isLoggedIn')
 
 
-router.post('/card', validatePayment, catchAsync(async function (req, res, next) {
+router.post('/card', validatePayment, mwIsLoggedIn, catchAsync(async function (req, res, next) {
     const { firstname, lastname, adress, city, zip } = req.body
     const items = []
     let totalPriceItems = 0

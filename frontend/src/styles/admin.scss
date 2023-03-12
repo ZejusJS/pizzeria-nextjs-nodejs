@@ -1,0 +1,18 @@
+main.admin {
+    h2 {
+        margin: 5px 10px;
+        font-size: 27px;
+    }
+    .links {
+        padding: 5px 10px;
+        a {
+            color: rgb(155, 62, 0);
+            text-decoration: none;
+            font-size: 19px;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+}

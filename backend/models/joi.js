@@ -56,3 +56,13 @@ module.exports.userDetailsSchema =
     Joi.object({
         name: Joi.string().max(24).required(),
     }).required()
+
+module.exports.pizzaSchema =
+    Joi.object({
+        title: Joi.string().max(30).required(),
+        description: Joi.string().max(1000).required(),
+        price: Joi.number().max(1000000).required(),
+        currency: Joi.string().max(6).required(),
+        ingredients: Joi.array().required(),
+        image: Joi.string().min(0),
+    }).required()

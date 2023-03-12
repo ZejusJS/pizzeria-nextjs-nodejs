@@ -2,7 +2,7 @@ const path = require('path');
 const { storagePizzaImg } = require('../cloudinary/index')
 
 const multer = require('multer') // multer je middleware pro files
-const uploadCampImg = multer({
+const uploadPizzaImg = multer({
     storage: storagePizzaImg,
     limits: { fileSize: 10000000, files: 1 },
     fileFilter: function (req, file, cb) {
@@ -19,7 +19,7 @@ const uploadCampImg = multer({
 
 // middle ware pro ukládání images s error callback
 const mwUploadPizzaImg = (req, res, next) => {
-    uploadCampImg(req, res, (err) => {
+    uploadPizzaImg(req, res, (err) => {
         if (err instanceof multer.MulterError) {
             // error od multer
             if (err.message === "File too large") {

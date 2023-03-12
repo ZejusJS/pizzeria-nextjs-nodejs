@@ -85,18 +85,18 @@ app.use(cors({
 app.use(cookieParser(process.env.SECRET))
 app.use(bodyparser.json())
 
-app.use(catchAsync(async function (req, res, next) {
-    const authHeader = req.headers['authorization']
-    const token = authHeader && authHeader.split(' ')[1]
-    if (token == null) req.user = undefined
-    else {
-        jwt.verify(token, process.env.SECRET_JWT_ACCESS, (err, user) => {
-            if (err) req.user = undefined
-            else req.user = user
-        })
-    }
-    next()
-}))
+// app.use(catchAsync(async function (req, res, next) {
+//     const authHeader = req.headers['authorization']
+//     const token = authHeader && authHeader.split(' ')[1]
+//     if (token == null) req.user = undefined
+//     else {
+//         jwt.verify(token, process.env.SECRET_JWT_ACCESS, (err, user) => {
+//             if (err) req.user = undefined
+//             else req.user = user
+//         })
+//     }
+//     next()
+// }))
 
 app.use(passport.initialize());
 app.use(passport.session());

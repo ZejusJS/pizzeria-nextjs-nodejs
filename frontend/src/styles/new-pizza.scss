@@ -129,6 +129,25 @@
             outline-offset: 1.5px;
         }
     }
+
+    .image {
+        .delete {
+            font-size: 16px;
+            gap: 5px;
+            margin: 5px auto 0 auto;
+
+            svg {
+                width: 20px;
+                flex-shrink: 0;
+            }
+        }
+
+        .image-label {
+            &:hover {
+                cursor: pointer;
+            }
+        }
+    }
 }
 
 .input-container {
@@ -145,6 +164,7 @@
         gap: 5px;
         align-items: center;
         justify-content: center;
+
         input {
             width: 20px;
             height: 20px;
@@ -155,7 +175,7 @@
             cursor: pointer;
         }
 
-        input:hover  {
+        input:hover {
             cursor: pointer;
             text-decoration: underline;
         }

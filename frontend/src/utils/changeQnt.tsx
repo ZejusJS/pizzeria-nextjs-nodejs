@@ -12,7 +12,7 @@ export default async function (e, qnt, item, setCart) {
         setCart(prevCart => {
             prevCart.items = prevCart.items.map(it => {
                 if (it.item._id !== item.item._id) return it
-                return { ...it, quantity: qnt, totalPrice: qnt * it.price }
+                return { ...it, quantity: qnt, totalPrice: qnt * it.item.price }
             })
             return { ...prevCart }
         })

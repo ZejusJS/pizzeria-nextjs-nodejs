@@ -30,7 +30,7 @@ router.post('/singleAdd', catchAsync(async function (req, res, next) {
             if (prevProduct.quantity > 15 || prevProduct.quantity < 1) {
                 return res.status(400).json({ msg: 'Quantity of product must be between 15 and 1', code: 300 })
             }
-            prevProduct.totalPrice = prevProduct.price * prevProduct.quantity
+            prevProduct.totalPrice = product.price * product.quantity
             cart.items = cart.items.map(item => {
                 if (item?.item === prevProduct?.item) return prevProduct
                 return item
@@ -73,17 +73,19 @@ router.post('/deleteItem', catchAsync(async function (req, res, next) {
 router.post('/changeQuantity', catchAsync(async function (req, res, next) {
     const productId = req.body.productId
     const quantity = req.body.quantity
+    if (quantity > 15 || quantity < 1) return res.status(400).json({ msg: 'Quantity of product must be between 15 and 1' })
+
     const cartId = function () {
         if (req.user && req.user.interaction && req.user.interaction.cart) return req.user.interaction.cart
         return req.cookies.cart
     }
     const product = await Pizza.findById(productId)
     const cart = await Cart.findById(cartId())
-    if (quantity > 15 || quantity < 1) return res.status(400).json({ msg: 'Quantity of product must be between 15 and 1' })
     if (cart && product) {
         let prevProduct = cart.items.filter(pro => pro.item.equals(productId))[0]
+        if (!prevProduct) return res.status(400).json({ msg: "Your cart doesn't have this product", code: 300 })
         prevProduct.quantity = quantity
-        prevProduct.totalPrice = quantity * prevProduct.price
+        prevProduct.totalPrice = quantity * product.price
         cart.items = cart.items.map(item => {
             if (item.item === prevProduct.item) return prevProduct
             return item
@@ -117,8 +119,8 @@ router.get('/getCartAndUser', catchAsync(async function (req, res, next) {
 
     let findNull = false
     cart.items = cart.items.filter(item => {
-        if (item.item !== null || undefined) findNull = true
-        return item.item !== null || undefined
+        if (item.item !== (null || undefined)) findNull = true
+        return item.item !== (null || undefined)
     })
     if (findNull) await cart.save()
 
@@ -127,7 +129,8 @@ router.get('/getCartAndUser', catchAsync(async function (req, res, next) {
         name: req.user?.name,
         roles: req.user?.roles
     }
-    // console.log(cart)
+    console.log(cart)
+    console.log(cart.items)
     res.status(200).json({ cart: cart, user })
 }))
 
@@ -135,7 +138,7 @@ router.get('/getCartCheckout', catchAsync(async function (req, res, next) {
     const cartId = req.query.cart
     const findCart = await Cart.findById(cartId).populate('items.item')
 
-    findCart.items = findCart.items.filter(item => item.item !== null || undefined)
+    findCart.items = findCart.items.filter(item => item.item !== (null || undefined))
 
     let totalPrice = 0
     const itemsId = findCart.items.map(item => item.item?._id)

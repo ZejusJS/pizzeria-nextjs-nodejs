@@ -10,6 +10,8 @@ const Item = ({ item, changeQnt, viewItem }) => {
     })
     ingredients = ingredients.slice(-0, -2)
 
+    // console.log(item)
+
     return (
         <>
             <div className='pizza-thumbnail cart' onClick={(e) => viewItem(e)}>
@@ -45,7 +47,7 @@ const Item = ({ item, changeQnt, viewItem }) => {
                 </div>
                 <div>
                     <div className='total-price fw-500'>
-                        Total Price: <span className='c-green fw-600'>{item.totalPrice} CZK</span>
+                        Total Price: <span className='c-green fw-600'>{item?.item?.price * item?.quantity} CZK</span>
                         </div>
                 </div>
             </div>

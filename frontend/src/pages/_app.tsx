@@ -25,6 +25,7 @@ import '../styles/auth.scss'
 import '../styles/user.scss'
 import '../styles/cart.scss'
 import '../styles/pizzasSort.scss'
+import '../styles/admin.scss'
 
 import ErrorSvg from  '../images/Error'
 

@@ -38,6 +38,9 @@
     font-size: 17px;
     border: 0;
     border-radius: 7px;
+    text-decoration: none;
+    width: fit-content;
+    user-select: none;
 
     &:hover {
         cursor: pointer;
@@ -55,10 +58,20 @@
     }
 
     &.danger {
+        color: black;
         background-color: rgb(255, 68, 68);
 
         &:hover {
             background-color: rgb(255, 50, 50);
+        }
+    }
+
+    &.cyan {
+        color: black;
+        background-color: rgb(4, 184, 255);
+
+        &:hover {
+            background-color: rgb(0, 168, 235);
         }
     }
 }

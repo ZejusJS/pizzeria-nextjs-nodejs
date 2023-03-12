@@ -202,7 +202,6 @@ const checkout = ({ cartData, setUser, user, userData, setCart }) => {
                         :
                         ''
                     })}
-                    {cartData.totalCartPrice} CZK
                 </section>
                 <div id='order'>
                     {!user?.email ?

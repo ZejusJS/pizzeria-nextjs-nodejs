@@ -9,7 +9,6 @@ const cartSchema = Schema({
                 ref: 'Pizza'
             },
             quantity: Number,
-            price: Number,
             totalPrice: Number
         }
     ],

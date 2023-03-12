@@ -44,10 +44,4 @@ router.get('/all-ingredients', catchAsync(async function (req, res, next) {
     res.status(200).json(ingredients.allIngredients)
 }))
 
-router.delete('/:id', mwIsAdmin, catchAsync(async function (req, res, next) {
-    const id = req.params.id
-    const pizza = await Pizza.deleteOne({ _id: id })
-    res.status(200).json({ msg: `Pizza "${pizza?.title}" deleted` })
-}))
-
 module.exports = router

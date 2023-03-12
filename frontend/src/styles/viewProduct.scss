@@ -236,7 +236,7 @@
                 .price {
                     margin: 0;
                     width: fit-content;
-                    
+
                 }
 
                 .add-to-cart-container {
@@ -300,13 +300,27 @@
         }
     }
 
-    .delete {
+    .admin-board {
         margin: 10px auto;
-        pointer-events: auto;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 7px;
 
-        &:active {
-            outline-color: red;
-            outline-offset: 1px;
+        .delete {
+            pointer-events: auto;
+
+            &:active {
+                outline-color: red;
+                outline-offset: 1px;
+            }
+        }
+
+        .edit {
+            &:active {
+                outline-color: rgb(0, 162, 255);
+                outline-offset: 1px;
+            }
         }
     }
 }

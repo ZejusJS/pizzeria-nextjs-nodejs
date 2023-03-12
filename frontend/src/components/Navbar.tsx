@@ -117,9 +117,9 @@ const Navbar = ({ cart, setExpanded, expanded, user }) => {
             </>
           }
           {user.roles?.admin ?
-            <div>
-              <Link href='/admin/new-pizza'>
-                Create a new pizza
+            <div className='four'>
+              <Link href='/admin'>
+                Admin
               </Link>
             </div>
             : ''}
@@ -165,8 +165,8 @@ const Navbar = ({ cart, setExpanded, expanded, user }) => {
           </div>
           {user.roles?.admin ?
             <div className='link'>
-              <Link href='/admin/new-pizza'>
-                Create a new pizza
+              <Link href='/admin'>
+                Admin
               </Link>
             </div>
             : ''}
