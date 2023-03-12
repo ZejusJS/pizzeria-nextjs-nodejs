@@ -21,7 +21,6 @@ const Product = ({ item, singleAdd, cart, deleteItem, onClick, user }) => {
             let isItemInCart = false
             cart.items.map(it => {
                 // console.log(it.item._id, item._id)
-                console.log(it)
                 if (it?.item?._id === item?._id) isItemInCart = true
             })
             return isItemInCart
@@ -41,7 +40,7 @@ const Product = ({ item, singleAdd, cart, deleteItem, onClick, user }) => {
                     withCredentials: true
                 })
                     .then(res => {
-                        router.reload()
+                        router.replace(router.asPath, '', { shallow: false })
                     })
                     .catch(e => console.error(e))
         }

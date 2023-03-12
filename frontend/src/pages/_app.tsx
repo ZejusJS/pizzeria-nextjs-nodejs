@@ -8,6 +8,7 @@ import Meta from '../components/Meta'
 import { server } from '../config/config'
 import Navbar from '../components/Navbar'
 import React, { useEffect, useState, useRef } from 'react'
+import { getCookie } from 'cookies-next';
 
 import deleteItemFunc from '../utils/deleteItem'
 import singleAddFunc from '../utils/singleAdd'
@@ -27,7 +28,9 @@ import '../styles/cart.scss'
 import '../styles/pizzasSort.scss'
 import '../styles/admin.scss'
 
-import ErrorSvg from  '../images/Error'
+import ErrorSvg from '../images/Error'
+import Product from '../components/pizza/Product';
+import Unfocus from '../components/Unfocus';
 
 export default function App({ Component, pageProps }) {
   const [cart, setCart] = useState({})
@@ -125,26 +128,42 @@ export default function App({ Component, pageProps }) {
         className='loader'
         ref={loader}
       >
-        {!error ? <div className="spinner-border" role="status"></div> 
-        : 
-        <ErrorSvg />}
-        <p className={`msg ${error ? 'visible' : ''}`}>
-          Something went wrong...
-        </p>
-        <p className={`msg ${error ? 'visible' : ''}`}>
-          Try reloading a page. A problem can be also on our side.
-        </p>
-        <p className={`msg code ${error === 500 ? 'visible' : ''}`}>
-          Error code: <b>500</b> - A problem is on our servers.
-        </p>
-        <p className={`msg code ${error === 400 ? 'visible' : ''}`}>
-          Error code: <b>400</b> - Something went wrong on your side.
-        </p>
+        {!error ? <div className="spinner-border" role="status"></div>
+          :
+          <ErrorSvg />}
+        <div className='error-msgs'>
+          <p className={`msg ${error ? 'visible' : ''}`}>
+            Something went wrong...
+          </p>
+          <p className={`msg ${error ? 'visible' : ''}`}>
+            Try reloading a page. A problem can be also on our side.
+          </p>
+          <p className={`msg code ${error === 500 ? 'visible' : ''}`}>
+            Error code: <b>500</b> - A problem is on our servers.
+          </p>
+          <p className={`msg code ${error === 400 && getCookie('cart') !== 'error' ? 'visible' : ''}`}>
+            Error code: <b>400</b> - Something went wrong on your side.
+          </p>
+          <p className={`msg code ${getCookie('cart') === 'error' ? 'visible' : ''}`}>
+            <b>Cart error</b> - Something went wrong probably on our side.
+            We can't provide you a cart. Refresh a page after 10 seconds or contact us.
+          </p>
+        </div>
       </div>
       <div
         onClick={expanded ? () => setExpanded(!expanded) : (a) => (a)}
       // className={`${viewProduct ? 'of-h' : ''}`}
       >
+        {viewProduct ? <Unfocus onClick={(e) => unViewItem(e)} /> : ''}
+        {viewProduct ?
+          <Product
+            onClick={(e) => unViewItem(e)}
+            item={itemToView}
+            cart={cart}
+            deleteItem={(e, piz) => deleteItem(e, piz)}
+            singleAdd={(e, piz) => singleAdd(e, piz)}
+            user={user} />
+          : ''}
 
         {
           !error ?

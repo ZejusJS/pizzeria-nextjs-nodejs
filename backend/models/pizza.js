@@ -77,7 +77,7 @@ PizzaSchema.post('findOneAndDelete', async function () {
             let prevIngrs = ingredients.filter(i => i.name === ingr)
             if (!prevIngrs[0]?.pizzas.filter(prev => prev === pizza._id)?.length) {
                 if (prevIngrs.length) {
-                    console.log(prevIngrs)
+                    // console.log(prevIngrs)
                     ingredients = ingredients.filter(i => i.name !== prevIngrs[0].name)
                     ingredients.push({
                         name: ingr,

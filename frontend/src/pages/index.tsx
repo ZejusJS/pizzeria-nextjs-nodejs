@@ -23,14 +23,6 @@ export default function Home({
 
   return (
     <>
-      {viewProduct ? <Unfocus onClick={unViewItem} /> : ''}
-      {viewProduct ? <Product
-        onClick={(e) => unViewItem(e)}
-        item={itemToView}
-        cart={cart}
-        deleteItem={(e, piz) => deleteItem(e, piz)}
-        singleAdd={(e, piz) => singleAdd(e, piz)}
-        user={user} /> : ''}
       <main>
         {
           router.isReady ?

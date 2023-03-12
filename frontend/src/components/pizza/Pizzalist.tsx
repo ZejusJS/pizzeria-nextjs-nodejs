@@ -187,11 +187,14 @@ const Pizzalist = ({ pizzas, setPizzas, singleAdd, viewItem, cart, router }) => 
                 pizzas?.length || loading ?
                     <>
                         <div className="pizzas-con">
+
                             <div className={`spinner-pizza-con ${loading ? 'loading' : ''}`}>
-                                <div className={`spinner-border`} role="status">
-                                    <span className="sr-only"></span>
+                                <div className="loading-con">
+                                    <div className={`spinner-border`} role="status">
+                                    </div>
                                 </div>
                             </div>
+
                             <section
                                 className={`pizzas-showcase ${loading ? 'loading' : ''}`}>
                                 {pizzas?.map((pizza: {

@@ -25,16 +25,6 @@ const cart = ({ cart, setCart,
   return (
     <>
     <Meta title='Mamma Mia | Cart' />
-      {viewProduct ? <Unfocus onClick={(e) => unViewItem(e)} /> : ''}
-      {viewProduct ?
-        <Product
-          onClick={(e) => unViewItem(e)}
-          item={itemToView}
-          cart={cart}
-          deleteItem={(e, piz) => deleteItem(e, piz)}
-          singleAdd={(e, piz) => singleAdd(e, piz)}
-          user={user} />
-        : ''}
       <main>
         {cart?.items?.length > 0
           ?

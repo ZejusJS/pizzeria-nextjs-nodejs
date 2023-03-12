@@ -1,4 +1,3 @@
-import React from 'react'
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import { server } from './config/config'
@@ -32,9 +31,10 @@ export async function middleware(req: NextRequest) {
             const response = NextResponse.redirect(url)
             return response
         }
-    } else if (req.cookies.has("cart")) {
+    } else if (req.cookies.has("cart") || req?.cookies?.get('cart')?.value === 'error' ) {
         return res;
     } else {
+        console.log(req.cookies.get('cart'))
         const cookies = cookiesParse()
         const getCart = await fetch(`${server}/cart/getIdCart`, {
             method: 'get',
@@ -47,9 +47,15 @@ export async function middleware(req: NextRequest) {
             credentials: 'include',
         })
         const data = await getCart.json()
-        const response = NextResponse.redirect(url)
-        response.cookies.set("cart", data.cart, { httpOnly: true });
-        return response
+        if (getCart.status === 200) {
+            const response = NextResponse.redirect(url)
+            response.cookies.set("cart", data.cart, { httpOnly: true });
+            return response
+        } else {
+            const response = NextResponse.redirect(url)
+            response.cookies.set("cart", 'error', { maxAge: 10 });
+            return response
+        }
     }
 }
 

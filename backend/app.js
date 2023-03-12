@@ -128,6 +128,7 @@ app.use('/user', userRoute)// mwFindUser
 app.use('/cart', cartRoute) // mwFindUser
 app.use('/admin', mwIsAdmin, adminRoute) // mwFindUser
 app.use('/payment', paymentRoute) // mwFindUser
+app.get('/admin/isAdmin', mwIsAdminGet)
 
 app.use(async (err, req, res, next) => {
     // console.log(err)

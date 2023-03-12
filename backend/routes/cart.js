@@ -82,7 +82,7 @@ router.post('/changeQuantity', catchAsync(async function (req, res, next) {
     const product = await Pizza.findById(productId)
     const cart = await Cart.findById(cartId())
     if (cart && product) {
-        let prevProduct = cart.items.filter(pro => pro.item.equals(productId))[0]
+        let prevProduct = cart?.items?.filter(pro => pro?.item?.equals(productId))[0]
         if (!prevProduct) return res.status(400).json({ msg: "Your cart doesn't have this product", code: 300 })
         prevProduct.quantity = quantity
         prevProduct.totalPrice = quantity * product.price
@@ -98,7 +98,7 @@ router.post('/changeQuantity', catchAsync(async function (req, res, next) {
 }))
 
 router.get('/getCartAndUser', catchAsync(async function (req, res, next) {
-    let cart = {}
+    let cart
 
     if (req.user && req.user.interaction && req.user.interaction.cart) {
         const findCart = await Cart.findById(req.user.interaction.cart).populate('items.item')
@@ -118,19 +118,24 @@ router.get('/getCartAndUser', catchAsync(async function (req, res, next) {
     }
 
     let findNull = false
+    // console.log(cart)
     cart.items = cart.items.filter(item => {
-        if (item.item !== (null || undefined)) findNull = true
-        return item.item !== (null || undefined)
+        if (!item.item) findNull = true
+        return item.item !== null && item.item !== undefined
     })
-    if (findNull) await cart.save()
+    // console.log(findNull)
+    if (findNull) {
+        console.log(cart)
+        await cart.save()
+    }
 
     const user = {
         email: req.user?.email,
         name: req.user?.name,
         roles: req.user?.roles
     }
-    console.log(cart)
-    console.log(cart.items)
+    // console.log(cart)
+    // console.log(cart.items)
     res.status(200).json({ cart: cart, user })
 }))
 
@@ -138,7 +143,7 @@ router.get('/getCartCheckout', catchAsync(async function (req, res, next) {
     const cartId = req.query.cart
     const findCart = await Cart.findById(cartId).populate('items.item')
 
-    findCart.items = findCart.items.filter(item => item.item !== (null || undefined))
+    findCart.items = findCart.items.filter(item => item.item !== null)
 
     let totalPrice = 0
     const itemsId = findCart.items.map(item => item.item?._id)
@@ -149,7 +154,7 @@ router.get('/getCartCheckout', catchAsync(async function (req, res, next) {
         totalPrice += (findPizza.price * findItemInCart.quantity)
     }
     findCart.totalCartPrice = totalPrice
-
+    console.log(findCart)
     res.status(200).json(findCart)
 }))
 

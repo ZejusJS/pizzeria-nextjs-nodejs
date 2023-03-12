@@ -80,6 +80,4 @@ router.put('/pizza/:id', mwUploadPizzaImg, validatePizza, catchAsync(async funct
     res.status(200).json({ msg: `Pizza "${pizza.title}" updated` })
 }))
 
-router.get('/isAdmin', mwIsAdminGet)
-
 module.exports = router
