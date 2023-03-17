@@ -103,10 +103,14 @@ router.post('/card', validatePayment, mwIsLoggedIn, catchAsync(async function (r
     // return res.send(data)
 
     const RETEZEC = getRetezec(data)
-    const sign = crypto.sign("SHA256", Buffer.from(RETEZEC, "utf8"), CSOB_PRIVATE);
-    const signature = sign.toString('base64');
-    data.signature = signature
-    console.log(signature)
+    // const sign = crypto.sign("SHA256", Buffer.from(RETEZEC, "base64"), CSOB_PRIVATE);
+    const sign = crypto.createSign('SHA256')
+    sign.update(RETEZEC)
+    sign.end()
+    const signature = sign.sign(CSOB_PRIVATE);
+    const signatureString = signature.toString('base64');
+    data.signature = signatureString
+    console.log(signatureString)
 
     let resData = {}
     await axios({
