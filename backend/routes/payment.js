@@ -129,9 +129,15 @@ router.post('/card', validatePayment, mwIsLoggedIn, catchAsync(async function (r
 
     console.log('yyyyyyyyyyyyyyyyyyyyyyyy')
     const RETEZEC_PROCESS = getRetezec({ merchantId: data.merchantId, payId: resData.payId, dttm: resData.dttm })
-    const signProcess = crypto.sign("SHA256", RETEZEC_PROCESS, CSOB_PRIVATE);
-    const signatureProcess = signProcess.toString('base64');
-    const signatureProcessUri = encodeURIComponent(signatureProcess)
+    // const signProcess = crypto.sign("SHA256", RETEZEC_PROCESS, CSOB_PRIVATE);
+    // const signatureProcess = signProcess.toString('base64');
+    const signProcess = crypto.createSign('SHA256')
+    signProcess.update(RETEZEC_PROCESS)
+    signProcess.end()
+    const signatureProcess = signProcess.sign(CSOB_PRIVATE);
+    const signatureProcessString = signatureProcess.toString('base64');
+    console.log(signatureProcessString)
+    const signatureProcessUri = encodeURIComponent(signatureProcessString)
 
     console.log('xxxxxxxxxxxxxxxxxxxxxx')
     let url = `https://iapi.iplatebnibrana.csob.cz/api/v1.9/payment/process/${merchantIdBase64url}/${payIdBase64url}/${dttmBase64url}/${signatureProcessUri}`
