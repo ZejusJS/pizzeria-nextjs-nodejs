@@ -3,8 +3,6 @@ const crypto = require('crypto');
 const fs = require('fs')
 const axios = require('axios')
 const router = express.Router({ mergeParams: true });
-const CryptoJs = require('crypto-js')
-const Base64 = require('crypto-js/enc-base64')
 
 const CSOB_PRIVATE = fs.readFileSync('./keys/rsa_A3492UfuSm.key', 'utf8')
 const CSOB_PUBLIC = fs.readFileSync('./keys/rsa_A3492UfuSm.txt', 'utf8')
@@ -111,6 +109,7 @@ router.post('/card', validatePayment, mwIsLoggedIn, catchAsync(async function (r
     const signatureString = signature.toString('base64');
     data.signature = signatureString
     console.log(signatureString)
+    console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
 
     let resData = {}
     await axios({
@@ -128,11 +127,13 @@ router.post('/card', validatePayment, mwIsLoggedIn, catchAsync(async function (r
     let payIdBase64url = encodeURIComponent(resData.payId)
     let dttmBase64url = encodeURIComponent(resData.dttm)
 
+    console.log('yyyyyyyyyyyyyyyyyyyyyyyy')
     const RETEZEC_PROCESS = getRetezec({ merchantId: data.merchantId, payId: resData.payId, dttm: resData.dttm })
     const signProcess = crypto.sign("SHA256", RETEZEC_PROCESS, CSOB_PRIVATE);
     const signatureProcess = signProcess.toString('base64');
     const signatureProcessUri = encodeURIComponent(signatureProcess)
 
+    console.log('xxxxxxxxxxxxxxxxxxxxxx')
     let url = `https://iapi.iplatebnibrana.csob.cz/api/v1.9/payment/process/${merchantIdBase64url}/${payIdBase64url}/${dttmBase64url}/${signatureProcessUri}`
 
     // console.log(url)
