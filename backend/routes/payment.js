@@ -3,6 +3,8 @@ const crypto = require('crypto');
 const fs = require('fs')
 const axios = require('axios')
 const router = express.Router({ mergeParams: true });
+const CryptoJs = require('crypto-js')
+const Base64 = require('crypto-js/enc-base64')
 
 const CSOB_PRIVATE = fs.readFileSync('./keys/rsa_A3492UfuSm.key', 'utf8')
 const CSOB_PUBLIC = fs.readFileSync('./keys/rsa_A3492UfuSm.txt', 'utf8')
