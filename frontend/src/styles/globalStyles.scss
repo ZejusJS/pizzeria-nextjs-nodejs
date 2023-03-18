@@ -308,10 +308,6 @@ main {
         border-radius: 7px;
     }
 
-    // p:hover {
-    //     -webkit-line-clamp: 10;
-    // }
-
     h3 {
         font-size: 20px;
     }
@@ -578,14 +574,19 @@ div.ingredients {
 }
 
 .unfocus {
-    background-color: rgba(34, 34, 34, 0.877);
+    background-color: rgba(0, 0, 0, 0.87);
     width: 100vw;
     height: 100vh;
     z-index: 1299;
     position: fixed;
+    backdrop-filter: blur(2px);
 }
 
 section.about {
+    padding: 3px;
+    max-width: 600px;
+    margin: 0 auto;
+
     .about-container {
         margin-bottom: 20px;
     }

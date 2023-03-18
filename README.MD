@@ -21,6 +21,7 @@ first project with nextjs + nodejs
 - [x] Finding pizza by name, ingredients and price
 - [ ] Pizza showcase move to another page and do new home page
 - [x] Cancel GetServerSideProps in index
+- [x] Repair payment/card in deployment
 
 ### Links: (last update: 11.2.2023)
 (long waiting for fresh starts, free tiers, maybe frontend isn't in sync with backend - I didn't deploy backend aswell) <br>

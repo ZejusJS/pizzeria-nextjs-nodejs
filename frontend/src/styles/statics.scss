@@ -83,8 +83,7 @@ main {
 input,
 textarea,
 button,
-select,
-a {
+select {
     -webkit-tap-highlight-color: transparent;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -94,7 +93,7 @@ a {
     user-select: none;
 }
 
-input[type=text] {
+input[type=text], input[type=password], input[type=email] {
     border-radius: 7px;
     border: 1px solid
 }

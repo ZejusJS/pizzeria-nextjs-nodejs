@@ -5,6 +5,7 @@
     h1 {
         font-size: 30px;
     }
+
     h2 {
         font-size: 22px;
     }
@@ -31,6 +32,7 @@
 
 .user-navigation {
     padding: 10px;
+
     a {
         display: block;
         margin: 7px 0;
@@ -38,17 +40,20 @@
         color: rgb(155, 62, 0);
         font-weight: 500;
         width: fit-content;
+
         div {
             display: flex;
             gap: 8px;
             align-items: center;
             font-size: 18px;
+
             svg {
                 width: 30px;
                 height: auto;
                 flex-shrink: 0;
             }
         }
+
         :hover {
             text-decoration: underline;
         }
@@ -80,7 +85,184 @@ button.back-nav {
 
 .shipping-adress {
     margin: 10px auto 20px auto;
+
     h3 {
         text-align: center;
+    }
+}
+
+.orders {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    padding: 6px;
+    word-break: break-word;
+    max-width: 600px;
+    margin: 0 auto;
+
+    h2 {
+        font-size: 23px;
+    }
+
+    .order {
+        display: flex;
+        flex-direction: column;
+        width: 99%;
+        gap: 5px;
+        border: 1px solid rgb(194, 194, 194);
+        border-radius: 12px;
+        background-color: rgb(251, 251, 251);
+        overflow: hidden;
+
+        .order-details {
+            padding: 7px;
+        }
+
+        .items {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 6px 0 6px 0;
+
+            .item {
+                display: flex;
+                border: 1px solid rgb(170, 170, 170);
+                border-radius: 12px;
+                padding: 5px;
+                background-color: white;
+
+                .info-con {
+                    display: flex;
+                    column-gap: 3px;
+
+                    img {
+                        width: 100px;
+                        height: 80px;
+                        object-fit: cover;
+                        border-radius: 10px;
+                        flex-shrink: 10;
+                    }
+
+                    h3 {
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        display: -webkit-box;
+                        -webkit-box-orient: vertical;
+                        -webkit-line-clamp: 1;
+                    }
+
+                    .price {
+                        font-weight: 500;
+                    }
+                }
+
+                &:hover {
+                    cursor: pointer;
+                    box-shadow: 0px 0px 13px -8px black;
+                }
+
+                @media (max-width: 350px) {
+                    .info-con {
+                        img {
+                            width: 70px;
+                            height: 70px;
+                        }
+
+                        p {
+                            font-size: 15px;
+                        }
+                    }
+                }
+
+                @media (max-width: 200px) {
+                    .info-con {
+                        img {
+                            display: none;
+                        }
+                    }
+                }
+            }
+        }
+
+        .prices {
+            p {
+                display: inline-block;
+                margin-right: 10px;
+
+                span {
+                    font-weight: 500;
+                }
+            }
+        }
+
+        [class*="payment-"] {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            font-weight: 500;
+            background-color: rgb(226, 226, 226);
+            min-height: 50px;
+            font-size: 18px;
+            padding: 3px;
+            transition: background-color 500ms;
+
+            span:first-child {
+                display: flex;
+
+                .spinner-border {
+                    width: 19px;
+                    height: 19px;
+                    border-width: 3px;
+                }
+
+                .spinner-grow {
+                    animation-duration: 1.4s;
+                    background-color: rgb(58, 58, 58);
+                    width: 22px;
+                    height: 22px;
+                }
+
+                svg {
+                    width: 26px;
+                    height: auto;
+                }
+            }
+
+            &[class*="rejected"],
+            &[class*="cancelled"],
+            &[class*="issue"] {
+                background-color: rgb(255, 121, 121);
+            }
+
+            &[class*="successful"],
+            &[class*="refund"] {
+                background-color: rgb(129, 255, 118);
+            }
+
+            &[class*="created"],
+            &[class*="progress"],
+            &[class*="progress-refund"] {
+                background-color: rgb(157, 188, 255);
+            }
+
+            &[class*="created"] {
+                a {
+                    color: rgb(0, 81, 255);
+                    font-weight: 700;
+
+                    &:hover {
+                        color: rgb(0, 119, 255);
+                    }
+                }
+                
+                div {
+                    display: flex;
+                    row-gap: 2px;
+                    column-gap: 5px;
+                    flex-wrap: wrap;
+                }
+            }
+        }
     }
 }

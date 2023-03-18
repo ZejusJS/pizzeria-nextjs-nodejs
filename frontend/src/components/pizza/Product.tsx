@@ -29,8 +29,6 @@ const Product = ({ item, singleAdd, cart, deleteItem, onClick, user }) => {
     }, [cart])
 
     async function deletePizza(e) {
-        e.stopPropagation()
-
         const answer = confirm(`Do you really want to delete pizza "${item.title}"?`)
         switch (answer) {
             case true:
@@ -44,6 +42,8 @@ const Product = ({ item, singleAdd, cart, deleteItem, onClick, user }) => {
                     })
                     .catch(e => console.error(e))
         }
+
+        e => onClick(e)
     }
 
     return (
@@ -73,56 +73,67 @@ const Product = ({ item, singleAdd, cart, deleteItem, onClick, user }) => {
                                 : ''}
                         </div>
                     </div>
-                    {user?.roles?.admin ?
-                        <div className='admin-board'>
-                            <button
-                                type='button'
-                                className='btn-styled danger delete'
-                                onClick={deletePizza}>
-                                Delete product
-                            </button>
-                            <Link
-                                href={`/admin/edit-pizza/${item._id}`}
-                                className='btn-styled cyan edit'
-                            >
-                                Edit Product
-                            </Link>
-                        </div>
-                        : ''}
-                    <div className='cart-price-container'>
-                        <div className='price fw-500' onClick={(e) => e.stopPropagation()}>
-                            {item.price} {item.currency}
-                        </div>
-                        <div className='add-to-cart-container'>
-                            <Button
-                                pizza={item}
-                                onClick={
-                                    isInCart ? (e, piz) => deleteItem(e, piz) : (e, piz) => singleAdd(e, piz)
-                                }
-                            >
-                                <>
-                                    {
-                                        isInCart ?
-                                            <>
-                                                <CartRemove color={'#00c216'} />
-                                                <span>In Cart</span>
-                                            </>
-                                            :
-                                            <>
-                                                <CartAdd />
-                                                <span>Add to Cart</span>
-                                            </>
 
-                                    }
-                                    <div className='spinner-container'>
-                                        <div className="spinner-border" role="status">
-                                            <span className="visually-hidden"></span>
-                                        </div>
-                                    </div>
-                                </>
-                            </Button>
+                    {!(item?.orderItem) ?
+                        <>
+                            {user?.roles?.admin ?
+                                <div className='admin-board'>
+                                    <button
+                                        type='button'
+                                        className='btn-styled danger delete'
+                                        onClick={deletePizza}>
+                                        Delete product
+                                    </button>
+                                    <Link
+                                        href={`/admin/edit-pizza/${item._id}`}
+                                        className='btn-styled cyan edit'
+                                    >
+                                        Edit Product
+                                    </Link>
+                                </div>
+                                : ''}
+                            <div className='cart-price-container'>
+                                <div className='price fw-500' onClick={(e) => e.stopPropagation()}>
+                                    {item.price} {item.currency}
+                                </div>
+                                <div className='add-to-cart-container'>
+                                    <Button
+                                        pizza={item}
+                                        onClick={
+                                            isInCart ? (e, piz) => deleteItem(e, piz) : (e, piz) => singleAdd(e, piz)
+                                        }
+                                    >
+                                        <>
+                                            {
+                                                isInCart ?
+                                                    <>
+                                                        <CartRemove color={'#00c216'} />
+                                                        <span>In Cart</span>
+                                                    </>
+                                                    :
+                                                    <>
+                                                        <CartAdd />
+                                                        <span>Add to Cart</span>
+                                                    </>
+
+                                            }
+                                            <div className='spinner-container'>
+                                                <div className="spinner-border" role="status">
+                                                    <span className="visually-hidden"></span>
+                                                </div>
+                                            </div>
+                                        </>
+                                    </Button>
+                                </div>
+                            </div>
+                        </>
+                        :
+                        <div className='cart-price-container'>
+                            <div className='price fw-500' onClick={(e) => e.stopPropagation()}>
+                                {item.price} {item.currency}
+                            </div>
                         </div>
-                    </div>
+                    }
                 </div>
             </div>
         </div>

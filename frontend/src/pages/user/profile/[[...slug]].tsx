@@ -9,26 +9,26 @@ import UserSvg from "../../../images/User"
 import ArrowLeftSvg from "../../../images/ArrowLeft"
 import DollarSvg from "../../../images/Dollar"
 import HouseSvg from "../../../images/Houseadress"
+import OrderBagSvg from "../../../images/OrderBag"
+import DocumentAddSvg from "../../../images/DocumentAdd"
+import BackTurnSvg from "../../../images/BackTurn"
 
+import Meta from '../../../components/Meta'
 import Adress from '../../../components/user/Adress'
 import Details from '../../../components/user/Details'
 import Billing from '../../../components/user/Billing'
-import Meta from '../../../components/Meta'
+import Order from '../../../components/user/Order'
 
 export const UserContext = createContext('')
 
-const index = ({ userData }) => {
+const index = ({ userData, viewItem }) => {
     const router = useRouter()
-    const invoiceInfo = userData.invoiceInfo
     const shippingAdress = userData?.shippingAdress
     const { slug = [null] } = router.query
 
-
-    console.log(userData)
-
     return (
         <>
-        <Meta title='Mamma Mia | Profile' />
+            <Meta title='Mamma Mia | Profile' />
             <main>
                 <section className="user-container">
                     <div className="user-card">
@@ -48,6 +48,11 @@ const index = ({ userData }) => {
                             <Link href={'/user/profile/details'} shallow={true}>
                                 <div>
                                     <UserSvg /><span>User details</span>
+                                </div>
+                            </Link>
+                            <Link href={'/user/profile/orders'} shallow={true}>
+                                <div>
+                                    <OrderBagSvg /><span>Orders</span>
                                 </div>
                             </Link>
                             <Link href={'/user/profile/adress'} shallow={true}>
@@ -97,6 +102,26 @@ const index = ({ userData }) => {
                                     />
                                     :
                                     ''
+                    }
+                    {
+                        slug[0] === 'orders'
+                            ?
+                            <section className="orders">
+                                <h2>Orders</h2>
+                                {
+                                    userData?.orders?.map(order => (
+                                        <Order
+                                            order={order}
+                                            key={order?.orderNo}
+                                            viewItem={viewItem}
+                                            DocumentAddSvg={DocumentAddSvg}
+                                            BackTurnSvg={BackTurnSvg}
+                                        />
+                                    ))
+                                }
+                            </section>
+                            :
+                            ''
                     }
                 </section>
             </main>

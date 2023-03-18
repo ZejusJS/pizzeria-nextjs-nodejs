@@ -12,6 +12,7 @@ const { validateUserBilling } = require('../utils/mw-validateBilling');
 
 const User = require('../models/user')
 const Cart = require('../models/cart')
+const Order = require('../models/order')
 
 router.post('/signup', validateRegister, catchAsync(async function (req, res, next) {
     const { email, name, password, firstname, lastname, adress, city, zip } = req.body;
@@ -99,13 +100,16 @@ router.post('/logout', catchAsync(async function (req, res, next) {
 //
 
 router.get('/getUser', mwIsLoggedIn, catchAsync(async function (req, res, next) {
+    const orders = await Order.find({ _id: { $in: req.user.orders } }).sort({createdAt: -1})
+
     const user = {
         name: req.user?.name,
         email: req.user?.email,
         roles: req.user?.roles,
         id: req.user?._id,
         invoiceInfo: req.user?.invoiceInfo,
-        shippingAdress: req.user?.shippingAdress
+        shippingAdress: req.user?.shippingAdress,
+        orders: orders.length ? orders : []
     }
     res.status(200).json(user)
 }))

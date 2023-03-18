@@ -65,6 +65,12 @@ const UserSchema = new mongoose.Schema({
             type: Boolean
         },
     },
+    orders: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Order'
+        }
+    ],
     // refreshToken: [String]
 }, { timestamps: true })
 

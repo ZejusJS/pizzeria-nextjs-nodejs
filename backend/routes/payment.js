@@ -14,9 +14,12 @@ const getRetezec = require('../utils/func/getRetezec')
 const Pizza = require('../models/pizza')
 const Cart = require('../models/cart')
 const User = require('../models/user')
+const Order = require('../models/order')
 
 const { validatePayment } = require('../utils/mw-validatePayment')
 const { mwIsLoggedIn } = require('../utils/mw-isLoggedIn')
+
+const merchantId = 'A3492UfuSm'
 
 
 router.post('/card', validatePayment, mwIsLoggedIn, catchAsync(async function (req, res, next) {
@@ -48,12 +51,12 @@ router.post('/card', validatePayment, mwIsLoggedIn, catchAsync(async function (r
     console.log(totalPrice)
 
     const data = {
-        merchantId: 'A3492UfuSm',
+        merchantId: merchantId,
         orderNo: Math.floor(Math.random() * 9999999999) + 1,
         dttm: new Date().toISOString().replace(/(\.\d{3})|[^\d]/g, ''),
         payOperation: 'payment',
         payMethod: 'card',
-        totalAmount: totalPrice * 100,
+        totalAmount: (totalPrice * 100).toFixed(0),
         currency: 'CZK',
         closePayment: true,
         returnUrl: process.env.FRONTEND,
@@ -62,13 +65,13 @@ router.post('/card', validatePayment, mwIsLoggedIn, catchAsync(async function (r
             {
                 "name": "Mamma Mia",
                 "quantity": 1,
-                "amount": totalPriceItems * 100,
+                "amount": (totalPriceItems * 100).toFixed(0),
                 "description": 'Purchase in Mamma Mia store'
             },
             {
                 "name": "Shipping",
                 "quantity": 1,
-                "amount": shippingPrice * 100,
+                "amount": (shippingPrice * 100).toFixed(0),
                 "description": req.body.shipping
             }
         ],
@@ -108,10 +111,9 @@ router.post('/card', validatePayment, mwIsLoggedIn, catchAsync(async function (r
     const signature = sign.sign(CSOB_PRIVATE);
     const signatureString = signature.toString('base64');
     data.signature = signatureString
-    console.log(signatureString)
-    console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
 
     let resData = {}
+
     await axios({
         method: 'post',
         url: 'https://iapi.iplatebnibrana.csob.cz/api/v1.9/payment/init',
@@ -127,7 +129,6 @@ router.post('/card', validatePayment, mwIsLoggedIn, catchAsync(async function (r
     let payIdBase64url = encodeURIComponent(resData.payId)
     let dttmBase64url = encodeURIComponent(resData.dttm)
 
-    console.log('yyyyyyyyyyyyyyyyyyyyyyyy')
     const RETEZEC_PROCESS = getRetezec({ merchantId: data.merchantId, payId: resData.payId, dttm: resData.dttm })
     // const signProcess = crypto.sign("SHA256", RETEZEC_PROCESS, CSOB_PRIVATE);
     // const signatureProcess = signProcess.toString('base64');
@@ -136,14 +137,53 @@ router.post('/card', validatePayment, mwIsLoggedIn, catchAsync(async function (r
     signProcess.end()
     const signatureProcess = signProcess.sign(CSOB_PRIVATE);
     const signatureProcessString = signatureProcess.toString('base64');
-    console.log(signatureProcessString)
     const signatureProcessUri = encodeURIComponent(signatureProcessString)
 
-    console.log('xxxxxxxxxxxxxxxxxxxxxx')
     let url = `https://iapi.iplatebnibrana.csob.cz/api/v1.9/payment/process/${merchantIdBase64url}/${payIdBase64url}/${dttmBase64url}/${signatureProcessUri}`
+
+    const order = new Order({
+        payId: resData.payId,
+        url: url,
+        orderNo: data.orderNo,
+        totalPrice: (data.totalAmount / 100).toFixed(2),
+        shippingPrice,
+        user: req.user._id
+    })
+    order.items = req.body.cartData.items
+    await order.save()
+    findUser.orders.push(order._id)
+    await findUser.save()
 
     // console.log(url)
     res.status(200).json({ url })
+}))
+
+router.get('/check-status/:payId', mwIsLoggedIn, catchAsync(async function (req, res, next) {
+    const { payId } = req.params
+
+    const dttm = new Date().toISOString().replace(/(\.\d{3})|[^\d]/g, '')
+
+    const payIdUri = encodeURIComponent(payId)
+    const dttmUri = encodeURIComponent(dttm)
+    const merchantIdUri = encodeURIComponent(merchantId)
+
+    const RETEZEC_STATUS = getRetezec({ merchantId, payId, dttm })
+    const signStatus = crypto.createSign('SHA256')
+    signStatus.update(RETEZEC_STATUS)
+    signStatus.end()
+    const signatureStatus = signStatus.sign(CSOB_PRIVATE);
+    const signatureStatusString = signatureStatus.toString('base64');
+    const signatureStatusUri = encodeURIComponent(signatureStatusString)
+
+    let data = {}
+    await axios({
+        method: 'get',
+        url: `https://iapi.iplatebnibrana.csob.cz/api/v1.9/payment/status/${merchantIdUri}/${payIdUri}/${dttmUri}/${signatureStatusUri}`
+    })
+        .then(res => data = res.data)
+        .catch(e => console.error(e))
+
+    res.status(200).json(data)
 }))
 
 module.exports = router
