@@ -115,6 +115,75 @@ button.back-nav {
         background-color: rgb(251, 251, 251);
         overflow: hidden;
 
+        [class*="payment-"] {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            font-weight: 500;
+            background-color: rgb(226, 226, 226);
+            min-height: 50px;
+            font-size: 18px;
+            padding: 3px;
+            transition: background-color 500ms;
+
+            span:first-child {
+                display: flex;
+
+                .spinner-border {
+                    width: 19px;
+                    height: 19px;
+                    border-width: 3px;
+                }
+
+                .spinner-grow {
+                    animation-duration: 1.4s;
+                    background-color: rgb(58, 58, 58);
+                    width: 22px;
+                    height: 22px;
+                }
+
+                svg {
+                    width: 26px;
+                    height: auto;
+                }
+            }
+
+            &[class*="rejected"],
+            &[class*="cancelled"],
+            &[class*="issue"] {
+                background-color: rgb(255, 121, 121);
+            }
+
+            &[class*="successful"],
+            &[class*="refund"] {
+                background-color: rgb(129, 255, 118);
+            }
+
+            &[class*="created"],
+            &[class*="progress"],
+            &[class*="progress-refund"] {
+                background-color: rgb(157, 188, 255);
+            }
+
+            &[class*="created"] {
+                a {
+                    color: rgb(0, 81, 255);
+                    font-weight: 700;
+
+                    &:hover {
+                        color: rgb(0, 119, 255);
+                    }
+                }
+
+                div {
+                    display: flex;
+                    row-gap: 2px;
+                    column-gap: 5px;
+                    flex-wrap: wrap;
+                }
+            }
+        }
+
         .order-details {
             padding: 7px;
         }
@@ -186,81 +255,18 @@ button.back-nav {
         }
 
         .prices {
+            display: flex;
+            flex-wrap: wrap;
+            row-gap: 2px;
+            column-gap: 10px;
+            background-color: rgb(236, 236, 236);
+            padding: 5px;
+
             p {
                 display: inline-block;
-                margin-right: 10px;
 
                 span {
                     font-weight: 500;
-                }
-            }
-        }
-
-        [class*="payment-"] {
-            display: flex;
-            align-items: center;
-            gap: 3px;
-            font-weight: 500;
-            background-color: rgb(226, 226, 226);
-            min-height: 50px;
-            font-size: 18px;
-            padding: 3px;
-            transition: background-color 500ms;
-
-            span:first-child {
-                display: flex;
-
-                .spinner-border {
-                    width: 19px;
-                    height: 19px;
-                    border-width: 3px;
-                }
-
-                .spinner-grow {
-                    animation-duration: 1.4s;
-                    background-color: rgb(58, 58, 58);
-                    width: 22px;
-                    height: 22px;
-                }
-
-                svg {
-                    width: 26px;
-                    height: auto;
-                }
-            }
-
-            &[class*="rejected"],
-            &[class*="cancelled"],
-            &[class*="issue"] {
-                background-color: rgb(255, 121, 121);
-            }
-
-            &[class*="successful"],
-            &[class*="refund"] {
-                background-color: rgb(129, 255, 118);
-            }
-
-            &[class*="created"],
-            &[class*="progress"],
-            &[class*="progress-refund"] {
-                background-color: rgb(157, 188, 255);
-            }
-
-            &[class*="created"] {
-                a {
-                    color: rgb(0, 81, 255);
-                    font-weight: 700;
-
-                    &:hover {
-                        color: rgb(0, 119, 255);
-                    }
-                }
-                
-                div {
-                    display: flex;
-                    row-gap: 2px;
-                    column-gap: 5px;
-                    flex-wrap: wrap;
                 }
             }
         }

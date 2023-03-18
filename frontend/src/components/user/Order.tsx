@@ -19,6 +19,12 @@ const Order = ({ order, viewItem, DocumentAddSvg, BackTurnSvg }) => {
 
     const orderRef = useRef(null)
 
+    const [date, setDate] = useState(null)
+
+    useEffect(() => {
+        setDate(new Date(order?.createdAt).toLocaleString())
+    }, [])
+
     useEffect(() => {
         const checkIsInViewPort = async e => {
             const element = orderRef?.current
@@ -159,14 +165,19 @@ const Order = ({ order, viewItem, DocumentAddSvg, BackTurnSvg }) => {
                         ))
                         }
                     </div>
-                    <div className="prices">
-                        <p><span>Total</span>: {order.totalPrice} CZK</p>
-                        <p><span>Shipping</span>: {order.shippingPrice} CZK</p>
-                    </div>
+                </div>
+                <div className="prices">
+                    <p><span>Total</span>: {order.totalPrice} CZK</p>
+                    <p><span>Shipping</span>: {order.shippingPrice} CZK</p>
+                    <p><span>Created</span>: {date}</p>
                 </div>
             </div>
         </>
     )
+}
+
+export const getStaticProps = async (context) => {
+
 }
 
 export default Order

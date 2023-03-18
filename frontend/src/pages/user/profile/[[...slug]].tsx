@@ -75,7 +75,7 @@ const index = ({ userData, viewItem }) => {
                                     null, { shallow: true })}
                             >
                                 <ArrowLeftSvg />
-                                <span>Back to navigation</span>
+                                <span>Back</span>
                             </button>
                         </>
                     }

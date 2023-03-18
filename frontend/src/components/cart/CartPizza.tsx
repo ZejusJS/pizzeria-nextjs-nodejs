@@ -47,7 +47,7 @@ const Item = ({ item, changeQnt, viewItem }) => {
                 </div>
                 <div>
                     <div className='total-price fw-500'>
-                        Total Price: <span className='c-green fw-600'>{item?.item?.price * item?.quantity} CZK</span>
+                        Total Price: <span className='c-green fw-600'>{item?.totalPrice} {item?.item?.currency}</span>
                         </div>
                 </div>
             </div>

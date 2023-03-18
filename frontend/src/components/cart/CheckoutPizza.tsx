@@ -17,7 +17,7 @@ const CheckoutItem = ({ item }) => {
           <h3>{item.item.title}</h3>
           <p><span className='fw-500'>Price:</span> {item?.item?.price} {item?.item?.currency} / piece</p>
           <p><span className='fw-500'>Quantity:</span> {item?.quantity}</p>
-          <p><span className='fw-500'>Total</span>: {item?.item?.price * item?.quantity} {item?.item?.currency}</p>
+          <p><span className='fw-500'>Total</span>: {item?.totalPrice} {item?.item?.currency}</p>
         </div>
       </div>
       <hr />

@@ -82,27 +82,35 @@ nav {
         .one {
             width: 10%;
         }
+
         .two {
             width: 20%;
         }
+
         .three {
             width: 30%;
         }
+
         .four {
             width: 40%;
         }
+
         .five {
             width: 50%;
         }
+
         .six {
             width: 60%;
         }
+
         .seven {
             width: 70%;
         }
+
         .eight {
             width: 80%;
         }
+
         .nine {
             width: 90%;
         }
@@ -214,6 +222,7 @@ nav {
         justify-content: space-between;
         align-items: center;
         height: 60px;
+        position: relative;
 
         .logo-link {
             display: flex;
@@ -241,11 +250,13 @@ nav {
         .options-container {
             display: flex;
             gap: 10px;
+            overflow: visible;
 
             .cart {
-                position: relative;
+                overflow: visible;
                 width: 50px;
                 margin-right: 20px;
+                position: relative;
 
                 svg {
                     width: 100%;
@@ -260,8 +271,10 @@ nav {
                     padding: 4px;
                     border-radius: 10px;
                     line-height: 13px;
+                    color: black;
                 }
             }
+
 
             .expand-nav {
                 display: none;
