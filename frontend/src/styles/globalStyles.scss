@@ -207,7 +207,7 @@ main {
     border: 1px solid rgb(121, 121, 121);
     border-radius: 10px;
     overflow: hidden;
-    white-space: pre-wrap;
+    // white-space: pre-wrap;
 
     @media (max-width: 650px) {
         width: 95%;
@@ -215,12 +215,6 @@ main {
 
     @media (max-width: 500px) {
         width: 100%;
-
-        .pizza-thumbnail-info {
-            h3 {
-                font-size: 18px;
-            }
-        }
     }
 
     .pizza-thumbnail-info {
@@ -234,14 +228,8 @@ main {
             text-overflow: ellipsis;
             display: -webkit-box;
             -webkit-box-orient: vertical;
-            -webkit-line-clamp: 1;
-        }
-
-        @media (max-width: 500px) {
-
-            h3 {
-                -webkit-line-clamp: 2;
-            }
+            -webkit-line-clamp: 2;
+            word-break: break-word;
         }
     }
 
@@ -318,7 +306,7 @@ main {
         @media (max-width: 600px) {
             height: 100%;
             max-width: 200px;
-            height: 300px;
+            height: 350px;
 
             .pizza-thumbnail-info {
                 flex-direction: column !important;
@@ -340,16 +328,16 @@ main {
                     justify-content: center;
                     align-items: center;
                     margin: 10px auto 0 auto;
-                    height: 130px;
+                    height: 150px;
                     flex-shrink: 0;
                     margin: 0;
 
                     img {
-                        width: 100%;
-                        min-width: 100%;
-                        max-width: 100%;
-                        min-height: 100%;
+                        width: auto;
+                        min-height: 150px;
+                        width: auto;
                         object-fit: cover;
+                        transition: min-height 200ms;
                     }
 
                     .behind-cart {
@@ -358,7 +346,11 @@ main {
                 }
 
                 h3 {
-                    -webkit-line-clamp: 4;
+                    -webkit-line-clamp: 2;
+                }
+
+                div.ingredients {
+                    -webkit-line-clamp: 5;
                 }
 
                 .svg-cart {
@@ -369,19 +361,13 @@ main {
                 }
             }
 
-            @media (max-width: 250px) {
-                max-width: 100%;
-                height: 350px;
-
-                div.ingredients {
-                    -webkit-line-clamp: 6;
-                }
-
+            &:hover {
                 .pizza-thumbnail-info {
                     .pizza-img-container {
-                        margin: 0;
-                        width: 100%;
-                        min-width: 100%;
+                        img {
+                            min-height: 180px;
+                            min-width: 50px;
+                        }
                     }
                 }
             }
@@ -401,7 +387,7 @@ div.ingredients {
     text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 2;
 
     .ingr {
         display: inline-block;
@@ -410,10 +396,6 @@ div.ingredients {
 
     .dot:last-child {
         display: none;
-    }
-
-    @media (max-width: 500px) {
-        font-size: 15px;
     }
 }
 
@@ -517,9 +499,6 @@ div.ingredients {
         }
 
         @media (max-width: 500px) {
-            div.ingredients {
-                -webkit-line-clamp: 2;
-            }
 
             p {
                 display: none;
