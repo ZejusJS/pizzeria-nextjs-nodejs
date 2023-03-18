@@ -161,6 +161,14 @@ router.post('/card', validatePayment, mwIsLoggedIn, catchAsync(async function (r
 router.get('/check-status/:payId', mwIsLoggedIn, catchAsync(async function (req, res, next) {
     const { payId } = req.params
 
+    const order = await Order.findOne({ payId })
+    if (!order) return res.status(400).json({ msg: "Can't find this order" })
+    let isAuthor = false
+    req.user?.orders.map(ord => {
+        if (order?.equals(ord._id)) isAuthor = true
+    })
+    if (!isAuthor) return res.status(403).json({ msg: "You don't have permission to check this payment status" })
+
     const dttm = new Date().toISOString().replace(/(\.\d{3})|[^\d]/g, '')
 
     const payIdUri = encodeURIComponent(payId)
