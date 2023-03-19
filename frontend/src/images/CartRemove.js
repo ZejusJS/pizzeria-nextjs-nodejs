@@ -1,7 +1,8 @@
 export default function Cartremove({ color }) {
-    const fill = color || "#000000"
+    // const fill = color || "#000000"
+    const fill = null
     return (
-        <svg className={'svg-cart'} height="800px" id="svg5" width="800px" version="1.1" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+        <svg className={'svg-cart remove'} height="800px" id="svg5" width="800px" version="1.1" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
             <defs id="defs2" />
             <g id="layer1" transform="translate(-204,-244)">
                 <path id="path43355" style={{ "color": fill, "fill": fill, "fillRule": "evenodd", "strokeLinecap": "round", "strokeLinejoin": "round", "strokeMiterlimit": "4.1", "InkscapeStroke": "none" }} d="m 208.62891,255.00586 c -1.62528,0 -2.86287,1.51426 -2.58789,3.10156 l 2.27539,13.13672 c 0.27852,1.60786 1.69977,2.76172 3.3125,2.76172 h 16.76757 c 1.61437,0 3.01297,-1.16098 3.31055,-2.74805 a 1.0001,1.0001 0 0 0 0.002,-0.0137 l 2.04102,-11.7793 a 1,1 0 0 0 -0.81445,-1.15429 1,1 0 0 0 -1.1543,0.81445 l -2.03906,11.76562 c -0.12254,0.65349 -0.68047,1.11524 -1.34571,1.11524 h -16.76757 c -0.66689,0 -1.23318,-0.46326 -1.34375,-1.10156 l -2.27539,-13.13672 c -0.0737,-0.42571 0.20139,-0.76172 0.61914,-0.76172 H 224 a 1,1 0 0 0 1,-1 1,1 0 0 0 -1,-1 z" />

@@ -3,7 +3,7 @@ import { server } from '../config/config'
 import NProgress from 'nprogress'
 import { setCookie, getCookie, getCookies, hasCookie } from 'cookies-next';
 
-export default async function singleAdd(e, piz) {
+export default async function singleAdd(e, piz, totalCartPrice) {
     e.stopPropagation()
     const productId = piz._id
     let cartData: object
@@ -31,7 +31,10 @@ export default async function singleAdd(e, piz) {
             productId
         },
     })
-        .then(res => cartData = res.data)
+        .then(res => {
+            cartData = res.data
+            totalCartPrice(res.data?.totalCartPrice)
+        })
         .catch(e => console.log(e))
 
     if (cartData) {

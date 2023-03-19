@@ -67,12 +67,16 @@ const Signup = ({ setUser, setOrderDetails }) => {
             emailTakenError?.current?.classList.remove('shown')
         }
         if (name === 'firstname') {
-            if (value.length
-
-                < 1 || value.length > 30) {
+            if (value.length < 1 || value.length > 30) {
                 firstnameError?.current?.classList.add('shown')
             } else {
                 firstnameError?.current?.classList.remove('shown')
+            }
+
+            if (value.match(/[^\sa-zA-Z\u00c0-\u00d6\u00d8-\u00f6\u00f8-\u02af\u1d00-\u1d25\u1d62-\u1d65\u1d6b-\u1d77\u1d79-\u1d9a\u1e00-\u1eff\u2090-\u2094\u2184-\u2184\u2488-\u2490\u271d-\u271d\u2c60-\u2c7c\u2c7e-\u2c7f\ua722-\ua76f\ua771-\ua787\ua78b-\ua78c\ua7fb-\ua7ff\ufb00-\ufb06\u00bf\u00a1]/gi)) {
+                firstnameError?.current?.classList.add('second-shown')
+            } else {
+                firstnameError?.current?.classList.remove('second-shown')
             }
         }
         if (name === 'lastname') {
@@ -81,12 +85,24 @@ const Signup = ({ setUser, setOrderDetails }) => {
             } else {
                 lastnameError?.current?.classList.remove('shown')
             }
+
+            if (value.match(/[^\sa-zA-Z\u00c0-\u00d6\u00d8-\u00f6\u00f8-\u02af\u1d00-\u1d25\u1d62-\u1d65\u1d6b-\u1d77\u1d79-\u1d9a\u1e00-\u1eff\u2090-\u2094\u2184-\u2184\u2488-\u2490\u271d-\u271d\u2c60-\u2c7c\u2c7e-\u2c7f\ua722-\ua76f\ua771-\ua787\ua78b-\ua78c\ua7fb-\ua7ff\ufb00-\ufb06\u00bf\u00a1]/gi)) {
+                lastnameError?.current?.classList.add('second-shown')
+            } else {
+                lastnameError?.current?.classList.remove('second-shown')
+            }
         }
         if (name === 'adress') {
             if (value.length < 1 || value.length > 50) {
                 adressError?.current?.classList.add('shown')
             } else {
                 adressError?.current?.classList.remove('shown')
+            }
+
+            if (value.match(/[^\sa-zA-Z0-9\+\_\-\@\&\=\.\,\(\)\:\ \/\?\|\<\>\"\'\!\%\*\\\#\$\^\;\u00c0-\u00d6\u00d8-\u00f6\u00f8-\u02af\u1d00-\u1d25\u1d62-\u1d65\u1d6b-\u1d77\u1d79-\u1d9a\u1e00-\u1eff\u2090-\u2094\u2184-\u2184\u2488-\u2490\u271d-\u271d\u2c60-\u2c7c\u2c7e-\u2c7f\ua722-\ua76f\ua771-\ua787\ua78b-\ua78c\ua7fb-\ua7ff\ufb00-\ufb06]/gi)) {
+                adressError?.current?.classList.add('second-shown')
+            } else {
+                adressError?.current?.classList.remove('second-shown')
             }
         }
         if (name === 'city') {
@@ -95,12 +111,24 @@ const Signup = ({ setUser, setOrderDetails }) => {
             } else {
                 cityError?.current?.classList.remove('shown')
             }
+
+            if (value.match(/[^\sa-zA-Z0-9\+\_\-\@\&\=\.\,\(\)\:\ \/\?\|\<\>\"\'\!\%\*\\\#\$\^\;\u00c0-\u00d6\u00d8-\u00f6\u00f8-\u02af\u1d00-\u1d25\u1d62-\u1d65\u1d6b-\u1d77\u1d79-\u1d9a\u1e00-\u1eff\u2090-\u2094\u2184-\u2184\u2488-\u2490\u271d-\u271d\u2c60-\u2c7c\u2c7e-\u2c7f\ua722-\ua76f\ua771-\ua787\ua78b-\ua78c\ua7fb-\ua7ff\ufb00-\ufb06]/gi)) {
+                cityError?.current?.classList.add('second-shown')
+            } else {
+                cityError?.current?.classList.remove('second-shown')
+            }
         }
         if (name === 'zip') {
             if (value.length < 1 || value.length > 16) {
                 zipError?.current?.classList.add('shown')
             } else {
                 zipError?.current?.classList.remove('shown')
+            }
+
+            if (value.match(/[^\sa-zA-Z0-9\+\_\-\@\&\=\.\,\(\)\:\ \/\?\|\<\>\"\'\!\%\*\\\#\$\^\;\u00c0-\u00d6\u00d8-\u00f6\u00f8-\u02af\u1d00-\u1d25\u1d62-\u1d65\u1d6b-\u1d77\u1d79-\u1d9a\u1e00-\u1eff\u2090-\u2094\u2184-\u2184\u2488-\u2490\u271d-\u271d\u2c60-\u2c7c\u2c7e-\u2c7f\ua722-\ua76f\ua771-\ua787\ua78b-\ua78c\ua7fb-\ua7ff\ufb00-\ufb06]/gi)) {
+                zipError?.current?.classList.add('second-shown')
+            } else {
+                zipError?.current?.classList.remove('second-shown')
             }
         }
         invoiceError?.current?.classList.remove('shown')
@@ -160,7 +188,7 @@ const Signup = ({ setUser, setOrderDetails }) => {
                 } else if (e.response?.data?.code === 100) {
                     console.log('email incorrect')
                     emailTakenError?.current?.classList.add('shown')
-                } else if (e.response?.data?.code === 300) {
+                } else if (e.response?.data?.code === 300 || e.response?.data?.code === 450) {
                     console.log('body incorrect')
                     invoiceError?.current?.classList.add('shown')
                 }
@@ -187,7 +215,7 @@ const Signup = ({ setUser, setOrderDetails }) => {
                         <div
                             ref={nameError}
                             className='error'>
-                            <p>Username must contain only 5 to 24 characters.</p>
+                            <p className='general'>Username must contain only 5 to 24 characters.</p>
                         </div>
                     </div>
                     <div className='input-container'>
@@ -203,12 +231,12 @@ const Signup = ({ setUser, setOrderDetails }) => {
                         <div
                             ref={emailError}
                             className='error'>
-                            <p>Email must be valid and cannot contain more than 100 characters.</p>
+                            <p className='general'>Email must be valid and cannot contain more than 100 characters.</p>
                         </div>
                         <div
                             ref={emailTakenError}
                             className='error'>
-                            <p>Email is already in use.</p>
+                            <p className='general'>Email is already in use.</p>
                         </div>
                     </div>
                     <div className='input-container'>
@@ -224,7 +252,7 @@ const Signup = ({ setUser, setOrderDetails }) => {
                         <div
                             ref={passwordError}
                             className='error'>
-                            <p>Password must contain only 8 to 40 characters.</p>
+                            <p className='general'>Password must contain only 8 to 40 characters.</p>
                         </div>
                     </div>
 
@@ -247,7 +275,8 @@ const Signup = ({ setUser, setOrderDetails }) => {
                         <div
                             ref={firstnameError}
                             className='error'>
-                            <p>This field is required. First name cannot contain more than 30 characters.</p>
+                            <p className='general'>This field is required. First name cannot contain more than 30 characters.</p>
+                            <p className='second'>Cannot contain non-Latin or special characters.</p>
                         </div>
                     </div>
                     <div className='input-container'>
@@ -263,7 +292,8 @@ const Signup = ({ setUser, setOrderDetails }) => {
                         <div
                             ref={lastnameError}
                             className='error'>
-                            <p>This field is required. Last name cannot contain more than 30 characters.</p>
+                            <p className='general'>This field is required. Last name cannot contain more than 30 characters.</p>
+                            <p className='second'>Cannot contain non-Latin or special characters.</p>
                         </div>
                     </div>
                     <div className='input-container'>
@@ -279,7 +309,8 @@ const Signup = ({ setUser, setOrderDetails }) => {
                         <div
                             ref={adressError}
                             className='error'>
-                            <p>This field is required. Adress cannot contain more than 50 characters.</p>
+                            <p className='general'>This field is required. Adress cannot contain more than 50 characters.</p>
+                            <p className='second'>Cannot contain non-Latin characters.</p>
                         </div>
                     </div>
                     <div className='input-container'>
@@ -295,7 +326,8 @@ const Signup = ({ setUser, setOrderDetails }) => {
                         <div
                             ref={cityError}
                             className='error'>
-                            <p>This field is required. City cannot contain more than 50 characters.</p>
+                            <p className='general'>This field is required. City cannot contain more than 50 characters.</p>
+                            <p className='second'>Cannot contain non-Latin characters.</p>
                         </div>
                     </div>
                     <div className='input-container'>
@@ -311,7 +343,8 @@ const Signup = ({ setUser, setOrderDetails }) => {
                         <div
                             ref={zipError}
                             className='error'>
-                            <p>This field is required. Zip code cannot contain more than 16 characters.</p>
+                            <p className='general'>This field is required. Zip code cannot contain more than 16 characters.</p>
+                            <p className='second'>Cannot contain non-Latin characters.</p>
                         </div>
                     </div>
                     <div className='input-container'>

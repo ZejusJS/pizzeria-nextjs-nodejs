@@ -28,8 +28,8 @@ router.post('/card', validatePayment, mwIsLoggedIn, catchAsync(async function (r
     let totalPriceItems = 0
     let totalPrice = 0
     let shippingPrice = req.body.shipping === 'standard' ? 70 : 90
-    let firstName = firstname.replace(/[\s.;,'"$<>*÷×()/|?%0-9]/g, '')
-    let lastName = lastname.replace(/[\s.;,'"$<>*÷×()/|?%0-9]/g, '')
+    let firstName = firstname
+    let lastName = lastname
     let fullname = (firstName + ' ' + lastName).slice(0, 45)
 
     const findUser = await User.findById(req.user._id)
@@ -183,15 +183,45 @@ router.get('/check-status/:payId', mwIsLoggedIn, catchAsync(async function (req,
     const signatureStatusString = signatureStatus.toString('base64');
     const signatureStatusUri = encodeURIComponent(signatureStatusString)
 
-    let data = {}
+    const data = {
+        paymentStatus: 0
+    }
     await axios({
         method: 'get',
         url: `https://iapi.iplatebnibrana.csob.cz/api/v1.9/payment/status/${merchantIdUri}/${payIdUri}/${dttmUri}/${signatureStatusUri}`
     })
-        .then(res => data = res.data)
+        .then(res => {
+            console.log(res.data)
+            data.paymentStatus = res?.data?.paymentStatus
+        })
         .catch(e => console.error(e))
 
     res.status(200).json(data)
 }))
+
+// router.post('/google-pay-echo', catchAsync(async function (req, res, next) {
+//     const dttm = new Date().toISOString().replace(/(\.\d{3})|[^\d]/g, '')
+//     const RETEZEC_STATUS = getRetezec({ merchantId, dttm })
+//     const signStatus = crypto.createSign('SHA256')
+//     signStatus.update(RETEZEC_STATUS)
+//     signStatus.end()
+//     const signatureStatus = signStatus.sign(CSOB_PRIVATE);
+//     const signatureStatusString = signatureStatus.toString('base64');
+
+//     let data = {}
+//     await axios({
+//         method: 'post',
+//         url: 'https://iapi.iplatebnibrana.csob.cz/api/v1.9/googlepay/echo',
+//         data: {
+//             merchantId,
+//             dttm,
+//             signature: signatureStatusString
+//         }
+//     })
+//         .then(res => data = res.data)
+//         .catch(e => console.log(e))
+
+//     res.json(data)
+// }))
 
 module.exports = router

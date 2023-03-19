@@ -31,7 +31,7 @@ const Pizza = ({ pizza, singleAdd, viewItem, cart }) => {
           {isInCart ?
             <>
               <div className='behind-cart'></div>
-              <CartRemove color={'#00c216'} />
+              <CartRemove color={'#059615'} />
             </>
             : ''}
         </div>

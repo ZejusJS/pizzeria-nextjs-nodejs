@@ -58,16 +58,17 @@ router.get('/pizza/:id', catchAsync(async function (req, res, next) {
 router.delete('/pizza/:id', catchAsync(async function (req, res, next) {
     const { id } = req.params
     const pizza = await Pizza.findOneAndDelete({ _id: id })
+    if (pizza.images[0]) {
+        await cloudinary.uploader.destroy(pizza.images[0].filename);
+    }
     res.status(200).json({ msg: `Pizza "${pizza?.title}" deleted` })
 }))
 
 router.put('/pizza/:id', mwUploadPizzaImg, validatePizza, catchAsync(async function (req, res, next) {
     let { title, description, price, ingredients } = req.body
-    console.log(req.body)
-    console.log(req.files)
     const { id } = req.params
     const pizza = await Pizza.findById(id)
-    if (req.files.length) {
+    if (req?.files?.length) {
         await cloudinary.uploader.destroy(pizza.images[0].filename);
         const { filename, path } = req.files[0]
         pizza.images[0] = { filename, url: path }

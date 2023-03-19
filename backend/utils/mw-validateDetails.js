@@ -11,6 +11,7 @@ module.exports.validateUserDetails = catchAsync(async function (req, res, next) 
         console.log(error)
         res.status(400).json({ code: 300 })
     } else {
+        req.body.name = req.body.name.trim()
         next()
     }
 })

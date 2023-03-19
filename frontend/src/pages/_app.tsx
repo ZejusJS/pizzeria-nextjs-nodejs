@@ -32,20 +32,28 @@ import ErrorSvg from '../images/Error'
 import Product from '../components/pizza/Product';
 import Unfocus from '../components/Unfocus';
 
+interface Cart {
+  totalCartPrice?: number;
+}
+
 export default function App({ Component, pageProps }) {
-  const [cart, setCart] = useState({})
+  const [cart, setCart] = useState<Cart>({})
   const [user, setUser] = useState({})
   const [expanded, setExpanded] = useState(false)
   const [viewProduct, setViewProduct] = useState(false)
   const [itemToView, setItemToView] = useState({})
   const [loading, setLoading] = useState(true)
+  const [loaded, setLoaded] = useState(false)
   const [error, setError] = useState(0)
+  const [totalCartPrice, setTotalCartPrice] = useState(0)
 
-  const loader = useRef(null)
+  const loaderRef = useRef(null)
 
-  useEffect(() => {
+  function fetchFirstData() {
+    setLoaded(false)
     // console.log('xddddddddddddddddddddddddd')
     NProgress.start()
+    loaderRef?.current?.classList?.remove('loaded')
     axios({
       method: 'get',
       url: `/api/cart/getCartAndUser`,
@@ -64,17 +72,22 @@ export default function App({ Component, pageProps }) {
         cartToSet.items = res?.data?.cart?.items?.filter(item => item.item !== null)
         setCart(cartToSet)
         setUser(res?.data?.user)
+        setTotalCartPrice(cartToSet.totalCartPrice)
 
         NProgress.done(false)
-        loader?.current?.classList.add('loaded')
+        loaderRef?.current?.classList?.add('loaded')
         setTimeout(() => {
-          loader?.current?.remove()
+          setLoaded(true)
         }, 1500);
       })
       .catch(e => {
         console.error(e)
         setError(e.response.status)
       })
+  }
+
+  useEffect(() => {
+    fetchFirstData()
   }, [])
 
   useEffect(() => {
@@ -96,11 +109,11 @@ export default function App({ Component, pageProps }) {
   });
 
   async function singleAdd(e, piz) {
-    setCart(await singleAddFunc(e, piz))
+    setCart(await singleAddFunc(e, piz, setTotalCartPrice))
   }
 
   async function deleteItem(e, piz) {
-    setCart(await deleteItemFunc(e, piz))
+    setCart(await deleteItemFunc(e, piz, setTotalCartPrice))
   }
 
   function viewItem(e, item) {
@@ -124,32 +137,35 @@ export default function App({ Component, pageProps }) {
         setExpanded={setExpanded}
         user={user}
       />
-      <div
-        className='loader'
-        ref={loader}
-      >
-        {!error ? <div className="spinner-border" role="status"></div>
-          :
-          <ErrorSvg />}
-        <div className='error-msgs'>
-          <p className={`msg ${error ? 'visible' : ''}`}>
-            Something went wrong...
-          </p>
-          <p className={`msg ${error ? 'visible' : ''}`}>
-            Try reloading a page. A problem can be also on our side.
-          </p>
-          <p className={`msg code ${error === 500 ? 'visible' : ''}`}>
-            Error code: <b>500</b> - A problem is on our servers.
-          </p>
-          <p className={`msg code ${error === 400 && getCookie('cart') !== 'error' ? 'visible' : ''}`}>
-            Error code: <b>400</b> - Something went wrong on your side.
-          </p>
-          <p className={`msg code ${getCookie('cart') === 'error' ? 'visible' : ''}`}>
-            <b>Cart error</b> - Something went wrong probably on our side.
-            We can't provide you a cart. Refresh a page after 10 seconds or contact us.
-          </p>
+      {!loaded ?
+        <div
+          className='loader'
+          ref={loaderRef}
+        >
+          {!error ? <div className="spinner-border" role="status"></div>
+            :
+            <ErrorSvg />}
+          <div className='error-msgs'>
+            <p className={`msg ${error ? 'visible' : ''}`}>
+              Something went wrong...
+            </p>
+            <p className={`msg ${error ? 'visible' : ''}`}>
+              Try reloading a page. A problem can be also on our side.
+            </p>
+            <p className={`msg code ${error === 500 ? 'visible' : ''}`}>
+              Error code: <b>500</b> - A problem is on our servers.
+            </p>
+            <p className={`msg code ${error === 400 && getCookie('cart') !== 'error' ? 'visible' : ''}`}>
+              Error code: <b>400</b> - Something went wrong on your side.
+            </p>
+            <p className={`msg code ${getCookie('cart') === 'error' ? 'visible' : ''}`}>
+              <b>Cart error</b> - Something went wrong probably on our side.
+              We can't provide you a cart. Refresh a page after 10 seconds or contact us.
+            </p>
+          </div>
         </div>
-      </div>
+        : ''
+      }
       <div
         onClick={expanded ? () => setExpanded(!expanded) : (a) => (a)}
       // className={`${viewProduct ? 'of-h' : ''}`}
@@ -179,6 +195,9 @@ export default function App({ Component, pageProps }) {
               unViewItem={(e) => unViewItem(e)}
               deleteItem={(e, piz) => deleteItem(e, piz)}
               viewItem={(e, i) => viewItem(e, i)}
+              fetchFirstData={fetchFirstData}
+              totalCartPrice={totalCartPrice}
+              setTotalCartPrice={setTotalCartPrice}
             />
             :
             ''

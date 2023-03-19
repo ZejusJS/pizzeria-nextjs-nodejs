@@ -39,8 +39,8 @@ async function addPizzas(num) {
             title: lorem.generateWords(Math.floor(Math.random() * 2) + 2),
             images: [
                 {
-                    url: 'https://res.cloudinary.com/dzxwekkvd/image/upload/v1674492278/pizzas/pizza-1_qf3tto.jpg',
-                    filename: 'pizzas/pizza-1_qf3tto'
+                    url: 'https://source.unsplash.com/random/?pizza/',
+                    filename: 'pizzas/file_e9hwpg'
                 }
             ],
             key: Math.floor(Math.random() * 5000),

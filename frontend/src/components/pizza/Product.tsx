@@ -55,8 +55,8 @@ const Product = ({ item, singleAdd, cart, deleteItem, onClick, user }) => {
                 &#9587;
             </div>
             <div className='product-center'>
-                <div className='pizza-img-container' onClick={(e) => e.stopPropagation()}>
-                    <img src={item.images[0].url} alt="" />
+                <div className='pizza-img-container'>
+                    <img src={item.images[0].url} alt="" onClick={(e) => e.stopPropagation()} />
                 </div>
                 <div className='info-container'>
                     <div className='pizza-thumbnail' onClick={(e) => e.stopPropagation()}>

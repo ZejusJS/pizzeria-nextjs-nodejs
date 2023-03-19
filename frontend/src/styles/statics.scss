@@ -93,6 +93,16 @@ select {
     user-select: none;
 }
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
 input[type=text], input[type=password], input[type=email] {
     border-radius: 7px;
     border: 1px solid

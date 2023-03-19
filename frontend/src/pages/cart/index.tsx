@@ -2,8 +2,6 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 
 import Item from '../../components/cart/CartPizza'
-import Product from '../../components/pizza/Product';
-import Unfocus from '../../components/Unfocus';
 import Meta from '../../components/Meta'
 import changeQntFunc from '../../utils/changeQnt';
 
@@ -12,19 +10,28 @@ import CartCheckoutSvg from '../../images/CartCheckout'
 import WindSvg from '../../images/Wind'
 
 const cart = ({ cart, setCart,
-  viewItem, unViewItem,
-  singleAdd, deleteItem,
-  viewProduct, itemToView, user }) => {
+  viewItem, fetchFirstData,
+  totalCartPrice, setTotalCartPrice }) => {
 
   const router = useRouter()
 
+  if (router?.query?.empty === 'true') {
+    console.log(router?.query?.empty)
+    router.replace({
+      pathname: router.pathname,
+      query: {}
+    }, '', { shallow: true }).then(
+      fetchFirstData()
+    )
+  }
+
   async function changeQnt(e, qnt, item) {
-    changeQntFunc(e, qnt, item, setCart)
+    changeQntFunc(e, qnt, item, setCart, setTotalCartPrice)
   }
 
   return (
     <>
-    <Meta title='Mamma Mia | Cart' />
+      <Meta title='Mamma Mia | Cart' />
       <main>
         {cart?.items?.length > 0
           ?
@@ -42,6 +49,9 @@ const cart = ({ cart, setCart,
                   ''
               })}
               <div className='checkout-btn-container'>
+                <div className='total-cart-price c-green fw-600'>
+                  {totalCartPrice} CZK
+                </div>
                 <Link href={{
                   pathname: '/cart/checkout',
                   query: { cart: cart._id },
@@ -78,13 +88,6 @@ const cart = ({ cart, setCart,
 //     props: {
 //       '1': 1
 //     }
-//   }
-// }
-
-
-// export async function getStaticProps(context) {
-//   return {
-//     props: {}, 
 //   }
 // }
 

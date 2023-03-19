@@ -76,9 +76,28 @@
     gap: 5px;
     max-width: 800px;
     margin: 0 auto;
+    overflow: hidden;
 
     .change-slides-btns {
         display: flex;
+        padding: 10px 0 0 0;
+
+        .svg-con {
+            display: flex;
+            width: 12px;
+            position: relative;
+
+            .arrow-right {
+                width: 20px;
+                height: auto;
+                flex-shrink: 0;
+                position: absolute;
+                top: 50%;
+                right: -3px;
+                transform: translate(0%, -50%);
+                fill: rgb(238, 155, 0);
+            }
+        }
 
         .change-slide {
             border: 0;
@@ -343,6 +362,15 @@ input.radio-green[type=radio] {
 
 }
 
+.error-checkout {
+    color: rgb(255, 49, 49);
+    max-width: 260px;
+    padding: 5px;
+    margin: 0 auto;
+    font-size: 18px;
+    font-weight: 500;
+}
+
 button.submit-order {
     border: 0;
     padding: 7px 14px;
@@ -362,4 +390,8 @@ button.submit-order {
         outline-offset: 1px;
         outline: 2px solid rgba(68, 68, 68, 0.377);
     }
+}
+
+.adress {
+    font-weight: 500;
 }

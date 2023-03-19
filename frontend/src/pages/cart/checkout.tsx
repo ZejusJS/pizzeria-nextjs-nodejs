@@ -14,6 +14,7 @@ import VisaCardLogo from '../../images/VisaCardLogo'
 import HouseAdressSvg from '../../images/Houseadress'
 import DollarSvg from '../../images/Dollar'
 import ShippingSvg from '../../images/Box'
+import ArrowRightSvg from '../../images/ArrowRight'
 
 const checkout = ({ cartData, setUser, user, userData, setCart }) => {
     const [orderDetails, setOrderDetails] = useState({
@@ -27,6 +28,7 @@ const checkout = ({ cartData, setUser, user, userData, setCart }) => {
     const [paymentMethod, setPaymentMethod] = useState({ name: 'card', price: 0 })
     const [totalPrice, setTotalPrice] = useState(0)
     const [auth, setAuth] = useState(0)
+    const [error, setError] = useState(false)
 
     // console.log(orderDetails)
     const invoiceInfo = userData.invoiceInfo
@@ -54,6 +56,8 @@ const checkout = ({ cartData, setUser, user, userData, setCart }) => {
     const zipError = useRef(null)
 
     function handleChangeOrderDetails(e) {
+        setError(false)
+
         const { name, value } = e.target
         setOrderDetails(prevData => {
             return {
@@ -62,10 +66,17 @@ const checkout = ({ cartData, setUser, user, userData, setCart }) => {
             }
         })
         if (name === 'firstname') {
+
             if (value.length < 1 || value.length > 30) {
                 firstnameError?.current?.classList.add('shown')
             } else {
                 firstnameError?.current?.classList.remove('shown')
+            }
+
+            if (value.match(/[^\sa-zA-Z\u00c0-\u00d6\u00d8-\u00f6\u00f8-\u02af\u1d00-\u1d25\u1d62-\u1d65\u1d6b-\u1d77\u1d79-\u1d9a\u1e00-\u1eff\u2090-\u2094\u2184-\u2184\u2488-\u2490\u271d-\u271d\u2c60-\u2c7c\u2c7e-\u2c7f\ua722-\ua76f\ua771-\ua787\ua78b-\ua78c\ua7fb-\ua7ff\ufb00-\ufb06\u00bf\u00a1]/gi)) {
+                firstnameError?.current?.classList.add('second-shown')
+            } else {
+                firstnameError?.current?.classList.remove('second-shown')
             }
         }
         if (name === 'lastname') {
@@ -74,12 +85,24 @@ const checkout = ({ cartData, setUser, user, userData, setCart }) => {
             } else {
                 lastnameError?.current?.classList.remove('shown')
             }
+
+            if (value.match(/[^\sa-zA-Z\u00c0-\u00d6\u00d8-\u00f6\u00f8-\u02af\u1d00-\u1d25\u1d62-\u1d65\u1d6b-\u1d77\u1d79-\u1d9a\u1e00-\u1eff\u2090-\u2094\u2184-\u2184\u2488-\u2490\u271d-\u271d\u2c60-\u2c7c\u2c7e-\u2c7f\ua722-\ua76f\ua771-\ua787\ua78b-\ua78c\ua7fb-\ua7ff\ufb00-\ufb06\u00bf\u00a1]/gi)) {
+                lastnameError?.current?.classList.add('second-shown')
+            } else {
+                lastnameError?.current?.classList.remove('second-shown')
+            }
         }
         if (name === 'adress') {
             if (value.length < 1 || value.length > 50) {
                 adressError?.current?.classList.add('shown')
             } else {
                 adressError?.current?.classList.remove('shown')
+            }
+
+            if (value.match(/[^\sa-zA-Z0-9\+\_\-\@\&\=\.\,\(\)\:\ \/\?\|\<\>\"\'\!\%\*\\\#\$\^\;\u00c0-\u00d6\u00d8-\u00f6\u00f8-\u02af\u1d00-\u1d25\u1d62-\u1d65\u1d6b-\u1d77\u1d79-\u1d9a\u1e00-\u1eff\u2090-\u2094\u2184-\u2184\u2488-\u2490\u271d-\u271d\u2c60-\u2c7c\u2c7e-\u2c7f\ua722-\ua76f\ua771-\ua787\ua78b-\ua78c\ua7fb-\ua7ff\ufb00-\ufb06]/gi)) {
+                adressError?.current?.classList.add('second-shown')
+            } else {
+                adressError?.current?.classList.remove('second-shown')
             }
         }
         if (name === 'city') {
@@ -88,12 +111,24 @@ const checkout = ({ cartData, setUser, user, userData, setCart }) => {
             } else {
                 cityError?.current?.classList.remove('shown')
             }
+
+            if (value.match(/[^\sa-zA-Z0-9\+\_\-\@\&\=\.\,\(\)\:\ \/\?\|\<\>\"\'\!\%\*\\\#\$\^\;\u00c0-\u00d6\u00d8-\u00f6\u00f8-\u02af\u1d00-\u1d25\u1d62-\u1d65\u1d6b-\u1d77\u1d79-\u1d9a\u1e00-\u1eff\u2090-\u2094\u2184-\u2184\u2488-\u2490\u271d-\u271d\u2c60-\u2c7c\u2c7e-\u2c7f\ua722-\ua76f\ua771-\ua787\ua78b-\ua78c\ua7fb-\ua7ff\ufb00-\ufb06]/gi)) {
+                cityError?.current?.classList.add('second-shown')
+            } else {
+                cityError?.current?.classList.remove('second-shown')
+            }
         }
         if (name === 'zip') {
             if (value.length < 1 || value.length > 16) {
                 zipError?.current?.classList.add('shown')
             } else {
                 zipError?.current?.classList.remove('shown')
+            }
+
+            if (value.match(/[^\sa-zA-Z0-9\+\_\-\@\&\=\.\,\(\)\:\ \/\?\|\<\>\"\'\!\%\*\\\#\$\^\;\u00c0-\u00d6\u00d8-\u00f6\u00f8-\u02af\u1d00-\u1d25\u1d62-\u1d65\u1d6b-\u1d77\u1d79-\u1d9a\u1e00-\u1eff\u2090-\u2094\u2184-\u2184\u2488-\u2490\u271d-\u271d\u2c60-\u2c7c\u2c7e-\u2c7f\ua722-\ua76f\ua771-\ua787\ua78b-\ua78c\ua7fb-\ua7ff\ufb00-\ufb06]/gi)) {
+                zipError?.current?.classList.add('second-shown')
+            } else {
+                zipError?.current?.classList.remove('second-shown')
             }
         }
     }
@@ -136,7 +171,10 @@ const checkout = ({ cartData, setUser, user, userData, setCart }) => {
             .then(res => {
                 window.location.href = res.data.url
             })
-            .catch(e => console.error(e))
+            .catch(e => {
+                console.error(e)
+                setError(true)
+            })
     }
 
     // console.log(userData)
@@ -178,7 +216,8 @@ const checkout = ({ cartData, setUser, user, userData, setCart }) => {
             }
             if (slideSection.current) {
                 slideSection.current.style.height = getTheHighest(
-                    [entry1H, entry2H, entry3H])
+                    [entry1H, entry2H, entry3H]
+                )
             }
         });
         resizeObserver.observe(slideSection.current)
@@ -186,21 +225,21 @@ const checkout = ({ cartData, setUser, user, userData, setCart }) => {
         resizeObserver.observe(slide2.current)
         resizeObserver.observe(slide3.current)
         return () => resizeObserver.disconnect() // clean up 
-    }, [slideSection.current, orderDetails])
+    }, [slideSection.current, orderDetails, error])
 
     return (
         <>
-        <Meta title='Mamma Mia | Checkout' />
+            <Meta title='Mamma Mia | Checkout' />
             <main>
                 <section className='cart-items'>
                     {cartData.items.map(item => {
                         return item.item ?
-                         <CheckoutPizza
-                            item={item}
-                            key={item._id}
-                        />
-                        :
-                        ''
+                            <CheckoutPizza
+                                item={item}
+                                key={item._id}
+                            />
+                            :
+                            ''
                     })}
                 </section>
                 <div id='order'>
@@ -213,7 +252,7 @@ const checkout = ({ cartData, setUser, user, userData, setCart }) => {
                                 >
                                     Signup
                                 </span>
-                                <span>/</span> 
+                                <span>/</span>
                                 <span
                                     onClick={() => setAuth(1)}
                                     className={`mode ${auth === 1 ? 'selected' : ''}`}
@@ -230,9 +269,9 @@ const checkout = ({ cartData, setUser, user, userData, setCart }) => {
                                     />
                                     :
                                     <Login
-                                    user={user}
-                                    setUser={setUser}
-                                    setCart={setCart}
+                                        user={user}
+                                        setUser={setUser}
+                                        setCart={setCart}
                                     />
                             }
                         </>
@@ -249,6 +288,9 @@ const checkout = ({ cartData, setUser, user, userData, setCart }) => {
                                     >
                                         <span>1. Adress</span><HouseAdressSvg />
                                     </button>
+                                    <div className='svg-con'>
+                                        <ArrowRightSvg />
+                                    </div>
                                     <button
                                         name='1'
                                         onClick={changeSlide}
@@ -257,6 +299,9 @@ const checkout = ({ cartData, setUser, user, userData, setCart }) => {
                                     >
                                         <span>2. Shipping</span><ShippingSvg />
                                     </button>
+                                    <div className='svg-con'>
+                                        <ArrowRightSvg />
+                                    </div>
                                     <button
                                         name='2'
                                         onClick={changeSlide}
@@ -297,22 +342,26 @@ const checkout = ({ cartData, setUser, user, userData, setCart }) => {
                                                 <h2>Order overview</h2>
                                                 <div className='adress'>
                                                     <h3>Shipping Address</h3>
-                                                    <p><span className='fw-600'>Name</span>: {orderDetails.firstname + ' ' + orderDetails.lastname}</p>
-                                                    <p><span className='fw-600'>Adress</span>: {orderDetails.adress}</p>
-                                                    <p><span className='fw-600'>City</span>: {orderDetails.city}</p>
-                                                    <p><span className='fw-600'>Zip code</span>: {orderDetails.zip}</p>
+                                                    <p> {orderDetails?.firstname?.replace(/[^a-zA-Z\u00c0-\u00d6\u00d8-\u00f6\u00f8-\u02af\u1d00-\u1d25\u1d62-\u1d65\u1d6b-\u1d77\u1d79-\u1d9a\u1e00-\u1eff\u2090-\u2094\u2184-\u2184\u2488-\u2490\u271d-\u271d\u2c60-\u2c7c\u2c7e-\u2c7f\ua722-\ua76f\ua771-\ua787\ua78b-\ua78c\ua7fb-\ua7ff\ufb00-\ufb06\u00bf\u00a1]/gi, '') + ' ' + orderDetails?.lastname?.replace(/[^a-zA-Z\u00c0-\u00d6\u00d8-\u00f6\u00f8-\u02af\u1d00-\u1d25\u1d62-\u1d65\u1d6b-\u1d77\u1d79-\u1d9a\u1e00-\u1eff\u2090-\u2094\u2184-\u2184\u2488-\u2490\u271d-\u271d\u2c60-\u2c7c\u2c7e-\u2c7f\ua722-\ua76f\ua771-\ua787\ua78b-\ua78c\ua7fb-\ua7ff\ufb00-\ufb06\u00bf\u00a1]/gi, '')}</p>
+                                                    <p> {(orderDetails.adress).replace(/[^\sa-zA-Z0-9\+\_\-\@\&\=\.\,\(\)\:\ \/\?\|\<\>\"\'\!\%\*\\\#\$\^\;\u00c0-\u00d6\u00d8-\u00f6\u00f8-\u02af\u1d00-\u1d25\u1d62-\u1d65\u1d6b-\u1d77\u1d79-\u1d9a\u1e00-\u1eff\u2090-\u2094\u2184-\u2184\u2488-\u2490\u271d-\u271d\u2c60-\u2c7c\u2c7e-\u2c7f\ua722-\ua76f\ua771-\ua787\ua78b-\ua78c\ua7fb-\ua7ff\ufb00-\ufb06]/gi, '')}</p>
+                                                    <p> {(orderDetails.city).replace(/[^\sa-zA-Z0-9\+\_\-\@\&\=\.\,\(\)\:\ \/\?\|\<\>\"\'\!\%\*\\\#\$\^\;\u00c0-\u00d6\u00d8-\u00f6\u00f8-\u02af\u1d00-\u1d25\u1d62-\u1d65\u1d6b-\u1d77\u1d79-\u1d9a\u1e00-\u1eff\u2090-\u2094\u2184-\u2184\u2488-\u2490\u271d-\u271d\u2c60-\u2c7c\u2c7e-\u2c7f\ua722-\ua76f\ua771-\ua787\ua78b-\ua78c\ua7fb-\ua7ff\ufb00-\ufb06]/gi, '')}</p>
+                                                    <p> {(orderDetails.zip).replace(/[^\sa-zA-Z0-9\+\_\-\@\&\=\.\,\(\)\:\ \/\?\|\<\>\"\'\!\%\*\\\#\$\^\;\u00c0-\u00d6\u00d8-\u00f6\u00f8-\u02af\u1d00-\u1d25\u1d62-\u1d65\u1d6b-\u1d77\u1d79-\u1d9a\u1e00-\u1eff\u2090-\u2094\u2184-\u2184\u2488-\u2490\u271d-\u271d\u2c60-\u2c7c\u2c7e-\u2c7f\ua722-\ua76f\ua771-\ua787\ua78b-\ua78c\ua7fb-\ua7ff\ufb00-\ufb06]/gi, '')}</p>
                                                 </div>
                                                 <div className='items'>
                                                     <h3>Prices</h3>
-                                                    <p><span className='fw-600'>Price for products:</span> {cartData.totalCartPrice} CZK</p>
-                                                    <p><span className='fw-600'>Price for shipping:</span> {shipping.price} CZK</p>
-                                                    <p><span className='fw-600'>Price for payment method:</span> {paymentMethod.price} CZK</p>
+                                                    <p><span className='fw-600'>Products:</span> {cartData.totalCartPrice} CZK</p>
+                                                    <p><span className='fw-600'>Shipping:</span> {shipping.price} CZK</p>
+                                                    <p><span className='fw-600'>Payment method:</span> {paymentMethod.price} CZK</p>
                                                 </div>
                                                 <div>
                                                     <h3 className='total-price'>Total price: <span>{totalPrice} CZK</span></h3>
                                                 </div>
                                             </div>
                                         </div>
+                                        {error ? <div className='error-checkout'>
+                                            Some values are invalid.
+                                            Try to check every field in previous steps.
+                                        </div> : ''}
                                         <button
                                             type='submit'
                                             onClick={handleSubmit}
@@ -332,7 +381,7 @@ const checkout = ({ cartData, setUser, user, userData, setCart }) => {
     )
 }
 
-export const getServerSideProps = async (context) => {
+export const getServerSideProps = async (ctx) => {
     let error = false
 
     let cartData = { items: [] }
@@ -344,12 +393,12 @@ export const getServerSideProps = async (context) => {
         // url: `/api/cart/getCartCheckout`,
         withCredentials: true,
         params: {
-            cart: context.query.cart
+            cart: ctx.query.cart
         },
         headers: {
             "Content-Type": "application/x-www-form-urlencoded",
             'Access-Control-Allow-Origin': `${server}`,
-            Cookie: context.req.headers.cookie
+            Cookie: ctx.req.headers.cookie
         }
     })
         .then(res => cartData = res.data)
@@ -361,8 +410,8 @@ export const getServerSideProps = async (context) => {
         return {
             redirect: {
                 permanent: false,
-                destination: "/cart",
-            },
+                destination: "/cart?empty=true"
+            }
         }
     }
 
@@ -374,7 +423,7 @@ export const getServerSideProps = async (context) => {
         headers: {
             "Content-Type": "application/x-www-form-urlencoded",
             'Access-Control-Allow-Origin': `${server}`,
-            Cookie: context.req.headers.cookie
+            Cookie: ctx.req.headers.cookie
         }
     })
         .then(res => userData = res.data)

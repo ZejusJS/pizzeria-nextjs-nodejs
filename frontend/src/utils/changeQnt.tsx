@@ -1,11 +1,12 @@
 import axios from 'axios'
 import { server } from '../config/config'
 
-export default async function (e, qnt, item, setCart) {
+export default async function (e, qnt, item, setCart, setTotalCartPrice) {
     if (qnt === 'input') {
         qnt = e.target.value
         qnt = parseInt(qnt)
     }
+    if (qnt === null || qnt === undefined || isNaN(qnt)) qnt = 1
     if (qnt > 15 || qnt < 1) {
         return false
     } else {
@@ -17,22 +18,27 @@ export default async function (e, qnt, item, setCart) {
             return { ...prevCart }
         })
 
-        let newQnt
-        await axios({
-            method: 'post',
-            // url: `${server}/cart/changeQuantity`,
-            url: `/api/cart/changeQuantity`,
-            headers: {
-                "Content-Type": "application/json",
-                'Access-Control-Allow-Origin': `${server}`,
-            },
-            data: {
-                quantity: qnt,
-                productId: item.item._id
-            },
-            withCredentials: true
-        })
-            .then(res => newQnt = res.data)
-            .catch(e => console.log(e))
+        if (qnt) {
+            let newQnt
+            await axios({
+                method: 'post',
+                // url: `${server}/cart/changeQuantity`,
+                url: `/api/cart/changeQuantity`,
+                headers: {
+                    "Content-Type": "application/json",
+                    'Access-Control-Allow-Origin': `${server}`,
+                },
+                data: {
+                    quantity: qnt,
+                    productId: item.item._id
+                },
+                withCredentials: true
+            })
+                .then(res => {
+                    newQnt = res.data
+                    setTotalCartPrice(res.data?.totalCartPrice)
+                })
+                .catch(e => console.log(e))
+        }
     }
 }

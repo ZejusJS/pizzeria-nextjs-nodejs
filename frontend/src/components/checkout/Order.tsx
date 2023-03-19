@@ -26,7 +26,8 @@ const Order = ({
                     <div
                         ref={firstnameError}
                         className='error'>
-                        <p>This field is required. First name cannot contain more than 30 characters.</p>
+                        <p className='general'>This field is required. First name cannot contain more than 30 characters.</p>
+                        <p className='second'>Cannot contain non-Latin or special characters.</p>
                     </div>
                 </div>
                 <div className='input-container'>
@@ -42,7 +43,8 @@ const Order = ({
                     <div
                         ref={lastnameError}
                         className='error'>
-                        <p>This field is required. Last name cannot contain more than 30 characters.</p>
+                        <p className='general'>This field is required. Last name cannot contain more than 30 characters.</p>
+                        <p className='second'>Cannot contain non-Latin or special characters.</p>
                     </div>
                 </div>
                 <div className='input-container'>
@@ -58,7 +60,8 @@ const Order = ({
                     <div
                         ref={adressError}
                         className='error'>
-                        <p>This field is required. Adress cannot contain more than 50 characters.</p>
+                        <p className='general'>This field is required. Adress cannot contain more than 50 characters.</p>
+                        <p className='second'>Cannot contain non-Latin characters.</p>
                     </div>
                 </div>
                 <div className='input-container'>
@@ -74,7 +77,8 @@ const Order = ({
                     <div
                         ref={cityError}
                         className='error'>
-                        <p>This field is required. City cannot contain more than 50 characters.</p>
+                        <p className='general'>This field is required. City cannot contain more than 50 characters.</p>
+                        <p className='second'>Cannot contain non-Latin characters.</p>
                     </div>
                 </div>
                 <div className='input-container'>
@@ -90,7 +94,8 @@ const Order = ({
                     <div
                         ref={zipError}
                         className='error'>
-                        <p>This field is required. Zip code cannot contain more than 16 characters.</p>
+                        <p className='general'>This field is required. Zip code cannot contain more than 16 characters.</p>
+                        <p className='second'>Cannot contain non-Latin characters.</p>
                     </div>
                 </div>
                 <div className='input-container'>

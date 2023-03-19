@@ -15,7 +15,7 @@ router.post('/singleAdd', catchAsync(async function (req, res, next) {
         return req.cookies.cart
     }
     const product = await Pizza.findById(productId)
-    const cart = await Cart.findById(cartId()).populate('items.item')
+    const cart = await Cart.findById(cartId())
     // console.log('req.body.productId ----- ', req.body.productId)
     // console.log('req.cookies.cart ------ ', req.cookies.cart)
     if (cart && product) {
@@ -85,13 +85,17 @@ router.post('/changeQuantity', catchAsync(async function (req, res, next) {
         let prevProduct = cart?.items?.filter(pro => pro?.item?.equals(productId))[0]
         if (!prevProduct) return res.status(400).json({ msg: "Your cart doesn't have this product", code: 300 })
         prevProduct.quantity = quantity
-        prevProduct.totalPrice = quantity * product.price
+        prevProduct.totalPrice = (quantity * product.price).toFixed(2)
         cart.items = cart.items.map(item => {
             if (item.item === prevProduct.item) return prevProduct
             return item
         })
         await cart.save()
-        res.status(200).json({ msg: 'Product quantity updated', qnt: prevProduct.quantity })
+        res.status(200).json({
+            msg: 'Product quantity updated',
+            qnt: prevProduct.quantity,
+            totalCartPrice: cart.totalCartPrice
+        })
     } else {
         res.status(400).json({ msg: 'ProductID or CartID was not found' })
     }
@@ -118,16 +122,11 @@ router.get('/getCartAndUser', catchAsync(async function (req, res, next) {
     }
 
     let findNull = false
-    // console.log(cart)
     cart.items = cart.items.filter(item => {
         if (!item.item) findNull = true
         return item.item !== null && item.item !== undefined
     })
-    // console.log(findNull)
-    if (findNull) {
-        console.log(cart)
-        await cart.save()
-    }
+    if (findNull) await cart.save()
 
     const user = {
         email: req.user?.email,
@@ -153,7 +152,7 @@ router.get('/getCartCheckout', catchAsync(async function (req, res, next) {
         const findItemInCart = findCart.items.filter((item) => findPizza.equals(item.item?._id))[0]
         totalPrice += (findPizza.price * findItemInCart.quantity)
     }
-    findCart.totalCartPrice = totalPrice
+    findCart.totalCartPrice = totalPrice.toFixed(2)
     console.log(findCart)
     res.status(200).json(findCart)
 }))
