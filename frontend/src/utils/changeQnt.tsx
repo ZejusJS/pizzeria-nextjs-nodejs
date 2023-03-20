@@ -40,5 +40,6 @@ export default async function (e, qnt, item, setCart, setTotalCartPrice) {
                 })
                 .catch(e => console.log(e))
         }
+        return
     }
 }

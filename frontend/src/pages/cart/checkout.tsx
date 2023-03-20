@@ -16,6 +16,8 @@ import DollarSvg from '../../images/Dollar'
 import ShippingSvg from '../../images/Box'
 import ArrowRightSvg from '../../images/ArrowRight'
 
+import NProgress from 'nprogress'
+
 const checkout = ({ cartData, setUser, user, userData, setCart }) => {
     const [orderDetails, setOrderDetails] = useState({
         firstname: '',
@@ -29,6 +31,7 @@ const checkout = ({ cartData, setUser, user, userData, setCart }) => {
     const [totalPrice, setTotalPrice] = useState(0)
     const [auth, setAuth] = useState(0)
     const [error, setError] = useState(false)
+    const [error500, setError500] = useState(false)
 
     // console.log(orderDetails)
     const invoiceInfo = userData.invoiceInfo
@@ -146,7 +149,11 @@ const checkout = ({ cartData, setUser, user, userData, setCart }) => {
         setPaymentMethod({ name: e.target.value, price })
     }
 
+    const [loading, setLoading] = useState(false)
+
     function handleSubmit(e) {
+        if(loading) return
+        
         const orderData = {
             ...orderDetails,
             shipping: shipping.name,
@@ -156,12 +163,26 @@ const checkout = ({ cartData, setUser, user, userData, setCart }) => {
                 _id: cartData._id
             }
         }
-        console.log(orderData)
+        // console.log(orderData)
+
+        setError(false)
+        setError500(false)
+
 
         axios({
             method: 'post',
             url: '/api/payment/card',
             withCredentials: true,
+            onUploadProgress: function (progressEvent) {
+                setLoading(true)
+                NProgress.start()
+            },
+            onDownloadProgress: function (progressEvent) {
+                NProgress.done(false)
+                setTimeout(() => {
+                    setLoading(false)
+                }, 500);
+            },
             headers: {
                 "Content-Type": "application/json",
                 'Access-Control-Allow-Origin': `${server}`
@@ -173,7 +194,11 @@ const checkout = ({ cartData, setUser, user, userData, setCart }) => {
             })
             .catch(e => {
                 console.error(e)
-                setError(true)
+                if (e?.response?.status === 400) {
+                    setError(true)
+                } else {
+                    setError500(true)
+                }
             })
     }
 
@@ -225,7 +250,7 @@ const checkout = ({ cartData, setUser, user, userData, setCart }) => {
         resizeObserver.observe(slide2.current)
         resizeObserver.observe(slide3.current)
         return () => resizeObserver.disconnect() // clean up 
-    }, [slideSection.current, orderDetails, error])
+    }, [slideSection.current, orderDetails, error, error500, index])
 
     return (
         <>
@@ -362,6 +387,10 @@ const checkout = ({ cartData, setUser, user, userData, setCart }) => {
                                             Some values are invalid.
                                             Try to check every field in previous steps.
                                         </div> : ''}
+                                        {error500 ? <div className='error-checkout'>
+                                            There is a problem on our servers.
+                                            Try reload the page or come back after some time.
+                                        </div> : ''}
                                         <button
                                             type='submit'
                                             onClick={handleSubmit}
@@ -428,6 +457,7 @@ export const getServerSideProps = async (ctx) => {
     })
         .then(res => userData = res.data)
         .catch(e => {
+            error = true
             userData = {}
         })
 

@@ -125,7 +125,7 @@ const Adress = ({
 
     return (
         <form className='basic-form shipping-adress' onSubmit={handleSubmit}>
-            <h3>Add Shipping Adress</h3>
+            <h3>Shipping Adress</h3>
             <div className='input-container'>
                 <label htmlFor="firstname">First name:</label>
                 <input

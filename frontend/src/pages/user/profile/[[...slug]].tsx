@@ -17,7 +17,7 @@ import Meta from '../../../components/Meta'
 import Adress from '../../../components/user/Adress'
 import Details from '../../../components/user/Details'
 import Billing from '../../../components/user/Billing'
-import Order from '../../../components/user/Order'
+import Orders from '../../../components/user/Orders'
 
 export const UserContext = createContext('')
 
@@ -106,20 +106,12 @@ const index = ({ userData, viewItem }) => {
                     {
                         slug[0] === 'orders'
                             ?
-                            <section className="orders">
-                                <h2>Orders</h2>
-                                {
-                                    userData?.orders?.map(order => (
-                                        <Order
-                                            order={order}
-                                            key={order?.orderNo}
-                                            viewItem={viewItem}
-                                            DocumentAddSvg={DocumentAddSvg}
-                                            BackTurnSvg={BackTurnSvg}
-                                        />
-                                    ))
-                                }
-                            </section>
+                            <Orders
+                                userData={userData}
+                                viewItem={viewItem} 
+                                DocumentAddSvg={DocumentAddSvg} 
+                                BackTurnSvg={BackTurnSvg}
+                            />
                             :
                             ''
                     }

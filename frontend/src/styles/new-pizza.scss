@@ -148,36 +148,37 @@
             }
         }
     }
-}
 
-.input-container {
-    display: flex;
-    flex-direction: column;
 
-    label {
-        font-size: 18px;
-        font-weight: 500;
-    }
+    .input-container {
+        display: flex;
+        flex-direction: column;
 
-    &.checkbox {
-        flex-direction: row;
-        gap: 5px;
-        align-items: center;
-        justify-content: center;
-
-        input {
-            width: 20px;
-            height: 20px;
+        label {
+            font-size: 18px;
+            font-weight: 500;
         }
 
-        label:hover {
-            text-decoration: underline;
-            cursor: pointer;
-        }
+        &.checkbox {
+            flex-direction: row;
+            gap: 5px;
+            align-items: center;
+            justify-content: center;
 
-        input:hover {
-            cursor: pointer;
-            text-decoration: underline;
+            input {
+                width: 20px;
+                height: 20px;
+            }
+
+            label:hover {
+                text-decoration: underline;
+                cursor: pointer;
+            }
+
+            input:hover {
+                cursor: pointer;
+                text-decoration: underline;
+            }
         }
     }
 }

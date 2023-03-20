@@ -2,7 +2,7 @@
 .order-details--form,
 .basic-form {
     padding: 2px;
-    max-width: 400px;
+    max-width: 420px;
     display: flex;
     flex-direction: column;
     margin: 40px auto;
@@ -41,6 +41,43 @@
 
         @media (max-width: 400px) {
             width: 100%;
+        }
+    }
+
+    .input-container {
+        display: flex;
+        flex-direction: column;
+        margin: 0 12px;
+
+        label {
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        &.checkbox {
+            flex-direction: row;
+            gap: 5px;
+            align-items: center;
+            justify-content: center;
+
+            input {
+                width: 20px;
+                height: 20px;
+            }
+
+            label:hover {
+                text-decoration: underline;
+                cursor: pointer;
+            }
+
+            input:hover {
+                cursor: pointer;
+                text-decoration: underline;
+            }
+        }
+
+        @media (max-width: 250px) {
+            margin: 0 2px;
         }
     }
 

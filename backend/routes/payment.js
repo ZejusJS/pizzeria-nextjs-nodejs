@@ -10,6 +10,7 @@ const CSOB_PUBLIC = fs.readFileSync('./keys/rsa_A3492UfuSm.txt', 'utf8')
 const catchAsync = require('../utils/catchAsync');
 const ExpressError = require('../utils/ExpressError');
 const getRetezec = require('../utils/func/getRetezec')
+const emptyCart = require('../utils/func/emptyCart');
 
 const Pizza = require('../models/pizza')
 const Cart = require('../models/cart')
@@ -17,20 +18,20 @@ const User = require('../models/user')
 const Order = require('../models/order')
 
 const { validatePayment } = require('../utils/mw-validatePayment')
-const { mwIsLoggedIn } = require('../utils/mw-isLoggedIn')
+const { mwIsLoggedIn } = require('../utils/mw-isLoggedIn');
 
 const merchantId = 'A3492UfuSm'
 
 
-router.post('/card', validatePayment, mwIsLoggedIn, catchAsync(async function (req, res, next) {
-    const { firstname, lastname, adress, city, zip } = req.body
+router.post('/card', mwIsLoggedIn, validatePayment, catchAsync(async function (req, res, next) {
+    const { firstname, lastname, adress, city, zip, shipping } = req.body
     const items = []
     let totalPriceItems = 0
     let totalPrice = 0
-    let shippingPrice = req.body.shipping === 'standard' ? 70 : 90
+    let shippingPrice = shipping === 'standard' ? 70 : 90
     let firstName = firstname
     let lastName = lastname
-    let fullname = (firstName + ' ' + lastName).slice(0, 45)
+    // let fullname = (firstName + ' ' + lastName).slice(0, 45)
 
     const findUser = await User.findById(req.user._id)
     // const billingFullname = (findUser.invoiceInfo.firstname + ' ' + findUser.invoiceInfo.lastname).slice(0, 45)
@@ -153,6 +154,8 @@ router.post('/card', validatePayment, mwIsLoggedIn, catchAsync(async function (r
     await order.save()
     findUser.orders.push(order._id)
     await findUser.save()
+
+    await emptyCart(req.body.cartData._id)
 
     // console.log(url)
     res.status(200).json({ url })

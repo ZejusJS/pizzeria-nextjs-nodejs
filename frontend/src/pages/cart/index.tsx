@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import { useState } from 'react';
 
 import Item from '../../components/cart/CartPizza'
 import Meta from '../../components/Meta'
@@ -12,6 +13,8 @@ import WindSvg from '../../images/Wind'
 const cart = ({ cart, setCart,
   viewItem, fetchFirstData,
   totalCartPrice, setTotalCartPrice }) => {
+
+  const [loadingCartPrice, setLoadingCartPrice] = useState(false)
 
   const router = useRouter()
 
@@ -26,7 +29,9 @@ const cart = ({ cart, setCart,
   }
 
   async function changeQnt(e, qnt, item) {
-    changeQntFunc(e, qnt, item, setCart, setTotalCartPrice)
+    setLoadingCartPrice(true)
+    await changeQntFunc(e, qnt, item, setCart, setTotalCartPrice)
+    setLoadingCartPrice(false)
   }
 
   return (
@@ -49,7 +54,9 @@ const cart = ({ cart, setCart,
                   ''
               })}
               <div className='checkout-btn-container'>
-                <div className='total-cart-price c-green fw-600'>
+                <div
+                  className={`total-cart-price c-green fw-600 ${loadingCartPrice ? 'loading' : ''}`}
+                >
                   {totalCartPrice} CZK
                 </div>
                 <Link href={{

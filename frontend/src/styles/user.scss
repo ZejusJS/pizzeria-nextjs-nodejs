@@ -1,6 +1,7 @@
 .user-container {
     max-width: 900px;
     margin: 0 auto;
+    overflow: hidden;
 
     h1 {
         font-size: 30px;
@@ -269,6 +270,19 @@ button.back-nav {
                     font-weight: 500;
                 }
             }
+        }
+    }
+
+    button.load-orders {
+        background-color: rgb(255, 199, 79);
+        font-weight: 500;
+
+        &:hover {
+            background-color: rgb(255, 187, 40);
+        }
+
+        &:active {
+            background-color: rgb(255, 183, 27);
         }
     }
 }
