@@ -35,6 +35,8 @@ const PizzaSchema = new Schema({
     ]
 }, { timestamps: true })
 
+PizzaSchema.plugin(mongoosePaginate)
+
 PizzaSchema.post('save', async function () {
     const Pizza = this.constructor;
     const pizzas = await Pizza.find().exec();

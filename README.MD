@@ -17,7 +17,7 @@ first project with nextjs + nodejs
 - [ ] CSP in NextJS
 - [ ] Admin page for all orders from users
 - [ ] Page after successful or failded payment
-- [ ] Error message when bad order details in checkout
+- [x] Error message when bad order details in checkout
 - [x] Finding pizza by name, ingredients and price
 - [ ] Pizza showcase move to another page and do new home page
 - [x] Cancel GetServerSideProps in index

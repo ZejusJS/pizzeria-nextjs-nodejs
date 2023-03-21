@@ -17,6 +17,7 @@ import '../styles/loading.scss'
 import '../styles/nprogress.scss'
 import '../styles/changeDefault.scss'
 import '../styles/globalStyles.scss'
+import '../styles/pizza-list.scss'
 import '../styles/viewProduct.scss'
 import '../styles/checkout.scss'
 import '../styles/new-pizza.scss'
@@ -27,6 +28,7 @@ import '../styles/user.scss'
 import '../styles/cart.scss'
 import '../styles/pizzasSort.scss'
 import '../styles/admin.scss'
+import '../styles/admin-orders.scss'
 
 import ErrorSvg from '../images/Error'
 import Product from '../components/pizza/Product';
@@ -49,12 +51,12 @@ export default function App({ Component, pageProps }) {
 
   const loaderRef = useRef(null)
 
-  function fetchFirstData() {
+  async function fetchFirstData() {
     setLoaded(false)
     // console.log('xddddddddddddddddddddddddd')
     NProgress.start()
     loaderRef?.current?.classList?.remove('loaded')
-    axios({
+    await axios({
       method: 'get',
       url: `/api/cart/getCartAndUser`,
       // url: `api/cart/getCartAndUser`,
@@ -84,6 +86,7 @@ export default function App({ Component, pageProps }) {
         console.error(e)
         setError(e.response.status)
       })
+    return
   }
 
   useEffect(() => {

@@ -153,7 +153,7 @@ const checkout = ({ cartData, setUser, user, userData, setCart }) => {
 
     function handleSubmit(e) {
         if(loading) return
-        
+
         const orderData = {
             ...orderDetails,
             shipping: shipping.name,
@@ -457,7 +457,6 @@ export const getServerSideProps = async (ctx) => {
     })
         .then(res => userData = res.data)
         .catch(e => {
-            error = true
             userData = {}
         })
 

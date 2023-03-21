@@ -1,0 +1,138 @@
+.orders-main {
+    .search-con {
+        display: flex;
+        justify-content: center;
+        margin: 0 8px;
+
+        .search {
+            border-radius: 0;
+            border-radius: 12px 0 0 12px;
+            max-width: 300px;
+            width: 90%;
+            font-size: 17px;
+            padding: 0 6px;
+        }
+
+        .svg-con {
+            background-color: rgb(255, 195, 84);
+            display: flex;
+            padding: 4px;
+            border-radius: 0 12px 12px 0;
+            border: 0;
+
+            svg {
+                width: 30px;
+                height: auto;
+            }
+
+            &:hover {
+                cursor: pointer;
+            }
+        }
+    }
+}
+
+.admin-orders-con {
+    position: relative;
+    max-width: 700px;
+    margin: 0 auto;
+
+    .admin-orders {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        padding: 5px;
+        transition: opacity 250ms;
+
+        .order {
+            display: flex;
+            justify-content: space-between;
+            border-radius: 12px;
+            border: 1px solid rgb(160, 160, 160);
+            overflow: hidden;
+
+            .details {
+                padding: 10px;
+
+                p {
+                    margin-top: 3px;
+                }
+            }
+
+            .more {
+                display: flex;
+                flex-shrink: 0;
+                padding: 0 3px;
+                background-color: rgb(173, 173, 173);
+
+                svg {
+                    width: 40px;
+                    height: auto;
+                }
+
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+        }
+
+        &.loading {
+            opacity: 0.3;
+        }
+    }
+
+    .pages-counter {
+        color: rgb(58, 58, 58);
+        text-align: center;
+    }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        max-width: 150px;
+        margin: 5px auto 50px auto;
+        overflow: hidden;
+
+        input {
+            max-width: 70px;
+            font-size: 20px;
+            text-align: center;
+        }
+
+        button {
+            pointer-events: none;
+            opacity: 0.5;
+            border: 0;
+            background: 0;
+            width: 40px;
+            height: 40px;
+
+            &.prev {
+                svg {
+                    transform: rotate(180deg);
+                }
+            }
+
+            &.work {
+                pointer-events: auto;
+                opacity: 1;
+            }
+
+            svg {
+                width: 25px;
+                height: auto;
+                transition: width 100ms ease-in-out;
+            }
+
+            &:hover {
+                cursor: pointer;
+
+                &.work {
+                    svg {
+                        width: 30px;
+                    }
+                }
+            }
+        }
+    }
+}

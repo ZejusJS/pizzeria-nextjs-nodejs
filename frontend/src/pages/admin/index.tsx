@@ -5,9 +5,16 @@ const index = () => {
     <main className="admin">
         <h2>Admin Dashboard</h2>
         <div className="links">
-            <Link href={'/admin/new-pizza'}>
-                Create a new pizza
-            </Link>
+            <div>
+              <Link href={'/admin/new-pizza'}>
+                  Create a new pizza
+              </Link>
+            </div>
+            <div>
+              <Link href={'/admin/orders'}>
+                  Orders
+              </Link>
+            </div>
         </div>
     </main>
   )

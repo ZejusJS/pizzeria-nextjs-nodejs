@@ -176,8 +176,4 @@ const Order = ({ order, viewItem, DocumentAddSvg, BackTurnSvg }) => {
     )
 }
 
-export const getStaticProps = async (context) => {
-
-}
-
 export default Order

@@ -22,10 +22,7 @@ const Pizzalist = ({ pizzas, setPizzas, singleAdd, viewItem, cart, router }) => 
         if (!ingrs.length && viewSort) {
             axios({
                 method: 'get',
-                url: `${server}/pizza/all-ingredients`,
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
-                }
+                url: `${server}/pizza/all-ingredients`
             })
                 .then(res => setIngrs(res.data))
                 .catch(e => '')
@@ -188,7 +185,7 @@ const Pizzalist = ({ pizzas, setPizzas, singleAdd, viewItem, cart, router }) => 
                     <>
                         <div className="pizzas-con">
 
-                            <div className={`spinner-pizza-con ${loading ? 'loading' : ''}`}>
+                            <div className={`spinner-con ${loading ? 'loading' : ''}`}>
                                 <div className="loading-con">
                                     <div className={`spinner-border`} role="status">
                                     </div>

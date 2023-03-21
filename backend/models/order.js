@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const mongoosePaginate = require('mongoose-paginate-v2')
 
 const OrderSchema = Schema({
     payId: {
@@ -27,5 +28,7 @@ const OrderSchema = Schema({
         ref: 'User'
     }
 }, { timestamps: true })
+
+OrderSchema.plugin(mongoosePaginate)
 
 module.exports = mongoose.model('Order', OrderSchema);

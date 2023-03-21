@@ -95,17 +95,25 @@ select {
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 input[type=number] {
-  -moz-appearance: textfield;
+    -moz-appearance: textfield;
 }
 
-input[type=text], input[type=password], input[type=email] {
-    border-radius: 7px;
-    border: 1px solid
+input[type=text],
+input[type=password],
+input[type=email],
+input[type=number],
+textarea {
+    border-radius: 10px;
+    border: 1px solid;
+
+    &:focus {
+        outline-color: rgb(223, 152, 0);
+    }
 }
 
 @import "../../node_modules/bootstrap/scss/functions";

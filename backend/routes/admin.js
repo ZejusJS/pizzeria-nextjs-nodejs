@@ -14,6 +14,7 @@ const { validatePizza } = require('../utils/mw-validatePizza')
 const Pizza = require('../models/pizza')
 const Cart = require('../models/cart')
 const User = require('../models/user')
+const Order = require('../models/order')
 
 
 router.post('/new-pizza', mwUploadPizzaImg, validatePizza, catchAsync(async function (req, res, next) {
@@ -79,6 +80,29 @@ router.put('/pizza/:id', mwUploadPizzaImg, validatePizza, catchAsync(async funct
     pizza.ingredients = ingredients
     await pizza.save()
     res.status(200).json({ msg: `Pizza "${pizza.title}" updated` })
+}))
+
+router.get('/get-all-orders/:page', catchAsync(async function (req, res, next) {
+    let { page } = req.params
+    let { q } = req.query
+
+    let config = {}
+    if (q?.length) {
+        config.$or = [
+            { 'payId': new RegExp(q, 'i') },
+            { 'url': new RegExp(q, 'i') },
+            { 'orderNo': new RegExp(q, 'i') },
+            { 'totalPrice': new RegExp(q, 'i') },
+        ]
+    }
+
+    const orders = await Order.paginate(config, {
+        sort: { createdAt: -1 },
+        limit: 20,
+        page,
+    })
+
+    res.status(200).json(orders)
 }))
 
 module.exports = router
