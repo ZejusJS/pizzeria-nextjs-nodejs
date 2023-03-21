@@ -81,6 +81,11 @@ router.post('/changeQuantity', catchAsync(async function (req, res, next) {
     }
     const product = await Pizza.findById(productId)
     const cart = await Cart.findById(cartId())
+    
+    if (cart.user && user.interaction && user.interaction.cart && !user.interaction.cart.equals(cart._id)) {
+        return res.status(400).json({ msg: `You don't have permission to edit this cart`, code: 400 })
+    }
+
     if (cart && product) {
         let prevProduct = cart?.items?.filter(pro => pro?.item?.equals(productId))[0]
         if (!prevProduct) return res.status(400).json({ msg: "Your cart doesn't have this product", code: 300 })
