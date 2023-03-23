@@ -28,7 +28,7 @@ export async function middleware(req: NextRequest) {
         })
         if (res.status !== 200) {
             url.pathname = '/'
-            const response = NextResponse.redirect(url)
+            const response = NextResponse.rewrite(url)
             return response
         }
     } else if (req.cookies.has("cart") || req?.cookies?.get('cart')?.value === 'error' ) {
@@ -48,11 +48,11 @@ export async function middleware(req: NextRequest) {
         })
         const data = await getCart.json()
         if (getCart.status === 200) {
-            const response = NextResponse.redirect(url)
+            const response = NextResponse.rewrite(url)
             response.cookies.set("cart", data.cart, { httpOnly: true });
             return response
         } else {
-            const response = NextResponse.redirect(url)
+            const response = NextResponse.rewrite(url)
             response.cookies.set("cart", 'error', { maxAge: 10 });
             return response
         }
