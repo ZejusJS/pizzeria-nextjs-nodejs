@@ -19,8 +19,9 @@ router.get('/all', catchAsync(async function (req, res, next) {
     }
     if (q?.length) {
         config.$or = [
-            { 'title': { "$regex": q, "$options": "i" } },
-            { 'description': { "$regex": q, "$options": "i" } }
+            { 'title': new RegExp(q, 'i') },
+            { 'description': new RegExp(q, 'i') },
+            { 'ingredients': new RegExp(q, 'i') },
         ]
     }
     let pizzas = await Pizza.find(config)

@@ -7,8 +7,9 @@ import SettingsSvg from '../../images/Settings'
 import CheckedTickSvg from '../../images/CheckedTick'
 import NoPizzasSvg from '../../images/NoPizzas'
 import NProgress from 'nprogress'
-import { useRouter } from "next/router";
 import { server } from '../../config/config'
+
+import ArrowSvg from '../../images/ArrowRight'
 
 const Pizzalist = ({ pizzas, setPizzas, singleAdd, viewItem, cart, router }) => {
 
@@ -17,6 +18,7 @@ const Pizzalist = ({ pizzas, setPizzas, singleAdd, viewItem, cart, router }) => 
     const [viewSort, setViewSort] = useState(false)
     const [search, setSearch] = useState(router.query.q || '')
     const [loading, setLoading] = useState(true)
+    const [showMore, setShowMore] = useState(false)
 
     useEffect(() => {
         if (!ingrs.length && viewSort) {
@@ -141,42 +143,44 @@ const Pizzalist = ({ pizzas, setPizzas, singleAdd, viewItem, cart, router }) => 
                         </div>
                     </div>
                     <div className={`sort-checks ${viewSort ? 'visible' : ''}`}>
-                        <h3>
-                            Ingredients:
-                        </h3>
-                        {
-                            ingrs.length ?
-                                <div className="sorting-con">
-                                    <div className="ingrs-sort">
-                                        <Ingredients
-                                            ingrs={ingrs}
-                                            changeIngrs={changeIngrs}
-                                            selectedIngrs={selectedIngrs}
-                                            setIngrs={setIngrs}
-                                        />
+                        <div className="sort-checks-con">
+                            <h3>
+                                Ingredients:
+                            </h3>
+                            {
+                                ingrs.length ?
+                                    <div className="sorting-con">
+                                        <div className="ingrs-sort">
+                                            <Ingredients
+                                                ingrs={ingrs}
+                                                changeIngrs={changeIngrs}
+                                                selectedIngrs={selectedIngrs}
+                                                setIngrs={setIngrs}
+                                            />
+                                        </div>
+                                        <div className="btns-filter-con">
+                                            <button
+                                                onClick={() => setSelectedIngrs([])}
+                                                className='btn-styled filter-clear'
+                                                type="submit"
+                                                style={selectedIngrs.length ? { display: '' } : { display: 'none' }}
+                                            >
+                                                <span>&#9587; </span> <div>Clear</div>
+                                            </button>
+                                            <button
+                                                type="submit"
+                                                className='btn-styled submit-filter'
+                                            >
+                                                <CheckedTickSvg /> <span>Find</span>
+                                            </button>
+                                        </div>
                                     </div>
-                                    <div className="btns-filter-con">
-                                        <button
-                                            onClick={() => setSelectedIngrs([])}
-                                            className='btn-styled filter-clear'
-                                            type="submit"
-                                            style={selectedIngrs.length ? { display: '' } : { display: 'none' }}
-                                        >
-                                            <span>&#9587; </span> <div>Clear</div>
-                                        </button>
-                                        <button
-                                            type="submit"
-                                            className='btn-styled submit-filter'
-                                        >
-                                            <CheckedTickSvg /> <span>Find</span>
-                                        </button>
+                                    :
+                                    <div className="spinner-border" role="status">
+                                        <span className="sr-only"></span>
                                     </div>
-                                </div>
-                                :
-                                <div className="spinner-border" role="status">
-                                    <span className="sr-only"></span>
-                                </div>
-                        }
+                            }
+                        </div>
                     </div>
                 </form>
             </div>
@@ -193,7 +197,7 @@ const Pizzalist = ({ pizzas, setPizzas, singleAdd, viewItem, cart, router }) => 
                             </div>
 
                             <section
-                                className={`pizzas-showcase ${loading ? 'loading' : ''}`}>
+                                className={`pizzas-showcase ${pizzas.length > 20 && !showMore ? 'part-hidden' : ''} ${loading ? 'loading' : ''}`}>
                                 {pizzas?.map((pizza: {
                                     _id: Key
                                 }) => {
@@ -206,6 +210,20 @@ const Pizzalist = ({ pizzas, setPizzas, singleAdd, viewItem, cart, router }) => 
                                     />
                                 })}
                             </section>
+                            {
+                                pizzas.length > 20 && !showMore ?
+                                    <>
+                                        <div className="show-more-con">
+                                            <button
+                                                onClick={() => setShowMore(true)}
+                                                className="show-more-button btn-styled"
+                                            >
+                                                <ArrowSvg /><span>Show more</span><ArrowSvg />
+                                            </button>
+                                        </div>
+                                    </>
+                                    : ''
+                            }
                         </div>
                     </>
                     :

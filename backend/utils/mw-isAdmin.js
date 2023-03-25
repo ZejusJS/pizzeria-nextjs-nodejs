@@ -10,13 +10,13 @@ const mwIsAdminGet = catchAsync(async function (req, res, next) {
             res.status(403).json({ msg: 'Not allowed' })
         }
     } else {
-        res.status(403).json({ msg: 'Not logged in' })
+        res.status(401).json({ msg: 'Not logged in' })
     }
 })
 
 const mwIsAdmin = catchAsync(async function (req, res, next) {
     const user = req.user
-    console.log(user)
+    // console.log(user)
     if (user) {
         if (user.roles?.admin === true) {
             next()
@@ -24,7 +24,7 @@ const mwIsAdmin = catchAsync(async function (req, res, next) {
             res.status(403).json({ msg: 'Not allowed' })
         }
     } else {
-        res.status(403).json({ msg: 'Not logged in' })
+        res.status(401).json({ msg: 'Not logged in' })
     }
 })
 

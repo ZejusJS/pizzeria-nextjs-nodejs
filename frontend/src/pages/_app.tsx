@@ -29,10 +29,12 @@ import '../styles/cart.scss'
 import '../styles/pizzasSort.scss'
 import '../styles/admin.scss'
 import '../styles/admin-orders.scss'
+import '../styles/footer.scss'
 
 import ErrorSvg from '../images/Error'
 import Product from '../components/pizza/Product';
 import Unfocus from '../components/Unfocus';
+import Footer from '../components/Footer';
 
 interface Cart {
   totalCartPrice?: number;
@@ -205,8 +207,8 @@ export default function App({ Component, pageProps }) {
             :
             ''
         }
-
       </div>
+      <Footer />
     </>
   )
 }
