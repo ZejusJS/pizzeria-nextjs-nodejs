@@ -8,14 +8,14 @@ first project with nextjs + nodejs
 - [x] Build links in nav and style it
 - [x] Do middlewares in backend for checking cart's user
 - [x] ~~Calculate total price in CZK (maybe from someone's api)~~ - Prices only in CZK
-- [ ] Implement sandbox gateway (maybe from ČSOB)..... In progress
+- [x] Implement sandbox gateway (maybe from ČSOB)
 - [ ] Try implement Google auth
 - [x] Clear the ducking mess in the new-pizza's form validation code!!!!! 
-- [ ] Paginate pizzas
+- [x] Paginate pizzas
 - [x] Style login and signup pages
 - [x] User site for displaying and editing user's information, adress, orders etc..... In progress
 - [ ] CSP in NextJS
-- [ ] Admin page for all orders from users
+- [ ] Admin page for all orders from users... in progress
 - [ ] Page after successful or failded payment
 - [x] Error message when bad order details in checkout
 - [x] Finding pizza by name, ingredients and price

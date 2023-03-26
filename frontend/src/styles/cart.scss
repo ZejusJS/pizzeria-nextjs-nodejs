@@ -38,7 +38,7 @@
     }
 
     .total-price {
-        margin: 0 4px 1px 4px;
+        margin: 0 4px;
         font-size: 17px;
     }
 
@@ -51,6 +51,7 @@
         box-sizing: border-box;
         align-items: flex-start;
         background-color: transparent;
+        flex-shrink: 100;
 
         img {
             width: 100%;
@@ -61,32 +62,28 @@
 
         @media (max-width: 420px) {
             box-sizing: border-box;
-            width: 100px;
-            min-width: 100px;
-            max-width: 100px;
-            padding: 10px 0px 10px 10px;
+            width: 80px;
+            min-width: 80px;
+            max-width: 80px;
+            padding: 5px 0px 5px 5px;
             align-items: flex-start;
             justify-content: flex-start;
 
             img {
-                width: 85px;
-                min-width: 85px;
-                max-width: 85px;
+                width: 100%;
                 height: 85px;
+                max-height: 60px;
                 object-fit: cover;
             }
         }
 
         @media (max-width: 250px) {
-            width: 60px;
-            min-width: 60px;
-            max-width: 60px;
-            padding: 5px 0px 5px 5px;
+            width: 50px;
+            min-width: 50px;
+            max-width: 50px;
 
             img {
                 width: 100%;
-                max-width: 100%;
-                min-width: 100%;
                 object-fit: contain;
             }
         }
@@ -97,6 +94,10 @@
 
         @media (max-width: 420px) {
             padding-left: 0px;
+
+            h3 {
+                font-size: 17px;
+            }
         }
 
         h3 {
@@ -125,60 +126,108 @@
         }
     }
 
-    .btn-qnt {
-        width: 100%;
-        height: 17px;
-        border: 0;
-        background-color: transparent;
-        padding: 0;
-        cursor: pointer;
-        font-weight: 500;
-        font-size: 19px;
-        background-color: rgb(235, 235, 235);
-        text-align: center;
-        line-height: 5px;
-        border: solid rgb(110, 110, 110);
-
-        &:first-child {
-            border-radius: 4px 4px 0 0;
-            border-width: 1px 1px 0 1px;
-        }
-
-        &:last-child {
-            border-radius: 0 0 4px 4px;
-            border-width: 0px 1px 1px 1px;
-        }
-    }
-
-    .qnt-change {
-        margin-right: 5px;
+    .changes-con {
         display: flex;
         flex-direction: column;
-        justify-content: center;
-        cursor: auto;
+        align-items: center;
+        padding: 7px 1px 1px 1px;
 
-        input {
+        .btn-qnt {
+            width: 100%;
+            height: 17px;
+            border: 0;
+            background-color: transparent;
+            padding: 0;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 19px;
+            background-color: rgb(235, 235, 235);
+            text-align: center;
+            line-height: 5px;
+            border: solid rgb(110, 110, 110);
+
+            &:first-child {
+                border-radius: 4px 4px 0 0;
+                border-width: 1px 1px 0 1px;
+            }
+
+            &:last-child {
+                border-radius: 0 0 4px 4px;
+                border-width: 0px 1px 1px 1px;
+            }
+
+            &:hover {
+                color: rgb(85, 85, 85);
+            }
+        }
+
+        .qnt-change {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            width: 25px;
+
             cursor: auto;
+
+            input {
+                cursor: auto;
+            }
+        }
+
+        .svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .qnt-input {
+            text-align: center;
+            padding: 0;
+            border: 0;
+            border: 1px solid rgb(110, 110, 110);
+            border-radius: 0px;
+            height: 25px;
+            font-size: 15px;
+
+            &:focus {
+                outline: 0;
+            }
+        }
+
+        .remove-item {
+            width: 40px;
+            padding: 0;
+            background: 0;
+            border: 0;
+            margin-top: 12px;
+
+            svg {
+                width: 100%;
+                fill: rgb(160, 0, 0);
+            }
+
+            &:hover {
+                cursor: pointer;
+
+                svg {
+                    fill: red;
+                }
+            }
+
+            &:active {
+                svg {
+                    fill: rgb(255, 48, 48);
+                }
+            }
         }
     }
 
-    .svg {
-        width: 100%;
-        height: 100%;
-    }
+    .footer-pizza {
+        display: flex;
+        align-items: center;
+        padding: 4px;
 
-    .qnt-input {
-        width: 25px;
-        text-align: center;
-        padding: 0;
-        border: 0;
-        border: 1px solid rgb(110, 110, 110);
-        border-radius: 0px;
-        height: 25px;
-        font-size: 15px;
-
-        &:focus {
-            outline: 0;
+        .price {
+            flex-shrink: 1;
         }
     }
 }

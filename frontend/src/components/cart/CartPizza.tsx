@@ -1,4 +1,7 @@
-const Item = ({ item, changeQnt, viewItem }) => {
+import RemoveCartSvg from '../../images/CartDelete'
+import deleteItem from '../../utils/deleteItem'
+
+const Item = ({ item, changeQnt, viewItem, deleteItem }) => {
     let ingredients = ''
     item?.item?.ingredients.map(ingr => {
         ingredients += ingr + ', '
@@ -23,26 +26,33 @@ const Item = ({ item, changeQnt, viewItem }) => {
                                 </div>)
                                 : ''}
                         </div>
-                        <div className='price fw-600'>{item?.item?.price} {item?.item?.currency}</div>
                     </div>
-                    <div className='qnt-change' onClick={(e) => e.stopPropagation()}>
-                        <button onClick={(e) => changeQnt(e, item.quantity + 1, item)} className='btn-qnt' type='button'>
-                            +
-                        </button>
-                        <input
-                            type="number"
-                            value={item.quantity}
-                            onChange={(e) => changeQnt(e, 'input', item)}
-                            className='qnt-input'
-                        />
-                        <button onClick={(e) => changeQnt(e, item.quantity - 1, item)} className='btn-qnt' type='button'>
-                            -
+                    <div className='changes-con' onClick={(e) => e.stopPropagation()}>
+                        <div className='qnt-change'>
+                            <button onClick={(e) => changeQnt(e, item.quantity + 1, item)} className='btn-qnt' type='button'>
+                                +
+                            </button>
+                            <input
+                                type="number"
+                                value={item.quantity}
+                                onChange={(e) => changeQnt(e, 'input', item)}
+                                className='qnt-input'
+                            />
+                            <button onClick={(e) => changeQnt(e, item.quantity - 1, item)} className='btn-qnt' type='button'>
+                                -
+                            </button>
+                        </div>
+                        <button
+                            onClick={(e) => deleteItem(e, item.item)}
+                            className='remove-item'>
+                            <RemoveCartSvg />
                         </button>
                     </div>
                 </div>
-                <div>
+                <div className='footer-pizza'>
+                    <div className='price fw-600'>{item?.item?.price} {item?.item?.currency}</div>
                     <div className='total-price fw-500'>
-                        Total Price: <span className='c-green fw-600'>{item?.totalPrice} {item?.item?.currency}</span>
+                        Total: <span className='c-green fw-600'>{item?.totalPrice} {item?.item?.currency}</span>
                     </div>
                 </div>
             </div>

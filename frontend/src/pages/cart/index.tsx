@@ -12,7 +12,7 @@ import WindSvg from '../../images/Wind'
 
 const cart = ({ cart, setCart,
   viewItem, fetchFirstData,
-  totalCartPrice, setTotalCartPrice }) => {
+  totalCartPrice, setTotalCartPrice, deleteItem }) => {
 
   const [loadingCartPrice, setLoadingCartPrice] = useState(false)
 
@@ -45,6 +45,7 @@ const cart = ({ cart, setCart,
               {cart?.items?.map(item => {
                 return item.item ?
                   <Item
+                    deleteItem={deleteItem}
                     changeQnt={(e, item, qnt) => changeQnt(e, item, qnt)}
                     item={item}
                     key={item._id}
