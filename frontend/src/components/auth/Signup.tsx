@@ -4,7 +4,7 @@ import { useRef, useState } from 'react'
 import { server } from '../../config/config'
 import NProgress from 'nprogress'
 
-const Signup = ({ setUser, setOrderDetails }) => {
+const Signup = ({ }) => {
     const [signData, setSignData] = useState({
         name: '',
         email: '',

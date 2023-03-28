@@ -289,14 +289,9 @@ const checkout = ({ cartData, setUser, user, userData, setCart }) => {
                                 auth === 0
                                     ?
                                     <Signup
-                                        setUser={setUser}
-                                        setOrderDetails={setOrderDetails}
                                     />
                                     :
                                     <Login
-                                        user={user}
-                                        setUser={setUser}
-                                        setCart={setCart}
                                     />
                             }
                         </>

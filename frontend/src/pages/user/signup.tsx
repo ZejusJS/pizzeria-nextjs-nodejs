@@ -6,12 +6,12 @@
 import Signup from '../../components/auth/Signup'
 import Meta from '../../components/Meta'
 
-const signup = ({ setUser, user, setCart }) => {
+const signup = ({ }) => {
     return (
         <>
-        <Meta title='Mamma Mia | Signup' />
+            <Meta title='Mamma Mia | Signup' />
             <main>
-                <Signup setOrderDetails setUser={setUser} />
+                <Signup />
             </main>
         </>
     )

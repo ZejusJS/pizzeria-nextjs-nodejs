@@ -3,16 +3,13 @@ import { server } from '../../config/config'
 import Login from '../../components/auth/Login'
 import Meta from '../../components/Meta'
 
-const login = ({ user, setUser, setCart }) => {
+const login = ({ }) => {
 
   return (
     <>
     <Meta title='Mamma Mia | Login' />
       <main>
         <Login
-          user={user}
-          setUser={setUser}
-          setCart={setCart}
         />
       </main>
     </>

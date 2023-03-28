@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react"
+import OrderItem from "./OrderItem";
 
 const Order = ({ order, viewItem, DocumentAddSvg, BackTurnSvg }) => {
     const [status, setStatus] = useState(null)
@@ -151,17 +152,10 @@ const Order = ({ order, viewItem, DocumentAddSvg, BackTurnSvg }) => {
                     <h3>{order.orderNo}</h3>
                     <div className="items">
                         {order?.items?.map(item => (
-                            <div className="item"
-                                onClick={(e) => viewItem(e, { ...item?.item, orderItem: true })}
-                            >
-                                <div className="info-con">
-                                    <img src={item.item?.images[0]?.url} alt="" loading="lazy" />
-                                    <div>
-                                        <h3>{item?.item?.title}</h3>
-                                        <p className="price"><span>{item?.item?.price} {item?.item?.currency}</span> x {item?.quantity} pcs</p>
-                                    </div>
-                                </div>
-                            </div>
+                            <OrderItem 
+                            key={item._id}
+                            item={item} 
+                            viewItem={viewItem} />
                         ))
                         }
                     </div>

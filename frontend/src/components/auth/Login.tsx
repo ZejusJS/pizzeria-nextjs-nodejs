@@ -4,18 +4,21 @@ import { useState } from 'react'
 import NProgress from 'nprogress'
 import { useRouter } from 'next/router'
 
-const Login = ({
-    user,
-    setCart,
-    setUser
-}) => {
+const Login = ({ }) => {
+    const router = useRouter()
+
     const [loginData, setLoginData] = useState({
         email: '',
         password: '',
         newCart: true
     })
 
-    const router = useRouter()
+    useEffect(() => {
+        setLoginData(prev => ({
+            ...prev,
+            newCart: router.pathname.match(/login/g) ? false : true
+        }))
+    }, [router.isReady])
 
     const emailError = useRef(null)
     const passwordError = useRef(null)
@@ -62,7 +65,6 @@ const Login = ({
         if (submitting) return
         submitting = true
 
-        console.log(loginData)
         await axios({
             method: 'post',
             // url: `${server}/user/login`,
@@ -95,7 +97,7 @@ const Login = ({
                 }, 400);
             })
             .catch(e => {
-                console.log(e)
+                console.error(e)
                 if (e.response?.data?.code === 150) {
                     passwordError?.current?.classList.add('shown')
                 } else if (e.response?.data?.code === 250) {

@@ -60,7 +60,7 @@ router.post('/card', mwIsLoggedIn, validatePayment, catchAsync(async function (r
         totalAmount: (totalPrice * 100).toFixed(0),
         currency: 'CZK',
         closePayment: true,
-        returnUrl: process.env.FRONTEND,
+        returnUrl: process.env.FRONTEND + '/payment/card',
         returnMethod: 'GET',
         cart: [
             {

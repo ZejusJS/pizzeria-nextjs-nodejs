@@ -49,19 +49,19 @@ router.post('/singleAdd', catchAsync(async function (req, res, next) {
 
 router.post('/deleteItem', catchAsync(async function (req, res, next) {
     const productId = req.body.productId
-    console.log('productId...... ', productId)
-    console.log('req.body...... ', req.body)
+    // console.log('productId...... ', productId)
+    // console.log('req.body...... ', req.body)
     const cartId = function () {
         if (req.user && req.user.interaction && req.user.interaction.cart) return req.user.interaction.cart
         return req.cookies.cart
     }
-    console.log('cartId...... ', cartId())
+    // console.log('cartId...... ', cartId())
     const cart = await Cart.findById(cartId()).populate('items.item')
     if (cart.user && user.interaction && user.interaction.cart && !user.interaction.cart.equals(cart._id)) {
         return res.status(400).json({ msg: `You don't have permission to edit this cart`, code: 400 })
     }
     cart.items = cart.items.filter(item => {
-        console.log(item)
+        // console.log(item)
         if (!item?.item?.equals(productId)) return item
     })
     await cart.save()
@@ -73,7 +73,7 @@ router.post('/deleteItem', catchAsync(async function (req, res, next) {
 router.post('/changeQuantity', catchAsync(async function (req, res, next) {
     const productId = req.body.productId
     const quantity = req.body.quantity
-    if (quantity > 15 || quantity < 1) return res.status(400).json({ msg: 'Quantity of product must be between 15 and 1' })
+    if (quantity > 15 || quantity < 1 || Number.isNaN(quantity)) return res.status(400).json({ msg: 'Quantity of product must be between 15 and 1' })
 
     const cartId = function () {
         if (req.user && req.user.interaction && req.user.interaction.cart) return req.user.interaction.cart

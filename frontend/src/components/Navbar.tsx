@@ -12,7 +12,7 @@ import CartSvg from '../images/Cart'
 const Navbar = ({ cart, setExpanded, expanded, user }) => {
   let itemsCount = 0
   cart?.items?.map(item => {
-    itemsCount += item.quantity
+    itemsCount += Number(item.quantity)
   })
 
   function changeExpanded() {
@@ -47,6 +47,7 @@ const Navbar = ({ cart, setExpanded, expanded, user }) => {
       .then(res => window.location.replace('/'))
       .catch(e => console.log(e))
   }
+  
   return (
     <>
       <nav>
@@ -59,7 +60,8 @@ const Navbar = ({ cart, setExpanded, expanded, user }) => {
               </Link>
               <div className='options-container'>
                 <Link href={'/cart'}
-                  className="cart-href">
+                  className="cart-href"
+                  >
                   <div className='cart'>
                     <CartSvg />
                     <div className='items-count'>

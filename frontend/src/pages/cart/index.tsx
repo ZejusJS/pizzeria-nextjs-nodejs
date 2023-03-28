@@ -5,16 +5,11 @@ import { useState } from 'react';
 import Item from '../../components/cart/CartPizza'
 import Meta from '../../components/Meta'
 import changeQntFunc from '../../utils/changeQnt';
+import Cart from '../../components/cart/Cart';
 
-import CartThinSvg from '../../images/CartThin'
-import CartCheckoutSvg from '../../images/CartCheckout'
-import WindSvg from '../../images/Wind'
-
-const cart = ({ cart, setCart,
+const cart = ({ cart,
   viewItem, fetchFirstData,
-  totalCartPrice, setTotalCartPrice, deleteItem }) => {
-
-  const [loadingCartPrice, setLoadingCartPrice] = useState(false)
+  totalCartPrice, deleteItem, changeQnt }) => {
 
   const router = useRouter()
 
@@ -28,62 +23,17 @@ const cart = ({ cart, setCart,
     )
   }
 
-  async function changeQnt(e, qnt, item) {
-    setLoadingCartPrice(true)
-    await changeQntFunc(e, qnt, item, setCart, setTotalCartPrice)
-    setLoadingCartPrice(false)
-  }
-
   return (
     <>
       <Meta title='Mamma Mia | Cart' />
       <main>
-        {cart?.items?.length > 0
-          ?
-          <>
-            <section className='cart-items'>
-              {cart?.items?.map(item => {
-                return item.item ?
-                  <Item
-                    deleteItem={deleteItem}
-                    changeQnt={(e, item, qnt) => changeQnt(e, item, qnt)}
-                    item={item}
-                    key={item._id}
-                    viewItem={(e) => viewItem(e, item.item)}
-                  />
-                  :
-                  ''
-              })}
-              <div className='checkout-btn-container'>
-                <div
-                  className={`total-cart-price c-green fw-600 ${loadingCartPrice ? 'loading' : ''}`}
-                >
-                  {totalCartPrice} CZK
-                </div>
-                <Link href={{
-                  pathname: '/cart/checkout',
-                  query: { cart: cart._id },
-                }}>
-                  <div className='checkout-btn'>
-                    <div>
-                      Check out
-                    </div>
-                    <div className='svgs'>
-                      <WindSvg className='wind' />
-                      <CartCheckoutSvg className='cart' />
-                    </div>
-                  </div>
-                </Link>
-              </div>
-            </section>
-          </>
-          :
-          <div className='empty-cart'>
-            <CartThinSvg />
-            <p>Your cart is empty</p>
-          </div>
-        }
-
+        <Cart 
+        cart={cart} 
+        deleteItem={deleteItem} 
+        viewItem={viewItem} 
+        changeQnt={changeQnt} 
+        totalCartPrice={totalCartPrice}        
+        />
       </main>
     </>
   )

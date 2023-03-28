@@ -12,6 +12,7 @@ import { getCookie } from 'cookies-next';
 
 import deleteItemFunc from '../utils/deleteItem'
 import singleAddFunc from '../utils/singleAdd'
+import changeQntFunc from '../utils/changeQnt'
 
 import '../styles/loading.scss'
 import '../styles/nprogress.scss'
@@ -115,10 +116,17 @@ export default function App({ Component, pageProps }) {
 
   async function singleAdd(e, piz) {
     setCart(await singleAddFunc(e, piz, setTotalCartPrice))
+    return
   }
 
   async function deleteItem(e, piz) {
     setCart(await deleteItemFunc(e, piz, setTotalCartPrice))
+    return
+  }
+
+  async function changeQnt(e, qnt, item) {
+    await changeQntFunc(e, qnt, item, setCart, setTotalCartPrice)
+    return
   }
 
   function viewItem(e, item) {
@@ -185,7 +193,6 @@ export default function App({ Component, pageProps }) {
             singleAdd={(e, piz) => singleAdd(e, piz)}
             user={user} />
           : ''}
-
         {
           !error ?
             <Component
@@ -203,6 +210,7 @@ export default function App({ Component, pageProps }) {
               fetchFirstData={fetchFirstData}
               totalCartPrice={totalCartPrice}
               setTotalCartPrice={setTotalCartPrice}
+              changeQnt={changeQnt}
             />
             :
             ''

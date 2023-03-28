@@ -1,5 +1,6 @@
+import { useRef } from 'react'
 import RemoveCartSvg from '../../images/CartDelete'
-import deleteItem from '../../utils/deleteItem'
+import Spinner from '../Spinner'
 
 const Item = ({ item, changeQnt, viewItem, deleteItem }) => {
     let ingredients = ''
@@ -8,11 +9,22 @@ const Item = ({ item, changeQnt, viewItem, deleteItem }) => {
     })
     ingredients = ingredients.slice(-0, -2)
 
-    // console.log(item)
+    const thumbnailRef = useRef(null)
+
+
+    function cartDeleteItem(e) {
+        thumbnailRef?.current?.classList?.add('deleting')
+        deleteItem(e, item.item).then(res => {
+            thumbnailRef?.current?.classList?.remove('deleting')
+        })
+    }
 
     return (
         <>
-            <div className='pizza-thumbnail cart' onClick={(e) => viewItem(e)}>
+            <div className='pizza-thumbnail cart' onClick={(e) => viewItem(e)} ref={thumbnailRef}>
+                <div className='loading'>
+                    <Spinner />
+                </div>
                 <div className='pizza-thumbnail-info cart'>
                     <div className='pizza-img-container'>
                         <img src={item?.item?.images[0].url} alt="" />
@@ -43,17 +55,27 @@ const Item = ({ item, changeQnt, viewItem, deleteItem }) => {
                             </button>
                         </div>
                         <button
-                            onClick={(e) => deleteItem(e, item.item)}
+                            onClick={(e) => cartDeleteItem(e)}
                             className='remove-item'>
                             <RemoveCartSvg />
                         </button>
                     </div>
                 </div>
                 <div className='footer-pizza'>
-                    <div className='price fw-600'>{item?.item?.price} {item?.item?.currency}</div>
-                    <div className='total-price fw-500'>
-                        Total: <span className='c-green fw-600'>{item?.totalPrice} {item?.item?.currency}</span>
-                    </div>
+                    {
+                        item.quantity > 0 && item.quantity < 16 ?
+                            <>
+                                <div className='price fw-600'>{item?.item?.price} {item?.item?.currency}</div>
+                                <div className='total-price fw-500'>
+                                    Total: <span className='c-green fw-600'>{item?.totalPrice} {item?.item?.currency}</span>
+                                </div>
+                            </> :
+                            <div className={`report`}>
+                                <div className='report-msg fw-500'>
+                                    Please provide quantity 1 to 15
+                                </div>
+                            </div>
+                    }
                 </div>
             </div>
         </>
