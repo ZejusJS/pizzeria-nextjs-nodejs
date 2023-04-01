@@ -1,6 +1,8 @@
 import { useState } from "react"
 import Order from "./Order"
 
+import PizzaSvg from "../../images/Pizza"
+
 const Orders = ({ userData, viewItem, DocumentAddSvg, BackTurnSvg }) => {
     const [pageNumber, setPageNumber] = useState(0)
     let ordersPerPage = 8
@@ -21,6 +23,7 @@ const Orders = ({ userData, viewItem, DocumentAddSvg, BackTurnSvg }) => {
                             viewItem={viewItem}
                             DocumentAddSvg={DocumentAddSvg}
                             BackTurnSvg={BackTurnSvg}
+                            PizzaSvg={PizzaSvg}
                         />
                     ))
             }

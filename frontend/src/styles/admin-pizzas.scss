@@ -1,0 +1,143 @@
+@mixin breathing($duration) {
+    $name: inline-#{unique-id()};
+
+    @keyframes #{$name} {
+        from {
+            background-color: rgb(58, 58, 58);
+        }
+
+        to {
+            background-color: rgb(148, 148, 148);
+        }
+    }
+
+    animation-name: $name;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+.items {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 6px auto;
+    max-width: 600px;
+
+    .item {
+        display: flex;
+        border: 1px solid rgb(170, 170, 170);
+        border-radius: 12px;
+        padding: 5px;
+        background-color: white;
+        opacity: 1;
+        transition: opacity 2000ms;
+
+        .info-con {
+            display: flex;
+            column-gap: 3px;
+
+            img,
+            svg.pizza-loading {
+                width: 100px;
+                height: 80px;
+                object-fit: cover;
+                border-radius: 10px;
+                flex-shrink: 0;
+            }
+
+            h3 {
+                overflow: hidden;
+                text-overflow: ellipsis;
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 1;
+            }
+
+            .price {
+                font-weight: 500;
+            }
+        }
+
+        .description {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 3;
+        }
+
+        &:hover {
+            cursor: pointer;
+            box-shadow: 0px 0px 13px -8px black;
+        }
+
+        &.loading {
+            opacity: 0.3;
+            cursor: auto;
+
+            .header {
+                background-color: grey;
+                height: 17px;
+                width: 70%;
+                border-radius: 7px;
+                @include breathing(2s);
+            }
+
+            .info {
+                width: 30vw;
+                flex-shrink: 0;
+                overflow: hidden;
+
+                .price {
+                    margin-top: 3px;
+                    width: 100%;
+                    height: 17px;
+                    border-radius: 7px;
+                    @include breathing(2s);
+
+                    &.second {
+                        width: 40%;
+                    }
+                }
+
+                @media (max-width: 250px) {
+                    width: 40vw;
+
+                    .price.second {
+                        display: none;
+                    }
+                }
+            }
+
+            svg.pizza-loading {
+                flex-shrink: 0;
+            }
+        }
+
+        @media (max-width: 350px) {
+            .info-con {
+
+                img,
+                svg.pizza-loading {
+                    width: 50px;
+                    height: 50px;
+                }
+
+                p {
+                    font-size: 15px;
+                }
+            }
+        }
+
+        @media (max-width: 200px) {
+            .info-con {
+
+                img,
+                svg.pizza-loading {
+                    display: none;
+                }
+            }
+        }
+    }
+}

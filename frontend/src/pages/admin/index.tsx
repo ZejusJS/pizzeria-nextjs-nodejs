@@ -15,6 +15,11 @@ const index = () => {
                   Orders
               </Link>
             </div>
+            <div>
+              <Link href={'/admin/deleted-pizzas'}>
+                  Deleted pizzas
+              </Link>
+            </div>
         </div>
     </main>
   )

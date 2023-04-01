@@ -12,7 +12,7 @@ import SearchSvg from "../../images/Search"
 
 const orders = ({ ordersData }) => {
     const [orders, setOrders] = useState(ordersData)
-    const [pageNum, setPageNum] = useState(ordersData?.page)
+    const [pageNum, setPageNum] = useState(ordersData?.page || 1)
     const [search, setSearch] = useState('')
     const router = useRouter()
 

@@ -31,6 +31,7 @@ import '../styles/pizzasSort.scss'
 import '../styles/admin.scss'
 import '../styles/admin-orders.scss'
 import '../styles/footer.scss'
+import '../styles/admin-pizzas.scss'
 
 import ErrorSvg from '../images/Error'
 import Product from '../components/pizza/Product';

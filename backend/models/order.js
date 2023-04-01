@@ -14,7 +14,12 @@ const OrderSchema = Schema({
     },
     items: [
         {
-            type: Object
+            item: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Pizza'
+            },
+            quantity: Number,
+            totalPrice: Number
         }
     ],
     totalPrice: {
@@ -22,6 +27,12 @@ const OrderSchema = Schema({
     },
     shippingPrice: {
         type: String
+    },
+    shippingAdress: {
+        type: Object
+    },
+    invoiceInfo: {
+        type: Object
     },
     user: {
         type: mongoose.Schema.Types.ObjectId,

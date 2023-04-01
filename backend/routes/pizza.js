@@ -13,7 +13,7 @@ router.get('/all', catchAsync(async function (req, res, next) {
     let { ingredients, q } = req.query
     if (ingredients?.length) ingredients = ingredients.split(',')
 
-    const config = {}
+    const config = { show: true }
     if (ingredients?.length) {
         config.ingredients = { $all: ingredients } // $all = musí splňovat vše
     }
@@ -24,20 +24,15 @@ router.get('/all', catchAsync(async function (req, res, next) {
             { 'ingredients': new RegExp(q, 'i') },
         ]
     }
-    let pizzas = await Pizza.find(config)
-    const sendPizzas = pizzas.map(pizza => {
-        return {
-            title: pizza.title,
-            description: pizza.description,
-            images: pizza.images,
-            price: pizza.price,
-            ingredients: pizza.ingredients,
-            key: pizza.key,
-            _id: pizza._id,
-            currency: pizza.currency
-        }
-    })
-    res.status(200).json(sendPizzas)
+    let pizzas = await Pizza.find(config).select({ show: 0 }).sort({ updatedAt: -1 })
+    res.status(200).json(pizzas)
+}))
+
+router.post('/get-many', catchAsync(async function (req, res, next) {
+    const { ids } = req.body
+    let pizzas = await Pizza.find({ _id: ids }).select({ show: 0 });
+    // console.log(pizzas)
+    res.status(200).json(pizzas)
 }))
 
 router.get('/all-ingredients', catchAsync(async function (req, res, next) {

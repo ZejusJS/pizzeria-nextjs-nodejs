@@ -40,7 +40,7 @@ router.post('/card', mwIsLoggedIn, validatePayment, catchAsync(async function (r
 
     for (let i = 0; i < itemsId.length; i++) {
         findPizza = await Pizza.findById(itemsId[i])
-        if (!findPizza) return res.status(400).json({ code: 300 })
+        if (!findPizza || findPizza.show === false) return res.status(400).json({ code: 300 })
         const findItemInCart = req.body.cartData.items.filter((item) => findPizza.equals(item.item?._id))[0]
         totalPriceItems += (findPizza.price * findItemInCart.quantity)
         items.push(findPizza)
@@ -148,8 +148,11 @@ router.post('/card', mwIsLoggedIn, validatePayment, catchAsync(async function (r
         orderNo: data.orderNo,
         totalPrice: (data.totalAmount / 100).toFixed(2),
         shippingPrice,
+        shippingAdress: data.order.shipping,
+        invoiceInfo: data.order.billing,
         user: req.user._id
     })
+    console.log(req.body.cartData.items)
     order.items = req.body.cartData.items
     await order.save()
     findUser.orders.push(order._id)
@@ -165,7 +168,7 @@ router.get('/check-status/:payId', mwIsLoggedIn, catchAsync(async function (req,
     const { payId } = req.params
 
     const order = await Order.findOne({ payId })
-    if (!order) return res.status(400).json({ msg: "Can't find this order" })
+    if (!order) return res.status(404).json({ msg: "Can't find this order" })
     let isAuthor = false
     req.user?.orders.map(ord => {
         if (order?.equals(ord._id)) isAuthor = true
@@ -199,6 +202,49 @@ router.get('/check-status/:payId', mwIsLoggedIn, catchAsync(async function (req,
         })
         .catch(e => console.error(e))
 
+    res.status(200).json(data)
+}))
+
+router.get('/order/:payId', mwIsLoggedIn, catchAsync(async function (req, res, next) {
+    const { payId } = req.params
+
+    const order = await Order.findOne({ payId })
+    if (!order) return res.status(404).json({ msg: "Can't find this order" })
+    let isAuthor = false
+    req.user?.orders.map(ord => {
+        if (order?.equals(ord._id)) isAuthor = true
+    })
+    if (!isAuthor) return res.status(403).json({ msg: "You don't have permission to this order" })
+
+    const dttm = new Date().toISOString().replace(/(\.\d{3})|[^\d]/g, '')
+
+    const payIdUri = encodeURIComponent(payId)
+    const dttmUri = encodeURIComponent(dttm)
+    const merchantIdUri = encodeURIComponent(merchantId)
+    const RETEZEC_STATUS = getRetezec({ merchantId, payId, dttm })
+    const signStatus = crypto.createSign('SHA256')
+    signStatus.update(RETEZEC_STATUS)
+    signStatus.end()
+    const signatureStatus = signStatus.sign(CSOB_PRIVATE);
+    const signatureStatusString = signatureStatus.toString('base64');
+    const signatureStatusUri = encodeURIComponent(signatureStatusString)
+
+    const data = {
+        paymentStatus: 0,
+        order: {}
+    }
+
+    await axios({
+        method: 'get',
+        url: `https://iapi.iplatebnibrana.csob.cz/api/v1.9/payment/status/${merchantIdUri}/${payIdUri}/${dttmUri}/${signatureStatusUri}`
+    })
+        .then(res => {
+            console.log(res.data)
+            data.paymentStatus = res?.data?.paymentStatus
+        })
+        .catch(e => console.error(e))
+
+    data.order = order
     res.status(200).json(data)
 }))
 

@@ -2,6 +2,8 @@ import { useRouter } from "next/router"
 
 import DocumentAddSvg from "../../images/DocumentAdd"
 import BackTurnSvg from "../../images/BackTurn"
+import { server } from "../../config/config"
+import axios from "axios"
 
 const card = () => {
     const router = useRouter()
@@ -77,6 +79,39 @@ const card = () => {
 
         </main>
     )
+}
+
+export const getServerSideProps = async (ctx) => {
+
+    let orderData
+    let error
+    await axios({
+        method: 'get',
+        url: `${server}/admin/pizza/${ctx.query.slug[0]}`,
+        headers: {
+            'Access-Control-Allow-Origin': `${server}`,
+            Cookie: ctx.req.headers.cookie
+        }
+    })
+        .then(res => orderData = res.data)
+        .catch(e => {
+            error = e.response.status
+        })
+
+    if (error || !orderData) {
+        return {
+            redirect: {
+                permanent: false,
+                destination: '/'
+            }
+        }
+    }
+
+    return {
+        props: {
+            order: orderData
+        }
+    }
 }
 
 export default card

@@ -29,7 +29,8 @@ router.post('/new-pizza', mwUploadPizzaImg, validatePizza, catchAsync(async func
                     currency,
                     description,
                     ingredients,
-                    images: [{ filename, url: path }]
+                    images: [{ filename, url: path }],
+                    show: true
                 })
 
                 await pizza.save()
@@ -58,10 +59,12 @@ router.get('/pizza/:id', catchAsync(async function (req, res, next) {
 
 router.delete('/pizza/:id', catchAsync(async function (req, res, next) {
     const { id } = req.params
-    const pizza = await Pizza.findOneAndDelete({ _id: id })
-    if (pizza.images[0]) {
-        await cloudinary.uploader.destroy(pizza.images[0].filename);
-    }
+    const pizza = await Pizza.findById({ _id: id })
+    // if (pizza.images[0]) {
+    //     await cloudinary.uploader.destroy(pizza.images[0].filename);
+    // }
+    pizza.show = false
+    await pizza.save()
     res.status(200).json({ msg: `Pizza "${pizza?.title}" deleted` })
 }))
 
@@ -80,6 +83,12 @@ router.put('/pizza/:id', mwUploadPizzaImg, validatePizza, catchAsync(async funct
     pizza.ingredients = ingredients
     await pizza.save()
     res.status(200).json({ msg: `Pizza "${pizza.title}" updated` })
+}))
+
+router.get('/get-deleted-pizzas', catchAsync(async function (req, res, next) {
+    let pizzas = await Pizza.find({ show: false }).sort({ updatedAt: -1 });
+
+    return res.status(200).json(pizzas)
 }))
 
 router.get('/get-all-orders/:page', catchAsync(async function (req, res, next) {

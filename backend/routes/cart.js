@@ -128,8 +128,8 @@ router.get('/getCartAndUser', catchAsync(async function (req, res, next) {
 
     let findNull = false
     cart.items = cart.items.filter(item => {
-        if (!item.item) findNull = true
-        return item.item !== null && item.item !== undefined
+        if (!item.item || !(item?.item?.show === true)) findNull = true
+        return item.item !== null && item.item !== undefined && item.item.show === true
     })
     if (findNull) await cart.save()
 
@@ -147,7 +147,7 @@ router.get('/getCartCheckout', catchAsync(async function (req, res, next) {
     const cartId = req.query.cart
     const findCart = await Cart.findById(cartId).populate('items.item')
 
-    findCart.items = findCart.items.filter(item => item.item !== null)
+    findCart.items = findCart.items.filter(item => item.item !== null && item.item !== undefined && item.item.show === true)
 
     let totalPrice = 0
     const itemsId = findCart.items.map(item => item.item?._id)

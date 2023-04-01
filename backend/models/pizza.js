@@ -32,14 +32,18 @@ const PizzaSchema = new Schema({
         {
             type: String
         }
-    ]
+    ],
+    show: {
+        type: Boolean,
+        default: true
+    }
 }, { timestamps: true })
 
 PizzaSchema.plugin(mongoosePaginate)
 
 PizzaSchema.post('save', async function () {
     const Pizza = this.constructor;
-    const pizzas = await Pizza.find().exec();
+    const pizzas = await Pizza.find({ show: true }).exec();
     let ingredients = []
     pizzas.map(pizza => {
         pizza.ingredients.map(ingr => {

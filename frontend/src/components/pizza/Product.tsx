@@ -74,24 +74,27 @@ const Product = ({ item, singleAdd, cart, deleteItem, onClick, user }) => {
                         </div>
                     </div>
 
+
+
+                    {user?.roles?.admin && (!item?.orderItem || router.pathname.match(/(\/admin)/g)) ?
+                        <div className='admin-board'>
+                            {!router.pathname.match(/(\/admin)/g) ?
+                                <button
+                                    type='button'
+                                    className='btn-styled danger delete'
+                                    onClick={deletePizza}>
+                                    Delete product
+                                </button> : ''}
+                            <Link
+                                href={`/admin/edit-pizza/${item._id}`}
+                                className='btn-styled cyan edit'
+                            >
+                                Edit Product
+                            </Link>
+                        </div>
+                        : ''}
                     {!(item?.orderItem) ?
                         <>
-                            {user?.roles?.admin ?
-                                <div className='admin-board'>
-                                    <button
-                                        type='button'
-                                        className='btn-styled danger delete'
-                                        onClick={deletePizza}>
-                                        Delete product
-                                    </button>
-                                    <Link
-                                        href={`/admin/edit-pizza/${item._id}`}
-                                        className='btn-styled cyan edit'
-                                    >
-                                        Edit Product
-                                    </Link>
-                                </div>
-                                : ''}
                             <div className='cart-price-container'>
                                 <div className='price fw-500' onClick={(e) => e.stopPropagation()}>
                                     {item.price} {item.currency}
