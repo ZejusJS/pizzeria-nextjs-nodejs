@@ -84,6 +84,7 @@ const Pizzalist = ({ pizzas, setPizzas, singleAdd, viewItem, cart, router }) => 
         }
         
         console.log(isFirstRun.current)
+        setLoading(false)
         if (isFirstRun.current && pizzas.length > 0) {
             isFirstRun.current = false;
             setLoading(false)

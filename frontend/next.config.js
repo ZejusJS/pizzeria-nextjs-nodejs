@@ -1,13 +1,13 @@
 /** @type {import('next').NextConfig} */
 
 const ContentSecurityPolicy = `
-  default-src 'self';
-  script-src 'self';
-  child-src 'self';
-  style-src 'self' 'unsafe-hashes' 'unsafe-inline';
-  font-src 'self' https://*.googleapis.com https://*.gstatic.com;  
-  img-src 'self' https://*.cloudinary.com https://*.unsplash.com;
-  frame-src 'self';
+  default-src 'self' https://pizzeria-backend-4vij.onrender.com;
+  script-src 'self' https://pizzeria-backend-4vij.onrender.com;
+  child-src 'self' https://pizzeria-backend-4vij.onrender.com;
+  style-src 'self' 'unsafe-hashes' 'unsafe-inline' https://pizzeria-backend-4vij.onrender.com;
+  font-src 'self' https://*.googleapis.com https://*.gstatic.com https://pizzeria-backend-4vij.onrender.com;  
+  img-src 'self' https://*.cloudinary.com https://*.unsplash.com https://pizzeria-backend-4vij.onrender.com;
+  frame-src 'self' https://pizzeria-backend-4vij.onrender.com;
 `
 
 const securityHeaders = [
