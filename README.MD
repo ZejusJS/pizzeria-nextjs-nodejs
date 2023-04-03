@@ -26,7 +26,7 @@ first project with nextjs + nodejs
 - [ ] Popup on cart
 - [ ] Secure the checkout - no duplicates, slowdown, tokens
 
-### Links: (last deploy: 21.3.2023)
+### Links: (last deploy: 3.4.2023)
 (long waiting for fresh starts, free tiers, maybe frontend isn't in sync with backend - I didn't deploy backend aswell) <br>
 - **Frontend**: https://effortless-cupcake-860fb7.netlify.app/
 - **Backend**: https://pizzeria-backend-4vij.onrender.com/ <br>
