@@ -3,6 +3,7 @@ import PizzaForm from "../../components/admin/PizzaForm"
 const NewPizza = () => {
     return (
         <main>
+            <h1 className="text-cen">Add a New Pizza</h1>
             <PizzaForm pizza={{}} />
         </main>
     )

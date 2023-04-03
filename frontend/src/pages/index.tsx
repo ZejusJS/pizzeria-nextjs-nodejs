@@ -17,9 +17,10 @@ export default function Home({
   deleteItem,
   itemToView,
   viewItem,
-  user }) {
-  const [pizzasState, setPizzasState] = useState([])
-  const router = useRouter()
+  user,
+  router,
+  pizzas }) {
+  const [pizzasState, setPizzasState] = useState(pizzas)
 
   return (
     <>
@@ -41,36 +42,38 @@ export default function Home({
   )
 }
 
-// export const getServerSideProps = async (context) => {
-//   // console.log('GSSD... ', context.req.headers.cookie)ˇ
-//   let pizzas
-//   let error
-//   await axios({
-//     method: 'get',
-//     url: `${server}/pizza/all`,
-//     // url: `api/pizza/all`,
-//     headers: {
-//       "Content-Type": "application/x-www-form-urlencoded",
-//       'Access-Control-Allow-Origin': `${server}`
-//     },
-//     params: context.query
-//   })
-//     .then(res => pizzas = res.data)
-//     .catch(e => '')
+export const getServerSideProps = async (context) => {
+  // console.log('GSSD... ', context.req.headers.cookie)ˇ
+  let pizzas
+  let error: boolean
+  await axios({
+    method: 'get',
+    url: `${server}/pizza/all`,
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      'Access-Control-Allow-Origin': `${server}`
+    },
+    params: context.query
+  })
+    .then(res => {
+      // console.log(res.data)
+      pizzas = res.data
+    })
+    .catch(e => '')
 
-//   console.log(context.query)
-//   if (error) {
-//     return {
-//       redirect: {
-//         permanent: false,
-//         destination: '/'
-//       }
-//     }
-//   } else {
-//     return {
-//       props: {
-//         pizzas
-//       }
-//     }
-//   }
-// }
+  // console.log(context.query)
+  if (error) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: '/'
+      }
+    }
+  } else {
+    return {
+      props: {
+        pizzas
+      }
+    }
+  }
+}

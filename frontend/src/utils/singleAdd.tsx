@@ -18,12 +18,12 @@ export default async function singleAdd(e, piz, totalCartPrice) {
         },
         withCredentials: true,
         onUploadProgress: function (progressEvent) {
-            e.target.classList.add('btn-cart-loading')
+            if (e.target.classList.contains('add-to-cart')) e.target.classList.add('btn-cart-loading')
             NProgress.start()
         },
         onDownloadProgress: function (progressEvent) {
             setTimeout(() => {
-                e.target.classList.remove('btn-cart-loading')
+                if (e.target.classList.contains('add-to-cart')) e.target.classList.remove('btn-cart-loading')
             }, 150);
             NProgress.done(false)
         },

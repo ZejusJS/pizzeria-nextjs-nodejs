@@ -1,7 +1,7 @@
 // declare module "*.module.css";
 // declare module "*.module.scss";
 // import { Quicksand, Karla } from '@next/font/google'
-import Router from 'next/router';
+import Router, { useRouter } from 'next/router';
 import NProgress from 'nprogress'
 import axios from 'axios'
 import Meta from '../components/Meta'
@@ -13,6 +13,7 @@ import { getCookie } from 'cookies-next';
 import deleteItemFunc from '../utils/deleteItem'
 import singleAddFunc from '../utils/singleAdd'
 import changeQntFunc from '../utils/changeQnt'
+import restoreItemFunc from '../utils/restoreItem'
 
 import '../styles/loading.scss'
 import '../styles/nprogress.scss'
@@ -54,6 +55,8 @@ export default function App({ Component, pageProps }) {
   const [totalCartPrice, setTotalCartPrice] = useState(0)
 
   const loaderRef = useRef(null)
+
+  const router = useRouter()
 
   async function fetchFirstData() {
     setLoaded(false)
@@ -130,6 +133,17 @@ export default function App({ Component, pageProps }) {
     return
   }
 
+  async function restoreItem(e, id) {
+    await restoreItemFunc(e, id)
+    if (router.pathname.match(/(\/admin\/deleted-pizzas)/)) {
+      router.replace({
+        pathname: router.pathname,
+        query: { ...router.query }
+      }, '', { shallow: false })
+    }
+    return
+  }
+
   function viewItem(e, item) {
     setItemToView(item)
     setViewProduct(true)
@@ -192,7 +206,9 @@ export default function App({ Component, pageProps }) {
             cart={cart}
             deleteItem={(e, piz) => deleteItem(e, piz)}
             singleAdd={(e, piz) => singleAdd(e, piz)}
-            user={user} />
+            user={user}
+            restoreItem={restoreItem}
+          />
           : ''}
         {
           !error ?
@@ -212,6 +228,7 @@ export default function App({ Component, pageProps }) {
               totalCartPrice={totalCartPrice}
               setTotalCartPrice={setTotalCartPrice}
               changeQnt={changeQnt}
+              router={router}
             />
             :
             ''

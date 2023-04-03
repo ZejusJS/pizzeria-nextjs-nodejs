@@ -9,6 +9,7 @@ const deletedPizzas = ({ items, viewItem }) => {
     // console.log(items)
     return (
         <main>
+            <h1 className="text-cen">Deleted Products</h1>
             {items.map(it => {
                 return (<>
                     <AdminPizza

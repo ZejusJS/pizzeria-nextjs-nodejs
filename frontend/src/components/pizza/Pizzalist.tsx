@@ -1,5 +1,5 @@
 import Pizza from "./Pizza";
-import { Key, useEffect, useState } from "react";
+import { Key, useEffect, useRef, useState } from "react";
 import axios from "axios";
 import Ingredients from "./Ingredients";
 import SearchSvg from '../../images/Search'
@@ -67,13 +67,12 @@ const Pizzalist = ({ pizzas, setPizzas, singleAdd, viewItem, cart, router }) => 
             query: { ...router.query, q: search, ingredients: selectedIngrs.toString() }
         }, '', { shallow: true })
 
-        NProgress.start()
+        // NProgress.start()
     }
 
+    const isFirstRun = useRef(true)
+
     useEffect(() => {
-
-        NProgress.start()
-
         setSearch(router.query.q || '')
         const arrayIngrs = router?.query?.ingredients?.toString().split(',')
         if (arrayIngrs && arrayIngrs[0]?.length > 0) {
@@ -83,7 +82,16 @@ const Pizzalist = ({ pizzas, setPizzas, singleAdd, viewItem, cart, router }) => 
         } else {
             setSelectedIngrs([])
         }
-        console.log('query:.... ', router.query)
+        
+        console.log(isFirstRun.current)
+        if (isFirstRun.current && pizzas.length > 0) {
+            isFirstRun.current = false;
+            setLoading(false)
+            return;
+        }
+
+        // NProgress.start()
+
         setLoading(true)
         let data = {}
         axios({
@@ -99,11 +107,15 @@ const Pizzalist = ({ pizzas, setPizzas, singleAdd, viewItem, cart, router }) => 
         })
             .then(res => {
                 data = res.data
-                NProgress.done(false)
+                // NProgress.done(false)
                 setPizzas(data)
                 setLoading(false)
+                console.log(res.data)
             })
-            .catch(e => NProgress.done(false))
+            .catch(e => {
+                // NProgress.done(false)
+                console.error(e)
+            })
     }, [router.query])
 
     return (

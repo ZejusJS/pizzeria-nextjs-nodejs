@@ -5,7 +5,7 @@ import axios from 'axios'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 
-const Product = ({ item, singleAdd, cart, deleteItem, onClick, user }) => {
+const Product = ({ item, singleAdd, cart, deleteItem, onClick, user, restoreItem }) => {
     const [isInCart, setIsInCart] = useState(false)
     let ingredients = ''
     item.ingredients.map(ingr => {
@@ -84,7 +84,14 @@ const Product = ({ item, singleAdd, cart, deleteItem, onClick, user }) => {
                                     className='btn-styled danger delete'
                                     onClick={deletePizza}>
                                     Delete product
-                                </button> : ''}
+                                </button> :
+                                <button
+                                    type='button'
+                                    className='btn-styled'
+                                    onClick={(e) => restoreItem(e, item._id)}
+                                    >
+                                        Restore item
+                                </button>}
                             <Link
                                 href={`/admin/edit-pizza/${item._id}`}
                                 className='btn-styled cyan edit'

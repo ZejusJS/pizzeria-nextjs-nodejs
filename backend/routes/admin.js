@@ -91,6 +91,14 @@ router.get('/get-deleted-pizzas', catchAsync(async function (req, res, next) {
     return res.status(200).json(pizzas)
 }))
 
+router.put('/restore-pizza', catchAsync(async function (req, res, next) {
+    const { id } = req.query
+    let pizza = await Pizza.findById(id)
+    pizza.show = true
+    await pizza.save()
+    return res.sendStatus(200)
+}))
+
 router.get('/get-all-orders/:page', catchAsync(async function (req, res, next) {
     let { page } = req.params
     let { q } = req.query

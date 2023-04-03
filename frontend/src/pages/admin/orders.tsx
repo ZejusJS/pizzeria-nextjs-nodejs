@@ -87,6 +87,7 @@ const orders = ({ ordersData }) => {
 
     return (
         <main className="orders-main">
+            <h1 className="text-cen">All orders</h1>
             <div>
                 <form onSubmit={submitSearch}>
                     <div className="search-con">
