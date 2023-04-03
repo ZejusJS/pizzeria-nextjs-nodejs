@@ -17,7 +17,7 @@ const Pizzalist = ({ pizzas, setPizzas, singleAdd, viewItem, cart, router }) => 
     const [selectedIngrs, setSelectedIngrs] = useState([])
     const [viewSort, setViewSort] = useState(false)
     const [search, setSearch] = useState(router.query.q || '')
-    const [loading, setLoading] = useState(true)
+    const [loading, setLoading] = useState(false)
     const [showMore, setShowMore] = useState(false)
 
     useEffect(() => {
@@ -134,6 +134,7 @@ const Pizzalist = ({ pizzas, setPizzas, singleAdd, viewItem, cart, router }) => 
                             <button
                                 type="submit"
                                 className='btn-styled submit search'
+                                title="product searching"
                             >
                                 <SearchSvg />
                             </button>
