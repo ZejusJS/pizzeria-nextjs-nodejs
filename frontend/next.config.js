@@ -5,7 +5,7 @@ const ContentSecurityPolicy = `
   script-src 'self';
   child-src 'self';
   style-src 'self' 'unsafe-hashes' 'unsafe-inline';
-  font-src 'self' https://*.googleapis.com;  
+  font-src 'self' https://*.googleapis.com https://*.gstatic.com;  
   img-src 'self' https://*.cloudinary.com https://*.unsplash.com;
   frame-src 'self';
 `
