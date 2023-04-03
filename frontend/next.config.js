@@ -4,9 +4,9 @@ const ContentSecurityPolicy = `
   default-src 'self';
   script-src 'self';
   child-src 'self';
-  style-src 'self';
-  font-src 'self' https://fonts.googleapis.com;  
-  img-src 'self' https://res.cloudinary.com https://source.unsplash.com;
+  style-src 'self' 'unsafe-hashes' 'unsafe-inline';
+  font-src 'self' https://*.googleapis.com;  
+  img-src 'self' https://*.cloudinary.com https://*.unsplash.com;
   frame-src 'self';
 `
 
