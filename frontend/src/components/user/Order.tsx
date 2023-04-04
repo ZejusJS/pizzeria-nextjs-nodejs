@@ -68,7 +68,7 @@ const Order = ({ order, viewItem, DocumentAddSvg, BackTurnSvg, PizzaSvg }) => {
                         withCredentials: false
                     })
                         .then(res => {
-                            console.log(res.data)
+                            // console.log(res.data)
                             setItems(prevItems => {
                                 return prevItems.map(prevItem => {
                                     try {

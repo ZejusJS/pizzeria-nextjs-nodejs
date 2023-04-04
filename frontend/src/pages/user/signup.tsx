@@ -11,6 +11,7 @@ const signup = ({ }) => {
         <>
             <Meta title='Mamma Mia | Signup' />
             <main>
+            <h1 className='text-cen'>Sign Up</h1>
                 <Signup />
             </main>
         </>

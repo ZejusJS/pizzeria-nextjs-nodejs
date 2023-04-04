@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { server } from '../config/config'
 
-export default async function (e, qnt, item, setCart, setTotalCartPrice) {
+export default async function (e, qnt, item, setCart, setTotalCartPrice, setProductError, setProductErrorText) {
     let minQnt = 1
     let maxQnt = 15
     if (qnt === 'input') {
@@ -13,8 +13,8 @@ export default async function (e, qnt, item, setCart, setTotalCartPrice) {
         prevCart.items = prevCart.items.map(it => {
             if (it?.item?._id !== item?.item?._id) return it
             if (Number.isNaN(qnt) || qnt < minQnt) return { ...it, quantity: 0, totalPrice: 1 * it.item.price }
-            if (qnt > maxQnt) return { ...it, quantity: maxQnt, totalPrice: maxQnt * it.item.price }
-            return { ...it, quantity: qnt, totalPrice: qnt * it.item.price }
+            if (qnt > maxQnt) return { ...it, quantity: maxQnt, totalPrice: (maxQnt * it.item.price).toFixed(2) }
+            return { ...it, quantity: qnt, totalPrice: (qnt * it.item.price).toFixed(2) }
         })
         return { ...prevCart }
     })
@@ -39,7 +39,22 @@ export default async function (e, qnt, item, setCart, setTotalCartPrice) {
                 newQnt = res.data
                 if (res.data?.totalCartPrice) setTotalCartPrice(res.data.totalCartPrice)
             })
-            .catch(e => console.log(e))
+            .catch(e => {
+                if (e?.response?.data?.code === 300 && e?.response?.data?.cart) {
+                    console.log(e?.response?.data?.cart)
+                    if (e?.response?.data?.codeE === 1) {
+                        setProductErrorText('Product was no longer available')
+                    } else if (e?.response?.data?.codeE === 2) {
+                        setProductErrorText('Product was no longer in your cart')
+                    }
+                    setCart(e.response.data.cart)
+                    setProductError(e?.response?.data?.codeE)
+                    setTimeout(() => {
+                        setProductError(0)
+                    }, 3000);
+                }
+                console.error(e)
+            })
     }
     return
 }

@@ -23,13 +23,15 @@ const cartSchema = Schema({
 
 cartSchema.pre('save', async function (done) {
     let price = 0
-    this.items.map(item => price += item.totalPrice)
-    this.set('totalCartPrice', price.toFixed(2))
-
-    let newItems
     if (this.items.length) {
-        newItems = this.items.filter(item => item.item !== null)
-        this.set('items', newItems)
+        this.items.map(item => price += item.totalPrice)
+        this.set('totalCartPrice', price.toFixed(2))
+    
+        let newItems
+        if (this.items.length) {
+            newItems = this.items.filter(item => item.item !== null && item?.item?.show !== false)
+            this.set('items', newItems)
+        }
     }
     done()
 })

@@ -78,6 +78,32 @@ section.about {
     }
 }
 
+.product-error-con {
+    position: absolute;
+    z-index: 8000;
+    top: 1%;
+    opacity: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    transition: opacity 150ms, top 200ms;
+    pointer-events: none;
+
+    .product-error {
+        font-size: 18px;
+        background-color: rgb(255, 99, 99);
+        padding: 4px 8px;
+        border-radius: 7px;
+    }
+
+    &.shown {
+        opacity: 1;
+        top: 7%;
+        pointer-events: auto;
+    }
+}
+
 // .popup-cart {
 //     position: fixed;
 //     z-index: 9000;

@@ -53,6 +53,8 @@ export default function App({ Component, pageProps }) {
   const [loaded, setLoaded] = useState(false)
   const [error, setError] = useState(0)
   const [totalCartPrice, setTotalCartPrice] = useState(0)
+  const [productError, setProductError] = useState(0)
+  const [productErrorText, setProductErrorText] = useState('')
 
   const loaderRef = useRef(null)
 
@@ -129,7 +131,7 @@ export default function App({ Component, pageProps }) {
   }
 
   async function changeQnt(e, qnt, item) {
-    await changeQntFunc(e, qnt, item, setCart, setTotalCartPrice)
+    await changeQntFunc(e, qnt, item, setCart, setTotalCartPrice, setProductError, setProductErrorText)
     return
   }
 
@@ -194,6 +196,15 @@ export default function App({ Component, pageProps }) {
         </div>
         : ''
       }
+
+      <>
+        <div className={`product-error-con ${productError === 1 || productError === 2 ? 'shown' : ''}`}>
+          <div className='product-error'>
+            {productErrorText}
+          </div>
+        </div>
+      </>
+
       <div
         onClick={expanded ? () => setExpanded(!expanded) : (a) => (a)}
       // className={`${viewProduct ? 'of-h' : ''}`}

@@ -39,12 +39,20 @@ router.post('/card', mwIsLoggedIn, validatePayment, catchAsync(async function (r
     const itemsId = req.body.cartData.items.map(item => item.item?._id)
 
     for (let i = 0; i < itemsId.length; i++) {
-        findPizza = await Pizza.findById(itemsId[i])
+        const findPizza = await Pizza.findById(itemsId[i])
         if (!findPizza || findPizza.show === false) return res.status(400).json({ code: 300 })
         const findItemInCart = req.body.cartData.items.filter((item) => findPizza.equals(item.item?._id))[0]
-        totalPriceItems += (findPizza.price * findItemInCart.quantity)
-        items.push(findPizza)
+        let totalPriceItem = (findPizza.price * findItemInCart.quantity)
+        totalPriceItems += totalPriceItem
+        items.push({
+            item: findPizza._id,
+            totalPrice: totalPriceItem,
+            quantity: findItemInCart.quantity,
+            price: findPizza.price
+        })
     }
+    if (!items.length) return res.status(400).json({ code: 300, msg: 'No items in cart' })
+
     totalPrice = totalPriceItems + shippingPrice
 
     console.log(totalPriceItems)
@@ -153,7 +161,7 @@ router.post('/card', mwIsLoggedIn, validatePayment, catchAsync(async function (r
         user: req.user._id
     })
     console.log(req.body.cartData.items)
-    order.items = req.body.cartData.items
+    order.items = items
     await order.save()
     findUser.orders.push(order._id)
     await findUser.save()

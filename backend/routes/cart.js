@@ -43,7 +43,7 @@ router.post('/singleAdd', catchAsync(async function (req, res, next) {
         await cart.populate('items.item')
         res.status(200).json(cart)
     } else {
-        res.status(400).json({ msg: 'ProductID or CartID was not found', code: 300 })
+        res.status(400).json({ msg: 'Product or Cart was not found by IDs', code: 300 })
     }
 }))
 
@@ -81,14 +81,23 @@ router.post('/changeQuantity', catchAsync(async function (req, res, next) {
     }
     const product = await Pizza.findById(productId)
     const cart = await Cart.findById(cartId())
-    
+
     if (cart.user && user.interaction && user.interaction.cart && !user.interaction.cart.equals(cart._id)) {
         return res.status(400).json({ msg: `You don't have permission to edit this cart`, code: 400 })
     }
 
     if (cart && product) {
         let prevProduct = cart?.items?.filter(pro => pro?.item?.equals(productId))[0]
-        if (!prevProduct) return res.status(400).json({ msg: "Your cart doesn't have this product", code: 300 })
+        if (!prevProduct || product.show === false) {
+            cart.items = cart.items.filter(pro => !pro?.item?.equals(productId))
+            if (product.show === false) {
+                await cart.save()
+                await cart.populate('items.item')
+                return res.status(400).json({ msg: "Product in cart was no longer for sale", cart, code: 300, codeE: 1 })
+            }
+            return res.status(400).json({ msg: "Your cart doesn't have this product", cart, code: 300, codeE: 2 })
+        }
+        if (product.show === false) return res.status(400).json({ msg: "This product is no longer for sale", code: 300 })
         prevProduct.quantity = quantity
         prevProduct.totalPrice = (quantity * product.price).toFixed(2)
         cart.items = cart.items.map(item => {
@@ -109,8 +118,10 @@ router.post('/changeQuantity', catchAsync(async function (req, res, next) {
 router.get('/getCartAndUser', catchAsync(async function (req, res, next) {
     let cart
 
+    console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
     if (req.user && req.user.interaction && req.user.interaction.cart) {
         const findCart = await Cart.findById(req.user.interaction.cart).populate('items.item')
+        console.log(findCart)
         // console.log(findCart)
         cart = findCart
     } else {
@@ -126,11 +137,19 @@ router.get('/getCartAndUser', catchAsync(async function (req, res, next) {
         }
     }
 
+    console.log('dsddddddddddddddddddddddddddddddddddddddddddddddddddd')
     let findNull = false
-    cart.items = cart.items.filter(item => {
+    cart.items = cart.items.map(item => {
+        // console.log(item)
         if (!item.item || !(item?.item?.show === true)) findNull = true
-        return item.item !== null && item.item !== undefined && item.item.show === true
-    })
+        if (item.item) item.totalPrice = item.quantity * item.item.price
+        if (item?.item !== null
+            && item?.item !== undefined
+            && item?.item?.show === true) {
+            return item
+        }
+    }).filter(item => item)
+    console.log('aasssssssssssssssssssssss')
     if (findNull) await cart.save()
 
     const user = {

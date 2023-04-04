@@ -10,7 +10,7 @@ const OrderItem = ({ item, viewItem, PizzaSvg }) => {
                         <img src={item?.item?.images?.length ? item?.item?.images[0]?.url : ''} alt="" loading="lazy" />
                         <div>
                             <h3>{item?.item?.title}</h3>
-                            <p className="price"><span>{item?.item?.price} {item?.item?.currency}</span> x {item?.quantity} pcs</p>
+                            <p className="price"><span>{item?.price} CZK</span> x {item?.quantity} pcs</p>
                         </div>
                     </div>
                 </div>

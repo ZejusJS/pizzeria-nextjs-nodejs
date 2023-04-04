@@ -7,8 +7,9 @@ const login = ({ }) => {
 
   return (
     <>
-    <Meta title='Mamma Mia | Login' />
+      <Meta title='Mamma Mia | Login' />
       <main>
+        <h1 className='text-cen'>Login</h1>
         <Login
         />
       </main>

@@ -19,6 +19,7 @@ const OrderSchema = Schema({
                 ref: 'Pizza'
             },
             quantity: Number,
+            price: Number,
             totalPrice: Number
         }
     ],

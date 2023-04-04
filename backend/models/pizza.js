@@ -41,6 +41,12 @@ const PizzaSchema = new Schema({
 
 PizzaSchema.plugin(mongoosePaginate)
 
+PizzaSchema.pre('save', async function(done) {
+    let price = this.price.toFixed(2)
+    this.set('price', price)
+    done()
+})
+
 PizzaSchema.post('save', async function () {
     const Pizza = this.constructor;
     const pizzas = await Pizza.find({ show: true }).exec();

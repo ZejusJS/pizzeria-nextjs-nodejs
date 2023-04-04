@@ -111,7 +111,7 @@ const Pizzalist = ({ pizzas, setPizzas, singleAdd, viewItem, cart, router }) => 
                 // NProgress.done(false)
                 setPizzas(data)
                 setLoading(false)
-                console.log(res.data)
+                // console.log(res.data)
             })
             .catch(e => {
                 // NProgress.done(false)
