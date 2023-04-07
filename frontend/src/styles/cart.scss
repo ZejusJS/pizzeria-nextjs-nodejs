@@ -262,6 +262,10 @@
             visibility: visible;
         }
     }
+
+    &:hover {
+        cursor: pointer;
+    }
 }
 
 

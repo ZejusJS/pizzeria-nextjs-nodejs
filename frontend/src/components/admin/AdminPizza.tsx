@@ -2,7 +2,7 @@ const OrderItem = ({ item, viewItem, PizzaSvg }) => {
     // console.log(item.item)
     return (
         <>
-            <section className="items">
+            <section className="items-admin">
                 {item?.title ?
                     <div className="item admin-pizza"
                         onClick={(e) => viewItem(e, { ...item, orderItem: true })}

@@ -1,9 +1,8 @@
-import IngrItem from './IngrItem'
-import Image from 'next/image';
 import { useState, useEffect } from 'react';
-import CartRemove from '../../images/CartRemove'
+import CartRemoveSvg from '../../images/CartRemove'
+import CartAddSvg from '../../images/CartAdd'
 
-const Pizza = ({ pizza, singleAdd, viewItem, cart }) => {
+const Pizza = ({ pizza, singleAdd, deleteItem, viewItem, cart, Spinner }) => {
   const [isInCart, setIsInCart] = useState(false)
   let ingredients = ''
   pizza?.ingredients?.map(ingr => {
@@ -23,17 +22,29 @@ const Pizza = ({ pizza, singleAdd, viewItem, cart }) => {
     )
   }, [cart])
 
+  async function addToCart(e) {
+    e?.currentTarget?.classList.add('loading')
+    await singleAdd(e)
+    e?.currentTarget?.classList.remove('loading')
+  }
+
+  async function RemoveFromCart(e) {
+    e?.currentTarget?.classList.add('loading')
+    await deleteItem(e)
+    e?.currentTarget?.classList.remove('loading')
+  }
+
   return (
     <div className='pizza-thumbnail index' onClick={(e) => viewItem(e, pizza)}>
       <div className='pizza-thumbnail-info'>
         <div className='pizza-img-container'>
           <img src={pizza.images[0].url} alt="" loading='lazy' />
-          {isInCart ?
+          {/* {isInCart ?
             <>
               <div className='behind-cart'></div>
               <CartRemove color={'#059615'} />
             </>
-            : ''}
+            : ''} */}
         </div>
         <div className='pizza-info'>
           <h3>{pizza.title}</h3>
@@ -42,13 +53,24 @@ const Pizza = ({ pizza, singleAdd, viewItem, cart }) => {
               {ingredients}
             </div>
             : ''}
-            <div className='price fw-600'>{pizza.price} {pizza.currency}</div>
           <div className='pizza-action'>
           </div>
         </div>
       </div>
-      <div>
-
+      <div className='pizza-footer' onClick={e => e.stopPropagation()}>
+        <div className='price fw-600'>{pizza.price} {pizza.currency}</div>
+        {
+          isInCart ?
+            <div className='add-cart remove' onClick={e => RemoveFromCart(e)}><CartRemoveSvg />
+              <span className='text'>In cart</span>
+              <Spinner />
+            </div>
+            :
+            <div className='add-cart add' onClick={e => addToCart(e)}><CartAddSvg />
+              <span className='text'>Add to cart</span>
+              <Spinner />
+            </div>
+        }
       </div>
     </div>
   )

@@ -2,16 +2,17 @@ import Pizza from "./Pizza";
 import { Key, useEffect, useRef, useState } from "react";
 import axios from "axios";
 import Ingredients from "./Ingredients";
+import Spinner from "../Spinner";
+
 import SearchSvg from '../../images/Search'
 import SettingsSvg from '../../images/Settings'
 import CheckedTickSvg from '../../images/CheckedTick'
 import NoPizzasSvg from '../../images/NoPizzas'
-import NProgress from 'nprogress'
-import { server } from '../../config/config'
-
 import ArrowSvg from '../../images/ArrowRight'
 
-const Pizzalist = ({ pizzas, setPizzas, singleAdd, viewItem, cart, router }) => {
+import { server } from '../../config/config'
+
+const Pizzalist = ({ pizzas, setPizzas, singleAdd, viewItem, cart, router, deleteItem }) => {
 
     const [ingrs, setIngrs] = useState([])
     const [selectedIngrs, setSelectedIngrs] = useState([])
@@ -82,7 +83,7 @@ const Pizzalist = ({ pizzas, setPizzas, singleAdd, viewItem, cart, router }) => 
         } else {
             setSelectedIngrs([])
         }
-        
+
         console.log(isFirstRun.current)
         setLoading(false)
         if (isFirstRun.current && pizzas.length > 0) {
@@ -190,9 +191,7 @@ const Pizzalist = ({ pizzas, setPizzas, singleAdd, viewItem, cart, router }) => 
                                         </div>
                                     </div>
                                     :
-                                    <div className="spinner-border" role="status">
-                                        <span className="sr-only"></span>
-                                    </div>
+                                    <Spinner />
                             }
                         </div>
                     </div>
@@ -217,10 +216,12 @@ const Pizzalist = ({ pizzas, setPizzas, singleAdd, viewItem, cart, router }) => 
                                 }) => {
                                     return <Pizza
                                         cart={cart}
-                                        singleAdd={(e) => singleAdd(e)}
+                                        singleAdd={(e) => singleAdd(e, pizza)}
                                         pizza={pizza}
                                         key={pizza._id}
                                         viewItem={(e, piz) => viewItem(e, piz)}
+                                        deleteItem={(e) => deleteItem(e, pizza)}
+                                        Spinner={Spinner}
                                     />
                                 })}
                             </section>

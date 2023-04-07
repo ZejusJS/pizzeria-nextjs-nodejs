@@ -30,6 +30,7 @@ export default function Home({
             <Pizzalist
               cart={cart}
               singleAdd={(e, piz) => singleAdd(e, piz)}
+              deleteItem={(e, piz) => deleteItem(e, piz)}
               viewItem={(e, i) => viewItem(e, i)}
               pizzas={pizzasState}
               setPizzas={setPizzasState}

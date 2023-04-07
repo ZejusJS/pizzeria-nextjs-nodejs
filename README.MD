@@ -16,15 +16,16 @@ first project with nextjs + nodejs
 - [x] User site for displaying and editing user's information, adress, orders etc..... In progress
 - [x] CSP in NextJS
 - [ ] Admin page for all orders from users... in progress
-- [ ] Page after successful or failded payment
 - [x] Error message when bad order details in checkout
 - [x] Finding pizza by name, ingredients and price
 - [ ] Pizza showcase move to another page and do new home page
 - [x] Cancel GetServerSideProps in index
 - [x] Repair payment/card in deployment
 - [x] Repair qnt change
-- [ ] Popup on cart
+- [x] ~~Popup on cart~~
 - [ ] Secure the checkout - no duplicates, slowdown, tokens
+- [ ] twitter, facebook etc. seo
+- [ ] Page after successful or failded payment
 
 ### Links: (last deploy: 3.4.2023)
 (long waiting for fresh starts, free tiers, maybe frontend isn't in sync with backend - I didn't deploy backend aswell) <br>

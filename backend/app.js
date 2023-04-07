@@ -116,7 +116,7 @@ app.use(function (req, res, next) {
     // console.log('cookies... ', req.cookies)
     // console.log('passport... ', req.passport)
     console.log('Original url... ', req.originalUrl)
-    console.log('user... ', req.user)
+    // console.log('user... ', req.user)
     // console.log('Signed cookies.... ', req.signedCookies)
     // console.log('Cookies.... ', req.cookies)
     console.log('------------------------')
