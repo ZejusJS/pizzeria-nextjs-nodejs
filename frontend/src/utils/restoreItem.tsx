@@ -7,7 +7,7 @@ export default async function restoreItem(e, id) {
 
     await axios({
         method: 'put',
-        url: '/api/admin/restore-pizza',
+        url: '/api2/admin/restore-pizza',
         headers: {
             "Content-Type": "application/json",
         },

@@ -11,7 +11,7 @@ export default async function singleAdd(e, piz, totalCartPrice) {
     await axios({
         method: 'post',
         // url: `${server}/cart/singleAdd`,
-        url: `/api/cart/singleAdd`,
+        url: `/api2/cart/singleAdd`,
         headers: {
             "Content-Type": "application/json",
             'Access-Control-Allow-Origin': `${server}`
@@ -19,13 +19,13 @@ export default async function singleAdd(e, piz, totalCartPrice) {
         withCredentials: true,
         onUploadProgress: function (progressEvent) {
             if (e.target.classList.contains('add-to-cart')) e.target.classList.add('btn-cart-loading')
-            NProgress.start()
+            // NProgress.start()
         },
         onDownloadProgress: function (progressEvent) {
             setTimeout(() => {
                 if (e.target.classList.contains('add-to-cart')) e.target.classList.remove('btn-cart-loading')
             }, 150);
-            NProgress.done(false)
+            // NProgress.done(false)
         },
         data: {
             productId

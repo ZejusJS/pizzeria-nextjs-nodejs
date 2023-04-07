@@ -9,7 +9,7 @@ export default async function deleteItem(e, item, setTotalCartPrice) {
 
     await axios({
         method: 'post',
-        url: `/api/cart/deleteItem`,
+        url: `/api2/cart/deleteItem`,
         headers: {
             "Content-Type": "application/json",
             'Access-Control-Allow-Origin': `${server}`
@@ -17,13 +17,13 @@ export default async function deleteItem(e, item, setTotalCartPrice) {
         withCredentials: true,
         onUploadProgress: function (progressEvent) {
             if (e.target.classList.contains('add-to-cart')) e.target.classList.add('btn-cart-loading')
-            NProgress.start()
+            // NProgress.start()
         },
         onDownloadProgress: function (progressEvent) {
             setTimeout(() => {
                 if (e.target.classList.contains('add-to-cart')) e.target.classList.remove('btn-cart-loading')
             }, 150);
-            NProgress.done(false)
+            // NProgress.done(false)
         },
         data: {
             productId

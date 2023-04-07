@@ -12,6 +12,8 @@ const ExpressError = require('../utils/ExpressError');
 const getRetezec = require('../utils/func/getRetezec')
 const emptyCart = require('../utils/func/emptyCart');
 
+const { mwCardPayment } = require('../utils/limiter')
+
 const Pizza = require('../models/pizza')
 const Cart = require('../models/cart')
 const User = require('../models/user')
@@ -23,7 +25,7 @@ const { mwIsLoggedIn } = require('../utils/mw-isLoggedIn');
 const merchantId = 'A3492UfuSm'
 
 
-router.post('/card', mwIsLoggedIn, validatePayment, catchAsync(async function (req, res, next) {
+router.post('/card', mwIsLoggedIn, validatePayment, mwCardPayment, catchAsync(async function (req, res, next) {
     const { firstname, lastname, adress, city, zip, shipping } = req.body
     const items = []
     let totalPriceItems = 0

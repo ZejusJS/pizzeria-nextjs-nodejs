@@ -118,10 +118,8 @@ router.post('/changeQuantity', catchAsync(async function (req, res, next) {
 router.get('/getCartAndUser', catchAsync(async function (req, res, next) {
     let cart
 
-    console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
     if (req.user && req.user.interaction && req.user.interaction.cart) {
         const findCart = await Cart.findById(req.user.interaction.cart).populate('items.item')
-        console.log(findCart)
         // console.log(findCart)
         cart = findCart
     } else {
@@ -137,7 +135,6 @@ router.get('/getCartAndUser', catchAsync(async function (req, res, next) {
         }
     }
 
-    console.log('dsddddddddddddddddddddddddddddddddddddddddddddddddddd')
     let findNull = false
     cart.items = cart.items.map(item => {
         // console.log(item)
@@ -149,7 +146,6 @@ router.get('/getCartAndUser', catchAsync(async function (req, res, next) {
             return item
         }
     }).filter(item => item)
-    console.log('aasssssssssssssssssssssss')
     if (findNull) await cart.save()
 
     const user = {

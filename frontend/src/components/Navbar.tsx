@@ -31,7 +31,7 @@ const Navbar = ({ cart, setExpanded, expanded, user }) => {
     await axios({
       method: 'post',
       // url: `${server}/cart/singleAdd`,
-      url: `/api/user/logout`,
+      url: `/api2/user/logout`,
       headers: {
         "Content-Type": "application/json",
         'Access-Control-Allow-Origin': `${server}`
@@ -54,12 +54,12 @@ const Navbar = ({ cart, setExpanded, expanded, user }) => {
         <div className={`nav-container ${expanded ? 'expanded' : ''}`}>
           <div>
             <div className='logo-name'>
-              <Link href='/' className='logo-link' shallow={false}>
+              <Link href='/' className='logo-link' shallow={false} prefetch={false}>
                 <img className='logo' src="/favicon.svg" alt="" />
                 <h1>Mamma Mia</h1>
               </Link>
               <div className='options-container'>
-                <Link href={'/cart'}
+                <Link href={'/cart'} prefetch={false}
                   className="cart-href"
                   >
                   <div className='cart'>
@@ -78,12 +78,12 @@ const Navbar = ({ cart, setExpanded, expanded, user }) => {
 
           <div className='links-row linky'>
             <div>
-              <Link href='/' shallow={false} >
+              <Link href='/' shallow={false} prefetch={false}>
                 Home page
               </Link>
             </div>
             <div>
-              <Link href='/about'>
+              <Link href='/about' prefetch={false}>
                 About
               </Link>
             </div>
@@ -95,12 +95,12 @@ const Navbar = ({ cart, setExpanded, expanded, user }) => {
             {!user.email ?
               <>
                 <div className='auth'>
-                  <Link href='/user/signup'>
+                  <Link href='/user/signup' prefetch={false}>
                     Sign Up
                   </Link>
                 </div>
                 <div className='auth'>
-                  <Link href='/user/login'>
+                  <Link href='/user/login' prefetch={false}>
                     Login
                   </Link>
                 </div>
@@ -113,7 +113,7 @@ const Navbar = ({ cart, setExpanded, expanded, user }) => {
                   </form>
                 </div>
                 <div className='user'>
-                  <Link href='/user/profile'>
+                  <Link href='/user/profile' prefetch={false}>
                     <UserCircleSvg />
                   </Link>
                 </div>
@@ -121,7 +121,7 @@ const Navbar = ({ cart, setExpanded, expanded, user }) => {
             }
             {user.roles?.admin ?
               <div className='four'>
-                <Link href='/admin'>
+                <Link href='/admin' prefetch={false}>
                   Admin
                 </Link>
               </div>
@@ -129,25 +129,25 @@ const Navbar = ({ cart, setExpanded, expanded, user }) => {
           </div>
           <div className='links linky'>
             <div className='link'>
-              <Link href='/' shallow={false}>
+              <Link href='/' shallow={false} prefetch={false}>
                 Home page
               </Link>
-              <Link href='/about'>
+              <Link href='/about' prefetch={false}>
                 About
               </Link>
             </div>
             <div className='link'>
-              <Link href='/cart'>
+              <Link href='/cart' prefetch={false}>
                 Cart
               </Link>
             </div>
             <div className='link user-links'>
               {!user.email ?
                 <>
-                  <Link href='/user/signup'>
+                  <Link href='/user/signup' prefetch={false}>
                     Sign Up
                   </Link>
-                  <Link href='/user/login'>
+                  <Link href='/user/login' prefetch={false}>
                     Login
                   </Link>
                 </>
@@ -159,7 +159,7 @@ const Navbar = ({ cart, setExpanded, expanded, user }) => {
                     </form>
                   </div>
                   <div className='user'>
-                    <Link href='/user/profile'>
+                    <Link href='/user/profile' prefetch={false}>
                       <UserCircleSvg /> <span>{user.name}</span>
                     </Link>
                   </div>
@@ -168,7 +168,7 @@ const Navbar = ({ cart, setExpanded, expanded, user }) => {
             </div>
             {user.roles?.admin ?
               <div className='link'>
-                <Link href='/admin'>
+                <Link href='/admin' prefetch={false}>
                   Admin
                 </Link>
               </div>

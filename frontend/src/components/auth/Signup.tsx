@@ -145,7 +145,7 @@ const Signup = ({ }) => {
         await axios({
             method: 'post',
             // url: `${server}/user/signup`,
-            url: `/api/user/signup`,
+            url: `/api2/user/signup`,
             headers: {
                 "Content-Type": "application/json",
                 'Access-Control-Allow-Origin': `${server}`

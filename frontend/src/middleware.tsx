@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import { server } from './config/config'
 
+let counter = 0;
 export async function middleware(req: NextRequest) {
     const url = req.nextUrl
     const res = NextResponse.next();
@@ -14,7 +15,18 @@ export async function middleware(req: NextRequest) {
         })
         return cookies
     }
-    if (url.pathname.startsWith('/admin')) {
+    // counter++;
+    // console.log('-------------')
+    // console.log("middleware #", counter);
+    // // console.log(url.pathname.startsWith('/admin'))
+    // console.log(url.pathname)
+    // console.log(req.headers.get('purpose'))
+    // console.log(req.headers.get('x-middleware-prefetch'))
+    // console.log(req.headers.get('x-nextjs-data'))
+    // console.log('-------------')
+
+    if (url.pathname.startsWith('/admin') && req.headers.get('purpose') !== 'prefetch') {
+        console.log('!!!!!!! admin middleware')
         const cookies = cookiesParse()
         const res = await fetch(`${server}/admin/isAdmin`, {
             method: 'get',
@@ -31,9 +43,9 @@ export async function middleware(req: NextRequest) {
             const response = NextResponse.rewrite(url)
             return response
         }
-    } else if (req.cookies.has("cart") || req?.cookies?.get('cart')?.value === 'error' ) {
-        return res;
-    } else {
+    }
+
+    if (!req.cookies.has("cart") && !(req?.cookies?.get('cart')?.value === 'error')) {
         console.log(req.cookies.get('cart'))
         const cookies = cookiesParse()
         const getCart = await fetch(`${server}/cart/getIdCart`, {
@@ -56,9 +68,11 @@ export async function middleware(req: NextRequest) {
             response.cookies.set("cart", 'error', { maxAge: 10 });
             return response
         }
+    } else {
+        return res;
     }
 }
 
 export const config = {
-    matcher: [`/((?!api|_next/static|_next/image|favicon.svg|favicon.ico).*)`,],
+    matcher: [`/((?!api|api2|_next/data|_next/static|_next/image|favicon.svg|favicon.ico).*)`,],
 }

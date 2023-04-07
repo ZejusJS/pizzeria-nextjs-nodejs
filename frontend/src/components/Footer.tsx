@@ -9,13 +9,13 @@ const Footer = () => {
         <footer>
             <div className="columns-con">
                 <div className="links column">
-                    <Link href='/'>
+                    <Link href='/' prefetch={false}>
                         Home page
                     </Link>
-                    <Link href='/about'>
+                    <Link href='/about' prefetch={false}>
                         About
                     </Link>
-                    <Link href='/cart'>
+                    <Link href='/cart' prefetch={false}>
                         Cart
                     </Link>
                 </div>

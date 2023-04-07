@@ -34,7 +34,7 @@ const Product = ({ item, singleAdd, cart, deleteItem, onClick, user, restoreItem
             case true:
                 await axios({
                     method: 'delete',
-                    url: `/api/admin/pizza/${item._id}`,
+                    url: `/api2/admin/pizza/${item._id}`,
                     withCredentials: true
                 })
                     .then(res => {
@@ -117,7 +117,7 @@ const Product = ({ item, singleAdd, cart, deleteItem, onClick, user, restoreItem
                                             {
                                                 isInCart ?
                                                     <>
-                                                        <CartRemove color={'#00c216'} />
+                                                        <CartRemove />
                                                         <span>In Cart</span>
                                                     </>
                                                     :

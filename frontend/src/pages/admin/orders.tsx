@@ -30,7 +30,7 @@ const orders = ({ ordersData }) => {
             NProgress.start()
             axios({
                 method: 'get',
-                url: `/api/admin/get-all-orders/${fixedPage}`,
+                url: `/api2/admin/get-all-orders/${fixedPage}`,
                 params: {
                     q: q
                 }

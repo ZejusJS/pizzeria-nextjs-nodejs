@@ -26,7 +26,7 @@ const securityHeaders = [
 ]
 
 const nextConfig = {
-  reactStrictMode: true,
+  // reactStrictMode: true,
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/i,
@@ -43,7 +43,7 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        source: '/api/:path*',
+        source: '/api2/:path*',
         // destination: 'https://pizzeria-backend-4vij.onrender.com/:path*' // Proxy to Backend
         destination: 'http://localhost:8000/:path*' // Proxy to Backend 
       }

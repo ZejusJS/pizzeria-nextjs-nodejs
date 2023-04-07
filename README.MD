@@ -13,7 +13,7 @@ first project with nextjs + nodejs
 - [x] Clear the ducking mess in the new-pizza's form validation code!!!!! 
 - [x] Paginate pizzas
 - [x] Style login and signup pages
-- [x] User site for displaying and editing user's information, adress, orders etc..... In progress
+- [x] User site for displaying and editing user's information, adress, orders etc
 - [x] CSP in NextJS
 - [ ] Admin page for all orders from users... in progress
 - [x] Error message when bad order details in checkout
@@ -23,8 +23,8 @@ first project with nextjs + nodejs
 - [x] Repair payment/card in deployment
 - [x] Repair qnt change
 - [x] ~~Popup on cart~~
-- [ ] Secure the checkout - no duplicates, slowdown, tokens
-- [ ] twitter, facebook etc. seo
+- [ ] Secure the checkout - no duplicates, slowdown, tokens, recaptcha
+- [ ] twitter, facebook etc. seo... in progress
 - [ ] Page after successful or failded payment
 
 ### Links: (last deploy: 3.4.2023)

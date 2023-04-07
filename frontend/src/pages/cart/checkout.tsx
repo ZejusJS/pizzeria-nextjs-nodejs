@@ -30,8 +30,7 @@ const checkout = ({ cartData, setUser, user, userData, setCart }) => {
     const [paymentMethod, setPaymentMethod] = useState({ name: 'card', price: 0 })
     const [totalPrice, setTotalPrice] = useState(0)
     const [auth, setAuth] = useState(0)
-    const [error, setError] = useState(false)
-    const [error500, setError500] = useState(false)
+    const [error, setError] = useState(0)
 
     // console.log(orderDetails)
     const invoiceInfo = userData.invoiceInfo
@@ -59,7 +58,7 @@ const checkout = ({ cartData, setUser, user, userData, setCart }) => {
     const zipError = useRef(null)
 
     function handleChangeOrderDetails(e) {
-        setError(false)
+        setError(0)
 
         const { name, value } = e.target
         setOrderDetails(prevData => {
@@ -152,7 +151,7 @@ const checkout = ({ cartData, setUser, user, userData, setCart }) => {
     const [loading, setLoading] = useState(false)
 
     function handleSubmit(e) {
-        if(loading) return
+        if (loading) return
 
         const orderData = {
             ...orderDetails,
@@ -165,13 +164,12 @@ const checkout = ({ cartData, setUser, user, userData, setCart }) => {
         }
         // console.log(orderData)
 
-        setError(false)
-        setError500(false)
+        setError(0)
 
 
         axios({
             method: 'post',
-            url: '/api/payment/card',
+            url: '/api2/payment/card',
             withCredentials: true,
             onUploadProgress: function (progressEvent) {
                 setLoading(true)
@@ -194,11 +192,7 @@ const checkout = ({ cartData, setUser, user, userData, setCart }) => {
             })
             .catch(e => {
                 console.error(e)
-                if (e?.response?.status === 400) {
-                    setError(true)
-                } else {
-                    setError500(true)
-                }
+                setError(e?.response?.status)
             })
     }
 
@@ -250,7 +244,7 @@ const checkout = ({ cartData, setUser, user, userData, setCart }) => {
         resizeObserver.observe(slide2.current)
         resizeObserver.observe(slide3.current)
         return () => resizeObserver.disconnect() // clean up 
-    }, [slideSection.current, orderDetails, error, error500, index])
+    }, [slideSection.current, orderDetails, error, index])
 
     return (
         <>
@@ -378,13 +372,14 @@ const checkout = ({ cartData, setUser, user, userData, setCart }) => {
                                                 </div>
                                             </div>
                                         </div>
-                                        {error ? <div className='error-checkout'>
-                                            Some values are invalid.
-                                            Try to check every field in previous steps.
-                                        </div> : ''}
-                                        {error500 ? <div className='error-checkout'>
+                                        {error === 500 ? <div className='error-checkout'>
                                             There is a problem on our servers.
                                             Try reload the page or come back after some time.
+                                        </div> : error === 429 ? <div className='error-checkout'>
+                                            Please wait until you can make an order again.
+                                        </div> : error ? <div className='error-checkout'>
+                                            Some values are invalid.
+                                            Try to check every field in previous steps.
                                         </div> : ''}
                                         <button
                                             type='submit'

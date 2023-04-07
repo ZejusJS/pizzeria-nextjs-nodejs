@@ -108,7 +108,7 @@ const Billing = ({
 
         await axios({
             method: 'post',
-            url: '/api/user/billing',
+            url: '/api2/user/billing',
             headers: {
                 "Content-Type": "application/json",
             },

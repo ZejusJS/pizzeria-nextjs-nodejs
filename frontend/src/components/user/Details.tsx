@@ -36,7 +36,7 @@ const Details = ({
 
         await axios({
             method: 'post',
-            url: '/api/user/details',
+            url: '/api2/user/details',
             headers: {
                 "Content-Type": "application/json",
             },

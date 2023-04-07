@@ -41,7 +41,7 @@ const Order = ({ order, viewItem, DocumentAddSvg, BackTurnSvg, PizzaSvg }) => {
 
                 axios({
                     method: 'get',
-                    url: `/api/payment/check-status/${order.payId}`
+                    url: `/api2/payment/check-status/${order.payId}`
                 })
                     .then(res => {
                         // console.log(res.data?.paymentStatus)
@@ -58,7 +58,7 @@ const Order = ({ order, viewItem, DocumentAddSvg, BackTurnSvg, PizzaSvg }) => {
                     // console.log(items)
                     axios({
                         method: 'post',
-                        url: `/api/pizza/get-many`,
+                        url: `/api2/pizza/get-many`,
                         headers: {
                             "Content-Type": "application/json"
                         },

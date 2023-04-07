@@ -67,7 +67,7 @@ export default function App({ Component, pageProps }) {
     loaderRef?.current?.classList?.remove('loaded')
     await axios({
       method: 'get',
-      url: `/api/cart/getCartAndUser`,
+      url: `/api2/cart/getCartAndUser`,
       // url: `api/cart/getCartAndUser`,
       withCredentials: true,
       headers: {

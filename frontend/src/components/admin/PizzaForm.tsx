@@ -121,7 +121,7 @@ const PizzaForm = ({ pizza }) => {
         console.log(newPizza)
         await axios({
             method: router.asPath.includes('new-pizza') ? 'post' : 'put',
-            url: router.asPath.includes('new-pizza') ? `/api/admin/new-pizza` : `/api/admin/pizza/${pizza._id}`,
+            url: router.asPath.includes('new-pizza') ? `/api2/admin/new-pizza` : `/api2/admin/pizza/${pizza._id}`,
             withCredentials: true,
             data: newPizza,
             headers: {

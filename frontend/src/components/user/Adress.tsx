@@ -102,7 +102,7 @@ const Adress = ({
 
         await axios({
             method: 'post',
-            url: '/api/user/adress',
+            url: '/api2/user/adress',
             headers: {
                 "Content-Type": "application/json",
             },

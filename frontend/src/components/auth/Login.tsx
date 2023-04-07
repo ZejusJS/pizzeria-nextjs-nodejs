@@ -68,7 +68,7 @@ const Login = ({ }) => {
         await axios({
             method: 'post',
             // url: `${server}/user/login`,
-            url: `/api/user/login`,
+            url: `/api2/user/login`,
             headers: {
                 "Content-Type": "application/json",
                 // 'Access-Control-Allow-Origin': `${server}`

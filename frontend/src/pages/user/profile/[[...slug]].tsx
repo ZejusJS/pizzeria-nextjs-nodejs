@@ -45,22 +45,22 @@ const index = ({ userData, viewItem }) => {
                     {!slug[0]
                         ?
                         <div className="user-navigation">
-                            <Link href={'/user/profile/details'} shallow={true}>
+                            <Link href={'/user/profile/details'} shallow={true} prefetch={false}>
                                 <div>
                                     <UserSvg /><span>User details</span>
                                 </div>
                             </Link>
-                            <Link href={'/user/profile/orders'} shallow={true}>
+                            <Link href={'/user/profile/orders'} shallow={true} prefetch={false}>
                                 <div>
                                     <OrderBagSvg /><span>Orders</span>
                                 </div>
                             </Link>
-                            <Link href={'/user/profile/adress'} shallow={true}>
+                            <Link href={'/user/profile/adress'} shallow={true} prefetch={false}>
                                 <div>
                                     <HouseSvg /><span>Shipping adress</span>
                                 </div>
                             </Link>
-                            <Link href={'/user/profile/billing'} shallow={true}>
+                            <Link href={'/user/profile/billing'} shallow={true} prefetch={false}>
                                 <div>
                                     <DollarSvg /><span>Billing</span>
                                 </div>
