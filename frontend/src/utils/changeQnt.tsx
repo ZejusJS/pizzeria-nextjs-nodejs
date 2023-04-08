@@ -26,8 +26,7 @@ export default async function (e, qnt, item, setCart, setTotalCartPrice, setProd
             // url: `${server}/cart/changeQuantity`,
             url: `/api2/cart/changeQuantity`,
             headers: {
-                "Content-Type": "application/json",
-                'Access-Control-Allow-Origin': `${server}`,
+                "Content-Type": "application/json"
             },
             data: {
                 quantity: qnt,

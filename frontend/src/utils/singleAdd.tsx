@@ -13,8 +13,7 @@ export default async function singleAdd(e, piz, totalCartPrice) {
         // url: `${server}/cart/singleAdd`,
         url: `/api2/cart/singleAdd`,
         headers: {
-            "Content-Type": "application/json",
-            'Access-Control-Allow-Origin': `${server}`
+            "Content-Type": "application/json"
         },
         withCredentials: true,
         onUploadProgress: function (progressEvent) {
@@ -40,6 +39,7 @@ export default async function singleAdd(e, piz, totalCartPrice) {
     if (cartData) {
         return cartData
     } else {
+        throw Error('Something went wrong')
         window.location.replace('/')
     }
 }

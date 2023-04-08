@@ -11,8 +11,7 @@ export default async function deleteItem(e, item, setTotalCartPrice) {
         method: 'post',
         url: `/api2/cart/deleteItem`,
         headers: {
-            "Content-Type": "application/json",
-            'Access-Control-Allow-Origin': `${server}`
+            "Content-Type": "application/json"
         },
         withCredentials: true,
         onUploadProgress: function (progressEvent) {
@@ -38,6 +37,7 @@ export default async function deleteItem(e, item, setTotalCartPrice) {
     if (cartData) {
         return cartData
     } else {
+        throw Error('Something went wrong')
         window.location.replace('/')
     }
 }

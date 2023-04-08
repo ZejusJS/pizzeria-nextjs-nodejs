@@ -1,9 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import CartRemoveSvg from '../../images/CartRemove'
 import CartAddSvg from '../../images/CartAdd'
+import MoreInfoSvg from '../../images/MoreInfo'
 
 const Pizza = ({ pizza, singleAdd, deleteItem, viewItem, cart, Spinner }) => {
   const [isInCart, setIsInCart] = useState(false)
+  const [loading, setLoading] = useState(false)
   let ingredients = ''
   pizza?.ingredients?.map(ingr => {
     ingredients += ingr + ', '
@@ -22,20 +24,41 @@ const Pizza = ({ pizza, singleAdd, deleteItem, viewItem, cart, Spinner }) => {
     )
   }, [cart])
 
+  const btnAddToCartRef = useRef(null)
+
   async function addToCart(e) {
-    e?.currentTarget?.classList.add('loading')
+    // btnAddToCartRef?.current?.classList.add('loading')
+    btnAddToCartRef.current.disabled = true
+    setLoading(true)
     await singleAdd(e)
-    e?.currentTarget?.classList.remove('loading')
+    setTimeout(() => {
+      // btnAddToCartRef?.current?.classList.remove('add')
+      // btnAddToCartRef?.current?.classList.add('remove')
+      // btnAddToCartRef?.current?.classList.remove('loading')
+      btnAddToCartRef.current.disabled = false
+      setLoading(false)
+    }, 150);
   }
 
   async function RemoveFromCart(e) {
-    e?.currentTarget?.classList.add('loading')
+    // btnAddToCartRef?.current?.classList.add('loading')
+    btnAddToCartRef.current.disabled = true
+    setLoading(true)
     await deleteItem(e)
-    e?.currentTarget?.classList.remove('loading')
+    setTimeout(() => {
+      // btnAddToCartRef?.current?.classList.add('add')
+      // btnAddToCartRef?.current?.classList.remove('remove')
+      // btnAddToCartRef?.current?.classList.remove('loading')
+      btnAddToCartRef.current.disabled = false
+      setLoading(false)
+    }, 150);
   }
 
   return (
     <div className='pizza-thumbnail index' onClick={(e) => viewItem(e, pizza)}>
+      <button className='more-info' onClick={(e) => viewItem(e, pizza)}>
+        <MoreInfoSvg />
+      </button>
       <div className='pizza-thumbnail-info'>
         <div className='pizza-img-container'>
           <img src={pizza.images[0].url} alt="" loading='lazy' />
@@ -60,16 +83,16 @@ const Pizza = ({ pizza, singleAdd, deleteItem, viewItem, cart, Spinner }) => {
       <div className='pizza-footer' onClick={e => e.stopPropagation()}>
         <div className='price fw-600'>{pizza.price} {pizza.currency}</div>
         {
-          isInCart ?
-            <div className='add-cart remove' onClick={e => RemoveFromCart(e)}><CartRemoveSvg />
-              <span className='text'>In cart</span>
-              <Spinner />
-            </div>
-            :
-            <div className='add-cart add' onClick={e => addToCart(e)}><CartAddSvg />
-              <span className='text'>Add to cart</span>
-              <Spinner />
-            </div>
+          <button
+            className={`add-cart ${isInCart ? 'remove' : 'add'} ${loading ? 'loading' : ''}`}
+            ref={btnAddToCartRef}
+            onClick={e => isInCart ? RemoveFromCart(e) : addToCart(e)}
+            type='button'
+          >
+            <CartAddSvg />
+            <span className='text'>{isInCart ? 'In cart' : 'Add to cart'}</span>
+            <Spinner />
+          </button>
         }
       </div>
     </div>

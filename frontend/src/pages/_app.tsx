@@ -61,10 +61,9 @@ export default function App({ Component, pageProps }) {
 
   const router = useRouter()
 
-  async function fetchFirstData() {
-    setLoaded(false)
-    // console.log('xddddddddddddddddddddddddd')
-    NProgress.start()
+  async function fetchFirstData(loading: boolean) {
+    if (loading) setLoaded(false) 
+    if (loading) NProgress.start()
     loaderRef?.current?.classList?.remove('loaded')
     await axios({
       method: 'get',
@@ -86,10 +85,10 @@ export default function App({ Component, pageProps }) {
         setUser(res?.data?.user)
         setTotalCartPrice(cartToSet.totalCartPrice)
 
-        NProgress.done(false)
+        if (loading) NProgress.done(false)
         loaderRef?.current?.classList?.add('loaded')
         setTimeout(() => {
-          setLoaded(true)
+          if (loading) setLoaded(true)
         }, 1500);
       })
       .catch(e => {
@@ -104,7 +103,7 @@ export default function App({ Component, pageProps }) {
   }
 
   useEffect(() => {
-    fetchFirstData()
+    fetchFirstData(true)
   }, [])
 
   useEffect(() => {
@@ -126,12 +125,16 @@ export default function App({ Component, pageProps }) {
   });
 
   async function singleAdd(e, piz) {
-    setCart(await singleAddFunc(e, piz, setTotalCartPrice))
+    await singleAddFunc(e, piz, setTotalCartPrice)
+      .then(res => setCart(res))
+      .catch(e => fetchFirstData(false))
     return
   }
 
   async function deleteItem(e, piz) {
-    setCart(await deleteItemFunc(e, piz, setTotalCartPrice))
+    await deleteItemFunc(e, piz, setTotalCartPrice)
+      .then(res => setCart(res))
+      .catch(e => fetchFirstData(false))
     return
   }
 

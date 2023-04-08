@@ -48,12 +48,12 @@ const Product = ({ item, singleAdd, cart, deleteItem, onClick, user, restoreItem
 
     return (
         <div id='view-product' onClick={(e) => onClick(e)}>
-            <div
+            <button
                 className='cross'
                 onClick={(e) => onClick(e)}
             >
                 &#9587;
-            </div>
+            </button>
             <div className='product-center'>
                 <div className='pizza-img-container'>
                     <img src={item.images[0].url} alt="" onClick={(e) => e.stopPropagation()} />
