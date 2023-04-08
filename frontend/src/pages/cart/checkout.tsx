@@ -1,4 +1,4 @@
-import { server } from '../../config/config'
+import { server, captchaKey } from '../../config/config'
 import CheckoutPizza from '../../components/cart/CheckoutPizza'
 import axios from 'axios'
 import { useRef, useState, useEffect } from 'react'
@@ -416,26 +416,26 @@ const checkout = ({ cartData, setUser, user, userData, setCart }) => {
                                                                 <div className='error-checkout'>
                                                                     Some values are invalid.
                                                                     Try to check every field in previous steps.
-                                                                </div> 
-                                                                : ''}
-                                                                    <Reaptcha
-                                                                        sitekey='6LeFgWwlAAAAADwgY8s6bUNHdk6HWjhV7AR4b9Q1'
-                                                                        onVerify={verifyCaptcha}
-                                                                        ref={reCaptchaRef}
-                                                                        size='compact'
-                                                                        badge='inline'
-                                                                        onExpire={() => setCaptcha('')}
-                                                                    />
-                                                                    <button
-                                                                        type='submit'
-                                                                        onClick={handleSubmit}
-                                                                        className='submit-order'
-                                                                    >
-                                                                        Submit Order
-                                                                    </button>
                                                                 </div>
+                                                                : ''}
+                                                <Reaptcha
+                                                    sitekey={captchaKey}
+                                                    onVerify={verifyCaptcha}
+                                                    ref={reCaptchaRef}
+                                                    size='compact'
+                                                    badge='inline'
+                                                    onExpire={() => setCaptcha('')}
+                                                />
+                                                <button
+                                                    type='submit'
+                                                    onClick={handleSubmit}
+                                                    className='submit-order'
+                                                >
+                                                    Submit Order
+                                                </button>
+                                            </div>
                                         </div>
-                                        </div>
+                                    </div>
                                 </section>
 
                             </div>
