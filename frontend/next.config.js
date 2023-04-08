@@ -44,8 +44,8 @@ const nextConfig = {
     return [
       {
         source: '/api2/:path*',
-        // destination: 'https://pizzeria-backend-4vij.onrender.com/:path*' // Proxy to Backend
-        destination: 'http://localhost:8000/:path*' // Proxy to Backend 
+        destination: 'https://pizzeria-backend-4vij.onrender.com/:path*' // Proxy to Backend
+        // destination: 'http://localhost:8000/:path*' // Proxy to Backend 
       }
     ]
   },
