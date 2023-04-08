@@ -27,28 +27,24 @@ const Pizza = ({ pizza, singleAdd, deleteItem, viewItem, cart, Spinner }) => {
   const btnAddToCartRef = useRef(null)
 
   async function addToCart(e) {
-    // btnAddToCartRef?.current?.classList.add('loading')
     btnAddToCartRef.current.disabled = true
     setLoading(true)
+
     await singleAdd(e)
+
     setTimeout(() => {
-      // btnAddToCartRef?.current?.classList.remove('add')
-      // btnAddToCartRef?.current?.classList.add('remove')
-      // btnAddToCartRef?.current?.classList.remove('loading')
       btnAddToCartRef.current.disabled = false
       setLoading(false)
     }, 150);
   }
 
   async function RemoveFromCart(e) {
-    // btnAddToCartRef?.current?.classList.add('loading')
     btnAddToCartRef.current.disabled = true
     setLoading(true)
+
     await deleteItem(e)
+
     setTimeout(() => {
-      // btnAddToCartRef?.current?.classList.add('add')
-      // btnAddToCartRef?.current?.classList.remove('remove')
-      // btnAddToCartRef?.current?.classList.remove('loading')
       btnAddToCartRef.current.disabled = false
       setLoading(false)
     }, 150);
@@ -57,7 +53,7 @@ const Pizza = ({ pizza, singleAdd, deleteItem, viewItem, cart, Spinner }) => {
   return (
     <div className='pizza-thumbnail index' onClick={(e) => viewItem(e, pizza)}>
       <button className='more-info' onClick={(e) => viewItem(e, pizza)}>
-        <MoreInfoSvg />
+        <MoreInfoSvg title={pizza?.title}/>
       </button>
       <div className='pizza-thumbnail-info'>
         <div className='pizza-img-container'>

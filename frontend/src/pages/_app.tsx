@@ -94,7 +94,7 @@ export default function App({ Component, pageProps }) {
       .catch(e => {
         console.error(e)
         if (e.response?.data?.newCart) {
-          router.reload()
+          // router.reload()
         } else {
           setError(e.response.status)
         }

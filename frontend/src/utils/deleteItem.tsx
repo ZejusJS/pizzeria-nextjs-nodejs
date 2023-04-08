@@ -32,7 +32,7 @@ export default async function deleteItem(e, item, setTotalCartPrice) {
             cartData = res.data
             setTotalCartPrice(res.data?.totalCartPrice)
         })
-        .catch(e => console.log(e))
+        .catch(e => console.error(e))
 
     if (cartData) {
         return cartData

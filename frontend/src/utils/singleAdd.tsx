@@ -34,7 +34,7 @@ export default async function singleAdd(e, piz, totalCartPrice) {
             cartData = res.data
             totalCartPrice(res.data?.totalCartPrice)
         })
-        .catch(e => console.log(e))
+        .catch(e => console.error(e))
 
     if (cartData) {
         return cartData
