@@ -28,6 +28,7 @@ module.exports.paymentSchema =
         zip: Joi.string().max(16).required().trim(),
         shipping: Joi.string().max(30).pattern(/^(fast|standard)$/).required(),
         paymentMethod: Joi.string().max(30).pattern(/^(card)$/).required(),
+        recaptchaToken: Joi.string(),
         cartData: Joi.object({
             items: Joi.array().required(),
             _id: Joi.string().required(),

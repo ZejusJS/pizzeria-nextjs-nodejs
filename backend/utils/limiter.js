@@ -8,7 +8,7 @@ const rateLimiterCard = new RateLimiterMemory({
     blockDuration: 20
 });
 
-module.exports.mwCardPayment = catchAsync(async function (req, res, next) {
+module.exports.mwCardPaymentPoints = catchAsync(async function (req, res, next) {
     const key = req.user.email
     const cpByUser = await rateLimiterCard.get(key)
 

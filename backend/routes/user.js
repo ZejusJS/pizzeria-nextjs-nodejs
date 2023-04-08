@@ -19,8 +19,10 @@ router.post('/signup', validateRegister, catchAsync(async function (req, res, ne
     const user = new User({ name, email, invoiceInfo: { firstname, lastname, adress, city, zip, country: 'Czech Republic' } });
     try {
         const registeredUser = await User.register(user, password);
-        if (req.cookies.cart) {
+        const findCart = await Cart.findById(req.cookies.cart)
+        if (req.cookies.cart && findCart) {
             registeredUser.interaction.cart = req.cookies.cart
+            findCart.user = registeredUser._id
             await registeredUser.save()
             res.clearCookie("cart");
         } else {

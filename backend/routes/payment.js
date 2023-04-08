@@ -12,7 +12,7 @@ const ExpressError = require('../utils/ExpressError');
 const getRetezec = require('../utils/func/getRetezec')
 const emptyCart = require('../utils/func/emptyCart');
 
-const { mwCardPayment } = require('../utils/limiter')
+const { mwCardPaymentPoints } = require('../utils/limiter')
 
 const Pizza = require('../models/pizza')
 const Cart = require('../models/cart')
@@ -21,11 +21,12 @@ const Order = require('../models/order')
 
 const { validatePayment } = require('../utils/mw-validatePayment')
 const { mwIsLoggedIn } = require('../utils/mw-isLoggedIn');
+const { mwRecaptcha } = require('../utils/payment/recaptcha')
 
 const merchantId = 'A3492UfuSm'
 
 
-router.post('/card', mwIsLoggedIn, validatePayment, mwCardPayment, catchAsync(async function (req, res, next) {
+router.post('/card', mwIsLoggedIn, validatePayment, mwRecaptcha, mwCardPaymentPoints, catchAsync(async function (req, res, next) {
     const { firstname, lastname, adress, city, zip, shipping } = req.body
     const items = []
     let totalPriceItems = 0

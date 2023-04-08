@@ -57,7 +57,7 @@ router.post('/deleteItem', catchAsync(async function (req, res, next) {
     }
     // console.log('cartId...... ', cartId())
     const cart = await Cart.findById(cartId()).populate('items.item')
-    if (cart.user && user.interaction && user.interaction.cart && !user.interaction.cart.equals(cart._id)) {
+    if (cart.user && req.user.interaction && req.user.interaction.cart && !req.user.interaction.cart.equals(cart._id)) {
         return res.status(400).json({ msg: `You don't have permission to edit this cart`, code: 400 })
     }
     cart.items = cart.items.filter(item => {
@@ -82,7 +82,7 @@ router.post('/changeQuantity', catchAsync(async function (req, res, next) {
     const product = await Pizza.findById(productId)
     const cart = await Cart.findById(cartId())
 
-    if (cart.user && user.interaction && user.interaction.cart && !user.interaction.cart.equals(cart._id)) {
+    if (cart.user && req.user.interaction && req.user.interaction.cart && !req.user.interaction.cart.equals(cart._id)) {
         return res.status(400).json({ msg: `You don't have permission to edit this cart`, code: 400 })
     }
 
@@ -120,8 +120,16 @@ router.get('/getCartAndUser', catchAsync(async function (req, res, next) {
 
     if (req.user && req.user.interaction && req.user.interaction.cart) {
         const findCart = await Cart.findById(req.user.interaction.cart).populate('items.item')
-        // console.log(findCart)
-        cart = findCart
+        if (!findCart) {
+            const newCart = new Cart()
+            newCart.user = req.user._id
+            req.user.interaction.cart = newCart._id
+            await newCart.save()
+            await req.user.save()
+            cart = newCart
+        } else {
+            cart = findCart
+        }
     } else {
         try {
             const findCart = await Cart.findById(req.cookies.cart).populate('items.item')
@@ -131,7 +139,10 @@ router.get('/getCartAndUser', catchAsync(async function (req, res, next) {
                 return res.status(400).json({ msg: `You don't have permission to view this cart`, code: 400 })
             }
         } catch (e) {
-            return res.status(400).json({ msg: `Bad cart id`, code: 400 })
+            const newCart = new Cart()
+            await newCart.save()
+            res.cookie('cart', newCart._id, { httpOnly: true})
+            return res.status(400).json({ msg: `Bad cart id`, code: 400, newCart })
         }
     }
 
@@ -163,6 +174,9 @@ router.get('/getCartCheckout', catchAsync(async function (req, res, next) {
     const findCart = await Cart.findById(cartId).populate('items.item')
 
     findCart.items = findCart.items.filter(item => item.item !== null && item.item !== undefined && item.item.show === true)
+
+    console.log(findCart)
+    if (findCart.user && !findCart.user.equals(req.user._id)) return res.status(403).json({ msg: 'Not allowed to access this cart' })
 
     let totalPrice = 0
     const itemsId = findCart.items.map(item => item.item?._id)

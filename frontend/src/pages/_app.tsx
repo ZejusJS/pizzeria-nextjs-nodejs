@@ -9,6 +9,7 @@ import { server } from '../config/config'
 import Navbar from '../components/Navbar'
 import React, { useEffect, useState, useRef } from 'react'
 import { getCookie } from 'cookies-next';
+import cookieCutter from 'cookie-cutter'
 
 import deleteItemFunc from '../utils/deleteItem'
 import singleAddFunc from '../utils/singleAdd'
@@ -93,7 +94,11 @@ export default function App({ Component, pageProps }) {
       })
       .catch(e => {
         console.error(e)
-        setError(e.response.status)
+        if (e.response?.data?.newCart) {
+          router.reload()
+        } else {
+          setError(e.response.status)
+        }
       })
     return
   }

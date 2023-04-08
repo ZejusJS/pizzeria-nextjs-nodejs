@@ -17,6 +17,8 @@ import ShippingSvg from '../../images/Box'
 import ArrowRightSvg from '../../images/ArrowRight'
 
 import NProgress from 'nprogress'
+import ReCAPTCHA from "react-google-recaptcha"
+import Reaptcha from 'reaptcha';
 
 const checkout = ({ cartData, setUser, user, userData, setCart }) => {
     const [orderDetails, setOrderDetails] = useState({
@@ -29,6 +31,7 @@ const checkout = ({ cartData, setUser, user, userData, setCart }) => {
     const [shipping, setShipping] = useState({ name: 'standard', price: 70 })
     const [paymentMethod, setPaymentMethod] = useState({ name: 'card', price: 0 })
     const [totalPrice, setTotalPrice] = useState(0)
+    const [captcha, setCaptcha] = useState('')
     const [auth, setAuth] = useState(0)
     const [error, setError] = useState(0)
 
@@ -160,12 +163,14 @@ const checkout = ({ cartData, setUser, user, userData, setCart }) => {
             cartData: {
                 items: cartData.items,
                 _id: cartData._id
-            }
+            },
+            recaptchaToken: captcha || 'notchecked'
         }
         // console.log(orderData)
 
         setError(0)
-
+        reCaptchaRef.current.reset()
+        setCaptcha('')
 
         axios({
             method: 'post',
@@ -192,7 +197,11 @@ const checkout = ({ cartData, setUser, user, userData, setCart }) => {
             })
             .catch(e => {
                 console.error(e)
-                setError(e?.response?.status)
+                if (e?.response?.data?.code !== 550) {
+                    setError(e?.response?.status)
+                } else {
+                    setError(550)
+                }
             })
     }
 
@@ -245,6 +254,15 @@ const checkout = ({ cartData, setUser, user, userData, setCart }) => {
         resizeObserver.observe(slide3.current)
         return () => resizeObserver.disconnect() // clean up 
     }, [slideSection.current, orderDetails, error, index])
+
+    const reCaptchaRef = useRef(null)
+
+    function verifyCaptcha() {
+        reCaptchaRef?.current?.getResponse().then(res => {
+            setCaptcha(res)
+            setError(0)
+        })
+    }
 
     return (
         <>
@@ -351,15 +369,29 @@ const checkout = ({ cartData, setUser, user, userData, setCart }) => {
                                             MasterCardLogo={MasterCardLogo}
                                             VisaCardLogo={VisaCardLogo}
                                         />
-                                        <div className='order-overview'>
-                                            <div className='details'>
-                                                <h2>Order overview</h2>
-                                                <div className='adress'>
-                                                    <h3>Shipping Address</h3>
-                                                    <p> {orderDetails?.firstname?.replace(/[^a-zA-Z\u00c0-\u00d6\u00d8-\u00f6\u00f8-\u02af\u1d00-\u1d25\u1d62-\u1d65\u1d6b-\u1d77\u1d79-\u1d9a\u1e00-\u1eff\u2090-\u2094\u2184-\u2184\u2488-\u2490\u271d-\u271d\u2c60-\u2c7c\u2c7e-\u2c7f\ua722-\ua76f\ua771-\ua787\ua78b-\ua78c\ua7fb-\ua7ff\ufb00-\ufb06\u00bf\u00a1]/gi, '') + ' ' + orderDetails?.lastname?.replace(/[^a-zA-Z\u00c0-\u00d6\u00d8-\u00f6\u00f8-\u02af\u1d00-\u1d25\u1d62-\u1d65\u1d6b-\u1d77\u1d79-\u1d9a\u1e00-\u1eff\u2090-\u2094\u2184-\u2184\u2488-\u2490\u271d-\u271d\u2c60-\u2c7c\u2c7e-\u2c7f\ua722-\ua76f\ua771-\ua787\ua78b-\ua78c\ua7fb-\ua7ff\ufb00-\ufb06\u00bf\u00a1]/gi, '')}</p>
-                                                    <p> {(orderDetails.adress).replace(/[^\sa-zA-Z0-9\+\_\-\@\&\=\.\,\(\)\:\ \/\?\|\<\>\"\'\!\%\*\\\#\$\^\;\u00c0-\u00d6\u00d8-\u00f6\u00f8-\u02af\u1d00-\u1d25\u1d62-\u1d65\u1d6b-\u1d77\u1d79-\u1d9a\u1e00-\u1eff\u2090-\u2094\u2184-\u2184\u2488-\u2490\u271d-\u271d\u2c60-\u2c7c\u2c7e-\u2c7f\ua722-\ua76f\ua771-\ua787\ua78b-\ua78c\ua7fb-\ua7ff\ufb00-\ufb06]/gi, '')}</p>
-                                                    <p> {(orderDetails.city).replace(/[^\sa-zA-Z0-9\+\_\-\@\&\=\.\,\(\)\:\ \/\?\|\<\>\"\'\!\%\*\\\#\$\^\;\u00c0-\u00d6\u00d8-\u00f6\u00f8-\u02af\u1d00-\u1d25\u1d62-\u1d65\u1d6b-\u1d77\u1d79-\u1d9a\u1e00-\u1eff\u2090-\u2094\u2184-\u2184\u2488-\u2490\u271d-\u271d\u2c60-\u2c7c\u2c7e-\u2c7f\ua722-\ua76f\ua771-\ua787\ua78b-\ua78c\ua7fb-\ua7ff\ufb00-\ufb06]/gi, '')}</p>
-                                                    <p> {(orderDetails.zip).replace(/[^\sa-zA-Z0-9\+\_\-\@\&\=\.\,\(\)\:\ \/\?\|\<\>\"\'\!\%\*\\\#\$\^\;\u00c0-\u00d6\u00d8-\u00f6\u00f8-\u02af\u1d00-\u1d25\u1d62-\u1d65\u1d6b-\u1d77\u1d79-\u1d9a\u1e00-\u1eff\u2090-\u2094\u2184-\u2184\u2488-\u2490\u271d-\u271d\u2c60-\u2c7c\u2c7e-\u2c7f\ua722-\ua76f\ua771-\ua787\ua78b-\ua78c\ua7fb-\ua7ff\ufb00-\ufb06]/gi, '')}</p>
+                                        <div className='details-submit-con'>
+                                            <div className='order-overview'>
+                                                <div className='details'>
+                                                    <div className='adress'>
+                                                        <h3>Shipping Address</h3>
+                                                        <p> {orderDetails?.firstname?.replace(/[^a-zA-Z\u00c0-\u00d6\u00d8-\u00f6\u00f8-\u02af\u1d00-\u1d25\u1d62-\u1d65\u1d6b-\u1d77\u1d79-\u1d9a\u1e00-\u1eff\u2090-\u2094\u2184-\u2184\u2488-\u2490\u271d-\u271d\u2c60-\u2c7c\u2c7e-\u2c7f\ua722-\ua76f\ua771-\ua787\ua78b-\ua78c\ua7fb-\ua7ff\ufb00-\ufb06\u00bf\u00a1]/gi, '') + ' ' + orderDetails?.lastname?.replace(/[^a-zA-Z\u00c0-\u00d6\u00d8-\u00f6\u00f8-\u02af\u1d00-\u1d25\u1d62-\u1d65\u1d6b-\u1d77\u1d79-\u1d9a\u1e00-\u1eff\u2090-\u2094\u2184-\u2184\u2488-\u2490\u271d-\u271d\u2c60-\u2c7c\u2c7e-\u2c7f\ua722-\ua76f\ua771-\ua787\ua78b-\ua78c\ua7fb-\ua7ff\ufb00-\ufb06\u00bf\u00a1]/gi, '')}</p>
+                                                        <p> {(orderDetails.adress).replace(/[^\sa-zA-Z0-9\+\_\-\@\&\=\.\,\(\)\:\ \/\?\|\<\>\"\'\!\%\*\\\#\$\^\;\u00c0-\u00d6\u00d8-\u00f6\u00f8-\u02af\u1d00-\u1d25\u1d62-\u1d65\u1d6b-\u1d77\u1d79-\u1d9a\u1e00-\u1eff\u2090-\u2094\u2184-\u2184\u2488-\u2490\u271d-\u271d\u2c60-\u2c7c\u2c7e-\u2c7f\ua722-\ua76f\ua771-\ua787\ua78b-\ua78c\ua7fb-\ua7ff\ufb00-\ufb06]/gi, '')}</p>
+                                                        <p> {(orderDetails.city).replace(/[^\sa-zA-Z0-9\+\_\-\@\&\=\.\,\(\)\:\ \/\?\|\<\>\"\'\!\%\*\\\#\$\^\;\u00c0-\u00d6\u00d8-\u00f6\u00f8-\u02af\u1d00-\u1d25\u1d62-\u1d65\u1d6b-\u1d77\u1d79-\u1d9a\u1e00-\u1eff\u2090-\u2094\u2184-\u2184\u2488-\u2490\u271d-\u271d\u2c60-\u2c7c\u2c7e-\u2c7f\ua722-\ua76f\ua771-\ua787\ua78b-\ua78c\ua7fb-\ua7ff\ufb00-\ufb06]/gi, '')}</p>
+                                                        <p> {(orderDetails.zip).replace(/[^\sa-zA-Z0-9\+\_\-\@\&\=\.\,\(\)\:\ \/\?\|\<\>\"\'\!\%\*\\\#\$\^\;\u00c0-\u00d6\u00d8-\u00f6\u00f8-\u02af\u1d00-\u1d25\u1d62-\u1d65\u1d6b-\u1d77\u1d79-\u1d9a\u1e00-\u1eff\u2090-\u2094\u2184-\u2184\u2488-\u2490\u271d-\u271d\u2c60-\u2c7c\u2c7e-\u2c7f\ua722-\ua76f\ua771-\ua787\ua78b-\ua78c\ua7fb-\ua7ff\ufb00-\ufb06]/gi, '')}</p>
+                                                    </div>
+                                                    <div className='invoice'>
+                                                        <h3>Billing</h3>
+                                                        <p>{invoiceInfo.firstname}  {invoiceInfo.lastname}</p>
+                                                        <p>{invoiceInfo.adress}</p>
+                                                        <p>{invoiceInfo.city}</p>
+                                                        <p>{invoiceInfo.zip}</p>
+                                                        <p>{invoiceInfo.country}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className='submit-con'>
+                                                <div>
+                                                    <h3 className='total-price'>Total price: <span>{totalPrice} CZK</span></h3>
                                                 </div>
                                                 <div className='items'>
                                                     <h3>Prices</h3>
@@ -367,28 +399,43 @@ const checkout = ({ cartData, setUser, user, userData, setCart }) => {
                                                     <p><span className='fw-600'>Shipping:</span> {shipping.price} CZK</p>
                                                     <p><span className='fw-600'>Payment method:</span> {paymentMethod.price} CZK</p>
                                                 </div>
-                                                <div>
-                                                    <h3 className='total-price'>Total price: <span>{totalPrice} CZK</span></h3>
-                                                </div>
-                                            </div>
+                                                {error === 500 ?
+                                                    <div className='error-checkout'>
+                                                        There is a problem on our servers.
+                                                        Try reload the page or come back after some time.
+                                                    </div>
+                                                    : error === 429 ?
+                                                        <div className='error-checkout'>
+                                                            Please wait until you can make an order again.
+                                                        </div>
+                                                        : error === 550 ?
+                                                            <div className='error-checkout'>
+                                                                Please complete reCAPTCHA
+                                                            </div>
+                                                            : error ?
+                                                                <div className='error-checkout'>
+                                                                    Some values are invalid.
+                                                                    Try to check every field in previous steps.
+                                                                </div> 
+                                                                : ''}
+                                                                    <Reaptcha
+                                                                        sitekey='6LeFgWwlAAAAADwgY8s6bUNHdk6HWjhV7AR4b9Q1'
+                                                                        onVerify={verifyCaptcha}
+                                                                        ref={reCaptchaRef}
+                                                                        size='compact'
+                                                                        badge='inline'
+                                                                        onExpire={() => setCaptcha('')}
+                                                                    />
+                                                                    <button
+                                                                        type='submit'
+                                                                        onClick={handleSubmit}
+                                                                        className='submit-order'
+                                                                    >
+                                                                        Submit Order
+                                                                    </button>
+                                                                </div>
                                         </div>
-                                        {error === 500 ? <div className='error-checkout'>
-                                            There is a problem on our servers.
-                                            Try reload the page or come back after some time.
-                                        </div> : error === 429 ? <div className='error-checkout'>
-                                            Please wait until you can make an order again.
-                                        </div> : error ? <div className='error-checkout'>
-                                            Some values are invalid.
-                                            Try to check every field in previous steps.
-                                        </div> : ''}
-                                        <button
-                                            type='submit'
-                                            onClick={handleSubmit}
-                                            className='submit-order'
-                                        >
-                                            Submit Order
-                                        </button>
-                                    </div>
+                                        </div>
                                 </section>
 
                             </div>

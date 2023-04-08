@@ -16,6 +16,7 @@ mongoose.set('strictQuery', true);
 const Pizza = require('../models/pizza')
 const User = require('../models/user')
 const Order = require('../models/order')
+const Cart = require('../models/cart')
 
 const lorem = new LoremIpsum({
     sentencesPerParagraph: {
@@ -66,7 +67,12 @@ async function deleteAllPizzas() {
     await Pizza.deleteMany()
 }
 
+async function deleteAllCarts() {
+    await Cart.deleteMany()
+}
+
 // deleteAllUsers()
 // deleteAllOrders()
 // deleteAllPizzas()
-addPizzas(20)
+// addPizzas(20)
+deleteAllCarts()
