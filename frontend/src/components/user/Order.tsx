@@ -1,16 +1,29 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react"
 import OrderItem from "./OrderItem";
+import LoadingItem from '../../components/user/OrderItemLoading'
 
-const Order = ({ order, viewItem, DocumentAddSvg, BackTurnSvg, PizzaSvg }) => {
+import RefreshSvg from '../../images/Refresh'
+
+interface order {
+    createdAt: string;
+    orderNo: string | number;
+    payId: string | number;
+    items: [];
+    totalPrice: string | number;
+    shippingPrice: string | number;
+}
+
+const Order = ({ orderId, viewItem, DocumentAddSvg, BackTurnSvg, PizzaSvg, setOrdersId }) => {
     const [status, setStatus] = useState(null)
+    const [order, setOrder] = useState<order>()
     const [paymentUrl, setPaymentUrl] = useState(null)
     const [error, setError] = useState(null)
-    const [items, setItems] = useState(order.items)
+    // const [items, setItems] = useState(order?.items)
 
     function isInViewport(element) {
         const rect = element.getBoundingClientRect();
-        const offset = 250
+        const offset = 700
         return (
             rect.right >= -offset &&
             rect.bottom >= -offset &&
@@ -25,77 +38,123 @@ const Order = ({ order, viewItem, DocumentAddSvg, BackTurnSvg, PizzaSvg }) => {
 
     useEffect(() => {
         setDate(new Date(order?.createdAt).toLocaleString())
-    }, [])
+    }, [order])
+
+    // useEffect(() => {
+    //     const checkIsInViewPort = e => {
+    //         const element = orderRef?.current
+    //         if (element && !element.isLoaded && isInViewport(element)) {
+    //             element.isLoaded = true
+
+    //             // console.log('asd')
+
+    //             // setTimeout(() => {
+    //             //     element.isLoaded = false
+    //             // }, 30000);
+
+    //             axios({
+    //                 method: 'get',
+    //                 url: `/api2/payment/check-status/${order.payId}`
+    //             })
+    //                 .then(res => {
+    //                     // console.log(res.data?.paymentStatus)
+    //                     // console.log(res.data)
+    //                     setStatus(res.data?.paymentStatus)
+    //                     setPaymentUrl(order?.url)
+    //                 })
+    //                 .catch(e => {
+    //                     console.error(e)
+    //                     setError(e?.response?.status)
+    //                 })
+    //             if (!element.isItemsLoaded) {
+    //                 element.isItemsLoaded = true
+    //                 // console.log(items)
+    //                 axios({
+    //                     method: 'get',
+    //                     url: `/api2/pizza/get-many`,
+    //                     headers: {
+    //                         "Content-Type": "application/json"
+    //                     },
+    //                     data: {
+    //                         ids: items.map(it => it.item)
+    //                     },
+    //                     withCredentials: false
+    //                 })
+    //                     .then(res => {
+    //                         // console.log(res.data)
+    //                         setItems(prevItems => {
+    //                             return prevItems.map(prevItem => {
+    //                                 try {
+    //                                     // let item = res?.data?.map(it => {
+    //                                     //     console.log(prevItem.item, it._id)
+    //                                     //     if (prevItem.item === it._id) {
+    //                                     //         return it
+    //                                     //     }
+    //                                     // })
+    //                                     let item
+    //                                     for (let i = 0; i< res?.data?.length; i++) {
+    //                                         if (res?.data[i]?._id === prevItem.item) {
+    //                                             item = res?.data[i]
+    //                                         }
+    //                                     }
+    //                                     return { ...prevItem, item: item }
+    //                                 } catch {
+    //                                     return prevItem
+    //                                 }
+    //                                 return prevItem
+    //                             })
+    //                         })
+    //                     })
+    //                     .catch(e => {
+    //                         console.error(e)
+    //                     })
+    //             }
+    //         }
+    //     }
+
+    //     checkIsInViewPort(null)
+
+    //     document.addEventListener('scroll', checkIsInViewPort)
+
+    //     return () => {
+    //         document.removeEventListener('scroll', checkIsInViewPort);
+    //     };
+    // }, [])
+
+    const refreshRef = useRef(null)
+
+    async function getOrderDetails() {
+        if (refreshRef?.current) refreshRef.current.disabled = true
+
+        await axios({
+            method: 'get',
+            url: `/api2/payment/order/${orderId}`
+        })
+            .then(res => {
+                // console.log(res.data?.paymentStatus)
+                // console.log(res.data)
+                console.log(res)
+                setOrder(res.data?.order)
+                setStatus(res.data?.paymentStatus)
+                setPaymentUrl(res.data.order?.url)
+            })
+            .catch(e => {
+                console.error(e)
+                setError(e?.response?.status)
+            })
+        setTimeout(() => {
+            if (refreshRef?.current) refreshRef.current.disabled = false
+        }, 1500);
+        return
+    }
 
     useEffect(() => {
-        const checkIsInViewPort = e => {
+        const checkIsInViewPort = async e => {
             const element = orderRef?.current
             if (element && !element.isLoaded && isInViewport(element)) {
                 element.isLoaded = true
 
-                // console.log('asd')
-
-                setTimeout(() => {
-                    element.isLoaded = false
-                }, 30000);
-
-                axios({
-                    method: 'get',
-                    url: `/api2/payment/check-status/${order.payId}`
-                })
-                    .then(res => {
-                        // console.log(res.data?.paymentStatus)
-                        // console.log(res.data)
-                        setStatus(res.data?.paymentStatus)
-                        setPaymentUrl(order?.url)
-                    })
-                    .catch(e => {
-                        console.error(e)
-                        setError(e?.response?.status)
-                    })
-                if (!element.isItemsLoaded) {
-                    element.isItemsLoaded = true
-                    // console.log(items)
-                    axios({
-                        method: 'post',
-                        url: `/api2/pizza/get-many`,
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        data: {
-                            ids: items.map(it => it.item)
-                        },
-                        withCredentials: false
-                    })
-                        .then(res => {
-                            // console.log(res.data)
-                            setItems(prevItems => {
-                                return prevItems.map(prevItem => {
-                                    try {
-                                        // let item = res?.data?.map(it => {
-                                        //     console.log(prevItem.item, it._id)
-                                        //     if (prevItem.item === it._id) {
-                                        //         return it
-                                        //     }
-                                        // })
-                                        let item
-                                        for (let i = 0; i< res?.data?.length; i++) {
-                                            if (res?.data[i]?._id === prevItem.item) {
-                                                item = res?.data[i]
-                                            }
-                                        }
-                                        return { ...prevItem, item: item }
-                                    } catch {
-                                        return prevItem
-                                    }
-                                    return prevItem
-                                })
-                            })
-                        })
-                        .catch(e => {
-                            console.error(e)
-                        })
-                }
+                await getOrderDetails()
             }
         }
 
@@ -191,26 +250,56 @@ const Order = ({ order, viewItem, DocumentAddSvg, BackTurnSvg, PizzaSvg }) => {
                                                                         </div>
                                                                         : ''
                     }
+                    {
+                        status !== null ?
+                            <button
+                                onClick={getOrderDetails}
+                                ref={refreshRef}
+                                className="refresh"
+                                type="button">
+                                <RefreshSvg />
+                            </button> : ''
+                    }
                 </div>
                 <div className="order-details">
-                    <h3>{order.orderNo}</h3>
+                    {order?.orderNo ?
+                        <h3>{order?.orderNo}</h3>
+                        :
+                        <div role="status" className="header-loading"></div>
+                    }
+
                     <div className="items">
-                        {items?.map(item => (
-                            <OrderItem
-                                key={Math.random()}
-                                item={item}
-                                viewItem={viewItem}
-                                PizzaSvg={PizzaSvg}
-                            />
-                        ))
+                        {order?.orderNo ?
+                            <>{order?.items?.map(item => (
+                                <OrderItem
+                                    key={Math.random()}
+                                    item={item}
+                                    viewItem={viewItem}
+                                    PizzaSvg={PizzaSvg}
+                                    LoadingItem={LoadingItem}
+                                />
+                            ))
+                            }
+                            </>
+                            :
+                            <>
+                                <LoadingItem PizzaSvg={PizzaSvg} />
+                                <LoadingItem PizzaSvg={PizzaSvg} />
+                            </>
                         }
                     </div>
                 </div>
-                <div className="prices">
-                    <p><span>Total</span>: {order.totalPrice} CZK</p>
-                    <p><span>Shipping</span>: {order.shippingPrice} CZK</p>
-                    <p><span>Created</span>: {date}</p>
-                </div>
+                {order?.totalPrice || order?.shippingPrice ?
+                    <div className="prices">
+                        <p><span>Total</span>: {order?.totalPrice} CZK</p>
+                        <p><span>Shipping</span>: {order?.shippingPrice} CZK</p>
+                        <p><span>Created</span>: {date}</p>
+                    </div>
+                    :
+                    <div role='status' className="prices loading">
+                        <div className="loading-div"></div>
+                    </div>
+                }
             </div>
         </>
     )

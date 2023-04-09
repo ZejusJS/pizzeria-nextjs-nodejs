@@ -1,4 +1,4 @@
-const OrderItem = ({ item, viewItem, PizzaSvg }) => {
+const OrderItem = ({ item, viewItem, PizzaSvg, LoadingItem }) => {
     // console.log(item.item)
     return (
         <>
@@ -15,16 +15,7 @@ const OrderItem = ({ item, viewItem, PizzaSvg }) => {
                     </div>
                 </div>
                 :
-                <div className="item loading">
-                    <div className="info-con">
-                        <PizzaSvg />
-                        <div className="info">
-                            <div className="header"></div>
-                            <div className="price"></div>
-                            <div className="price second"></div>
-                        </div>
-                    </div>
-                </div>
+                <LoadingItem PizzaSvg={PizzaSvg} />
             }
         </>
     )

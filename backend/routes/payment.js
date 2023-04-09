@@ -216,11 +216,16 @@ router.get('/check-status/:payId', mwIsLoggedIn, catchAsync(async function (req,
     res.status(200).json(data)
 }))
 
-router.get('/order/:payId', mwIsLoggedIn, catchAsync(async function (req, res, next) {
-    const { payId } = req.params
+router.get('/order/:id', mwIsLoggedIn, catchAsync(async function (req, res, next) {
+    const { id } = req.params
 
-    const order = await Order.findOne({ payId })
-    if (!order) return res.status(404).json({ msg: "Can't find this order" })
+    const order = await Order.findById(id).populate('items.item')
+    if (!order) {
+        if (req.user?.orders?.length) {
+            await User.findByIdAndUpdate(req.user._id, { $pullAll: { orders: [id] } })
+        }
+        return res.status(404).json({ msg: "Can't find this order", code: 300 })
+    }
     let isAuthor = false
     req.user?.orders.map(ord => {
         if (order?.equals(ord._id)) isAuthor = true
@@ -229,10 +234,11 @@ router.get('/order/:payId', mwIsLoggedIn, catchAsync(async function (req, res, n
 
     const dttm = new Date().toISOString().replace(/(\.\d{3})|[^\d]/g, '')
 
-    const payIdUri = encodeURIComponent(payId)
+    const payIdUri = encodeURIComponent(order.payId)
     const dttmUri = encodeURIComponent(dttm)
     const merchantIdUri = encodeURIComponent(merchantId)
-    const RETEZEC_STATUS = getRetezec({ merchantId, payId, dttm })
+
+    const RETEZEC_STATUS = getRetezec({ merchantId, payId: order.payId, dttm })
     const signStatus = crypto.createSign('SHA256')
     signStatus.update(RETEZEC_STATUS)
     signStatus.end()

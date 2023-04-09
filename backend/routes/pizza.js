@@ -44,7 +44,7 @@ router.get('/all', catchAsync(async function (req, res, next) {
     res.status(200).json(pizzas)
 }))
 
-router.post('/get-many', catchAsync(async function (req, res, next) {
+router.get('/get-many', catchAsync(async function (req, res, next) {
     const { ids } = req.body
     let pizzas = await Pizza.find({ _id: ids }).select({ show: 0 });
     // console.log(pizzas)

@@ -25,6 +25,7 @@ const index = ({ userData, viewItem }) => {
     const router = useRouter()
     const shippingAdress = userData?.shippingAdress
     const { slug = [null] } = router.query
+    console.log(userData)
 
     return (
         <>

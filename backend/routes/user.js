@@ -102,7 +102,7 @@ router.post('/logout', catchAsync(async function (req, res, next) {
 //
 
 router.get('/getUser', mwIsLoggedIn, catchAsync(async function (req, res, next) {
-    const orders = await Order.find({ _id: { $in: req.user.orders } }).sort({createdAt: -1})
+    // const orders = await Order.find({ _id: { $in: req.user.orders } }).sort({createdAt: -1})
 
     const user = {
         name: req.user?.name,
@@ -111,7 +111,7 @@ router.get('/getUser', mwIsLoggedIn, catchAsync(async function (req, res, next) 
         id: req.user?._id,
         invoiceInfo: req.user?.invoiceInfo,
         shippingAdress: req.user?.shippingAdress,
-        orders: orders.length ? orders : []
+        orders: req.user?.orders?.reverse()
     }
     res.status(200).json(user)
 }))
