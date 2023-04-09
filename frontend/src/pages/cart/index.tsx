@@ -19,7 +19,7 @@ const cart = ({ cart,
       pathname: router.pathname,
       query: {}
     }, '', { shallow: true }).then(
-      fetchFirstData()
+      fetchFirstData(true)
     )
   }
 

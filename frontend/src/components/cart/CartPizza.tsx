@@ -67,12 +67,12 @@ const Item = ({ item, changeQnt, viewItem, deleteItem }) => {
                             <>
                                 <div className='price fw-600'>{item?.item?.price} {item?.item?.currency}</div>
                                 <div className='total-price fw-500'>
-                                    Total: <span className='c-green fw-600'>{item?.totalPrice} {item?.item?.currency}</span>
+                                    Total: <span className='c-green fw-600'>{Number(item?.totalPrice).toFixed(2)} {item?.item?.currency}</span>
                                 </div>
                             </> :
                             <div className={`report`}>
                                 <div className='report-msg fw-500'>
-                                    Please provide quantity 1 to 15
+                                    Please provide a quantity 1 to 15
                                 </div>
                             </div>
                     }

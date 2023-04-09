@@ -63,7 +63,7 @@ export default function App({ Component, pageProps }) {
 
   const router = useRouter()
 
-  async function fetchFirstData(loading: boolean) {
+  async function fetchFirstData(loading: boolean = true) {
     if (loading) setLoaded(false)
     if (loading) NProgress.start()
     loaderRef?.current?.classList?.remove('loaded')
@@ -246,7 +246,7 @@ export default function App({ Component, pageProps }) {
                 unViewItem={(e) => unViewItem(e)}
                 deleteItem={(e, piz) => deleteItem(e, piz)}
                 viewItem={(e, i) => viewItem(e, i)}
-                fetchFirstData={fetchFirstData}
+                fetchFirstData={(loading: boolean) => fetchFirstData(loading)}
                 totalCartPrice={totalCartPrice}
                 setTotalCartPrice={setTotalCartPrice}
                 changeQnt={changeQnt}
