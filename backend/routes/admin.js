@@ -16,9 +16,13 @@ const Cart = require('../models/cart')
 const User = require('../models/user')
 const Order = require('../models/order')
 
+const { scanAndDelete, redisDeleteAllPizzasAndIngrs } = require('../utils/func/redis')
 
 router.post('/new-pizza', mwUploadPizzaImg, validatePizza, catchAsync(async function (req, res, next) {
     const { title, price, currency, description, ingredients } = req.body
+
+    await redisDeleteAllPizzasAndIngrs()
+
     if (req.files.length) {
         const { filename, path } = req.files[0]
         if (currency === 'CZK') {
@@ -54,7 +58,7 @@ router.get('/pizza/:id', catchAsync(async function (req, res, next) {
     const { id } = req.params
     const pizza = await Pizza.findById(id)
     if (!pizza) return res.status(404).json({ msg: `Pizza with id "${id}" was not found.` })
-    res.json(pizza)
+    return res.json(pizza)
 }))
 
 router.delete('/pizza/:id', catchAsync(async function (req, res, next) {
@@ -64,6 +68,9 @@ router.delete('/pizza/:id', catchAsync(async function (req, res, next) {
     //     await cloudinary.uploader.destroy(pizza.images[0].filename);
     // }
     pizza.show = false
+
+    await redisDeleteAllPizzasAndIngrs()
+
     await pizza.save()
     res.status(200).json({ msg: `Pizza "${pizza?.title}" deleted` })
 }))
@@ -81,6 +88,9 @@ router.put('/pizza/:id', mwUploadPizzaImg, validatePizza, catchAsync(async funct
     pizza.description = description
     pizza.price = price
     pizza.ingredients = ingredients
+
+    await redisDeleteAllPizzasAndIngrs()
+
     await pizza.save()
     res.status(200).json({ msg: `Pizza "${pizza.title}" updated` })
 }))
@@ -95,6 +105,9 @@ router.put('/restore-pizza', catchAsync(async function (req, res, next) {
     const { id } = req.query
     let pizza = await Pizza.findById(id)
     pizza.show = true
+
+    await redisDeleteAllPizzasAndIngrs()
+
     await pizza.save()
     return res.sendStatus(200)
 }))

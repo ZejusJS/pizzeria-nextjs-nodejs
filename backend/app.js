@@ -30,6 +30,7 @@ const bodyparser = require('body-parser')
 const crypto = require('crypto');
 const fs = require('fs')
 const axios = require('axios')
+const Redis = require('redis')
 
 const ExpressError = require('./utils/ExpressError');
 const catchAsync = require('./utils/catchAsync');

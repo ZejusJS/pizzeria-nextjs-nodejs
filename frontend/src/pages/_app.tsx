@@ -34,11 +34,13 @@ import '../styles/admin.scss'
 import '../styles/admin-orders.scss'
 import '../styles/footer.scss'
 import '../styles/admin-pizzas.scss'
+import '../styles/error.scss'
 
 import ErrorSvg from '../images/Error'
 import Product from '../components/pizza/Product';
 import Unfocus from '../components/Unfocus';
 import Footer from '../components/Footer';
+import ErrorBoundary from '../components/Error';
 
 interface Cart {
   totalCartPrice?: number;
@@ -62,7 +64,7 @@ export default function App({ Component, pageProps }) {
   const router = useRouter()
 
   async function fetchFirstData(loading: boolean) {
-    if (loading) setLoaded(false) 
+    if (loading) setLoaded(false)
     if (loading) NProgress.start()
     loaderRef?.current?.classList?.remove('loaded')
     await axios({
@@ -231,24 +233,26 @@ export default function App({ Component, pageProps }) {
           : ''}
         {
           !error ?
-            <Component
-              {...pageProps}
-              setCart={setCart}
-              cart={cart}
-              user={user}
-              setUser={setUser}
-              viewProduct={viewProduct}
-              itemToView={itemToView}
-              singleAdd={(e, piz) => singleAdd(e, piz)}
-              unViewItem={(e) => unViewItem(e)}
-              deleteItem={(e, piz) => deleteItem(e, piz)}
-              viewItem={(e, i) => viewItem(e, i)}
-              fetchFirstData={fetchFirstData}
-              totalCartPrice={totalCartPrice}
-              setTotalCartPrice={setTotalCartPrice}
-              changeQnt={changeQnt}
-              router={router}
-            />
+            <ErrorBoundary>
+              <Component
+                {...pageProps}
+                setCart={setCart}
+                cart={cart}
+                user={user}
+                setUser={setUser}
+                viewProduct={viewProduct}
+                itemToView={itemToView}
+                singleAdd={(e, piz) => singleAdd(e, piz)}
+                unViewItem={(e) => unViewItem(e)}
+                deleteItem={(e, piz) => deleteItem(e, piz)}
+                viewItem={(e, i) => viewItem(e, i)}
+                fetchFirstData={fetchFirstData}
+                totalCartPrice={totalCartPrice}
+                setTotalCartPrice={setTotalCartPrice}
+                changeQnt={changeQnt}
+                router={router}
+              />
+            </ErrorBoundary>
             :
             ''
         }

@@ -2,7 +2,7 @@ const catchAsync = require('../utils/catchAsync')
 
 const mwIsAdminGet = catchAsync(async function (req, res, next) {
     const user = req.user
-    console.log(user)
+    // console.log(user)
     if (user) {
         if (user.roles?.admin === true) {
             res.status(200).json({ msg: 'Allowed' })

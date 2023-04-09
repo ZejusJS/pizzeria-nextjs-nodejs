@@ -1,0 +1,43 @@
+.error-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    min-height: 100vh;
+    min-height: 100svh;
+
+    svg {
+        width: 100%;
+        max-width: 200px;
+    }
+
+    h3 {
+        font-size: 1.4rem;
+        text-align: center;
+        margin-top: 12px;
+    }
+
+    h4 {
+        margin-top: 5px;
+        font-size: 1.3rem;
+        text-align: center;
+
+        span {
+            color: rgb(255, 58, 58);
+        }
+    }
+
+    a.back {
+        font-size: 1.1rem;
+        color: rgb(209, 125, 0);
+        font-weight: 500;
+    }
+
+    &.not-found {
+        svg {
+            width: 100%;
+            max-width: 200px;
+        }
+    }
+}

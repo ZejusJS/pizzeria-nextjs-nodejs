@@ -35,10 +35,8 @@ cartSchema.pre('save', async function (done) {
         this.set('totalCartPrice', price.toFixed(2))
 
         let newItems
-        if (this.items.length) {
-            newItems = this.items.filter(item => item.item !== null && item?.item?.show !== false)
-            this.set('items', newItems)
-        }
+        newItems = this.items.filter(item => item.item !== null && item?.item?.show !== false)
+        this.set('items', newItems)
     }
     done()
 })
