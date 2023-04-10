@@ -63,7 +63,7 @@ const Orders = ({ userData, viewItem, DocumentAddSvg, BackTurnSvg, slug }) => {
                             ))
                     }
                     <div className="orders-footer-con">
-                        {(pageNumber * ordersPerPage + ordersPerPage) <= userData?.orders?.length && !isLoading ?
+                        {(pageNumber * ordersPerPage + ordersPerPage) < userData?.orders?.length && !isLoading ?
                             <button
                                 onClick={anotherOrders}
                                 className={`btn-styled load-orders`}

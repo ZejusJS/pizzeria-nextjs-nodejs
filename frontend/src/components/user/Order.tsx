@@ -17,13 +17,13 @@ interface order {
 const Order = ({ orderId, orderLoaded, viewItem, DocumentAddSvg, BackTurnSvg, PizzaSvg, setOrdersId, setOrdersLoaded }) => {
     const [status, setStatus] = useState(null)
     const [order, setOrder] = useState<order>(orderLoaded)
-    const [paymentUrl, setPaymentUrl] = useState(null)
+    const [paymentUrl, setPaymentUrl] = useState('')
     const [error, setError] = useState(null)
     // const [items, setItems] = useState(order?.items)
 
     function isInViewport(element) {
         const rect = element.getBoundingClientRect();
-        const offset = 500
+        const offset = 200
         return (
             rect.right >= -offset &&
             rect.bottom >= -offset &&
@@ -169,6 +169,8 @@ const Order = ({ orderId, orderLoaded, viewItem, DocumentAddSvg, BackTurnSvg, Pi
     }
 
     useEffect(() => {
+        if (orderLoaded?.url) setPaymentUrl(orderLoaded.url)
+
         const checkIsInViewPort = async e => {
             let element
             // if (e) element = e.currentTarget
@@ -227,7 +229,7 @@ const Order = ({ orderId, orderLoaded, viewItem, DocumentAddSvg, BackTurnSvg, Pi
                                             <div>
                                                 Payment created
                                                 <div>
-                                                    <a target='_blank' href={`${paymentUrl}`}>Go to payment</a>
+                                                    <a target='_blank' href={`${paymentUrl || orderLoaded?.url}`}>Go to payment</a>
                                                 </div>
                                             </div>
                                         </div>

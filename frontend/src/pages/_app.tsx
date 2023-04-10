@@ -112,13 +112,17 @@ export default function App({ Component, pageProps }) {
   }, [])
 
   useEffect(() => {
+    if (document.body.offsetHeight > window.innerHeight) document.body.classList.add('margin')
     if (viewProduct) document.body.classList.add('of-h')
     if (!viewProduct) document.body.classList.remove('of-h')
+    if (!viewProduct) document.body.classList.remove('margin')
   }, [viewProduct])
 
   useEffect(() => {
+    if (document.body.offsetHeight > window.innerHeight) document.body.classList.add('margin')
     if (expanded) document.body.classList.add('of-h')
     if (!expanded) document.body.classList.remove('of-h')
+    if (!expanded) document.body.classList.remove('margin')
   }, [expanded])
 
   Router.events.on("routeChangeStart", (url) => {
