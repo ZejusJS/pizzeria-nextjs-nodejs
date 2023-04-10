@@ -28,6 +28,7 @@ import '../styles/statics.scss'
 import '../styles/navbar.scss'
 import '../styles/auth.scss'
 import '../styles/user.scss'
+import '../styles/user-orders.scss'
 import '../styles/cart.scss'
 import '../styles/pizzasSort.scss'
 import '../styles/admin.scss'
@@ -62,6 +63,8 @@ export default function App({ Component, pageProps }) {
   const loaderRef = useRef(null)
 
   const router = useRouter()
+
+  NProgress.configure({ trickleSpeed: 400, minimum: 0.1 });
 
   async function fetchFirstData(loading: boolean = true) {
     if (loading) setLoaded(false)

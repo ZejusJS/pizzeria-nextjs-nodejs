@@ -75,4 +75,4 @@ async function deleteAllCarts() {
 // deleteAllOrders()
 // deleteAllPizzas()
 // addPizzas(20)
-deleteAllCarts()
+// deleteAllCarts()

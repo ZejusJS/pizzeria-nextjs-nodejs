@@ -14,16 +14,16 @@ interface order {
     shippingPrice: string | number;
 }
 
-const Order = ({ orderId, viewItem, DocumentAddSvg, BackTurnSvg, PizzaSvg, setOrdersId }) => {
+const Order = ({ orderId, orderLoaded, viewItem, DocumentAddSvg, BackTurnSvg, PizzaSvg, setOrdersId, setOrdersLoaded }) => {
     const [status, setStatus] = useState(null)
-    const [order, setOrder] = useState<order>()
+    const [order, setOrder] = useState<order>(orderLoaded)
     const [paymentUrl, setPaymentUrl] = useState(null)
     const [error, setError] = useState(null)
     // const [items, setItems] = useState(order?.items)
 
     function isInViewport(element) {
         const rect = element.getBoundingClientRect();
-        const offset = 700
+        const offset = 500
         return (
             rect.right >= -offset &&
             rect.bottom >= -offset &&
@@ -131,9 +131,7 @@ const Order = ({ orderId, viewItem, DocumentAddSvg, BackTurnSvg, PizzaSvg, setOr
             url: `/api2/payment/order/${orderId}`
         })
             .then(res => {
-                // console.log(res.data?.paymentStatus)
-                // console.log(res.data)
-                console.log(res)
+                // console.log(res)
                 setOrder(res.data?.order)
                 setStatus(res.data?.paymentStatus)
                 setPaymentUrl(res.data.order?.url)
@@ -148,13 +146,46 @@ const Order = ({ orderId, viewItem, DocumentAddSvg, BackTurnSvg, PizzaSvg, setOr
         return
     }
 
+    async function getStatus() {
+        if (refreshRef?.current) refreshRef.current.disabled = true
+
+        await axios({
+            method: 'get',
+            url: `/api2/payment/check-status/${orderId}/${orderLoaded?.payId}`
+        })
+            .then(res => {
+                // console.log(res)
+                setStatus(res.data?.paymentStatus)
+                setPaymentUrl(orderLoaded?.paymentUrl)
+            })
+            .catch(e => {
+                console.error(e)
+                setError(e?.response?.status)
+            })
+        setTimeout(() => {
+            if (refreshRef?.current) refreshRef.current.disabled = false
+        }, 1500);
+        return
+    }
+
     useEffect(() => {
         const checkIsInViewPort = async e => {
-            const element = orderRef?.current
+            let element
+            // if (e) element = e.currentTarget
+            element = orderRef?.current
+
+            if (element && order?.orderNo && order?.totalPrice) element.isLoaded = true
             if (element && !element.isLoaded && isInViewport(element)) {
                 element.isLoaded = true
+                console.log('loading')
 
                 await getOrderDetails()
+            }
+
+            if (element?.isLoaded && !element?.isStatusLoaded && isInViewport(element)) {
+                element.isStatusLoaded = true
+
+                await getStatus()
             }
         }
 
@@ -251,9 +282,9 @@ const Order = ({ orderId, viewItem, DocumentAddSvg, BackTurnSvg, PizzaSvg, setOr
                                                                         : ''
                     }
                     {
-                        status !== null ?
+                        orderRef?.current?.isStatusLoaded ?
                             <button
-                                onClick={getOrderDetails}
+                                onClick={getStatus}
                                 ref={refreshRef}
                                 className="refresh"
                                 type="button">
@@ -270,9 +301,9 @@ const Order = ({ orderId, viewItem, DocumentAddSvg, BackTurnSvg, PizzaSvg, setOr
 
                     <div className="items">
                         {order?.orderNo ?
-                            <>{order?.items?.map(item => (
+                            <>{order?.items?.map((item: any) => (
                                 <OrderItem
-                                    key={Math.random()}
+                                    key={item.title + item._id}
                                     item={item}
                                     viewItem={viewItem}
                                     PizzaSvg={PizzaSvg}

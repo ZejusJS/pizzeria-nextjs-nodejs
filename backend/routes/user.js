@@ -111,7 +111,7 @@ router.get('/getUser', mwIsLoggedIn, catchAsync(async function (req, res, next) 
         id: req.user?._id,
         invoiceInfo: req.user?.invoiceInfo,
         shippingAdress: req.user?.shippingAdress,
-        orders: req.user?.orders?.reverse()
+        orders: req.user?.orders
     }
     res.status(200).json(user)
 }))

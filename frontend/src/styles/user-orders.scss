@@ -1,0 +1,340 @@
+@mixin opacity-breathing($duration) {
+    $name: inline-#{unique-id()};
+
+    @keyframes #{$name} {
+        from {
+            opacity: 0.4;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
+    animation-name: $name;
+    animation-duration: $duration;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+.orders {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    padding: 6px;
+    word-break: break-word;
+    max-width: 600px;
+    margin: 0 auto;
+
+    h2 {
+        font-size: 23px;
+    }
+
+    .order {
+        display: flex;
+        flex-direction: column;
+        width: 99%;
+        gap: 5px;
+        border: 1px solid rgb(194, 194, 194);
+        border-radius: 12px;
+        background-color: rgb(251, 251, 251);
+        overflow: hidden;
+        position: relative;
+
+        [class*="payment-"] {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            font-weight: 500;
+            background-color: rgb(226, 226, 226);
+            min-height: 50px;
+            font-size: 18px;
+            padding: 3px;
+            transition: background-color 500ms;
+
+            span:first-child {
+                display: flex;
+
+                .spinner-border {
+                    width: 19px;
+                    height: 19px;
+                    border-width: 3px;
+                }
+
+                .spinner-grow {
+                    animation-duration: 1.4s;
+                    background-color: rgb(58, 58, 58);
+                    width: 22px;
+                    height: 22px;
+                }
+
+                svg {
+                    width: 26px;
+                    height: auto;
+                }
+            }
+
+            &[class*="rejected"],
+            &[class*="cancelled"],
+            &[class*="issue"] {
+                background-color: rgb(255, 121, 121);
+            }
+
+            &[class*="successful"],
+            &[class*="refund"] {
+                background-color: rgb(129, 255, 118);
+            }
+
+            &[class*="created"],
+            &[class*="progress"],
+            &[class*="progress-refund"] {
+                background-color: rgb(157, 188, 255);
+            }
+
+            &[class*="created"] {
+                a {
+                    color: rgb(0, 81, 255);
+                    font-weight: 700;
+
+                    &:hover {
+                        color: rgb(0, 119, 255);
+                    }
+                }
+
+                div {
+                    display: flex;
+                    row-gap: 2px;
+                    column-gap: 5px;
+                    flex-wrap: wrap;
+                }
+            }
+        }
+
+        .refresh {
+            background: 0;
+            border: 0;
+            outline: 0;
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            top: 0px;
+            right: 5px;
+            width: 45px;
+            height: 45px;
+            padding: 0;
+
+            svg {
+                max-width: 90%;
+                transition: max-width 100ms, rotate 150ms;
+            }
+
+            &:hover {
+                cursor: pointer;
+
+                svg {
+                    max-width: 100%;
+                    rotate: 30deg;
+                }
+            }
+        }
+
+        .order-details {
+            padding: 7px;
+
+            .header-loading {
+                width: 40%;
+                background-color: rgb(167, 167, 167);
+                height: 22px;
+                border-radius: 7px;
+                @include opacity-breathing(2s);
+            }
+
+            @media (max-width: 300px) {
+                .header-loading {
+                    width: 60%;
+                }
+            }
+        }
+
+        .items {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 6px 0 6px 0;
+
+            .item {
+                display: flex;
+                border: 1px solid rgb(170, 170, 170);
+                border-radius: 12px;
+                padding: 5px;
+                background-color: white;
+                opacity: 1;
+                transition: opacity 2000ms;
+
+                .info-con {
+                    display: flex;
+                    column-gap: 3px;
+
+                    img,
+                    svg.pizza-loading {
+                        width: 100px;
+                        height: 80px;
+                        object-fit: cover;
+                        border-radius: 10px;
+                        flex-shrink: 0;
+                    }
+
+                    h3 {
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        display: -webkit-box;
+                        -webkit-box-orient: vertical;
+                        -webkit-line-clamp: 1;
+                    }
+
+                    .price {
+                        font-weight: 500;
+                    }
+                }
+
+                svg.pizza-loading {
+                    fill: rgb(92, 92, 92);
+                }
+
+                &:hover {
+                    cursor: pointer;
+                    box-shadow: 0px 0px 13px -8px black;
+                }
+
+                &.loading {
+                    opacity: 0.3;
+                    cursor: auto;
+
+                    .info-con {
+                        @include opacity-breathing(2s);
+                    }
+
+                    .info {
+                        width: 30vw;
+                        max-width: 200px;
+                        flex-shrink: 0;
+                        overflow: hidden;
+
+                        .header {
+                            background-color: rgb(92, 92, 92);
+                            height: 17px;
+                            width: 70%;
+                            border-radius: 7px;
+                        }
+
+                        .price {
+                            margin-top: 3px;
+                            width: 100%;
+                            height: 17px;
+                            border-radius: 7px;
+                            background-color: rgb(92, 92, 92);
+
+                            &.second {
+                                width: 40%;
+                            }
+                        }
+
+                        @media (max-width: 250px) {
+                            width: 40vw;
+
+                            .price.second {
+                                display: none;
+                            }
+                        }
+                    }
+
+                    svg.pizza-loading {
+                        flex-shrink: 0;
+                    }
+                }
+
+                @media (max-width: 350px) {
+                    .info-con {
+
+                        img,
+                        svg.pizza-loading {
+                            width: 50px;
+                            height: 50px;
+                        }
+
+                        p {
+                            font-size: 15px;
+                        }
+                    }
+                }
+
+                @media (max-width: 200px) {
+                    .info-con {
+
+                        img,
+                        svg.pizza-loading {
+                            display: none;
+                        }
+                    }
+                }
+            }
+        }
+
+        .prices {
+            display: flex;
+            flex-wrap: wrap;
+            row-gap: 2px;
+            column-gap: 10px;
+            background-color: rgb(236, 236, 236);
+            padding: 5px;
+
+            p {
+                display: inline-block;
+
+                span {
+                    font-weight: 500;
+                }
+            }
+
+            &.loading {
+                .loading-div {
+                    background-color: rgb(189, 189, 189);
+                    height: 17px;
+                    border-radius: 7px;
+                    width: 90%;
+                    @include opacity-breathing(2s);
+                }
+            }
+        }
+    }
+
+    button.load-orders {
+        background-color: rgb(255, 199, 79);
+        font-weight: 500;
+
+        &:hover {
+            background-color: rgb(255, 187, 40);
+        }
+
+        &:active {
+            background-color: rgb(255, 183, 27);
+        }
+    }
+}
+
+.orders-footer-con {
+    height: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.order-sites-con {
+    position: relative;
+
+    .orders {
+        position: relative;
+    }
+}

@@ -25,7 +25,6 @@ const index = ({ userData, viewItem }) => {
     const router = useRouter()
     const shippingAdress = userData?.shippingAdress
     const { slug = [null] } = router.query
-    console.log(userData)
 
     return (
         <>
@@ -112,6 +111,7 @@ const index = ({ userData, viewItem }) => {
                                 viewItem={viewItem} 
                                 DocumentAddSvg={DocumentAddSvg} 
                                 BackTurnSvg={BackTurnSvg}
+                                slug={slug}
                             />
                             :
                             ''
@@ -153,6 +153,7 @@ export const getServerSideProps = async (ctx) => {
         }
     }
 
+    // console.log(userData.orders)
     return {
         props: {
             userData

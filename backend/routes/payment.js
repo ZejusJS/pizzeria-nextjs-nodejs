@@ -166,7 +166,7 @@ router.post('/card', mwIsLoggedIn, validatePayment, mwRecaptcha, mwCardPaymentPo
     console.log(req.body.cartData.items)
     order.items = items
     await order.save()
-    findUser.orders.push(order._id)
+    findUser.orders.unshift(order._id)
     await findUser.save()
 
     await emptyCart(req.body.cartData._id)
@@ -175,15 +175,20 @@ router.post('/card', mwIsLoggedIn, validatePayment, mwRecaptcha, mwCardPaymentPo
     res.status(200).json({ url })
 }))
 
-router.get('/check-status/:payId', mwIsLoggedIn, catchAsync(async function (req, res, next) {
-    const { payId } = req.params
 
-    const order = await Order.findOne({ payId })
-    if (!order) return res.status(404).json({ msg: "Can't find this order" })
+router.get('/check-status/:id/:payId', mwIsLoggedIn, catchAsync(async function (req, res, next) {
+    const { id, payId } = req.params
+
     let isAuthor = false
-    req.user?.orders.map(ord => {
-        if (order?.equals(ord._id)) isAuthor = true
-    })
+    if (req.user?.orders?.length) {
+        for (var i = 0; i < req.user.orders.length; i++) {
+            console.log(req.user.orders[i].equals(id))
+            if (req.user.orders[i].equals(id)) {
+                isAuthor = true
+                break;
+            }
+        }
+    }
     if (!isAuthor) return res.status(403).json({ msg: "You don't have permission to check this payment status" })
 
     const dttm = new Date().toISOString().replace(/(\.\d{3})|[^\d]/g, '')
@@ -208,12 +213,22 @@ router.get('/check-status/:payId', mwIsLoggedIn, catchAsync(async function (req,
         url: `https://iapi.iplatebnibrana.csob.cz/api/v1.9/payment/status/${merchantIdUri}/${payIdUri}/${dttmUri}/${signatureStatusUri}`
     })
         .then(res => {
-            console.log(res.data)
+            // console.log(res.data)
             data.paymentStatus = res?.data?.paymentStatus
         })
-        .catch(e => console.error(e))
+        .catch(e => {
+            console.error(e)
+        })
 
-    res.status(200).json(data)
+    return res.status(200).json(data)
+}))
+
+router.get('/orders/:ids', mwIsLoggedIn, catchAsync(async function (req, res, next) {
+    const { ids } = req.params
+    const orders = (await Order.find({ _id: { $in: ids.split(',') }, user: req.user._id }).populate('items.item')).reverse()
+    if (!orders) return res.status(400).json({ msg: 'Bad ids or you are not allowed to view this orders', code: 300 })
+
+    return res.status(200).json({ orders })
 }))
 
 router.get('/order/:id', mwIsLoggedIn, catchAsync(async function (req, res, next) {
@@ -256,7 +271,7 @@ router.get('/order/:id', mwIsLoggedIn, catchAsync(async function (req, res, next
         url: `https://iapi.iplatebnibrana.csob.cz/api/v1.9/payment/status/${merchantIdUri}/${payIdUri}/${dttmUri}/${signatureStatusUri}`
     })
         .then(res => {
-            console.log(res.data)
+            // console.log(res.data)
             data.paymentStatus = res?.data?.paymentStatus
         })
         .catch(e => console.error(e))
