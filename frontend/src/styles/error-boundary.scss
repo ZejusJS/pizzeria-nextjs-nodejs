@@ -1,0 +1,31 @@
+.error-boundary-con {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100svh;
+    padding: 7px;
+
+    svg {
+        width: 100%;
+        max-width: 200px;
+    }
+
+    h3 {
+        font-size: 1.35rem;
+        text-align: center;
+    }
+
+    button.try-again {
+        outline-color: rgb(197, 151, 0);
+        background-color: rgb(255, 217, 0);
+        font-weight: 500;
+        margin: 6px 0;
+    }
+    
+    .home-page {
+        font-size: 1.1rem;
+        color: rgb(173, 104, 0);
+        font-weight: 500;
+    }
+}

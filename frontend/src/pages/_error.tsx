@@ -20,7 +20,7 @@ function Error({ statusCode }) {
                         <h3>Something went wrong</h3>
                         <h4>Code: <span>{statusCode}</span></h4>
                         <Link className='back' href='/' shallow={false} prefetch={false}>
-                            Go to Homepage
+                            Go to Home Page
                         </Link>
                     </section>
             }

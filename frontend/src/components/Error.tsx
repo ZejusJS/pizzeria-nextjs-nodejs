@@ -1,6 +1,8 @@
 // @ts-nocheck
 
 import React from "react"
+import ErrorSvg from '../images/Error'
+import Link from 'next/link'
 
 class ErrorBoundary extends React.Component {
     constructor(props) {
@@ -23,14 +25,19 @@ class ErrorBoundary extends React.Component {
         if (this.state.hasError) {
             // You can render any custom fallback UI
             return (
-                <main>
-                    <h2>Oops, there is an error!</h2>
+                <main className="error-boundary-con">
+                    <ErrorSvg />
+                    <h3>Unexpected error occurred</h3>
                     <button
                         type="button"
+                        className="btn-styled try-again"
                         onClick={() => this.setState({ hasError: false })}
                     >
                         Try again?
                     </button>
+                    <Link className='home-page' href='/' shallow={false} prefetch={false}>
+                        Go to Home Page
+                    </Link>
                 </main>
             )
         }
