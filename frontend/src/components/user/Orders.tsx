@@ -14,7 +14,7 @@ const Orders = ({ userData, viewItem, DocumentAddSvg, BackTurnSvg, slug }) => {
     const [isLoading, setIsLoading] = useState(false)
     let ordersPerPage = 9
 
-    console.log(ordersLoaded)
+    // console.log(ordersLoaded)
 
     function anotherOrders() {
         setPageNumber(prev => ++prev)
