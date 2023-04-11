@@ -35,8 +35,11 @@ async function scanAndDelete (match) {
 }
 
 async function redisDeleteAllPizzasAndIngrs () {
-    await scanAndDelete('pizzas*')
-    await scanAndDelete('ingredients*')
+    return new Promise(async (resolve, reject) => {
+        await scanAndDelete('pizzas*')
+        await scanAndDelete('ingredients*')
+        resolve('OK')
+    })
 }
 
 module.exports = {

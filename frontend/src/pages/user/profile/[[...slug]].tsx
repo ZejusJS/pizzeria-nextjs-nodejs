@@ -1,7 +1,7 @@
 import axios from "axios"
 import Link from "next/link"
 import { useRouter } from "next/router"
-import { createContext } from 'react'
+import { createContext, useState } from 'react'
 
 import { server } from "../../../config/config"
 
@@ -25,6 +25,10 @@ const index = ({ userData, viewItem }) => {
     const router = useRouter()
     const shippingAdress = userData?.shippingAdress
     const { slug = [null] } = router.query
+    const payIdQuery = router.query?.payId
+
+    const [backUrl, setBackUrl] = useState('/user/profile')
+    const [backText, setBackText] = useState('Back')
 
     return (
         <>
@@ -70,12 +74,13 @@ const index = ({ userData, viewItem }) => {
                         <>
                             <button
                                 type="button"
+                                role="navigation"
                                 className="btn-styled back-nav"
-                                onClick={() => router.push('/user/profile',
+                                onClick={() => router.push(`${backUrl}`,
                                     null, { shallow: true })}
                             >
                                 <ArrowLeftSvg />
-                                <span>Back</span>
+                                <span>{backText}</span>
                             </button>
                         </>
                     }
@@ -112,6 +117,9 @@ const index = ({ userData, viewItem }) => {
                                 DocumentAddSvg={DocumentAddSvg} 
                                 BackTurnSvg={BackTurnSvg}
                                 slug={slug}
+                                setBackUrl={setBackUrl}
+                                setBackText={setBackText}
+                                payIdQuery={payIdQuery}
                             />
                             :
                             ''

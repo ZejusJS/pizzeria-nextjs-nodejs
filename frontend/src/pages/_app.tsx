@@ -178,7 +178,7 @@ export default function App({ Component, pageProps }) {
 
   return (
     <>
-      <Meta />
+        <Meta />
       <Navbar
         cart={cart}
         expanded={expanded}

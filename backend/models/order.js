@@ -30,10 +30,20 @@ const OrderSchema = Schema({
         type: String
     },
     shippingAdress: {
-        type: Object
+        firstname: String,
+        lastname: String,
+        address1: String,
+        city: String,
+        zip: String,
+        country: String,
     },
     invoiceInfo: {
-        type: Object
+        firstname: String,
+        lastname: String,
+        address1: String,
+        city: String,
+        zip: String,
+        country: String,
     },
     user: {
         type: mongoose.Schema.Types.ObjectId,

@@ -72,7 +72,7 @@ async function deleteAllCarts() {
 }
 
 // deleteAllUsers()
-// deleteAllOrders()
+deleteAllOrders()
 // deleteAllPizzas()
-// addPizzas(20)
+// addPizzas(10)
 // deleteAllCarts()

@@ -4,7 +4,7 @@ import Meta from '../components/Meta'
 import { server } from '../config/config'
 import axios from "axios";
 import Pizzalist from '../components/pizza/Pizzalist';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Product from '../components/pizza/Product';
 import Unfocus from '../components/Unfocus';
 import { useRouter } from 'next/router';
@@ -21,6 +21,15 @@ export default function Home({
   router,
   pizzas }) {
   const [pizzasState, setPizzasState] = useState(pizzas)
+
+  useEffect(() => {
+    if (router?.query?.payId) {
+      router.replace({
+        pathname: `/user/profile/orders`,
+        query: { payId: router?.query?.payId },
+      }, null, { shallow: false})
+    }
+  }, [])
 
   return (
     <>

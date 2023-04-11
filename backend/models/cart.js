@@ -41,6 +41,20 @@ cartSchema.pre('save', async function (done) {
     done()
 })
 
+cartSchema.pre('updateOne', async function (done) {
+    let price = 0
+    this.set('expiresAtDate', Date.now())
+    if (this.items.length) {
+        this.items.map(item => price += item.totalPrice)
+        this.set('totalCartPrice', price.toFixed(2))
+
+        let newItems
+        newItems = this.items.filter(item => item.item !== null && item?.item?.show !== false)
+        this.set('items', newItems)
+    }
+    done()
+})
+
 // cartSchema.virtual('totalCartPrice').get(function () {
 //     let price = 0
 //     this.items.map(item => {

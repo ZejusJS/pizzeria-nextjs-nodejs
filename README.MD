@@ -23,13 +23,14 @@ first project with nextjs + nodejs
 - [x] Repair payment/card in deployment
 - [x] Repair qnt change
 - [x] ~~Popup on cart~~
-- [ ] Secure the checkout - no duplicates, slowdown, tokens, recaptcha
+- [ ] Secure the checkout - no duplicates, tokens, [x]slowdown, [x]recaptcha... in progress
 - [ ] twitter, facebook etc. seo... in progress
-- [ ] Page after successful or failded payment
+- [ ] Single order page... in progress
+- [x] Fix payment url in orders profile
 
 ### Links: (last deploy: 9.4.2023)
 (long waiting for fresh starts, free tiers, maybe frontend isn't in sync with backend - I didn't deploy backend aswell) <br>
-- **Frontend**: https://effortless-cupcake-860fb7.netlify.app/
+- **Frontend**: https://pizzeria-mammamia.netlify.app/
 - **Backend**: https://pizzeria-backend-4vij.onrender.com/ <br>
 For admin POV use: email: "email@email.com" and password: "12345678"
 
@@ -37,4 +38,4 @@ For admin POV use: email: "email@email.com" and password: "12345678"
 1. NextJS
 2. NodeJS
 3. Express
-4. MongoDB
+4. MongoDB + Redis

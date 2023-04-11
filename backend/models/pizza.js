@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const mongoosePaginate = require('mongoose-paginate-v2')
+const { scanAndDelete } = require('../utils/func/redis')
 
 // const Pizza = require('./pizza')
 const Ingredients = require('./ingredients')
@@ -41,9 +42,10 @@ const PizzaSchema = new Schema({
 
 PizzaSchema.plugin(mongoosePaginate)
 
-PizzaSchema.pre('save', async function(done) {
+PizzaSchema.pre('save', async function (done) {
     let price = this.price.toFixed(2)
     this.set('price', price)
+    await scanAndDelete()
     done()
 })
 
@@ -78,6 +80,7 @@ PizzaSchema.post('save', async function () {
     if (!ingrs) ingrs = new Ingredients()
     ingrs.allIngredients = ingredients
     await ingrs.save()
+    await scanAndDelete()
 });
 
 PizzaSchema.post('findOneAndDelete', async function () {
@@ -111,6 +114,7 @@ PizzaSchema.post('findOneAndDelete', async function () {
     if (!ingrs) ingrs = new Ingredients()
     ingrs.allIngredients = ingredients
     await ingrs.save()
+    await scanAndDelete()
 });
 
 module.exports = mongoose.model('Pizza', PizzaSchema);

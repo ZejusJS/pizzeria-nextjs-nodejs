@@ -71,7 +71,7 @@ router.post('/card', mwIsLoggedIn, validatePayment, mwRecaptcha, mwCardPaymentPo
         totalAmount: (totalPrice * 100).toFixed(0),
         currency: 'CZK',
         closePayment: true,
-        returnUrl: process.env.FRONTEND + '/payment/card',
+        returnUrl: process.env.FRONTEND + ``,
         returnMethod: 'GET',
         cart: [
             {
@@ -159,8 +159,8 @@ router.post('/card', mwIsLoggedIn, validatePayment, mwRecaptcha, mwCardPaymentPo
         orderNo: data.orderNo,
         totalPrice: (data.totalAmount / 100).toFixed(2),
         shippingPrice,
-        shippingAdress: data.order.shipping,
-        invoiceInfo: data.order.billing,
+        shippingAdress: {...data.order.shipping, firstname, lastname},
+        invoiceInfo: {...data.order.billing, firstname: req.user.invoiceInfo.firstname, lastname: req.user.invoiceInfo.lastname },
         user: req.user._id
     })
     console.log(req.body.cartData.items)
@@ -231,10 +231,10 @@ router.get('/orders/:ids', mwIsLoggedIn, catchAsync(async function (req, res, ne
     return res.status(200).json({ orders })
 }))
 
-router.get('/order/:id', mwIsLoggedIn, catchAsync(async function (req, res, next) {
-    const { id } = req.params
+router.get('/order/:payId', mwIsLoggedIn, catchAsync(async function (req, res, next) {
+    const { payId } = req.params
 
-    const order = await Order.findById(id).populate('items.item')
+    const order = await Order.findOne({ payId }).populate('items.item')
     if (!order) {
         if (req.user?.orders?.length) {
             await User.findByIdAndUpdate(req.user._id, { $pullAll: { orders: [id] } })

@@ -75,12 +75,12 @@ router.post('/changeQuantity', catchAsync(async function (req, res, next) {
     const quantity = req.body.quantity
     if (quantity > 15 || quantity < 1 || Number.isNaN(quantity)) return res.status(400).json({ msg: 'Quantity of product must be between 15 and 1' })
 
-    const cartId = function () {
+    const cartId = (function () {
         if (req.user && req.user.interaction && req.user.interaction.cart) return req.user.interaction.cart
         return req.cookies.cart
-    }
+    })()
     const product = await Pizza.findById(productId)
-    const cart = await Cart.findById(cartId())
+    const cart = await Cart.findById(cartId)
 
     if (cart.user && req.user.interaction && req.user.interaction.cart && !req.user.interaction.cart.equals(cart._id)) {
         return res.status(400).json({ msg: `You don't have permission to edit this cart`, code: 400 })
@@ -88,7 +88,7 @@ router.post('/changeQuantity', catchAsync(async function (req, res, next) {
 
     if (cart && product) {
         let prevProduct = cart?.items?.filter(pro => pro?.item?.equals(productId))[0]
-        if (!prevProduct || product.show === false) {
+        if (prevProduct && product.show === false) {
             cart.items = cart.items.filter(pro => !pro?.item?.equals(productId))
             if (product.show === false) {
                 await cart.save()
@@ -97,7 +97,6 @@ router.post('/changeQuantity', catchAsync(async function (req, res, next) {
             }
             return res.status(400).json({ msg: "Your cart doesn't have this product", cart, code: 300, codeE: 2 })
         }
-        if (product.show === false) return res.status(400).json({ msg: "This product is no longer for sale", code: 300 })
         prevProduct.quantity = quantity
         prevProduct.totalPrice = (quantity * product.price).toFixed(2)
         cart.items = cart.items.map(item => {
@@ -111,7 +110,7 @@ router.post('/changeQuantity', catchAsync(async function (req, res, next) {
             totalCartPrice: cart.totalCartPrice
         })
     } else {
-        res.status(400).json({ msg: 'ProductID or CartID was not found' })
+        res.status(400).json({ msg: 'ProductID or CartID was not found', code: 300 })
     }
 }))
 
@@ -141,7 +140,7 @@ router.get('/getCartAndUser', catchAsync(async function (req, res, next) {
         } catch (e) {
             const newCart = new Cart()
             await newCart.save()
-            res.cookie('cart', newCart._id, { httpOnly: true})
+            res.cookie('cart', newCart._id, { httpOnly: true })
             return res.status(400).json({ msg: `Bad cart id`, code: 400, newCart })
         }
     }

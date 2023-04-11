@@ -25,6 +25,13 @@ export async function middleware(req: NextRequest) {
     // console.log(req.headers.get('x-nextjs-data'))
     // console.log('-------------')
 
+    // if (url.pathname.includes('/user/get-order')) {
+    //     url.pathname = '/user/profile/orders'
+    //     console.log(url)
+    //     const response = NextResponse.rewrite(url)
+    //     return response
+    // }
+
     if (url.pathname.startsWith('/admin') && req.headers.get('purpose') !== 'prefetch') {
         console.log('!!!!!!! admin middleware')
         const cookies = cookiesParse()

@@ -4,14 +4,15 @@ import OrderItem from "./OrderItem";
 import LoadingItem from '../../components/user/OrderItemLoading'
 
 import RefreshSvg from '../../images/Refresh'
+import Link from "next/link";
 
 interface order {
-    createdAt: string;
-    orderNo: string | number;
-    payId: string | number;
-    items: [];
-    totalPrice: string | number;
-    shippingPrice: string | number;
+    createdAt?: string;
+    orderNo?: string | number;
+    payId?: string | number;
+    items?: [];
+    totalPrice?: string | number;
+    shippingPrice?: string | number;
 }
 
 const Order = ({ orderId, orderLoaded, viewItem, DocumentAddSvg, BackTurnSvg, PizzaSvg, setOrdersId, setOrdersLoaded }) => {
@@ -301,7 +302,7 @@ const Order = ({ orderId, orderLoaded, viewItem, DocumentAddSvg, BackTurnSvg, Pi
                         <div role="status" className="header-loading"></div>
                     }
 
-                    <div className="items">
+                    <div className="items-order">
                         {order?.orderNo ?
                             <>{order?.items?.map((item: any) => (
                                 <OrderItem
@@ -320,6 +321,9 @@ const Order = ({ orderId, orderLoaded, viewItem, DocumentAddSvg, BackTurnSvg, Pi
                                 <LoadingItem PizzaSvg={PizzaSvg} />
                             </>
                         }
+                        <Link href={`/user/profile/orders?payId=${order?.payId}`}>
+                            More
+                        </Link>
                     </div>
                 </div>
                 {order?.totalPrice || order?.shippingPrice ?
