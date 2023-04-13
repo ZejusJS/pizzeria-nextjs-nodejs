@@ -68,9 +68,12 @@ export default function App({ Component, pageProps }) {
   NProgress.configure({ trickleSpeed: 400, minimum: 0.1 });
 
   async function fetchFirstData(loading: boolean = true) {
-    if (loading) setLoaded(false)
-    if (loading) NProgress.start()
-    loaderRef?.current?.classList?.remove('loaded')
+    if (loading) {
+      setLoaded(false)
+      NProgress.start()
+      loaderRef?.current?.classList?.remove('loaded')
+    }
+    
     await axios({
       method: 'get',
       url: `/api2/cart/getCartAndUser`,
@@ -91,8 +94,10 @@ export default function App({ Component, pageProps }) {
         setUser(res?.data?.user)
         setTotalCartPrice(cartToSet.totalCartPrice)
 
-        if (loading) NProgress.done(false)
-        loaderRef?.current?.classList?.add('loaded')
+        if (loading) {
+          NProgress.done(false)
+          loaderRef?.current?.classList?.add('loaded')
+        }
         setTimeout(() => {
           if (loading) setLoaded(true)
         }, 1500);
@@ -190,7 +195,8 @@ export default function App({ Component, pageProps }) {
         className='loader'
         ref={loaderRef}
       >
-        {!error ? <div className="spinner-border" role="status"></div>
+        {!error ?
+          <div className="spinner-border" role="status"></div>
           :
           <ErrorSvg />}
         <div className='error-msgs'>
