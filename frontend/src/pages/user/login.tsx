@@ -3,7 +3,7 @@ import { server } from '../../config/config'
 import Login from '../../components/auth/Login'
 import Meta from '../../components/Meta'
 
-const login = ({ }) => {
+const login = ({ fetchFirstData }) => {
 
   return (
     <>
@@ -11,6 +11,7 @@ const login = ({ }) => {
       <main>
         <h1 className='text-cen'>Login</h1>
         <Login
+        fetchFirstData={() => fetchFirstData(true)}
         />
       </main>
     </>

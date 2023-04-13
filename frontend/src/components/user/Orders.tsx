@@ -1,35 +1,17 @@
 import { useEffect, useRef, useState } from "react"
-import Order from "./Order"
-
-import Spinner from "../Spinner"
-import FakeNProgress from 'nprogress'
-
-import PizzaSvg from "../../images/Pizza"
 import axios from "axios"
 
-import LoadingItem from '../../components/user/OrderItemLoading'
-import OrderItem from "./OrderItem"
+import Order from "./Order"
+import Spinner from "../Spinner"
+import OrderView from "./OrderView"
 
-interface order {
-    createdAt?: string;
-    orderNo?: string | number;
-    payId?: string | number;
-    items?: [];
-    totalPrice?: string | number;
-    shippingPrice?: string | number;
-    invoiceInfo?: any;
-    shippingAdress?: any;
-}
+import PizzaSvg from "../../images/Pizza"
 
-const Orders = ({ userData, viewItem, DocumentAddSvg, BackTurnSvg, slug, setBackUrl, setBackText, payIdQuery }) => {
+const Orders = ({ userData, viewItem, slug, setBackUrl, setBackText, payIdQuery }) => {
     const [pageNumber, setPageNumber] = useState(0)
     const [ordersLoaded, setOrdersLoaded] = useState([])
     const [ordersId, setOrdersId] = useState(userData?.orders)
     const [isLoading, setIsLoading] = useState(false)
-
-    const [viewOrder, setViewOrder] = useState<order>()
-    const [viewOrderStatus, setViewOrderStatus] = useState(null)
-    const [isLoadingOrder, setIsLoadingOrder] = useState(true)
 
     let ordersPerPage = 9
 
@@ -58,38 +40,6 @@ const Orders = ({ userData, viewItem, DocumentAddSvg, BackTurnSvg, slug, setBack
         // console.log(ordersLoaded)
     }, [pageNumber])
 
-    useEffect(() => {
-        setIsLoadingOrder(true)
-        setViewOrder({})
-
-        if (payIdQuery) {
-            setBackUrl('/user/profile/orders')
-            setBackText('Orders')
-
-            axios({
-                method: 'get',
-                url: `/api2/payment/order/${payIdQuery}`,
-                withCredentials: true,
-                onDownloadProgress(progressEvent) {
-                    setIsLoadingOrder(false)
-                },
-            })
-                .then(res => {
-                    console.log(res.data)
-                    setViewOrder(res.data?.order)
-                    setViewOrderStatus(res.data?.paymentStatus)
-                })
-                .catch(e => {
-                    console.error(e)
-                })
-        }
-
-        return () => {
-            setBackUrl('/user/profile')
-            setBackText('Back')
-        }
-    }, [payIdQuery])
-
     return (
         <>
             <div className="order-sites-con">
@@ -104,8 +54,6 @@ const Orders = ({ userData, viewItem, DocumentAddSvg, BackTurnSvg, slug, setBack
                                     setOrdersLoaded={setOrdersLoaded}
                                     key={orderLoaded._id}
                                     viewItem={viewItem}
-                                    DocumentAddSvg={DocumentAddSvg}
-                                    BackTurnSvg={BackTurnSvg}
                                     PizzaSvg={PizzaSvg}
                                     setOrdersId={setOrdersId}
                                 />
@@ -123,80 +71,22 @@ const Orders = ({ userData, viewItem, DocumentAddSvg, BackTurnSvg, slug, setBack
                             <div className="loading-orders">
                                 <Spinner />
                             </div>
-                            : ''
+                            : !userData?.orders?.length && !isLoading ?
+                                <>
+                                    <div className="no-orders">
+                                        <p>You have no orders yet</p>
+                                    </div>
+                                </>
+                                : ''
                         }
                     </div>
                 </section>
-                <section className={`order-view-con ${!payIdQuery ? 'hidden' : ''}`}>
-                    <div className={`order-view ${!isLoadingOrder ? 'hidden' : ''}`}>
-                        {!isLoadingOrder && viewOrder?.orderNo ?
-                            <>
-                                <h2><span>Order:</span> {viewOrder?.orderNo}</h2>
-                                <h4>{viewOrder?.payId}</h4>
-                                <div className="prices">
-                                    <p>Total: <span className="total-price">{viewOrder?.totalPrice} CZK</span></p>
-                                    <p>Shipping: {viewOrder?.shippingPrice} CZK</p>
-                                </div>
-                                <div className="items-order items-order-view">
-                                    {viewOrder?.orderNo ?
-                                        <>{viewOrder?.items?.map((item: any) => (
-                                            <OrderItem
-                                                key={item.title + item._id}
-                                                item={item}
-                                                viewItem={viewItem}
-                                                PizzaSvg={PizzaSvg}
-                                                LoadingItem={LoadingItem}
-                                            />
-                                        ))
-                                        }
-                                        </>
-                                        :
-                                        <>
-                                            <LoadingItem PizzaSvg={PizzaSvg} />
-                                            <LoadingItem PizzaSvg={PizzaSvg} />
-                                        </>
-                                    }
-                                </div>
-                                <div className="order-details">
-                                    <div className="details">
-                                        <h3>Invoice details</h3>
-                                        <p>{viewOrder?.invoiceInfo?.firstname} {viewOrder?.invoiceInfo?.lastname}</p>
-                                        <p>{viewOrder?.invoiceInfo?.address1}</p>
-                                        <p>{viewOrder?.invoiceInfo?.city}</p>
-                                        <p>{viewOrder?.invoiceInfo?.zip}</p>
-                                    </div>
-                                    <div className="details">
-                                        <h3>Shipping address</h3>
-                                        <p>{viewOrder?.shippingAdress?.firstname} {viewOrder?.shippingAdress?.lastname}</p>
-                                        <p>{viewOrder?.shippingAdress?.address1}</p>
-                                        <p>{viewOrder?.shippingAdress?.city}</p>
-                                        <p>{viewOrder?.shippingAdress?.zip}</p>
-                                    </div>
-                                </div>
-                            </>
-                            :
-                            <div className="order-loading" role="status">
-                                <div className="header first"></div>
-                                <div className="header second"></div>
-                                <div className="paragraph first"></div>
-                                <div className="items-order items-order-view">
-                                    <LoadingItem PizzaSvg={PizzaSvg} />
-                                    <LoadingItem PizzaSvg={PizzaSvg} />
-                                </div>
-                                <div className="header"></div>
-                                <div className="paragraph second"></div>
-                                <div className="paragraph first"></div>
-                                <div className="paragraph third"></div>
-                                <div className="paragraph fourth"></div>
-                                <div className="header second"></div>
-                                <div className="paragraph first"></div>
-                                <div className="paragraph second"></div>
-                                <div className="paragraph third"></div>
-                                <div className="paragraph first"></div>
-                            </div>
-                        }
-                    </div>
-                </section>
+                <OrderView
+                    setBackUrl={setBackUrl}
+                    setBackText={setBackText}
+                    payIdQuery={payIdQuery}
+                    viewItem={viewItem}
+                />
             </div>
         </>
     )

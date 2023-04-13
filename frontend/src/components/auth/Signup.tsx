@@ -4,7 +4,7 @@ import { useRef, useState } from 'react'
 import { server } from '../../config/config'
 import NProgress from 'nprogress'
 
-const Signup = ({ }) => {
+const Signup = ({ fetchFirstData }) => {
     const [signData, setSignData] = useState({
         name: '',
         email: '',

@@ -20,7 +20,7 @@ import NProgress from 'nprogress'
 import ReCAPTCHA from "react-google-recaptcha"
 import Reaptcha from 'reaptcha';
 
-const checkout = ({ cartData, setUser, user, userData, setCart }) => {
+const checkout = ({ cartData, setUser, user, fetchFirstData, userData, setCart }) => {
     const [orderDetails, setOrderDetails] = useState({
         firstname: '',
         lastname: '',
@@ -280,7 +280,7 @@ const checkout = ({ cartData, setUser, user, userData, setCart }) => {
                     })}
                 </section>
                 <div id='order'>
-                    {!user?.email ?
+                    {!userData?.email ?
                         <>
                             <div className='change-auth'>
                                 <span
@@ -301,9 +301,11 @@ const checkout = ({ cartData, setUser, user, userData, setCart }) => {
                                 auth === 0
                                     ?
                                     <Signup
+                                        fetchFirstData={() => fetchFirstData(true)}
                                     />
                                     :
                                     <Login
+                                        fetchFirstData={() => fetchFirstData(true)}
                                     />
                             }
                         </>
@@ -375,17 +377,17 @@ const checkout = ({ cartData, setUser, user, userData, setCart }) => {
                                                     <div className='adress'>
                                                         <h3>Shipping Address</h3>
                                                         <p> {orderDetails?.firstname?.replace(/[^a-zA-Z\u00c0-\u00d6\u00d8-\u00f6\u00f8-\u02af\u1d00-\u1d25\u1d62-\u1d65\u1d6b-\u1d77\u1d79-\u1d9a\u1e00-\u1eff\u2090-\u2094\u2184-\u2184\u2488-\u2490\u271d-\u271d\u2c60-\u2c7c\u2c7e-\u2c7f\ua722-\ua76f\ua771-\ua787\ua78b-\ua78c\ua7fb-\ua7ff\ufb00-\ufb06\u00bf\u00a1]/gi, '') + ' ' + orderDetails?.lastname?.replace(/[^a-zA-Z\u00c0-\u00d6\u00d8-\u00f6\u00f8-\u02af\u1d00-\u1d25\u1d62-\u1d65\u1d6b-\u1d77\u1d79-\u1d9a\u1e00-\u1eff\u2090-\u2094\u2184-\u2184\u2488-\u2490\u271d-\u271d\u2c60-\u2c7c\u2c7e-\u2c7f\ua722-\ua76f\ua771-\ua787\ua78b-\ua78c\ua7fb-\ua7ff\ufb00-\ufb06\u00bf\u00a1]/gi, '')}</p>
-                                                        <p> {(orderDetails.adress).replace(/[^\sa-zA-Z0-9\+\_\-\@\&\=\.\,\(\)\:\ \/\?\|\<\>\"\'\!\%\*\\\#\$\^\;\u00c0-\u00d6\u00d8-\u00f6\u00f8-\u02af\u1d00-\u1d25\u1d62-\u1d65\u1d6b-\u1d77\u1d79-\u1d9a\u1e00-\u1eff\u2090-\u2094\u2184-\u2184\u2488-\u2490\u271d-\u271d\u2c60-\u2c7c\u2c7e-\u2c7f\ua722-\ua76f\ua771-\ua787\ua78b-\ua78c\ua7fb-\ua7ff\ufb00-\ufb06]/gi, '')}</p>
-                                                        <p> {(orderDetails.city).replace(/[^\sa-zA-Z0-9\+\_\-\@\&\=\.\,\(\)\:\ \/\?\|\<\>\"\'\!\%\*\\\#\$\^\;\u00c0-\u00d6\u00d8-\u00f6\u00f8-\u02af\u1d00-\u1d25\u1d62-\u1d65\u1d6b-\u1d77\u1d79-\u1d9a\u1e00-\u1eff\u2090-\u2094\u2184-\u2184\u2488-\u2490\u271d-\u271d\u2c60-\u2c7c\u2c7e-\u2c7f\ua722-\ua76f\ua771-\ua787\ua78b-\ua78c\ua7fb-\ua7ff\ufb00-\ufb06]/gi, '')}</p>
-                                                        <p> {(orderDetails.zip).replace(/[^\sa-zA-Z0-9\+\_\-\@\&\=\.\,\(\)\:\ \/\?\|\<\>\"\'\!\%\*\\\#\$\^\;\u00c0-\u00d6\u00d8-\u00f6\u00f8-\u02af\u1d00-\u1d25\u1d62-\u1d65\u1d6b-\u1d77\u1d79-\u1d9a\u1e00-\u1eff\u2090-\u2094\u2184-\u2184\u2488-\u2490\u271d-\u271d\u2c60-\u2c7c\u2c7e-\u2c7f\ua722-\ua76f\ua771-\ua787\ua78b-\ua78c\ua7fb-\ua7ff\ufb00-\ufb06]/gi, '')}</p>
+                                                        <p> {(orderDetails?.adress).replace(/[^\sa-zA-Z0-9\+\_\-\@\&\=\.\,\(\)\:\ \/\?\|\<\>\"\'\!\%\*\\\#\$\^\;\u00c0-\u00d6\u00d8-\u00f6\u00f8-\u02af\u1d00-\u1d25\u1d62-\u1d65\u1d6b-\u1d77\u1d79-\u1d9a\u1e00-\u1eff\u2090-\u2094\u2184-\u2184\u2488-\u2490\u271d-\u271d\u2c60-\u2c7c\u2c7e-\u2c7f\ua722-\ua76f\ua771-\ua787\ua78b-\ua78c\ua7fb-\ua7ff\ufb00-\ufb06]/gi, '')}</p>
+                                                        <p> {(orderDetails?.city).replace(/[^\sa-zA-Z0-9\+\_\-\@\&\=\.\,\(\)\:\ \/\?\|\<\>\"\'\!\%\*\\\#\$\^\;\u00c0-\u00d6\u00d8-\u00f6\u00f8-\u02af\u1d00-\u1d25\u1d62-\u1d65\u1d6b-\u1d77\u1d79-\u1d9a\u1e00-\u1eff\u2090-\u2094\u2184-\u2184\u2488-\u2490\u271d-\u271d\u2c60-\u2c7c\u2c7e-\u2c7f\ua722-\ua76f\ua771-\ua787\ua78b-\ua78c\ua7fb-\ua7ff\ufb00-\ufb06]/gi, '')}</p>
+                                                        <p> {(orderDetails?.zip).replace(/[^\sa-zA-Z0-9\+\_\-\@\&\=\.\,\(\)\:\ \/\?\|\<\>\"\'\!\%\*\\\#\$\^\;\u00c0-\u00d6\u00d8-\u00f6\u00f8-\u02af\u1d00-\u1d25\u1d62-\u1d65\u1d6b-\u1d77\u1d79-\u1d9a\u1e00-\u1eff\u2090-\u2094\u2184-\u2184\u2488-\u2490\u271d-\u271d\u2c60-\u2c7c\u2c7e-\u2c7f\ua722-\ua76f\ua771-\ua787\ua78b-\ua78c\ua7fb-\ua7ff\ufb00-\ufb06]/gi, '')}</p>
                                                     </div>
                                                     <div className='invoice'>
                                                         <h3>Billing</h3>
-                                                        <p>{invoiceInfo.firstname}  {invoiceInfo.lastname}</p>
-                                                        <p>{invoiceInfo.adress}</p>
-                                                        <p>{invoiceInfo.city}</p>
-                                                        <p>{invoiceInfo.zip}</p>
-                                                        <p>{invoiceInfo.country}</p>
+                                                        <p>{invoiceInfo?.firstname}  {invoiceInfo?.lastname}</p>
+                                                        <p>{invoiceInfo?.adress}</p>
+                                                        <p>{invoiceInfo?.city}</p>
+                                                        <p>{invoiceInfo?.zip}</p>
+                                                        <p>{invoiceInfo?.country}</p>
                                                     </div>
                                                 </div>
                                             </div>

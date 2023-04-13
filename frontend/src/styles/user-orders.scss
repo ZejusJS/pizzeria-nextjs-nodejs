@@ -42,100 +42,24 @@
         overflow: hidden;
         position: relative;
 
-        [class*="payment-"] {
-            display: flex;
-            align-items: center;
-            gap: 3px;
-            font-weight: 500;
-            background-color: rgb(226, 226, 226);
-            min-height: 50px;
-            font-size: 18px;
-            padding: 3px;
-            transition: background-color 500ms;
+        h3 {
+            a {
+                color: rgb(0, 116, 131);
 
-            span:first-child {
-                display: flex;
-
-                .spinner-border {
-                    width: 19px;
-                    height: 19px;
-                    border-width: 3px;
-                }
-
-                .spinner-grow {
-                    animation-duration: 1.4s;
-                    background-color: rgb(58, 58, 58);
-                    width: 22px;
-                    height: 22px;
-                }
-
-                svg {
-                    width: 26px;
-                    height: auto;
-                }
-            }
-
-            &[class*="rejected"],
-            &[class*="cancelled"],
-            &[class*="issue"] {
-                background-color: rgb(255, 121, 121);
-            }
-
-            &[class*="successful"],
-            &[class*="refund"] {
-                background-color: rgb(129, 255, 118);
-            }
-
-            &[class*="created"],
-            &[class*="progress"],
-            &[class*="progress-refund"] {
-                background-color: rgb(157, 188, 255);
-            }
-
-            &[class*="created"] {
-                a {
-                    color: rgb(0, 81, 255);
-                    font-weight: 700;
-
-                    &:hover {
-                        color: rgb(0, 119, 255);
-                    }
-                }
-
-                div {
-                    display: flex;
-                    row-gap: 2px;
-                    column-gap: 5px;
-                    flex-wrap: wrap;
+                &:active {
+                    color: rgb(0, 86, 97);
                 }
             }
         }
 
-        .refresh {
-            background: 0;
-            border: 0;
-            outline: 0;
-            position: absolute;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            top: 0px;
-            right: 5px;
-            width: 45px;
-            height: 45px;
-            padding: 0;
+        [class*='payment-status'] {
+            padding-right: 45px;
 
-            svg {
-                max-width: 90%;
-                transition: max-width 100ms, rotate 150ms;
-            }
+            @media (max-width: 200px) {
+                padding-left: 4px;
 
-            &:hover {
-                cursor: pointer;
-
-                svg {
-                    max-width: 100%;
-                    rotate: 30deg;
+                .svg-con {
+                    display: none;
                 }
             }
         }
@@ -154,6 +78,19 @@
             @media (max-width: 300px) {
                 .header-loading {
                     width: 60%;
+                }
+            }
+        }
+
+        .view-more {
+            a {
+                font-size: 17px;
+                font-weight: 500;
+                color: rgb(158, 95, 0);
+                text-decoration: none;
+
+                &:hover {
+                    text-decoration: underline;
                 }
             }
         }
@@ -333,6 +270,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
+
+    .no-orders {
+        font-size: 19px;
+        text-align: center;
+    }
 }
 
 .order-sites-con {
@@ -345,15 +287,40 @@
 
 .order-view-con {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     margin: 25px 4px 4px 4px;
+    row-gap: 10px;
+
+    [class*="payment-status-"] {
+        padding-right: 43px;
+
+        @media (max-width: 200px) {
+            .svg-con {
+                display: none;
+            }
+        }
+    }
+
+    .order-status {
+        max-width: 500px;
+        width: 100%;
+        border-radius: 13px;
+        overflow: hidden;
+        border: 1px gray solid;
+        position: relative;
+        
+        [class*="payment-status-"] {
+            width: 100%;
+        }
+    }
 
     .order-view {
+        max-width: 500px;
         border: 1px gray solid;
         border-radius: 13px;
         padding: 7px;
-        max-width: 450px;
         width: 100%;
     }
 
@@ -447,6 +414,105 @@
 
         &.fourth {
             width: 20%;
+        }
+    }
+}
+
+[class*="payment-status-"] {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    font-weight: 500;
+    background-color: rgb(226, 226, 226);
+    min-height: 50px;
+    font-size: 18px;
+    padding: 3px;
+    transition: background-color 500ms;
+
+    span:first-child {
+        display: flex;
+
+        .spinner-border {
+            width: 19px;
+            height: 19px;
+            border-width: 3px;
+        }
+
+        .spinner-grow {
+            animation-duration: 1.4s;
+            background-color: rgb(58, 58, 58);
+            width: 22px;
+            height: 22px;
+        }
+
+        svg {
+            width: 26px;
+            height: auto;
+        }
+    }
+
+    &[class*="rejected"],
+    &[class*="cancelled"],
+    &[class*="issue"] {
+        background-color: rgb(255, 121, 121);
+    }
+
+    &[class*="successful"],
+    &[class*="refund"] {
+        background-color: rgb(129, 255, 118);
+    }
+
+    &[class*="created"],
+    &[class*="progress"],
+    &[class*="progress-refund"] {
+        background-color: rgb(157, 188, 255);
+    }
+
+    &[class*="created"] {
+        a {
+            color: rgb(0, 81, 255);
+            font-weight: 700;
+
+            &:hover {
+                color: rgb(0, 119, 255);
+            }
+        }
+
+        div {
+            display: flex;
+            row-gap: 2px;
+            column-gap: 5px;
+            flex-wrap: wrap;
+        }
+    }
+}
+
+.btn-refresh-status {
+    background: 0;
+    border: 0;
+    outline: 0;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0px;
+    right: 5px;
+    width: 45px;
+    height: 45px;
+    padding: 0;
+
+    svg {
+        max-width: 90%;
+        transition: max-width 100ms, rotate 150ms;
+    }
+
+    &:hover {
+        cursor: pointer;
+
+        &:active {
+            svg {
+                rotate: 30deg;
+            }
         }
     }
 }

@@ -9,7 +9,7 @@ import UserCircleSvg from "../images/UserCircle"
 import NavSvg from '../images/Nav'
 import CartSvg from '../images/Cart'
 
-const Navbar = ({ cart, setExpanded, expanded, user }) => {
+const Navbar = ({ cart, setExpanded, expanded, user, fetchFirstData }) => {
   let itemsCount = 0
   cart?.items?.map(item => {
     itemsCount += Number(item.quantity)
@@ -44,7 +44,7 @@ const Navbar = ({ cart, setExpanded, expanded, user }) => {
         NProgress.done(false)
       },
     })
-      .then(res => window.location.replace('/'))
+      .then(res => fetchFirstData())
       .catch(e => console.log(e))
   }
   

@@ -10,8 +10,6 @@ import ArrowLeftSvg from "../../../images/ArrowLeft"
 import DollarSvg from "../../../images/Dollar"
 import HouseSvg from "../../../images/Houseadress"
 import OrderBagSvg from "../../../images/OrderBag"
-import DocumentAddSvg from "../../../images/DocumentAdd"
-import BackTurnSvg from "../../../images/BackTurn"
 
 import Meta from '../../../components/Meta'
 import Adress from '../../../components/user/Adress'
@@ -114,8 +112,6 @@ const index = ({ userData, viewItem }) => {
                             <Orders
                                 userData={userData}
                                 viewItem={viewItem} 
-                                DocumentAddSvg={DocumentAddSvg} 
-                                BackTurnSvg={BackTurnSvg}
                                 slug={slug}
                                 setBackUrl={setBackUrl}
                                 setBackText={setBackText}

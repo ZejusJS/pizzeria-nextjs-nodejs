@@ -86,7 +86,7 @@ export default function App({ Component, pageProps }) {
     })
       .then(res => {
         const cartToSet = res?.data?.cart
-        cartToSet.items = res?.data?.cart?.items?.filter(item => item.item !== null)
+        cartToSet.items = res?.data?.cart?.items?.filter(item => item?.item !== null)
         setCart(cartToSet)
         setUser(res?.data?.user)
         setTotalCartPrice(cartToSet.totalCartPrice)
@@ -178,42 +178,40 @@ export default function App({ Component, pageProps }) {
 
   return (
     <>
-        <Meta />
+      <Meta />
       <Navbar
         cart={cart}
         expanded={expanded}
         setExpanded={setExpanded}
         user={user}
+        fetchFirstData={() => fetchFirstData(true)}
       />
-      {!loaded ?
-        <div
-          className='loader'
-          ref={loaderRef}
-        >
-          {!error ? <div className="spinner-border" role="status"></div>
-            :
-            <ErrorSvg />}
-          <div className='error-msgs'>
-            <p className={`msg ${error ? 'visible' : ''}`}>
-              Something went wrong...
-            </p>
-            <p className={`msg ${error ? 'visible' : ''}`}>
-              Try reloading a page. A problem can be also on our side.
-            </p>
-            <p className={`msg code ${error === 500 ? 'visible' : ''}`}>
-              Error code: <b>500</b> - A problem is on our servers.
-            </p>
-            <p className={`msg code ${error === 400 && getCookie('cart') !== 'error' ? 'visible' : ''}`}>
-              Error code: <b>400</b> - Something went wrong on your side.
-            </p>
-            <p className={`msg code ${getCookie('cart') === 'error' ? 'visible' : ''}`}>
-              <b>Cart error</b> - Something went wrong probably on our side.
-              We can't provide you a cart. Refresh a page after 10 seconds or contact us.
-            </p>
-          </div>
+      <div
+        className='loader'
+        ref={loaderRef}
+      >
+        {!error ? <div className="spinner-border" role="status"></div>
+          :
+          <ErrorSvg />}
+        <div className='error-msgs'>
+          <p className={`msg ${error ? 'visible' : ''}`}>
+            Something went wrong...
+          </p>
+          <p className={`msg ${error ? 'visible' : ''}`}>
+            Try reloading a page. A problem can be also on our side.
+          </p>
+          <p className={`msg code ${error === 500 ? 'visible' : ''}`}>
+            Error code: <b>500</b> - A problem is on our servers.
+          </p>
+          <p className={`msg code ${error === 400 && getCookie('cart') !== 'error' ? 'visible' : ''}`}>
+            Error code: <b>400</b> - Something went wrong on your side.
+          </p>
+          <p className={`msg code ${getCookie('cart') === 'error' ? 'visible' : ''}`}>
+            <b>Cart error</b> - Something went wrong probably on our side.
+            We can't provide you a cart. Refresh a page after 10 seconds or contact us.
+          </p>
         </div>
-        : ''
-      }
+      </div>
 
       <>
         <div className={`product-error-con ${productError === 1 || productError === 2 ? 'shown' : ''}`}>
@@ -240,29 +238,26 @@ export default function App({ Component, pageProps }) {
           />
           : ''}
         {
-          !error ?
-            <ErrorBoundary>
-              <Component
-                {...pageProps}
-                setCart={setCart}
-                cart={cart}
-                user={user}
-                setUser={setUser}
-                viewProduct={viewProduct}
-                itemToView={itemToView}
-                singleAdd={(e, piz) => singleAdd(e, piz)}
-                unViewItem={(e) => unViewItem(e)}
-                deleteItem={(e, piz) => deleteItem(e, piz)}
-                viewItem={(e, i) => viewItem(e, i)}
-                fetchFirstData={(loading: boolean) => fetchFirstData(loading)}
-                totalCartPrice={totalCartPrice}
-                setTotalCartPrice={setTotalCartPrice}
-                changeQnt={changeQnt}
-                router={router}
-              />
-            </ErrorBoundary>
-            :
-            ''
+          <ErrorBoundary>
+            <Component
+              {...pageProps}
+              setCart={setCart}
+              cart={cart}
+              user={user}
+              setUser={setUser}
+              viewProduct={viewProduct}
+              itemToView={itemToView}
+              singleAdd={(e, piz) => singleAdd(e, piz)}
+              unViewItem={(e) => unViewItem(e)}
+              deleteItem={(e, piz) => deleteItem(e, piz)}
+              viewItem={(e, i) => viewItem(e, i)}
+              fetchFirstData={(loading: boolean) => fetchFirstData(loading)}
+              totalCartPrice={totalCartPrice}
+              setTotalCartPrice={setTotalCartPrice}
+              changeQnt={changeQnt}
+              router={router}
+            />
+          </ErrorBoundary>
         }
       </div>
       <Footer />

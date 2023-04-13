@@ -4,7 +4,7 @@ import { useState } from 'react'
 import NProgress from 'nprogress'
 import { useRouter } from 'next/router'
 
-const Login = ({ }) => {
+const Login = ({ fetchFirstData}) => {
     const router = useRouter()
 
     const [loginData, setLoginData] = useState({
@@ -86,11 +86,12 @@ const Login = ({ }) => {
                 // setCart(prevCart => res.data.cart)
                 // router.replace('/')
                 if (router.pathname === '/user/login') {
-                    window.location.href = "/"
+                    // window.location.href = "/"
+                    fetchFirstData().then(router.replace('/'))
                 } else if (router.pathname === '/cart/checkout') {
                     // setUser(res.data?.user)
                     // setOrderDetails(res.data?.invoiceInfo)
-                    window.location.href = router.asPath
+                    fetchFirstData().then(router.replace(router.asPath))
                 }
                 setTimeout(() => {
                     submitting = false

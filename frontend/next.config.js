@@ -6,7 +6,7 @@ const ContentSecurityPolicy = `
   child-src 'self' https://pizzeria-backend-4vij.onrender.com;
   style-src 'self' 'unsafe-hashes' 'unsafe-inline' https://*.googleapis.com https://pizzeria-backend-4vij.onrender.com;
   img-src 'self' https://*.cloudinary.com https://*.unsplash.com https://pizzeria-backend-4vij.onrender.com;
-  frame-src 'self' https://recaptcha.net https://pizzeria-backend-4vij.onrender.com;
+  frame-src 'self' https://*recaptcha.net https://pizzeria-backend-4vij.onrender.com;
 `
 
 const securityHeaders = [
@@ -43,8 +43,8 @@ const nextConfig = {
     return [
       {
         source: '/api2/:path*',
-        // destination: 'https://pizzeria-backend-4vij.onrender.com/:path*' // Proxy to Backend
-        destination: 'http://localhost:8000/:path*' // Proxy to Backend 
+        destination: 'https://pizzeria-backend-4vij.onrender.com/:path*' // Proxy to Backend
+        // destination: 'http://localhost:8000/:path*' // Proxy to Backend 
       }
     ]
   },

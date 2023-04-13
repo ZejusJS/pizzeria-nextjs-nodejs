@@ -58,9 +58,9 @@ router.post('/card', mwIsLoggedIn, validatePayment, mwRecaptcha, mwCardPaymentPo
 
     totalPrice = totalPriceItems + shippingPrice
 
-    console.log(totalPriceItems)
-    console.log(shippingPrice)
-    console.log(totalPrice)
+    // console.log(totalPriceItems)
+    // console.log(shippingPrice)
+    // console.log(totalPrice)
 
     const data = {
         merchantId: merchantId,
@@ -113,10 +113,8 @@ router.post('/card', mwIsLoggedIn, validatePayment, mwRecaptcha, mwCardPaymentPo
         },
         language: 'en'
     }
-    // return res.send(data)
 
     const RETEZEC = getRetezec(data)
-    // const sign = crypto.sign("SHA256", Buffer.from(RETEZEC, "base64"), CSOB_PRIVATE);
     const sign = crypto.createSign('SHA256')
     sign.update(RETEZEC)
     sign.end()
@@ -142,8 +140,6 @@ router.post('/card', mwIsLoggedIn, validatePayment, mwRecaptcha, mwCardPaymentPo
     let dttmBase64url = encodeURIComponent(resData.dttm)
 
     const RETEZEC_PROCESS = getRetezec({ merchantId: data.merchantId, payId: resData.payId, dttm: resData.dttm })
-    // const signProcess = crypto.sign("SHA256", RETEZEC_PROCESS, CSOB_PRIVATE);
-    // const signatureProcess = signProcess.toString('base64');
     const signProcess = crypto.createSign('SHA256')
     signProcess.update(RETEZEC_PROCESS)
     signProcess.end()
@@ -163,7 +159,7 @@ router.post('/card', mwIsLoggedIn, validatePayment, mwRecaptcha, mwCardPaymentPo
         invoiceInfo: {...data.order.billing, firstname: req.user.invoiceInfo.firstname, lastname: req.user.invoiceInfo.lastname },
         user: req.user._id
     })
-    console.log(req.body.cartData.items)
+    // console.log(req.body.cartData.items)
     order.items = items
     await order.save()
     findUser.orders.unshift(order._id)
@@ -182,7 +178,6 @@ router.get('/check-status/:id/:payId', mwIsLoggedIn, catchAsync(async function (
     let isAuthor = false
     if (req.user?.orders?.length) {
         for (var i = 0; i < req.user.orders.length; i++) {
-            console.log(req.user.orders[i].equals(id))
             if (req.user.orders[i].equals(id)) {
                 isAuthor = true
                 break;
@@ -235,12 +230,8 @@ router.get('/order/:payId', mwIsLoggedIn, catchAsync(async function (req, res, n
     const { payId } = req.params
 
     const order = await Order.findOne({ payId }).populate('items.item')
-    if (!order) {
-        if (req.user?.orders?.length) {
-            await User.findByIdAndUpdate(req.user._id, { $pullAll: { orders: [id] } })
-        }
-        return res.status(404).json({ msg: "Can't find this order", code: 300 })
-    }
+    if (!order) return res.status(404).json({ msg: "Can't find this order", code: 300 })
+    
     let isAuthor = false
     req.user?.orders.map(ord => {
         if (order?.equals(ord._id)) isAuthor = true

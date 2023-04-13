@@ -39,3 +39,10 @@ For admin POV use: email: "email@email.com" and password: "12345678"
 2. NodeJS
 3. Express
 4. MongoDB + Redis
+
+<br>
+<br>
+<br>
+I misspelled "address" multiple times and I'm too lazy to repair it :P
+<br>
+<br>

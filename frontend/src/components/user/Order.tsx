@@ -1,7 +1,9 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react"
+
 import OrderItem from "./OrderItem";
 import LoadingItem from '../../components/user/OrderItemLoading'
+import PaymentStatus from './PaymentStatus'
 
 import RefreshSvg from '../../images/Refresh'
 import Link from "next/link";
@@ -15,11 +17,11 @@ interface order {
     shippingPrice?: string | number;
 }
 
-const Order = ({ orderId, orderLoaded, viewItem, DocumentAddSvg, BackTurnSvg, PizzaSvg, setOrdersId, setOrdersLoaded }) => {
+const Order = ({ orderId, orderLoaded, viewItem, PizzaSvg, setOrdersId, setOrdersLoaded }) => {
     const [status, setStatus] = useState(null)
     const [order, setOrder] = useState<order>(orderLoaded)
     const [paymentUrl, setPaymentUrl] = useState('')
-    const [error, setError] = useState(null)
+    const [error, setError] = useState(0)
     // const [items, setItems] = useState(order?.items)
 
     function isInViewport(element) {
@@ -205,99 +207,29 @@ const Order = ({ orderId, orderLoaded, viewItem, DocumentAddSvg, BackTurnSvg, Pi
         <>
             <div className="order" ref={orderRef}>
                 <div>
-                    {
-                        error === 401 || error === 403 || error === 400 || error === 500 ?
-                            <div className="payment-error">
-                                ERROR with providing status ({error})
-                            </div>
-                            : status === null ?
-                                <div className="payment-loading">
-                                    <span>
-                                        <div className="spinner-border" role="status"></div>
-                                    </span>
-                                    Loading...
-                                </div>
-                                : status === 0 ?
-                                    <div className="payment-issue">
-                                        <span>&#x203C;</span>
-                                        Issue with payment
-                                    </div>
-                                    : status === 1 ?
-                                        <div className="payment-created">
-                                            <span>
-                                                <DocumentAddSvg />
-                                            </span>
-                                            <div>
-                                                Payment created
-                                                <div>
-                                                    <a target='_blank' href={`${paymentUrl || orderLoaded?.url}`}>Go to payment</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        : status === 2 ?
-                                            <div className="payment-progress">
-                                                <span>
-                                                    <div className="spinner-grow" role="status"></div>
-                                                </span>
-                                                Payment in progress
-                                            </div>
-                                            : status === 3 ?
-                                                <div className="payment-cancelled">
-                                                    <span>&#x274C;</span>
-                                                    Payment cancelled
-                                                </div>
-                                                : status === 4 ?
-                                                    <div className="payment-confirmed">
-                                                        <span>
-                                                            <DocumentAddSvg />
-                                                        </span>
-                                                        Payment confirmed
-                                                    </div>
-                                                    : status === 5 ?
-                                                        <div className="payment-revoked">
-                                                            <span>&#x274C;</span>
-                                                            Payment revoked
-                                                        </div>
-                                                        : status === 6 ?
-                                                            <div className="payment-rejected">
-                                                                <span>&#x274C;</span>
-                                                                Payment rejected
-                                                            </div>
-                                                            : status === 7 || status === 8 ?
-                                                                <div className="payment-successful">
-                                                                    <span>&#x2714;</span>
-                                                                    Payment successful
-                                                                </div>
-                                                                : status === 9 ?
-                                                                    <div className="payment-progress-refund">
-                                                                        <span>
-                                                                            <div className="spinner-grow" role="status"></div>
-                                                                        </span>
-                                                                        Refund in progress
-                                                                    </div>
-                                                                    : status === 10 ?
-                                                                        <div className="payment-refund">
-                                                                            <span>
-                                                                                <BackTurnSvg />
-                                                                            </span>
-                                                                            Refunded
-                                                                        </div>
-                                                                        : ''
-                    }
+                    <PaymentStatus
+                        status={status}
+                        error={error}
+                        paymentUrl={paymentUrl}
+                        order={order}
+                    />
                     {
                         orderRef?.current?.isStatusLoaded ?
                             <button
                                 onClick={getStatus}
                                 ref={refreshRef}
-                                className="refresh"
-                                type="button">
+                                className="btn-refresh-status"
+                                type="button"
+                            >
                                 <RefreshSvg />
                             </button> : ''
                     }
                 </div>
                 <div className="order-details">
                     {order?.orderNo ?
-                        <h3>{order?.orderNo}</h3>
+                        <h3>
+                            <Link href={`/user/profile/orders?payId=${order?.payId}`}>{order?.orderNo}</Link>
+                        </h3>
                         :
                         <div role="status" className="header-loading"></div>
                     }
@@ -321,9 +253,11 @@ const Order = ({ orderId, orderLoaded, viewItem, DocumentAddSvg, BackTurnSvg, Pi
                                 <LoadingItem PizzaSvg={PizzaSvg} />
                             </>
                         }
-                        <Link href={`/user/profile/orders?payId=${order?.payId}`}>
-                            More
-                        </Link>
+                        <div className="view-more">
+                            <Link href={`/user/profile/orders?payId=${order?.payId}`}>
+                                &#43; View More Information
+                            </Link>
+                        </div>
                     </div>
                 </div>
                 {order?.totalPrice || order?.shippingPrice ?
