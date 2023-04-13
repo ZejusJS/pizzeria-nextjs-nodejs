@@ -22,23 +22,25 @@ const Orders = ({ userData, viewItem, slug, setBackUrl, setBackText, payIdQuery 
     useEffect(() => {
         setIsLoading(true)
 
-        axios({
-            method: 'get',
-            url: `/api2/payment/orders/${ordersId.slice(pageNumber * ordersPerPage, pageNumber * ordersPerPage + ordersPerPage)}`
-        })
-            .then(res => {
-                // console.log(res.data)
-                setOrdersLoaded(prev => {
-                    return [...prev, ...res.data.orders]
+        if (!payIdQuery) {
+            axios({
+                method: 'get',
+                url: `/api2/payment/orders/${ordersId.slice(pageNumber * ordersPerPage, pageNumber * ordersPerPage + ordersPerPage)}`
+            })
+                .then(res => {
+                    // console.log(res.data)
+                    setOrdersLoaded(prev => {
+                        return [...prev, ...res.data.orders]
+                    })
+                    setIsLoading(false)
                 })
-                setIsLoading(false)
-            })
-            .catch(e => {
-                setIsLoading(false)
-                console.error(e)
-            })
+                .catch(e => {
+                    setIsLoading(false)
+                    console.error(e)
+                })
+        }
         // console.log(ordersLoaded)
-    }, [pageNumber])
+    }, [pageNumber, payIdQuery])
 
     return (
         <>

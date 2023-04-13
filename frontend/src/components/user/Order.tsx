@@ -146,6 +146,7 @@ const Order = ({ orderId, orderLoaded, viewItem, PizzaSvg, setOrdersId, setOrder
         setTimeout(() => {
             if (refreshRef?.current) refreshRef.current.disabled = false
         }, 1500);
+
         return
     }
 
@@ -174,32 +175,63 @@ const Order = ({ orderId, orderLoaded, viewItem, PizzaSvg, setOrdersId, setOrder
     useEffect(() => {
         if (orderLoaded?.url) setPaymentUrl(orderLoaded.url)
 
-        const checkIsInViewPort = async e => {
-            let element
-            // if (e) element = e.currentTarget
-            element = orderRef?.current
+        // const checkIsInViewPort = async e => {
+        //     let element
+        //     // if (e) element = e.currentTarget
+        //     element = orderRef?.current
 
-            if (element && order?.orderNo && order?.totalPrice) element.isLoaded = true
-            if (element && !element.isLoaded && isInViewport(element)) {
-                element.isLoaded = true
-                console.log('loading')
+        //     if (element && order?.orderNo && order?.totalPrice) element.isLoaded = true
+        //     if (element && !element.isLoaded && isInViewport(element)) {
+        //         element.isLoaded = true
+        //         console.log('loading')
 
-                await getOrderDetails()
+        //         await getOrderDetails()
+        //     }
+
+        //     if (element?.isLoaded && !element?.isStatusLoaded && isInViewport(element)) {
+        //         element.isStatusLoaded = true
+
+        //         await getStatus()
+        //     }
+        // }
+
+        // checkIsInViewPort(null)
+
+        // document.addEventListener('scroll', checkIsInViewPort)
+
+        let element
+        element = orderRef?.current
+
+        var observer = new IntersectionObserver(onIntersection, {
+            root: null,
+            threshold: 0,
+            rootMargin: "200px",
+        })
+
+        function onIntersection(entries, opts) {
+            entries.forEach(async entry => {
+                if (element && order?.orderNo && order?.totalPrice) element.isLoaded = true
+                if (element && !element.isLoaded && isInViewport(element)) {
+                    element.isLoaded = true
+                    console.log('loading')
+
+                    await getOrderDetails()
+                }
+
+                if (element?.isLoaded && !element?.isStatusLoaded && isInViewport(element)) {
+                    element.isStatusLoaded = true
+
+                    await getStatus()
+                }
             }
-
-            if (element?.isLoaded && !element?.isStatusLoaded && isInViewport(element)) {
-                element.isStatusLoaded = true
-
-                await getStatus()
-            }
+            )
         }
 
-        checkIsInViewPort(null)
-
-        document.addEventListener('scroll', checkIsInViewPort)
+        observer.observe(orderRef?.current)
 
         return () => {
-            document.removeEventListener('scroll', checkIsInViewPort);
+            // document.removeEventListener('scroll', checkIsInViewPort);
+            observer.disconnect()
         };
     }, [])
 
