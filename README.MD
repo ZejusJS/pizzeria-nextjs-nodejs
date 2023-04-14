@@ -31,7 +31,11 @@ first project with nextjs + nodejs
 - [ ] Design footer (more information, longer)
 
 ### Links: (last deploy: 9.4.2023)
-(long waiting for fresh starts, free tiers, maybe frontend isn't in sync with backend - I didn't deploy backend aswell) <br>
+(long waiting for fresh starts, free tiers) <br>
+
+<b>If there is a "This function has crashed" error or endless loading, 
+it means that the server hasn't been started yet (server is on free plan, so it takes time)</b> <br>
+
 - **Frontend**: https://pizzeria-mammamia.netlify.app/
 - **Backend**: https://pizzeria-backend-4vij.onrender.com/ <br>
 For admin POV use: email: "email@email.com" and password: "12345678"
