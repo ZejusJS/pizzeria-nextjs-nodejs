@@ -348,11 +348,11 @@ input.radio-green[type=radio] {
         max-width: 800px;
 
         .submit-con {
-            width: 260px;
+            width: 300px;
         }
 
         .order-overview {
-            max-width: 300px;
+            width: 300px;
         }
     }
 }
@@ -382,11 +382,17 @@ input.radio-green[type=radio] {
         gap: 10px;
         // margin: 0 auto;
 
+        .detail {
+            width: 100%;
+        }
+
         h3 {
+            text-align: left;
             margin-bottom: 2px;
         }
 
         p {
+            padding-left: 5px;
             margin-bottom: 2px;
         }
     }

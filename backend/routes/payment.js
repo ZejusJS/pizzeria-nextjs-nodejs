@@ -155,8 +155,8 @@ router.post('/card', mwIsLoggedIn, validatePayment, mwRecaptcha, mwCardPaymentPo
         orderNo: data.orderNo,
         totalPrice: (data.totalAmount / 100).toFixed(2),
         shippingPrice,
-        shippingAdress: {...data.order.shipping, firstname, lastname},
-        invoiceInfo: {...data.order.billing, firstname: req.user.invoiceInfo.firstname, lastname: req.user.invoiceInfo.lastname },
+        shippingAdress: { ...data.order.shipping, firstname, lastname },
+        invoiceInfo: { ...data.order.billing, firstname: req.user.invoiceInfo.firstname, lastname: req.user.invoiceInfo.lastname },
         user: req.user._id
     })
     // console.log(req.body.cartData.items)
@@ -196,8 +196,8 @@ router.get('/check-status/:id/:payId', mwIsLoggedIn, catchAsync(async function (
     const signStatus = crypto.createSign('SHA256')
     signStatus.update(RETEZEC_STATUS)
     signStatus.end()
-    const signatureStatus = signStatus.sign(CSOB_PRIVATE);
-    const signatureStatusString = signatureStatus.toString('base64');
+    const signatureStatus = signStatus.sign(CSOB_PRIVATE)
+    const signatureStatusString = signatureStatus.toString('base64')
     const signatureStatusUri = encodeURIComponent(signatureStatusString)
 
     const data = {
@@ -215,6 +215,8 @@ router.get('/check-status/:id/:payId', mwIsLoggedIn, catchAsync(async function (
             console.error(e)
         })
 
+    res.set('Cache-Control', 'public, max-age=20, must-revalidate')
+
     return res.status(200).json(data)
 }))
 
@@ -222,6 +224,8 @@ router.get('/orders/:ids', mwIsLoggedIn, catchAsync(async function (req, res, ne
     const { ids } = req.params
     const orders = (await Order.find({ _id: { $in: ids.split(',') }, user: req.user._id }).populate('items.item')).reverse()
     if (!orders) return res.status(400).json({ msg: 'Bad ids or you are not allowed to view this orders', code: 300 })
+
+    res.set('Cache-Control', 'public, max-age=20000, must-revalidate')
 
     return res.status(200).json({ orders })
 }))
@@ -231,7 +235,7 @@ router.get('/order/:payId', mwIsLoggedIn, catchAsync(async function (req, res, n
 
     const order = await Order.findOne({ payId }).populate('items.item')
     if (!order) return res.status(404).json({ msg: "Can't find this order", code: 300 })
-    
+
     let isAuthor = false
     req.user?.orders.map(ord => {
         if (order?.equals(ord._id)) isAuthor = true
@@ -248,8 +252,8 @@ router.get('/order/:payId', mwIsLoggedIn, catchAsync(async function (req, res, n
     const signStatus = crypto.createSign('SHA256')
     signStatus.update(RETEZEC_STATUS)
     signStatus.end()
-    const signatureStatus = signStatus.sign(CSOB_PRIVATE);
-    const signatureStatusString = signatureStatus.toString('base64');
+    const signatureStatus = signStatus.sign(CSOB_PRIVATE)
+    const signatureStatusString = signatureStatus.toString('base64')
     const signatureStatusUri = encodeURIComponent(signatureStatusString)
 
     const data = {

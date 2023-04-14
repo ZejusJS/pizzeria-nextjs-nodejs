@@ -8,8 +8,8 @@ first project with nextjs + nodejs
 - [x] Build links in nav and style it
 - [x] Do middlewares in backend for checking cart's user
 - [x] ~~Calculate total price in CZK (maybe from someone's api)~~ - Prices only in CZK
-- [x] Implement sandbox gateway (maybe from ČSOB)
-- [ ] Try implement Google auth
+- [x] Implement sandbox gateway (from ČSOB)
+- [ ] Implement Google auth
 - [x] Clear the ducking mess in the new-pizza's form validation code!!!!! 
 - [x] Paginate pizzas
 - [x] Style login and signup pages
@@ -25,8 +25,10 @@ first project with nextjs + nodejs
 - [x] ~~Popup on cart~~
 - [ ] Secure the checkout - no duplicates, tokens, [x]slowdown, [x]recaptcha... in progress
 - [ ] twitter, facebook etc. seo... in progress
-- [ ] Single order page... in progress
+- [x] Single order page... in progress
 - [x] Fix payment url in orders profile
+- [ ] Calculate time of delivery to user's location (this will be pain)
+- [ ] Design footer (more information, longer)
 
 ### Links: (last deploy: 9.4.2023)
 (long waiting for fresh starts, free tiers, maybe frontend isn't in sync with backend - I didn't deploy backend aswell) <br>
@@ -40,7 +42,6 @@ For admin POV use: email: "email@email.com" and password: "12345678"
 3. Express
 4. MongoDB + Redis
 
-<br>
 <br>
 <br>
 I misspelled "address" multiple times and I'm too lazy to repair it :P

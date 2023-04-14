@@ -9,7 +9,7 @@ const IngredientsSchema = Schema({
             pizzas: [
                 {
                     type: Schema.Types.ObjectId,
-                    ref: 'User'
+                    ref: 'Pizza'
                 }
             ]
         }

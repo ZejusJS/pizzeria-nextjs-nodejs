@@ -150,6 +150,7 @@ const Order = ({ orderId, orderLoaded, viewItem, PizzaSvg, setOrdersId, setOrder
                 // console.log(res)
                 setStatus(res.data?.paymentStatus)
                 setPaymentUrl(orderLoaded?.paymentUrl)
+                setError(0)
             })
             .catch(e => {
                 console.error(e)
@@ -210,7 +211,6 @@ const Order = ({ orderId, orderLoaded, viewItem, PizzaSvg, setOrdersId, setOrder
 
         function onIntersection(entries, opts) {
             entries.forEach(async entry => {
-                console.log(entry.intersectionRatio)
                 if (element && order?.orderNo && order?.totalPrice) element.isLoaded = true
                 if (element && !element.isLoaded && entry.isIntersecting) {
                     element.isLoaded = true
@@ -219,7 +219,7 @@ const Order = ({ orderId, orderLoaded, viewItem, PizzaSvg, setOrdersId, setOrder
 
                 if (element?.isLoaded && !element?.isStatusLoaded && entry.isIntersecting) {
                     element.isStatusLoaded = true
-                    console.log('loading')
+
                     await getStatus()
                 }
             }

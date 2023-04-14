@@ -34,7 +34,7 @@ const OrderView = ({ setBackUrl, setBackText, payIdQuery, viewItem }) => {
     }, [viewOrder])
 
     async function fetchOrderData() {
-        refreshRef.current.disabled = true
+        if (refreshRef?.current) refreshRef.current.disabled = true
 
         if (payIdQuery) {
             setBackUrl('/user/profile/orders')
@@ -60,7 +60,7 @@ const OrderView = ({ setBackUrl, setBackText, payIdQuery, viewItem }) => {
         }
 
         setTimeout(() => {
-            refreshRef.current.disabled = false
+            if (refreshRef?.current) refreshRef.current.disabled = false
         }, 1000);
     }
 

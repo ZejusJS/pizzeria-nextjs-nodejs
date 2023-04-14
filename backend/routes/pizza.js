@@ -44,9 +44,9 @@ router.get('/all', catchAsync(async function (req, res, next) {
     res.status(200).json(pizzas)
 }))
 
-router.get('/get-many', catchAsync(async function (req, res, next) {
-    const { ids } = req.body
-    let pizzas = await Pizza.find({ _id: ids }).select({ show: 0 });
+router.get('/get-many/:ids', catchAsync(async function (req, res, next) {
+    const { ids } = req.params
+    let pizzas = await Pizza.find({ _id: { $in: ids.split(',') } }).select({ show: 0 });
     // console.log(pizzas)
     res.status(200).json(pizzas)
 }))
@@ -57,6 +57,9 @@ router.get('/all-ingredients', catchAsync(async function (req, res, next) {
     ingredients = await getOrSetexCached('ingredients', ingredientsExp, async () => {
         return await Ingredients.findOne()
     })
+
+    res.set('Cache-Control', 'public, max-age=300, must-revalidate')
+
     return res.status(200).json(ingredients.allIngredients)
 }))
 

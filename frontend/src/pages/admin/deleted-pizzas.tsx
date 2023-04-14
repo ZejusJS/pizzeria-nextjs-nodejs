@@ -11,13 +11,13 @@ const deletedPizzas = ({ items, viewItem }) => {
         <main>
             <h1 className="text-cen">Deleted Products</h1>
             {items.map(it => {
-                return (<>
+                return (
                     <AdminPizza
                         key={it?.title + it?._id}
                         item={it}
                         viewItem={viewItem}
                         PizzaSvg={PizzaSvg} />
-                </>)
+                )
             })}
         </main>
     )

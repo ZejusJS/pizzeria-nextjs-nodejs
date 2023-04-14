@@ -111,7 +111,7 @@ const index = ({ userData, viewItem }) => {
                             ?
                             <Orders
                                 userData={userData}
-                                viewItem={viewItem} 
+                                viewItem={viewItem}
                                 slug={slug}
                                 setBackUrl={setBackUrl}
                                 setBackText={setBackText}
@@ -156,6 +156,11 @@ export const getServerSideProps = async (ctx) => {
             }
         }
     }
+
+    ctx.res.setHeader(
+        'Cache-Control',
+        'public, maxage=100, must-revalidate'
+    )
 
     // console.log(userData.orders)
     return {
