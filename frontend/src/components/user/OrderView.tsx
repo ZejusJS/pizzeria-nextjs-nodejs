@@ -34,12 +34,13 @@ const OrderView = ({ setBackUrl, setBackText, payIdQuery, viewItem }) => {
     }, [viewOrder])
 
     async function fetchOrderData() {
+        refreshRef.current.disabled = true
 
         if (payIdQuery) {
             setBackUrl('/user/profile/orders')
             setBackText('Orders')
 
-            axios({
+            await axios({
                 method: 'get',
                 url: `/api2/payment/order/${payIdQuery}`,
                 withCredentials: true,
@@ -57,6 +58,10 @@ const OrderView = ({ setBackUrl, setBackText, payIdQuery, viewItem }) => {
                     console.error(e)
                 })
         }
+
+        setTimeout(() => {
+            refreshRef.current.disabled = false
+        }, 1000);
     }
 
     useEffect(() => {

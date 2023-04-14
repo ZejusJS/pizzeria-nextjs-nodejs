@@ -24,17 +24,6 @@ const Order = ({ orderId, orderLoaded, viewItem, PizzaSvg, setOrdersId, setOrder
     const [error, setError] = useState(0)
     // const [items, setItems] = useState(order?.items)
 
-    function isInViewport(element) {
-        const rect = element.getBoundingClientRect();
-        const offset = 200
-        return (
-            rect.right >= -offset &&
-            rect.bottom >= -offset &&
-            rect.left <= (window.innerWidth || document.documentElement.clientWidth) + offset &&
-            rect.top <= (window.innerHeight || document.documentElement.clientHeight) + offset
-        );
-    }
-
     const orderRef = useRef(null)
 
     const [date, setDate] = useState(null)
@@ -172,6 +161,17 @@ const Order = ({ orderId, orderLoaded, viewItem, PizzaSvg, setOrdersId, setOrder
         return
     }
 
+    // function isInViewport(element) {
+    //     const rect = element.getBoundingClientRect();
+    //     const offset = 200
+    //     return (
+    //         rect.right >= -offset &&
+    //         rect.bottom >= -offset &&
+    //         rect.left <= (window.innerWidth || document.documentElement.clientWidth) + offset &&
+    //         rect.top <= (window.innerHeight || document.documentElement.clientHeight) + offset
+    //     );
+    // }
+
     useEffect(() => {
         if (orderLoaded?.url) setPaymentUrl(orderLoaded.url)
 
@@ -204,23 +204,22 @@ const Order = ({ orderId, orderLoaded, viewItem, PizzaSvg, setOrdersId, setOrder
 
         var observer = new IntersectionObserver(onIntersection, {
             root: null,
-            threshold: 0,
-            rootMargin: "200px",
+            threshold: 0.01,
+            rootMargin: "100px",
         })
 
         function onIntersection(entries, opts) {
             entries.forEach(async entry => {
+                console.log(entry.intersectionRatio)
                 if (element && order?.orderNo && order?.totalPrice) element.isLoaded = true
-                if (element && !element.isLoaded && isInViewport(element)) {
+                if (element && !element.isLoaded && entry.isIntersecting) {
                     element.isLoaded = true
-                    console.log('loading')
-
                     await getOrderDetails()
                 }
 
-                if (element?.isLoaded && !element?.isStatusLoaded && isInViewport(element)) {
+                if (element?.isLoaded && !element?.isStatusLoaded && entry.isIntersecting) {
                     element.isStatusLoaded = true
-
+                    console.log('loading')
                     await getStatus()
                 }
             }
@@ -260,7 +259,11 @@ const Order = ({ orderId, orderLoaded, viewItem, PizzaSvg, setOrdersId, setOrder
                 <div className="order-details">
                     {order?.orderNo ?
                         <h3>
-                            <Link href={`/user/profile/orders?payId=${order?.payId}`}>{order?.orderNo}</Link>
+                            <Link href={`/user/profile/orders?payId=${order?.payId}`}
+                                shallow={true}
+                            >
+                                {order?.orderNo}
+                            </Link>
                         </h3>
                         :
                         <div role="status" className="header-loading"></div>
@@ -286,7 +289,9 @@ const Order = ({ orderId, orderLoaded, viewItem, PizzaSvg, setOrdersId, setOrder
                             </>
                         }
                         <div className="view-more">
-                            <Link href={`/user/profile/orders?payId=${order?.payId}`}>
+                            <Link href={`/user/profile/orders?payId=${order?.payId}`}
+                                shallow={true}
+                            >
                                 &#43; View More Information
                             </Link>
                         </div>

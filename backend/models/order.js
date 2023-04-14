@@ -4,13 +4,15 @@ const mongoosePaginate = require('mongoose-paginate-v2')
 
 const OrderSchema = Schema({
     payId: {
-        type: String
+        type: String,
+        required: true
     },
     url: {
         type: String
     },
     orderNo: {
-        type: String
+        type: String,
+        required: true
     },
     items: [
         {
@@ -24,30 +26,69 @@ const OrderSchema = Schema({
         }
     ],
     totalPrice: {
-        type: String
+        type: Number,
+        required: true
     },
     shippingPrice: {
-        type: String
+        type: Number,
+        required: true
     },
     shippingAdress: {
-        firstname: String,
-        lastname: String,
-        address1: String,
-        city: String,
-        zip: String,
-        country: String,
+        firstname: {
+            type: String,
+            required: true
+        },
+        lastname: {
+            type: String,
+            required: true
+        },
+        address1: {
+            type: String,
+            required: true
+        },
+        city: {
+            type: String,
+            required: true
+        },
+        zip: {
+            type: String,
+            required: true
+        },
+        country: {
+            type: String,
+            required: true
+        },
     },
     invoiceInfo: {
-        firstname: String,
-        lastname: String,
-        address1: String,
-        city: String,
-        zip: String,
-        country: String,
+        firstname: {
+            type: String,
+            required: true
+        },
+        lastname: {
+            type: String,
+            required: true
+        },
+        address1: {
+            type: String,
+            required: true
+        },
+        city: {
+            type: String,
+            required: true
+        },
+        zip: {
+            type: String,
+            required: true
+        },
+        country: {
+            type: String,
+            required: true
+        },
     },
     user: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'User',
+        required: true
     }
 }, { timestamps: true })
 

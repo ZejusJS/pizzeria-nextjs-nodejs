@@ -22,7 +22,6 @@ const Orders = ({ userData, viewItem, slug, setBackUrl, setBackText, payIdQuery 
     useEffect(() => {
         setIsLoading(true)
 
-        if (!payIdQuery) {
             axios({
                 method: 'get',
                 url: `/api2/payment/orders/${ordersId.slice(pageNumber * ordersPerPage, pageNumber * ordersPerPage + ordersPerPage)}`
@@ -38,9 +37,8 @@ const Orders = ({ userData, viewItem, slug, setBackUrl, setBackText, payIdQuery 
                     setIsLoading(false)
                     console.error(e)
                 })
-        }
         // console.log(ordersLoaded)
-    }, [pageNumber, payIdQuery])
+    }, [pageNumber])
 
     return (
         <>

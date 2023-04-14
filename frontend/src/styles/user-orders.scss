@@ -45,6 +45,11 @@
         h3 {
             a {
                 color: rgb(0, 116, 131);
+                text-decoration: none;
+
+                &:hover {
+                    text-decoration: underline;
+                }
 
                 &:active {
                     color: rgb(0, 86, 97);
