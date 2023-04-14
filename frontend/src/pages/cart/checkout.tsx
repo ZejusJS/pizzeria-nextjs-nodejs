@@ -20,8 +20,15 @@ import DollarSvg from '../../images/Dollar'
 import ShippingSvg from '../../images/Box'
 import ArrowRightSvg from '../../images/ArrowRight'
 
-const checkout = ({ cartData, setUser, user, fetchFirstData, userData, setCart }) => {
+const checkout = ({ cartData, setUser, user, fetchFirstData, userData, setCart, router }) => {
     const [orderDetails, setOrderDetails] = useState({
+        firstname: '',
+        lastname: '',
+        adress: '',
+        city: '',
+        zip: ''
+    })
+    const [orderDetailsFixed, setOrderDetailsFixed] = useState({
         firstname: '',
         lastname: '',
         adress: '',
@@ -48,17 +55,35 @@ const checkout = ({ cartData, setUser, user, fetchFirstData, userData, setCart }
                 zip: shippingAdress.zip?.length ? shippingAdress.zip : invoiceInfo.zip
             })
         }
-    }, [])
+    }, [userData])
 
     useEffect(() => {
         setTotalPrice(paymentMethod.price + shipping.price + cartData.totalCartPrice)
     }, [shipping, paymentMethod, orderDetails, cartData])
 
-    const firstnameError = useRef(null)
-    const lastnameError = useRef(null)
-    const adressError = useRef(null)
-    const cityError = useRef(null)
-    const zipError = useRef(null)
+    useEffect(() => {
+        setOrderDetailsFixed(prev => {
+            return ({
+                firstname: orderDetails?.firstname?.replace(/[^a-zA-Z\u00c0-\u00d6\u00d8-\u00f6\u00f8-\u02af\u1d00-\u1d25\u1d62-\u1d65\u1d6b-\u1d77\u1d79-\u1d9a\u1e00-\u1eff\u2090-\u2094\u2184-\u2184\u2488-\u2490\u271d-\u271d\u2c60-\u2c7c\u2c7e-\u2c7f\ua722-\ua76f\ua771-\ua787\ua78b-\ua78c\ua7fb-\ua7ff\ufb00-\ufb06\u00bf\u00a1]/gi, ''),
+                lastname: orderDetails?.lastname?.replace(/[^a-zA-Z\u00c0-\u00d6\u00d8-\u00f6\u00f8-\u02af\u1d00-\u1d25\u1d62-\u1d65\u1d6b-\u1d77\u1d79-\u1d9a\u1e00-\u1eff\u2090-\u2094\u2184-\u2184\u2488-\u2490\u271d-\u271d\u2c60-\u2c7c\u2c7e-\u2c7f\ua722-\ua76f\ua771-\ua787\ua78b-\ua78c\ua7fb-\ua7ff\ufb00-\ufb06\u00bf\u00a1]/gi, ''),
+                adress: orderDetails?.adress?.replace(/[^\sa-zA-Z0-9\+\_\-\@\&\=\.\,\(\)\:\ \/\?\|\<\>\"\'\!\%\*\\\#\$\^\;\u00c0-\u00d6\u00d8-\u00f6\u00f8-\u02af\u1d00-\u1d25\u1d62-\u1d65\u1d6b-\u1d77\u1d79-\u1d9a\u1e00-\u1eff\u2090-\u2094\u2184-\u2184\u2488-\u2490\u271d-\u271d\u2c60-\u2c7c\u2c7e-\u2c7f\ua722-\ua76f\ua771-\ua787\ua78b-\ua78c\ua7fb-\ua7ff\ufb00-\ufb06]/gi, ''),
+                city: orderDetails?.city?.replace(/[^\sa-zA-Z0-9\+\_\-\@\&\=\.\,\(\)\:\ \/\?\|\<\>\"\'\!\%\*\\\#\$\^\;\u00c0-\u00d6\u00d8-\u00f6\u00f8-\u02af\u1d00-\u1d25\u1d62-\u1d65\u1d6b-\u1d77\u1d79-\u1d9a\u1e00-\u1eff\u2090-\u2094\u2184-\u2184\u2488-\u2490\u271d-\u271d\u2c60-\u2c7c\u2c7e-\u2c7f\ua722-\ua76f\ua771-\ua787\ua78b-\ua78c\ua7fb-\ua7ff\ufb00-\ufb06]/gi, ''),
+                zip: orderDetails?.zip?.replace(/[^\sa-zA-Z0-9\+\_\-\@\&\=\.\,\(\)\:\ \/\?\|\<\>\"\'\!\%\*\\\#\$\^\;\u00c0-\u00d6\u00d8-\u00f6\u00f8-\u02af\u1d00-\u1d25\u1d62-\u1d65\u1d6b-\u1d77\u1d79-\u1d9a\u1e00-\u1eff\u2090-\u2094\u2184-\u2184\u2488-\u2490\u271d-\u271d\u2c60-\u2c7c\u2c7e-\u2c7f\ua722-\ua76f\ua771-\ua787\ua78b-\ua78c\ua7fb-\ua7ff\ufb00-\ufb06]/gi, '')
+            })
+        })
+    }, [orderDetails])
+
+    const firstnameErrorRef = useRef(null)
+    const lastnameErrorRef = useRef(null)
+    const adressErrorRef = useRef(null)
+    const cityErrorRef = useRef(null)
+    const zipErrorRef = useRef(null)
+
+    const isFirstnameError = useRef(false)
+    const isLastnameError = useRef(false)
+    const isAdressError = useRef(false)
+    const isCityError = useRef(false)
+    const isZipError = useRef(false)
 
     function handleChangeOrderDetails(e) {
         setError(0)
@@ -73,67 +98,87 @@ const checkout = ({ cartData, setUser, user, fetchFirstData, userData, setCart }
         if (name === 'firstname') {
 
             if (value.length < 1 || value.length > 30) {
-                firstnameError?.current?.classList.add('shown')
+                firstnameErrorRef?.current?.classList.add('shown')
+                isFirstnameError.current = true
             } else {
-                firstnameError?.current?.classList.remove('shown')
+                firstnameErrorRef?.current?.classList.remove('shown')
+                isFirstnameError.current = false
             }
 
             if (value.match(/[^\sa-zA-Z\u00c0-\u00d6\u00d8-\u00f6\u00f8-\u02af\u1d00-\u1d25\u1d62-\u1d65\u1d6b-\u1d77\u1d79-\u1d9a\u1e00-\u1eff\u2090-\u2094\u2184-\u2184\u2488-\u2490\u271d-\u271d\u2c60-\u2c7c\u2c7e-\u2c7f\ua722-\ua76f\ua771-\ua787\ua78b-\ua78c\ua7fb-\ua7ff\ufb00-\ufb06\u00bf\u00a1]/gi)) {
-                firstnameError?.current?.classList.add('second-shown')
+                firstnameErrorRef?.current?.classList.add('second-shown')
+                isFirstnameError.current = true
             } else {
-                firstnameError?.current?.classList.remove('second-shown')
+                firstnameErrorRef?.current?.classList.remove('second-shown')
+                // isFirstnameError.current = false
             }
         }
         if (name === 'lastname') {
             if (value.length < 1 || value.length > 30) {
-                lastnameError?.current?.classList.add('shown')
+                lastnameErrorRef?.current?.classList.add('shown')
+                isLastnameError.current = true
             } else {
-                lastnameError?.current?.classList.remove('shown')
+                lastnameErrorRef?.current?.classList.remove('shown')
+                isLastnameError.current = false
             }
 
             if (value.match(/[^\sa-zA-Z\u00c0-\u00d6\u00d8-\u00f6\u00f8-\u02af\u1d00-\u1d25\u1d62-\u1d65\u1d6b-\u1d77\u1d79-\u1d9a\u1e00-\u1eff\u2090-\u2094\u2184-\u2184\u2488-\u2490\u271d-\u271d\u2c60-\u2c7c\u2c7e-\u2c7f\ua722-\ua76f\ua771-\ua787\ua78b-\ua78c\ua7fb-\ua7ff\ufb00-\ufb06\u00bf\u00a1]/gi)) {
-                lastnameError?.current?.classList.add('second-shown')
+                lastnameErrorRef?.current?.classList.add('second-shown')
+                isLastnameError.current = true
             } else {
-                lastnameError?.current?.classList.remove('second-shown')
+                lastnameErrorRef?.current?.classList.remove('second-shown')
+                // isLastnameError.current = false
             }
         }
         if (name === 'adress') {
             if (value.length < 1 || value.length > 50) {
-                adressError?.current?.classList.add('shown')
+                adressErrorRef?.current?.classList.add('shown')
+                isAdressError.current = true
             } else {
-                adressError?.current?.classList.remove('shown')
+                adressErrorRef?.current?.classList.remove('shown')
+                isAdressError.current = false
             }
 
             if (value.match(/[^\sa-zA-Z0-9\+\_\-\@\&\=\.\,\(\)\:\ \/\?\|\<\>\"\'\!\%\*\\\#\$\^\;\u00c0-\u00d6\u00d8-\u00f6\u00f8-\u02af\u1d00-\u1d25\u1d62-\u1d65\u1d6b-\u1d77\u1d79-\u1d9a\u1e00-\u1eff\u2090-\u2094\u2184-\u2184\u2488-\u2490\u271d-\u271d\u2c60-\u2c7c\u2c7e-\u2c7f\ua722-\ua76f\ua771-\ua787\ua78b-\ua78c\ua7fb-\ua7ff\ufb00-\ufb06]/gi)) {
-                adressError?.current?.classList.add('second-shown')
+                adressErrorRef?.current?.classList.add('second-shown')
+                isAdressError.current = true
             } else {
-                adressError?.current?.classList.remove('second-shown')
+                adressErrorRef?.current?.classList.remove('second-shown')
+                // isAdressError.current = false
             }
         }
         if (name === 'city') {
             if (value.length < 1 || value.length > 50) {
-                cityError?.current?.classList.add('shown')
+                cityErrorRef?.current?.classList.add('shown')
+                isCityError.current = true
             } else {
-                cityError?.current?.classList.remove('shown')
+                cityErrorRef?.current?.classList.remove('shown')
+                isCityError.current = false
             }
 
             if (value.match(/[^\sa-zA-Z0-9\+\_\-\@\&\=\.\,\(\)\:\ \/\?\|\<\>\"\'\!\%\*\\\#\$\^\;\u00c0-\u00d6\u00d8-\u00f6\u00f8-\u02af\u1d00-\u1d25\u1d62-\u1d65\u1d6b-\u1d77\u1d79-\u1d9a\u1e00-\u1eff\u2090-\u2094\u2184-\u2184\u2488-\u2490\u271d-\u271d\u2c60-\u2c7c\u2c7e-\u2c7f\ua722-\ua76f\ua771-\ua787\ua78b-\ua78c\ua7fb-\ua7ff\ufb00-\ufb06]/gi)) {
-                cityError?.current?.classList.add('second-shown')
+                cityErrorRef?.current?.classList.add('second-shown')
+                isCityError.current = true
             } else {
-                cityError?.current?.classList.remove('second-shown')
+                cityErrorRef?.current?.classList.remove('second-shown')
+                // isCityError.current = false
             }
         }
         if (name === 'zip') {
             if (value.length < 1 || value.length > 16) {
-                zipError?.current?.classList.add('shown')
+                zipErrorRef?.current?.classList.add('shown')
+                isZipError.current = true
             } else {
-                zipError?.current?.classList.remove('shown')
+                zipErrorRef?.current?.classList.remove('shown')
+                isZipError.current = false
             }
 
             if (value.match(/[^\sa-zA-Z0-9\+\_\-\@\&\=\.\,\(\)\:\ \/\?\|\<\>\"\'\!\%\*\\\#\$\^\;\u00c0-\u00d6\u00d8-\u00f6\u00f8-\u02af\u1d00-\u1d25\u1d62-\u1d65\u1d6b-\u1d77\u1d79-\u1d9a\u1e00-\u1eff\u2090-\u2094\u2184-\u2184\u2488-\u2490\u271d-\u271d\u2c60-\u2c7c\u2c7e-\u2c7f\ua722-\ua76f\ua771-\ua787\ua78b-\ua78c\ua7fb-\ua7ff\ufb00-\ufb06]/gi)) {
-                zipError?.current?.classList.add('second-shown')
+                zipErrorRef?.current?.classList.add('second-shown')
+                isZipError.current = true
             } else {
-                zipError?.current?.classList.remove('second-shown')
+                zipErrorRef?.current?.classList.remove('second-shown')
+                // isZipError.current = false
             }
         }
     }
@@ -350,12 +395,12 @@ const checkout = ({ cartData, setUser, user, fetchFirstData, userData, setCart }
                                     <div className='slide-item shown' ref={slide1} >
                                         <Order
                                             orderDetails={orderDetails}
-                                            adressError={adressError}
-                                            cityError={cityError}
-                                            zipError={zipError}
+                                            adressError={adressErrorRef}
+                                            cityError={cityErrorRef}
+                                            zipError={zipErrorRef}
                                             handleChange={handleChangeOrderDetails}
-                                            firstnameError={firstnameError}
-                                            lastnameError={lastnameError}
+                                            firstnameError={firstnameErrorRef}
+                                            lastnameError={lastnameErrorRef}
                                         />
                                     </div>
                                     <div className='slide-item' ref={slide2}>
@@ -376,10 +421,33 @@ const checkout = ({ cartData, setUser, user, fetchFirstData, userData, setCart }
                                                 <div className='details'>
                                                     <div className='detail adress'>
                                                         <h3>Shipping Address</h3>
-                                                        <p> {orderDetails?.firstname?.replace(/[^a-zA-Z\u00c0-\u00d6\u00d8-\u00f6\u00f8-\u02af\u1d00-\u1d25\u1d62-\u1d65\u1d6b-\u1d77\u1d79-\u1d9a\u1e00-\u1eff\u2090-\u2094\u2184-\u2184\u2488-\u2490\u271d-\u271d\u2c60-\u2c7c\u2c7e-\u2c7f\ua722-\ua76f\ua771-\ua787\ua78b-\ua78c\ua7fb-\ua7ff\ufb00-\ufb06\u00bf\u00a1]/gi, '') + ' ' + orderDetails?.lastname?.replace(/[^a-zA-Z\u00c0-\u00d6\u00d8-\u00f6\u00f8-\u02af\u1d00-\u1d25\u1d62-\u1d65\u1d6b-\u1d77\u1d79-\u1d9a\u1e00-\u1eff\u2090-\u2094\u2184-\u2184\u2488-\u2490\u271d-\u271d\u2c60-\u2c7c\u2c7e-\u2c7f\ua722-\ua76f\ua771-\ua787\ua78b-\ua78c\ua7fb-\ua7ff\ufb00-\ufb06\u00bf\u00a1]/gi, '')}</p>
-                                                        <p> {(orderDetails?.adress).replace(/[^\sa-zA-Z0-9\+\_\-\@\&\=\.\,\(\)\:\ \/\?\|\<\>\"\'\!\%\*\\\#\$\^\;\u00c0-\u00d6\u00d8-\u00f6\u00f8-\u02af\u1d00-\u1d25\u1d62-\u1d65\u1d6b-\u1d77\u1d79-\u1d9a\u1e00-\u1eff\u2090-\u2094\u2184-\u2184\u2488-\u2490\u271d-\u271d\u2c60-\u2c7c\u2c7e-\u2c7f\ua722-\ua76f\ua771-\ua787\ua78b-\ua78c\ua7fb-\ua7ff\ufb00-\ufb06]/gi, '')}</p>
-                                                        <p> {(orderDetails?.city).replace(/[^\sa-zA-Z0-9\+\_\-\@\&\=\.\,\(\)\:\ \/\?\|\<\>\"\'\!\%\*\\\#\$\^\;\u00c0-\u00d6\u00d8-\u00f6\u00f8-\u02af\u1d00-\u1d25\u1d62-\u1d65\u1d6b-\u1d77\u1d79-\u1d9a\u1e00-\u1eff\u2090-\u2094\u2184-\u2184\u2488-\u2490\u271d-\u271d\u2c60-\u2c7c\u2c7e-\u2c7f\ua722-\ua76f\ua771-\ua787\ua78b-\ua78c\ua7fb-\ua7ff\ufb00-\ufb06]/gi, '')}</p>
-                                                        <p> {(orderDetails?.zip).replace(/[^\sa-zA-Z0-9\+\_\-\@\&\=\.\,\(\)\:\ \/\?\|\<\>\"\'\!\%\*\\\#\$\^\;\u00c0-\u00d6\u00d8-\u00f6\u00f8-\u02af\u1d00-\u1d25\u1d62-\u1d65\u1d6b-\u1d77\u1d79-\u1d9a\u1e00-\u1eff\u2090-\u2094\u2184-\u2184\u2488-\u2490\u271d-\u271d\u2c60-\u2c7c\u2c7e-\u2c7f\ua722-\ua76f\ua771-\ua787\ua78b-\ua78c\ua7fb-\ua7ff\ufb00-\ufb06]/gi, '')}</p>
+                                                        <p>
+                                                            {orderDetailsFixed?.lastname?.length
+                                                                && orderDetailsFixed?.firstname?.length
+                                                                && !isFirstnameError?.current
+                                                                && !isLastnameError?.current ?
+                                                                orderDetailsFixed.firstname + ' ' + orderDetailsFixed.lastname
+                                                                : <span className='error-details'>Invalid name</span>
+                                                            }
+                                                        </p>
+                                                        <p>
+                                                            {orderDetailsFixed?.adress?.length && !isAdressError?.current ?
+                                                                orderDetailsFixed?.adress
+                                                                : <span className='error-details'>Invalid adress</span>
+                                                            }
+                                                        </p>
+                                                        <p>
+                                                            {orderDetailsFixed?.city?.length && !isCityError?.current ?
+                                                                orderDetailsFixed?.city
+                                                                : <span className='error-details'>Invalid city</span>
+                                                            }
+                                                        </p>
+                                                        <p>
+                                                            {orderDetailsFixed?.zip?.length && !isZipError?.current ?
+                                                                orderDetailsFixed?.zip
+                                                                : <span className='error-details'>Invalid zip code</span>
+                                                            }
+                                                        </p>
                                                     </div>
                                                     <div className='detail invoice'>
                                                         <h3>Billing</h3>

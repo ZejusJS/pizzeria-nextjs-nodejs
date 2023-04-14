@@ -4,12 +4,23 @@ import { server } from '../config/config'
 import { useRouter } from 'next/router'
 import NProgress from 'nprogress'
 import axios from 'axios'
+import { NextRouter } from 'next/router'
+import { NextPage } from "next"
 
 import UserCircleSvg from "../images/UserCircle"
 import NavSvg from '../images/Nav'
 import CartSvg from '../images/Cart'
 
-const Navbar = ({ cart, setExpanded, expanded, user, fetchFirstData }) => {
+interface withRouter {
+  router: NextRouter,
+  cart, 
+  setExpanded, 
+  expanded, 
+  user, 
+  fetchFirstData
+}
+
+const Navbar: NextPage<withRouter> = ({ cart, setExpanded, expanded, user, fetchFirstData, router }) => {
   let itemsCount = 0
   cart?.items?.map(item => {
     itemsCount += Number(item.quantity)
@@ -19,7 +30,7 @@ const Navbar = ({ cart, setExpanded, expanded, user, fetchFirstData }) => {
     setExpanded(prevExp => !prevExp)
   }
 
-  const router = useRouter();
+
   useEffect(() => {
     if (expanded) {
       setExpanded(!expanded);
@@ -44,10 +55,16 @@ const Navbar = ({ cart, setExpanded, expanded, user, fetchFirstData }) => {
         NProgress.done(false)
       },
     })
-      .then(res => fetchFirstData())
+      .then(res => {
+        fetchFirstData().then(() => {
+          if (router.pathname.match(/(\/user)|(\/checkout)|(\/admin)/gi)) {
+            router.replace('/')
+          }
+        })
+      })
       .catch(e => console.log(e))
   }
-  
+
   return (
     <>
       <nav>
@@ -61,7 +78,7 @@ const Navbar = ({ cart, setExpanded, expanded, user, fetchFirstData }) => {
               <div className='options-container'>
                 <Link href={'/cart'} prefetch={false}
                   className="cart-href"
-                  >
+                >
                   <div className='cart'>
                     <CartSvg />
                     <div className='items-count'>

@@ -4,7 +4,7 @@ import { useState } from 'react'
 import NProgress from 'nprogress'
 import { useRouter } from 'next/router'
 
-const Login = ({ fetchFirstData}) => {
+const Login = ({ fetchFirstData }) => {
     const router = useRouter()
 
     const [loginData, setLoginData] = useState({
@@ -78,6 +78,9 @@ const Login = ({ fetchFirstData}) => {
             },
             onDownloadProgress: function (progressEvent) {
                 NProgress.done(false)
+                setTimeout(() => {
+                    submitting = false
+                }, 800);
             },
             data: loginData
         })
@@ -93,9 +96,6 @@ const Login = ({ fetchFirstData}) => {
                     // setOrderDetails(res.data?.invoiceInfo)
                     fetchFirstData().then(router.replace(router.asPath))
                 }
-                setTimeout(() => {
-                    submitting = false
-                }, 400);
             })
             .catch(e => {
                 console.error(e)
@@ -107,9 +107,6 @@ const Login = ({ fetchFirstData}) => {
                 if (e.response?.status === 401) {
                     authError?.current?.classList.add('shown')
                 }
-                setTimeout(() => {
-                    submitting = false
-                }, 400);
             })
     }
 

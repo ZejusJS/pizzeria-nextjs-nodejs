@@ -9,7 +9,7 @@ import { server } from '../config/config'
 import Navbar from '../components/Navbar'
 import React, { useEffect, useState, useRef } from 'react'
 import { getCookie } from 'cookies-next';
-import cookieCutter from 'cookie-cutter'
+import { NextRouter } from 'next/router'
 
 import deleteItemFunc from '../utils/deleteItem'
 import singleAddFunc from '../utils/singleAdd'
@@ -63,7 +63,7 @@ export default function App({ Component, pageProps }) {
 
   const loaderRef = useRef(null)
 
-  const router = useRouter()
+  const router: NextRouter = useRouter()
 
   NProgress.configure({ trickleSpeed: 400, minimum: 0.1 });
 
@@ -190,6 +190,7 @@ export default function App({ Component, pageProps }) {
         setExpanded={setExpanded}
         user={user}
         fetchFirstData={() => fetchFirstData(true)}
+        router={router}
       />
       <div
         className='loader'
@@ -214,7 +215,7 @@ export default function App({ Component, pageProps }) {
           </p>
           <p className={`msg code ${getCookie('cart') === 'error' ? 'visible' : ''}`}>
             <b>Cart error</b> - Something went wrong probably on our side.
-            We can't provide you a cart. Refresh a page after 10 seconds or contact us.
+            We can't provide you a cart. Try to refresh a page after 10 seconds.
           </p>
         </div>
       </div>
