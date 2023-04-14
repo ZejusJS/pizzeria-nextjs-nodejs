@@ -122,7 +122,11 @@ router.get('/get-all-orders/:page', catchAsync(async function (req, res, next) {
             { 'payId': new RegExp(q, 'i') },
             { 'url': new RegExp(q, 'i') },
             { 'orderNo': new RegExp(q, 'i') },
-            { 'totalPrice': new RegExp(q, 'i') },
+            { 'url': new RegExp(q, 'i') },
+            // { 'totalPrice': new RegExp(q, 'i') },
+            { 'shippingAdress.*': new RegExp(q, 'i') },
+            { 'invoiceInfo.*': new RegExp(q, 'i') },
+            // { 'user': new RegExp(q, 'i') },
         ]
     }
 
