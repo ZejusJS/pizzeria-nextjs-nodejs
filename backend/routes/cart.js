@@ -41,6 +41,7 @@ router.post('/singleAdd', catchAsync(async function (req, res, next) {
 
         await cart.save()
         await cart.populate('items.item')
+
         res.status(200).json(cart)
     } else {
         res.status(400).json({ msg: 'Product or Cart was not found by IDs', code: 300 })
@@ -186,7 +187,8 @@ router.get('/getCartCheckout', catchAsync(async function (req, res, next) {
         totalPrice += (findPizza.price * findItemInCart.quantity)
     }
     findCart.totalCartPrice = totalPrice.toFixed(2)
-    console.log(findCart)
+    // console.log(findCart)
+    
     res.status(200).json(findCart)
 }))
 
