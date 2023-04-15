@@ -68,15 +68,13 @@ export async function middleware(req: NextRequest) {
         const data = await getCart.json()
         if (getCart.status === 200) {
             const response = NextResponse.rewrite(url)
-            response.cookies.set("cart", data.cart, { httpOnly: true });
+            response.cookies.set("cart", data.cart, { httpOnly: true })
             return response
         } else {
             const response = NextResponse.rewrite(url)
-            response.cookies.set("cart", 'error', { maxAge: 10 });
+            response.cookies.set("cart", 'error', { maxAge: 10 })
             return response
         }
-    } else {
-        return res;
     }
 }
 

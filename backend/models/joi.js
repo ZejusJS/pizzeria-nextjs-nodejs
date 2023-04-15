@@ -9,7 +9,8 @@ module.exports.registerSchema =
         lastname: Joi.string().min(1).max(30).required().trim(),
         adress: Joi.string().min(1).max(50).required().trim(),
         city: Joi.string().min(1).max(50).required().trim(),
-        zip: Joi.string().min(1).max(16).required().trim()
+        zip: Joi.string().min(1).max(16).required().trim(),
+        recaptchaToken: Joi.string().required(),
     }).required()
 
 module.exports.loginSchema =
@@ -28,7 +29,7 @@ module.exports.paymentSchema =
         zip: Joi.string().max(16).required().trim(),
         shipping: Joi.string().max(30).pattern(/^(fast|standard)$/).required(),
         paymentMethod: Joi.string().max(30).pattern(/^(card)$/).required(),
-        recaptchaToken: Joi.string(),
+        recaptchaToken: Joi.string().required(),
         cartData: Joi.object({
             items: Joi.array().required(),
             _id: Joi.string().required(),

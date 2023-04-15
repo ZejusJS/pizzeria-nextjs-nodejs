@@ -9,12 +9,13 @@ const { validateRegister, validateLogin } = require('../utils/mw-validateAuth');
 const { validateShippingAdress } = require('../utils/mw-validateAdress');
 const { validateUserDetails } = require('../utils/mw-validateDetails');
 const { validateUserBilling } = require('../utils/mw-validateBilling');
+const { mwRecaptchaAuth } = require('../utils/payment/recaptcha')
 
 const User = require('../models/user')
 const Cart = require('../models/cart')
 const Order = require('../models/order')
 
-router.post('/signup', validateRegister, catchAsync(async function (req, res, next) {
+router.post('/signup', validateRegister, mwRecaptchaAuth, catchAsync(async function (req, res, next) {
     const { email, name, password, firstname, lastname, adress, city, zip } = req.body;
     const user = new User({ name, email, invoiceInfo: { firstname, lastname, adress, city, zip, country: 'Czech Republic' } });
     try {
@@ -57,19 +58,26 @@ router.post('/signup', validateRegister, catchAsync(async function (req, res, ne
 router.post('/login', validateLogin, passport.authenticate('local', {
     keepSessionInfo: true // pro zachování req.session.returnTo (původní URL, kam jsme se chtěli dostat ještě než nás to přesměrovalo)
 }), catchAsync(async function (req, res, next) {
-    console.log(req.query)
+    // console.log(req.query)
     const findCart = await Cart.findById(req.cookies?.cart)
-    console.log(findCart)
+    // console.log(findCart)
     if (req.body.newCart === true && findCart?.items?.length) {
-        const user = await User.findById(req.user._id)
-        user.interaction.cart = req.cookies.cart
-        await user.save()
+        // const cart = await Cart.findById(req.cookies.cart)
+
+        if (!req.user || !findCart) return res.sendStatus(400)
+        req.user.interaction.cart = findCart._id
+        findCart.user = req.user._id
+
+        await req.user.save()
+        await findCart.save()
     } else if (req.user && !req.user.interaction && !req.user.interaction.cart) {
         const cart = new Cart()
+
+        if (!req.user || !cart) return res.sendStatus(400)
+        req.user.interaction.cart = cart._id
         cart.user = req.user._id
-        const user = await User.findById(req.user._id)
-        user.interaction.cart = cart._id
-        await user.save()
+
+        await req.user.save()
         await cart.save()
     }
 

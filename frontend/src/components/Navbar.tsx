@@ -13,10 +13,10 @@ import CartSvg from '../images/Cart'
 
 interface withRouter {
   router: NextRouter,
-  cart, 
-  setExpanded, 
-  expanded, 
-  user, 
+  cart,
+  setExpanded,
+  expanded,
+  user,
   fetchFirstData
 }
 
@@ -71,12 +71,12 @@ const Navbar: NextPage<withRouter> = ({ cart, setExpanded, expanded, user, fetch
         <div className={`nav-container ${expanded ? 'expanded' : ''}`}>
           <div>
             <div className='logo-name'>
-              <Link href='/' className='logo-link' shallow={false} prefetch={false}>
+              <Link href='/' className='logo-link' shallow={false} >
                 <img className='logo' src="/favicon.svg" alt="" />
                 <h1>Mamma Mia</h1>
               </Link>
               <div className='options-container'>
-                <Link href={'/cart'} prefetch={false}
+                <Link href={'/cart'}
                   className="cart-href"
                 >
                   <div className='cart'>
@@ -95,12 +95,12 @@ const Navbar: NextPage<withRouter> = ({ cart, setExpanded, expanded, user, fetch
 
           <div className='links-row linky'>
             <div>
-              <Link href='/' shallow={false} prefetch={false}>
+              <Link href='/' shallow={false}>
                 Home page
               </Link>
             </div>
             <div>
-              <Link href='/about' prefetch={false}>
+              <Link href='/about'>
                 About
               </Link>
             </div>
@@ -112,12 +112,12 @@ const Navbar: NextPage<withRouter> = ({ cart, setExpanded, expanded, user, fetch
             {!user.email ?
               <>
                 <div className='auth'>
-                  <Link href='/user/signup' prefetch={false}>
+                  <Link href='/user/signup'>
                     Sign Up
                   </Link>
                 </div>
                 <div className='auth'>
-                  <Link href='/user/login' prefetch={false}>
+                  <Link href='/user/login'>
                     Login
                   </Link>
                 </div>
@@ -130,7 +130,7 @@ const Navbar: NextPage<withRouter> = ({ cart, setExpanded, expanded, user, fetch
                   </form>
                 </div>
                 <div className='user'>
-                  <Link href='/user/profile' prefetch={false}>
+                  <Link href='/user/profile'>
                     <UserCircleSvg />
                   </Link>
                 </div>
@@ -138,7 +138,7 @@ const Navbar: NextPage<withRouter> = ({ cart, setExpanded, expanded, user, fetch
             }
             {user.roles?.admin ?
               <div className='four'>
-                <Link href='/admin' prefetch={false}>
+                <Link href='/admin'>
                   Admin
                 </Link>
               </div>
@@ -146,25 +146,25 @@ const Navbar: NextPage<withRouter> = ({ cart, setExpanded, expanded, user, fetch
           </div>
           <div className='links linky'>
             <div className='link'>
-              <Link href='/' shallow={false} prefetch={false}>
+              <Link href='/' shallow={false} >
                 Home page
               </Link>
-              <Link href='/about' prefetch={false}>
+              <Link href='/about' >
                 About
               </Link>
             </div>
             <div className='link'>
-              <Link href='/cart' prefetch={false}>
+              <Link href='/cart' >
                 Cart
               </Link>
             </div>
             <div className='link user-links'>
               {!user.email ?
                 <>
-                  <Link href='/user/signup' prefetch={false}>
+                  <Link href='/user/signup' >
                     Sign Up
                   </Link>
-                  <Link href='/user/login' prefetch={false}>
+                  <Link href='/user/login' >
                     Login
                   </Link>
                 </>
@@ -176,7 +176,7 @@ const Navbar: NextPage<withRouter> = ({ cart, setExpanded, expanded, user, fetch
                     </form>
                   </div>
                   <div className='user'>
-                    <Link href='/user/profile' prefetch={false}>
+                    <Link href='/user/profile'>
                       <UserCircleSvg /> <span>{user.name}</span>
                     </Link>
                   </div>

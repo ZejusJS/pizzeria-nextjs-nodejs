@@ -12,6 +12,7 @@ const Login = ({ fetchFirstData }) => {
         password: '',
         newCart: true
     })
+    const [submitting, setSubmitting] = useState(false)
 
     useEffect(() => {
         setLoginData(prev => ({
@@ -25,6 +26,8 @@ const Login = ({ fetchFirstData }) => {
     const authError = useRef(null)
 
     function handleChange(e) {
+        if (submitting) return
+
         const { name, value } = e.target
         setLoginData(prevData => {
             if (name === 'cart') {
@@ -56,14 +59,13 @@ const Login = ({ fetchFirstData }) => {
         authError?.current?.classList.remove('shown')
     }
 
-    let submitting = false
+
     async function handleSubmit(e) {
-        axios.defaults.withCredentials = true
         e.stopPropagation()
         e.preventDefault()
 
         if (submitting) return
-        submitting = true
+        setSubmitting(true)
 
         await axios({
             method: 'post',
@@ -78,9 +80,6 @@ const Login = ({ fetchFirstData }) => {
             },
             onDownloadProgress: function (progressEvent) {
                 NProgress.done(false)
-                setTimeout(() => {
-                    submitting = false
-                }, 800);
             },
             data: loginData
         })
@@ -94,7 +93,12 @@ const Login = ({ fetchFirstData }) => {
                 } else if (router.pathname === '/cart/checkout') {
                     // setUser(res.data?.user)
                     // setOrderDetails(res.data?.invoiceInfo)
-                    fetchFirstData().then(router.replace(router.asPath))
+                    fetchFirstData().then(router.replace({
+                        pathname: router.pathname,
+                        query: {
+                            cart: res.data.cart._id
+                        }
+                    }))
                 }
             })
             .catch(e => {
@@ -107,6 +111,9 @@ const Login = ({ fetchFirstData }) => {
                 if (e.response?.status === 401) {
                     authError?.current?.classList.add('shown')
                 }
+                setTimeout(() => {
+                    setSubmitting(false)
+                }, 400);
             })
     }
 

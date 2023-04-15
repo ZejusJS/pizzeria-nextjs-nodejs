@@ -3,6 +3,9 @@ import { useRouter } from 'next/router'
 import { useRef, useState } from 'react'
 import { server } from '../../config/config'
 import NProgress from 'nprogress'
+import Reaptcha from 'reaptcha'
+
+import { captchaKeyAuth } from '../../config/config'
 
 const Signup = ({ fetchFirstData }) => {
     const [signData, setSignData] = useState({
@@ -13,8 +16,11 @@ const Signup = ({ fetchFirstData }) => {
         lastname: '',
         adress: '',
         city: '',
-        zip: '',
+        zip: ''
     })
+    const [captcha, setCaptcha] = useState('')
+    const [submitting, setSubmitting] = useState(false)
+
     const nameError = useRef(null)
     const emailError = useRef(null)
     const emailTakenError = useRef(null)
@@ -25,8 +31,23 @@ const Signup = ({ fetchFirstData }) => {
     const cityError = useRef(null)
     const zipError = useRef(null)
     const invoiceError = useRef(null)
+    const recaptchaErrorRef = useRef(null)
 
     let router = useRouter()
+
+    const [captchError, setCaptchError] = useState(0)
+
+    const reCaptchaRef = useRef(null)
+
+    function verifyCaptcha() {
+        if (submitting) return
+
+        reCaptchaRef?.current?.getResponse().then(res => {
+            setCaptcha(res)
+            setCaptchError(0)
+            recaptchaErrorRef?.current?.classList.remove('shown')
+        })
+    }
 
     const validateEmail = (email) => {
         return String(email)
@@ -37,6 +58,8 @@ const Signup = ({ fetchFirstData }) => {
     };
 
     function handleChange(e) {
+        if (submitting) return
+
         const { name, value } = e.target
         setSignData(prevData => {
             return {
@@ -134,14 +157,22 @@ const Signup = ({ fetchFirstData }) => {
         invoiceError?.current?.classList.remove('shown')
     }
 
-    let submitting = false
     async function handleSubmit(e) {
-        axios.defaults.withCredentials = true
+        setSubmitting(true)
         e.stopPropagation()
         e.preventDefault()
 
         if (submitting) return
-        submitting = true
+
+        const sendSignData = {
+            ...signData,
+            recaptchaToken: captcha || 'nochecked'
+        }
+
+        setCaptchError(0)
+        reCaptchaRef.current.reset()
+        setCaptcha('')
+
         await axios({
             method: 'post',
             // url: `${server}/user/signup`,
@@ -156,26 +187,28 @@ const Signup = ({ fetchFirstData }) => {
             onDownloadProgress: function (progressEvent) {
                 NProgress.done(false)
             },
-            data: signData
+            data: sendSignData
         })
             .then(res => {
                 // setUser(prevUser => res.data.user)
                 // setCart(prevCart => res.data.cart)
-                console.log(res)
+                // console.log(res)
                 // router.replace('/')
                 if (router.pathname === '/user/signup') {
-                    window.location.href = "/"
+                    fetchFirstData().then(router.replace('/'))
                 } else if (router.pathname = '/cart/checkout') {
                     // setUser(res.data?.user)
                     // setOrderDetails(res.data?.invoiceInfo)
-                    window.location.href = router.asPath
+                    fetchFirstData().then(router.replace({
+                        pathname: router.pathname,
+                        query: {
+                            cart: res.data.cart._id
+                        }
+                    }))
                 }
-                setTimeout(() => {
-                    submitting = false
-                }, 400);
             })
             .catch(e => {
-                console.log(e)
+                console.error(e)
                 if (e.response?.data?.code === 150) {
                     console.log('password incorrect')
                     passwordError?.current?.classList.add('shown')
@@ -191,9 +224,12 @@ const Signup = ({ fetchFirstData }) => {
                 } else if (e.response?.data?.code === 300 || e.response?.data?.code === 450) {
                     console.log('body incorrect')
                     invoiceError?.current?.classList.add('shown')
+                } else if (e.response?.data?.code === 550) {
+                    console.log('recaptcha failed')
+                    recaptchaErrorRef?.current?.classList.add('shown')
                 }
                 setTimeout(() => {
-                    submitting = false
+                    setSubmitting(false)
                 }, 400);
             })
     }
@@ -364,6 +400,19 @@ const Signup = ({ fetchFirstData }) => {
                         className='error'>
                         <p>Some fields in billing information are missing or are invalid.</p>
                     </div>
+                    <div
+                        ref={recaptchaErrorRef}
+                        className='error'>
+                        <p>Please complete reCAPTCHA</p>
+                    </div>
+                    <Reaptcha
+                        sitekey={captchaKeyAuth}
+                        onVerify={verifyCaptcha}
+                        ref={reCaptchaRef}
+                        size='compact'
+                        badge='inline'
+                        onExpire={() => setCaptcha('')}
+                    />
                     <button type='submit' className='submit-btn'>Signup</button>
                 </form>
             </div>

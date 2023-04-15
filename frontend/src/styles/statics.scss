@@ -30,8 +30,10 @@
     overflow: hidden;
 }
 
-body.margin {
-    margin-right: 17px;
+@media (any-pointer: fine) {
+    body.margin {
+        margin-right: 17px;
+    }    
 }
 
 .text-cen {
@@ -133,6 +135,7 @@ svg {
     display: flex;
     justify-content: center;
     height: 160px;
+    overflow: hidden;
 }
 
 .rc-anchor-compact {

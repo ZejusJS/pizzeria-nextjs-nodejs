@@ -190,6 +190,10 @@ nav {
         .user-links {
             width: 100%;
             max-width: 100%;
+            
+            a {
+                color: black;
+            }
 
             .log-out {
                 button {

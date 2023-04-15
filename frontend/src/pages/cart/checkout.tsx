@@ -110,7 +110,6 @@ const checkout = ({ cartData, setUser, user, fetchFirstData, userData, setCart, 
                 isFirstnameError.current = true
             } else {
                 firstnameErrorRef?.current?.classList.remove('second-shown')
-                // isFirstnameError.current = false
             }
         }
         if (name === 'lastname') {
@@ -127,7 +126,6 @@ const checkout = ({ cartData, setUser, user, fetchFirstData, userData, setCart, 
                 isLastnameError.current = true
             } else {
                 lastnameErrorRef?.current?.classList.remove('second-shown')
-                // isLastnameError.current = false
             }
         }
         if (name === 'adress') {
@@ -144,7 +142,6 @@ const checkout = ({ cartData, setUser, user, fetchFirstData, userData, setCart, 
                 isAdressError.current = true
             } else {
                 adressErrorRef?.current?.classList.remove('second-shown')
-                // isAdressError.current = false
             }
         }
         if (name === 'city') {
@@ -161,7 +158,6 @@ const checkout = ({ cartData, setUser, user, fetchFirstData, userData, setCart, 
                 isCityError.current = true
             } else {
                 cityErrorRef?.current?.classList.remove('second-shown')
-                // isCityError.current = false
             }
         }
         if (name === 'zip') {
@@ -178,7 +174,6 @@ const checkout = ({ cartData, setUser, user, fetchFirstData, userData, setCart, 
                 isZipError.current = true
             } else {
                 zipErrorRef?.current?.classList.remove('second-shown')
-                // isZipError.current = false
             }
         }
     }
@@ -575,6 +570,8 @@ export const getServerSideProps = async (ctx) => {
             },
         }
     }
+
+    console.log(cartData)
 
     return {
         props: {
