@@ -32,7 +32,7 @@ const index = ({ userData, viewItem, fetchFirstData, isLoadingFirstData }) => {
             <Meta title='Mamma Mia | Profile' />
             <main>
                 {
-                    !isLoadingFirstData ?
+                    !isLoadingFirstData || userData?.email ?
                     <section className="user-container">
                         <div className="user-card">
                             <div>

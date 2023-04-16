@@ -60,12 +60,12 @@ const Details = ({
                 // router.push('/user/profile')
                 fetchFirstData(false)
                 setTimeout(() => {
-                    btnSubmit.current.disabled = false
+                    if (btnSubmit?.current) btnSubmit.current.disabled = false
                 }, 200)
             })
             .catch(e => {
                 console.error(e)
-                btnSubmit.current.disabled = false
+                if (btnSubmit?.current) btnSubmit.current.disabled = false
             })
     }
 

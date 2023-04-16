@@ -61,6 +61,7 @@ async function deleteAllUsers() {
 
 async function deleteAllOrders() {
     await Order.deleteMany()
+    await User.updateMany({}, {orders: []})
 }
 
 async function deleteAllPizzas() {
