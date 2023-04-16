@@ -30,8 +30,10 @@ first project with nextjs + nodejs
 - [ ] Calculate time of delivery to user's location (this will be pain)
 - [ ] Restyle the footer (more information, longer)
 - [ ] Complete landing page
+- [ ] Show pizza by query params
+- [ ] Repair user site
 
-### Links: (last deploy: 9.4.2023)
+### Links: (last deploy: 15.4.2023)
 (long waiting for fresh starts, free tiers) <br>
 
 <b>If there is a "This function has crashed" error or endless loading, 

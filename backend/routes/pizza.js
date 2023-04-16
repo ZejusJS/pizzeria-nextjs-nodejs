@@ -18,16 +18,17 @@ router.get('/all', catchAsync(async function (req, res, next) {
 
     let pizzas
     const config = { show: true }
-    if (ingredients?.length) {
+    if (ingredients) {
         config.ingredients = { $all: ingredients } // $all = musí splňovat vše
     }
-    if (q?.length) {
+    if (q) {
         config.$or = [
             { 'title': new RegExp(q, 'i') },
             { 'description': new RegExp(q, 'i') },
             { 'ingredients': new RegExp(q, 'i') },
         ]
     }
+
     if (!ingredients && !q) {
         pizzas = await getOrSetexCached('pizzas', pizzasAllExp, async () => {
             return await Pizza.find(config).select({ show: 0, createdAt: 0, updatedAt: 0 }).sort({ updatedAt: -1 })
@@ -41,6 +42,22 @@ router.get('/all', catchAsync(async function (req, res, next) {
     } else {
         pizzas = await Pizza.find(config).select({ show: 0, createdAt: 0, updatedAt: 0 }).sort({ updatedAt: -1 })
     }
+
+    res.status(200).json(pizzas)
+}))
+
+router.get('/get-many-number/:num', catchAsync(async function (req, res, next) {
+    const { num } = req.params
+
+    if (!num || isNaN(num)) return res.status(400).json({ code: 300, msg: 'Provide only a number' })
+
+    let pizzas = await Pizza.paginate({ show: true }, {
+        sort: { updatedAt: -1 },
+        limit: num,
+        page: 1,
+        select: { show: 0, createdAt: 0, updatedAt: 0 }
+    })
+    // console.log(pizzas)
     res.status(200).json(pizzas)
 }))
 

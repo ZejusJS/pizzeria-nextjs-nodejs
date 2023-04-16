@@ -1,8 +1,28 @@
 import Carousel from 'react-bootstrap/Carousel';
 import CurvedCorner from '../images/CurvedCorner'
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+
+import ArrowRightBasic from '../images/ArrowRightBasic';
 
 const index = () => {
+    const [pizzas, setPizzas] = useState([])
+
+    useEffect(() => {
+        axios({
+            method: 'get',
+            url: '/api2/pizza/get-many-number/7',
+        })
+            .then(res => {
+                // console.log(res)
+                setPizzas(res.data?.docs)
+            })
+            .catch(e => {
+                console.error(e)
+            })
+    }, [])
+
     return (
         <main className="landing-page">
             <div className='hero-panel-con'>
@@ -14,20 +34,20 @@ const index = () => {
                             <div className='links-con'>
                                 <div className='links'>
                                     <Link
-                                    href='/menu'
-                                    className='menu-link'
+                                        href='/menu'
+                                        className='menu-link'
                                     >
                                         Menu
                                     </Link>
                                     <Link
-                                    href='/phone-order'
-                                    className='phone-link'
+                                        href='/phone-order'
+                                        className='phone-link'
                                     >
                                         Order by phone
                                     </Link>
                                     <Link
-                                    href='/about'
-                                    className='about-link'
+                                        href='/about'
+                                        className='about-link'
                                     >
                                         About us
                                     </Link>
@@ -40,46 +60,69 @@ const index = () => {
                             <Carousel.Item>
                                 <img
                                     className="d-block w-100"
-                                    src="https://res.cloudinary.com/dzxwekkvd/image/upload/v1681638900/landing_page/pizza4-transformed_hbbpob.jpg"
+                                    src="https://res.cloudinary.com/dzxwekkvd/image/upload/v1681638900/landing_page/pizza4-transformed.jpg"
                                     alt="First slide"
+                                    loading='eager'
+                                />
+                            </Carousel.Item>
+                            {
+                                pizzas?.length ?
+                                    pizzas?.map(pizza => (
+                                        pizza?.images[0]?.url ?
+                                            <Carousel.Item key={Math.random()}>
+                                                <img
+                                                    className="d-block w-100"
+                                                    src={pizza?.images[0]?.url}
+                                                    alt="Third slide"
+                                                />
+                                            </Carousel.Item>
+                                            : ''
+                                    ))
+                                    : ''
+                            }
+                            <Carousel.Item>
+                                <img
+                                    className="d-block w-100"
+                                    src="https://res.cloudinary.com/dzxwekkvd/image/upload/v1681638900/landing_page/pizza1-transformed.jpg"
+                                    alt="First slide"
+                                    loading='eager'
                                 />
                             </Carousel.Item>
                             <Carousel.Item>
                                 <img
                                     className="d-block w-100"
-                                    src="https://res.cloudinary.com/dzxwekkvd/image/upload/v1681638070/landing_page/pizza1-transformed_j8lhdw.jpg"
-                                    alt="Second slide"
-                                />
-                            </Carousel.Item>
-                            <Carousel.Item>
-                                <img
-                                    className="d-block w-100"
-                                    src="https://res.cloudinary.com/dzxwekkvd/image/upload/v1681639273/landing_page/pizza2-transformed_un3uf9.jpg"
-                                    alt="Third slide"
-                                />
-                            </Carousel.Item>
-                            <Carousel.Item>
-                                <img
-                                    className="d-block w-100"
-                                    src="https://res.cloudinary.com/dzxwekkvd/image/upload/v1681639187/landing_page/pizza3-transformed_xpym1g.jpg"
-                                    alt="Third slide"
-                                />
-                            </Carousel.Item>
-                            <Carousel.Item>
-                                <img
-                                    className="d-block w-100"
-                                    src="https://res.cloudinary.com/dzxwekkvd/image/upload/v1681639030/landing_page/pizza5-transformed_we4pmd.jpg"
-                                    alt="Third slide"
-                                />
-                            </Carousel.Item>
-                            <Carousel.Item>
-                                <img
-                                    className="d-block w-100"
-                                    src="https://res.cloudinary.com/dzxwekkvd/image/upload/v1681639092/landing_page/pizza6-transformed_aymggg.jpg"
-                                    alt="Third slide"
+                                    src="https://res.cloudinary.com/dzxwekkvd/image/upload/v1681638900/landing_page/pizza2-transformed.jpg"
+                                    alt="First slide"
+                                    loading='eager'
                                 />
                             </Carousel.Item>
                         </Carousel>
+                        {pizzas.length ?
+                            <div className='pizzas-con'>
+                                <div className='pizzas-show'>
+                                    <div className='pizzas-slider'>
+                                        <div className='pizzas'>
+                                            {pizzas.map(pizza => (
+                                                <div className='pizza' key={Math.random()}>
+                                                    <img src={pizza.images[0].url} alt="" />
+                                                    <h3>{pizza.title}</h3>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                    <Link
+                                        href='/menu'
+                                        className='more-pizzas'
+                                        title='Look at our menu'
+                                    >
+                                        <ArrowRightBasic />
+                                        <p>Look at the menu</p>
+                                    </Link>
+                                </div>
+                            </div>
+                            :
+                            ''
+                        }
                         <CurvedCorner />
                     </div>
                 </div>

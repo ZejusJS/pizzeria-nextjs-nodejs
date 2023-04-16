@@ -149,6 +149,9 @@ const Navbar: NextPage<withRouter> = ({ cart, setExpanded, expanded, user, fetch
               <Link href='/' shallow={false} >
                 Home page
               </Link>
+              <Link href='/menu' shallow={false} >
+                Menu
+              </Link>
               <Link href='/about' >
                 About
               </Link>
