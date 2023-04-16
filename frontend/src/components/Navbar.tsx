@@ -71,7 +71,7 @@ const Navbar: NextPage<withRouter> = ({ cart, setExpanded, expanded, user, fetch
         <div className={`nav-container ${expanded ? 'expanded' : ''}`}>
           <div>
             <div className='logo-name'>
-              <Link href='/' className='logo-link' shallow={false} >
+              <Link href='/' className='logo-link' shallow={false} prefetch={false}>
                 <img className='logo' src="/favicon.svg" alt="" />
                 <h1>Mamma Mia</h1>
               </Link>
@@ -100,8 +100,8 @@ const Navbar: NextPage<withRouter> = ({ cart, setExpanded, expanded, user, fetch
               </Link>
             </div>
             <div>
-              <Link href='/about'>
-                About
+              <Link href='/menu'>
+                Menu
               </Link>
             </div>
             {/* <div>

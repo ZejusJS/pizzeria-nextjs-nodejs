@@ -1,21 +1,30 @@
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import NProgress from 'nprogress'
 import axios from "axios"
 
 const Billing = ({
     userData,
-    router
+    router,
+    fetchFirstData,
+    isLoadingFirstData
 }) => {
-    const [data, setData] = useState({
-        adress: userData.invoiceInfo.adress,
-        zip: userData.invoiceInfo.zip,
-        city: userData.invoiceInfo.city,
-        firstname: userData.invoiceInfo.firstname,
-        lastname: userData.invoiceInfo.lastname,
-    })
+    let initialData = {
+        adress: userData?.invoiceInfo?.adress,
+        zip: userData?.invoiceInfo?.zip,
+        city: userData?.invoiceInfo?.city,
+        firstname: userData?.invoiceInfo?.firstname,
+        lastname: userData?.invoiceInfo?.lastname,
+    }
+    const [data, setData] = useState(initialData)
+    useEffect(() => {
+        setData(initialData)
+    }, [userData])
+
     const [uploading, setUploading] = useState(false)
 
     function handleChange(e) {
+        if (isLoadingFirstData || uploading) return 
+
         const { name, value } = e.target
         setData(prevData => {
             return {
@@ -126,7 +135,8 @@ const Billing = ({
             data: data
         })
             .then(res => {
-                router.push('/user/profile')
+                // router.push('/user/profile')
+                fetchFirstData(false)
             })
             .catch(e => {
                 console.error(e)

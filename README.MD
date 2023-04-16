@@ -18,7 +18,7 @@ first project with nextjs + nodejs
 - [ ] Admin page for all orders from users... in progress
 - [x] Error message when bad order details in checkout
 - [x] Finding pizza by name, ingredients and price
-- [ ] Pizza showcase move to another page and do new home page
+- [x] Pizza showcase move to another page and do new home page
 - [x] Cancel GetServerSideProps in index
 - [x] Repair payment/card in deployment
 - [x] Repair qnt change
@@ -28,7 +28,8 @@ first project with nextjs + nodejs
 - [x] Single order page... in progress
 - [x] Fix payment url in orders profile
 - [ ] Calculate time of delivery to user's location (this will be pain)
-- [ ] Design footer (more information, longer)
+- [ ] Restyle the footer (more information, longer)
+- [ ] Complete landing page
 
 ### Links: (last deploy: 9.4.2023)
 (long waiting for fresh starts, free tiers) <br>

@@ -28,6 +28,11 @@
 
     .pizza-thumbnail {
 
+        h3 {
+            line-height: 21px;
+            margin-bottom: 3px;
+        }
+
         img {
             min-width: 170px;
         }
@@ -302,9 +307,8 @@
 
 
     &.index {
-        height: 100%;
         max-width: 200px;
-        height: 338px;
+        height: 342px;
 
         .pizza-thumbnail-info {
             flex-direction: column;
@@ -343,7 +347,7 @@
                 -webkit-line-clamp: 2;
             }
 
-            div.ingredients {
+            .ingredients {
                 font-size: 16px;
                 -webkit-line-clamp: 3;
             }
@@ -459,7 +463,8 @@
     }
 }
 
-div.ingredients {
+.ingredients {
+    line-height: 20px;
     list-style-type: none;
     padding: 0;
     overflow: hidden;

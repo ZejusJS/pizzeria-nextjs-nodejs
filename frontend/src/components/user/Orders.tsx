@@ -13,7 +13,7 @@ const Orders = ({ userData, viewItem, slug, setBackUrl, setBackText, payIdQuery 
     const [ordersId, setOrdersId] = useState(userData?.orders)
     const [isLoading, setIsLoading] = useState(false)
 
-    let ordersPerPage = 9
+    let ordersPerPage = 12
 
     function anotherOrders() {
         setPageNumber(prev => ++prev)

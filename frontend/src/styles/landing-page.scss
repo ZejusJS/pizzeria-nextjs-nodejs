@@ -1,0 +1,123 @@
+.hero-panel-con {
+    padding: 15px;
+}
+
+.hero-con {
+    position: relative;
+    // width: 80%;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 60px 20px 20px 20px;
+    margin-top: 30px;
+    aspect-ratio: 16/9;
+
+    .curved-corner {
+        fill: rgb(0, 0, 0);
+        position: absolute;
+        width: 50px;
+    }
+
+    .logo-con {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        z-index: 10;
+        width: 100%;
+
+        .curved-corner {
+            z-index: 11;
+            top: -17px;
+            left: -17px;
+        }
+
+        .logo-deep-con {
+            display: flex;
+            align-items: center;
+            // justify-content: center;
+            position: relative;
+            height: 80px;
+            border-radius: 11px;
+            background-color: rgb(255, 184, 53);
+            padding: 10px;
+
+            // background-color: rgb(228, 228, 228);
+
+            img {
+                display: inline-block;
+                height: 100%;
+                object-fit: cover;
+            }
+
+            h2 {
+                font-size: 30px;
+                margin: auto 0;
+            }
+
+            .links-con {
+                width: 100%;
+                display: flex;
+                justify-content: flex-end;
+                align-items: center;
+                overflow: hidden;
+
+                .links {
+                    display: flex;
+                    flex-wrap: nowrap;
+                    text-align: center;
+
+                    a {
+                        flex-shrink: 0;
+                        color: rgb(0, 0, 0);
+                        font-size: 20px;
+                        text-decoration: none;
+                        padding: 0 20px;
+                        border-left: 1px solid rgba(0, 0, 0, 0.274);
+
+                        &:first-child {
+                            border-left: 0;
+                        }
+
+                        &:hover {
+                            text-decoration: underline;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .carousel-con {
+        position: relative;
+
+        .curved-corner {
+            z-index: 10;
+            bottom: -18px;
+            right: -18px;
+            rotate: 180deg;
+        }
+    }
+
+    .carousel {
+        height: 500px;
+        z-index: 1;
+        width: 100%;
+
+        .carousel-inner {
+            height: 100%;
+            border-radius: 11px;
+            padding: 10px;
+            background-color: rgb(255, 184, 53);
+
+            .carousel-item {
+                height: 100%;
+
+                .d-block {
+                    border-radius: 11px;
+                    height: 100%;
+                    width: 100%;
+                    object-fit: cover;
+                }
+            }
+        }
+    }
+}

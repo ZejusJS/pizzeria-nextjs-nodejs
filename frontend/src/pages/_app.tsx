@@ -16,6 +16,7 @@ import singleAddFunc from '../utils/singleAdd'
 import changeQntFunc from '../utils/changeQnt'
 import restoreItemFunc from '../utils/restoreItem'
 
+import 'bootstrap/dist/css/bootstrap.min.css'
 import '../styles/loading.scss'
 import '../styles/nprogress.scss'
 import '../styles/changeDefault.scss'
@@ -37,6 +38,8 @@ import '../styles/footer.scss'
 import '../styles/admin-pizzas.scss'
 import '../styles/error.scss'
 import '../styles/error-boundary.scss'
+import '../styles/spinners.scss'
+import '../styles/landing-page.scss'
 
 import ErrorSvg from '../images/Error'
 import Product from '../components/pizza/Product';
@@ -50,11 +53,11 @@ interface Cart {
 
 export default function App({ Component, pageProps }) {
   const [cart, setCart] = useState<Cart>({})
-  const [user, setUser] = useState({})
+  const [userData, setUserData] = useState({})
   const [expanded, setExpanded] = useState(false)
   const [viewProduct, setViewProduct] = useState(false)
   const [itemToView, setItemToView] = useState({})
-  const [loading, setLoading] = useState(true)
+  const [isLoadingFirstData, setIsLoadingFirstData] = useState(true)
   const [loaded, setLoaded] = useState(false)
   const [error, setError] = useState(0)
   const [totalCartPrice, setTotalCartPrice] = useState(0)
@@ -68,12 +71,13 @@ export default function App({ Component, pageProps }) {
   NProgress.configure({ trickleSpeed: 400, minimum: 0.1 });
 
   async function fetchFirstData(loading: boolean = true) {
+    setIsLoadingFirstData(true)
     if (loading) {
       setLoaded(false)
       NProgress.start()
       loaderRef?.current?.classList?.remove('loaded')
     }
-    
+
     await axios({
       method: 'get',
       url: `/api2/cart/getCartAndUser`,
@@ -84,14 +88,14 @@ export default function App({ Component, pageProps }) {
         // Cookie: ctx.req.headers.cookie
       },
       onDownloadProgress: function (progressEvent) {
-        setLoading(false)
+        setIsLoadingFirstData(false)
       },
     })
       .then(res => {
         const cartToSet = res?.data?.cart
         cartToSet.items = res?.data?.cart?.items?.filter(item => item?.item !== null)
         setCart(cartToSet)
-        setUser(res?.data?.user)
+        setUserData(res?.data?.user)
         setTotalCartPrice(cartToSet.totalCartPrice)
 
         if (loading) {
@@ -188,10 +192,14 @@ export default function App({ Component, pageProps }) {
         cart={cart}
         expanded={expanded}
         setExpanded={setExpanded}
-        user={user}
+        user={userData}
         fetchFirstData={() => fetchFirstData(true)}
         router={router}
       />
+      <div className={`fetcing-spinner-con ${isLoadingFirstData ? 'shown' : ''}`}>
+        <div className="lds-dual-ring"></div>
+      </div>
+
       <div
         className='loader'
         ref={loaderRef}
@@ -240,32 +248,32 @@ export default function App({ Component, pageProps }) {
             cart={cart}
             deleteItem={(e, piz) => deleteItem(e, piz)}
             singleAdd={(e, piz) => singleAdd(e, piz)}
-            user={user}
+            user={userData}
             restoreItem={restoreItem}
           />
           : ''}
-        {
-          <ErrorBoundary>
-            <Component
-              {...pageProps}
-              setCart={setCart}
-              cart={cart}
-              user={user}
-              setUser={setUser}
-              viewProduct={viewProduct}
-              itemToView={itemToView}
-              singleAdd={(e, piz) => singleAdd(e, piz)}
-              unViewItem={(e) => unViewItem(e)}
-              deleteItem={(e, piz) => deleteItem(e, piz)}
-              viewItem={(e, i) => viewItem(e, i)}
-              fetchFirstData={(loading: boolean) => fetchFirstData(loading)}
-              totalCartPrice={totalCartPrice}
-              setTotalCartPrice={setTotalCartPrice}
-              changeQnt={changeQnt}
-              router={router}
-            />
-          </ErrorBoundary>
-        }
+        <ErrorBoundary>
+          <Component
+            {...pageProps}
+            setCart={setCart}
+            cart={cart}
+            user={userData}
+            userData={userData}
+            setUser={setUserData}
+            viewProduct={viewProduct}
+            itemToView={itemToView}
+            singleAdd={(e, piz) => singleAdd(e, piz)}
+            unViewItem={(e) => unViewItem(e)}
+            deleteItem={(e, piz) => deleteItem(e, piz)}
+            viewItem={(e, i) => viewItem(e, i)}
+            fetchFirstData={(loading: boolean) => fetchFirstData(loading)}
+            totalCartPrice={totalCartPrice}
+            setTotalCartPrice={setTotalCartPrice}
+            changeQnt={changeQnt}
+            router={router}
+            isLoadingFirstData={isLoadingFirstData}
+          />
+        </ErrorBoundary>
       </div>
       <Footer />
     </>

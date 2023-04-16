@@ -1,16 +1,24 @@
 import axios from 'axios'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import NProgress from 'nprogress'
 
 const Details = ({
     router,
-    userData
+    userData,
+    fetchFirstData,
+    isLoadingFirstData
 }) => {
-    const [data, setData] = useState({
-        name: userData.name,
-    })
+    let initialData = {
+        name: userData?.name,
+    }
+    const [data, setData] = useState(initialData)
+    useEffect(() => {
+        setData(initialData)
+    }, [userData])
 
     function handleChange(e) {
+        if (isLoadingFirstData) return
+
         const { name, value } = e.target
         setData(prevData => {
             return {
@@ -49,7 +57,11 @@ const Details = ({
             data: data
         })
             .then(res => {
-                router.push('/user/profile')
+                // router.push('/user/profile')
+                fetchFirstData(false)
+                setTimeout(() => {
+                    btnSubmit.current.disabled = false
+                }, 200)
             })
             .catch(e => {
                 console.error(e)

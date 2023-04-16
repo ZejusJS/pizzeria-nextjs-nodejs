@@ -1,0 +1,55 @@
+.fetcing-spinner-con {
+    position: fixed;
+    z-index: 2000;
+    width: 100%;
+    pointer-events: none;
+    display: flex;
+    justify-content: center;
+    top: -40px;
+    opacity: 0;
+    transition: opacity 80ms, top 140ms ease-in-out;
+
+    &.shown {
+        top: 0px;
+        opacity: 1;
+    }
+}
+
+.lds-dual-ring {
+    display: inline-block;
+}
+
+.lds-dual-ring:after {
+    content: " ";
+    display: block;
+    width: 34px;
+    height: 34px;
+    margin: 8px;
+    border-radius: 50%;
+    border: 6px solid rgb(255, 202, 26);
+    border-color: rgb(255, 202, 26) transparent rgb(255, 202, 26) transparent;
+    animation: lds-dual-ring 1.2s linear infinite;
+    rotate: 45deg;
+}
+
+@keyframes lds-dual-ring {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    // 10% {
+    //     transform: rotate(20deg);
+    // }
+
+    50% {
+        transform: rotate(20deg);
+    }
+
+    // 80% {
+    //     transform: rotate(350deg);
+    // }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}

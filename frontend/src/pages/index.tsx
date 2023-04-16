@@ -1,89 +1,91 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import Meta from '../components/Meta'
-import { server } from '../config/config'
-import axios from "axios";
-import Pizzalist from '../components/pizza/Pizzalist';
-import { useEffect, useState } from 'react';
-import Product from '../components/pizza/Product';
-import Unfocus from '../components/Unfocus';
-import { useRouter } from 'next/router';
+import Carousel from 'react-bootstrap/Carousel';
+import CurvedCorner from '../images/CurvedCorner'
+import Link from 'next/link';
 
-export default function Home({
-  cart,
-  singleAdd,
-  unViewItem,
-  viewProduct,
-  deleteItem,
-  itemToView,
-  viewItem,
-  user,
-  router,
-  pizzas }) {
-  const [pizzasState, setPizzasState] = useState(pizzas)
-
-  useEffect(() => {
-    if (router?.query?.payId) {
-      router.replace({
-        pathname: `/user/profile/orders`,
-        query: { payId: router?.query?.payId },
-      }, null, { shallow: false})
-    }
-  }, [])
-
-  return (
-    <>
-      <main>
-        {
-          router.isReady ?
-            <Pizzalist
-              cart={cart}
-              singleAdd={(e, piz) => singleAdd(e, piz)}
-              deleteItem={(e, piz) => deleteItem(e, piz)}
-              viewItem={(e, i) => viewItem(e, i)}
-              pizzas={pizzasState}
-              setPizzas={setPizzasState}
-              router={router}
-            />
-            : ''
-        }
-      </main>
-    </>
-  )
+const index = () => {
+    return (
+        <main className="landing-page">
+            <div className='hero-panel-con'>
+                <div className="hero-con">
+                    <div className="logo-con">
+                        <CurvedCorner />
+                        <div className='logo-deep-con'>
+                            <img src="https://res.cloudinary.com/dzxwekkvd/image/upload/v1681643117/landing_page/logo.png" alt="" />
+                            <div className='links-con'>
+                                <div className='links'>
+                                    <Link
+                                    href='/menu'
+                                    className='menu-link'
+                                    >
+                                        Menu
+                                    </Link>
+                                    <Link
+                                    href='/phone-order'
+                                    className='phone-link'
+                                    >
+                                        Order by phone
+                                    </Link>
+                                    <Link
+                                    href='/about'
+                                    className='about-link'
+                                    >
+                                        About us
+                                    </Link>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className='carousel-con'>
+                        <Carousel fade interval={10000} indicators={false} controls={false} pause={false}>
+                            <Carousel.Item>
+                                <img
+                                    className="d-block w-100"
+                                    src="https://res.cloudinary.com/dzxwekkvd/image/upload/v1681638900/landing_page/pizza4-transformed_hbbpob.jpg"
+                                    alt="First slide"
+                                />
+                            </Carousel.Item>
+                            <Carousel.Item>
+                                <img
+                                    className="d-block w-100"
+                                    src="https://res.cloudinary.com/dzxwekkvd/image/upload/v1681638070/landing_page/pizza1-transformed_j8lhdw.jpg"
+                                    alt="Second slide"
+                                />
+                            </Carousel.Item>
+                            <Carousel.Item>
+                                <img
+                                    className="d-block w-100"
+                                    src="https://res.cloudinary.com/dzxwekkvd/image/upload/v1681639273/landing_page/pizza2-transformed_un3uf9.jpg"
+                                    alt="Third slide"
+                                />
+                            </Carousel.Item>
+                            <Carousel.Item>
+                                <img
+                                    className="d-block w-100"
+                                    src="https://res.cloudinary.com/dzxwekkvd/image/upload/v1681639187/landing_page/pizza3-transformed_xpym1g.jpg"
+                                    alt="Third slide"
+                                />
+                            </Carousel.Item>
+                            <Carousel.Item>
+                                <img
+                                    className="d-block w-100"
+                                    src="https://res.cloudinary.com/dzxwekkvd/image/upload/v1681639030/landing_page/pizza5-transformed_we4pmd.jpg"
+                                    alt="Third slide"
+                                />
+                            </Carousel.Item>
+                            <Carousel.Item>
+                                <img
+                                    className="d-block w-100"
+                                    src="https://res.cloudinary.com/dzxwekkvd/image/upload/v1681639092/landing_page/pizza6-transformed_aymggg.jpg"
+                                    alt="Third slide"
+                                />
+                            </Carousel.Item>
+                        </Carousel>
+                        <CurvedCorner />
+                    </div>
+                </div>
+            </div>
+        </main>
+    )
 }
 
-export const getServerSideProps = async (context) => {
-  // console.log('GSSD... ', context.req.headers.cookie)ˇ
-  let pizzas
-  let error: boolean
-  await axios({
-    method: 'get',
-    url: `${server}/pizza/all`,
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-      'Access-Control-Allow-Origin': `${server}`
-    },
-    params: context.query
-  })
-    .then(res => {
-      // console.log(res.data)
-      pizzas = res.data
-    })
-    .catch(e => '')
-
-  // console.log(context.query)
-  if (error) {
-    return {
-      redirect: {
-        permanent: false,
-        destination: '/'
-      }
-    }
-  } else {
-    return {
-      props: {
-        pizzas
-      }
-    }
-  }
-}
+export default index

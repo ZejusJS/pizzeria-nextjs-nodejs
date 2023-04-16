@@ -1,9 +1,43 @@
 // @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
 
-* {
+
+body {
     font-family: 'Quicksand', sans-serif;
     margin: 0;
+    margin-bottom: 0;
     box-sizing: border-box;
+    line-height: unset;
+
+    *,
+    p,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        font-family: 'Quicksand', sans-serif;
+        margin: 0;
+        margin-bottom: 0;
+        box-sizing: border-box;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        font-weight: 600;
+    }
+
+    h3 {
+        font-size: 21px;
+    }
+
+    a:hover {
+        color: unset;
+    }
 }
 
 input::-webkit-outer-spin-button,

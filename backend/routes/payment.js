@@ -71,7 +71,7 @@ router.post('/card', mwIsLoggedIn, validatePayment, mwRecaptcha, mwCardPaymentPo
         totalAmount: (totalPrice * 100).toFixed(0),
         currency: 'CZK',
         closePayment: true,
-        returnUrl: process.env.FRONTEND + ``,
+        returnUrl: process.env.FRONTEND + `/user/profile/orders`,
         returnMethod: 'GET',
         cart: [
             {
@@ -173,19 +173,14 @@ router.post('/card', mwIsLoggedIn, validatePayment, mwRecaptcha, mwCardPaymentPo
 
 
 router.get('/check-status/:id/:payId', mwIsLoggedIn, catchAsync(async function (req, res, next) {
-    const { id, payId } = req.params
+    const { id } = req.params
 
     let isAuthor = false
-    if (req.user?.orders?.length) {
-        for (var i = 0; i < req.user.orders.length; i++) {
-            if (req.user.orders[i].equals(id)) {
-                isAuthor = true
-                break;
-            }
-        }
-    }
+    const order = await Order.findOne({ _id: id, user: req.user._id })
+    if (order) isAuthor = true
     if (!isAuthor) return res.status(403).json({ msg: "You don't have permission to check this payment status" })
 
+    const payId = order.payId
     const dttm = new Date().toISOString().replace(/(\.\d{3})|[^\d]/g, '')
 
     const payIdUri = encodeURIComponent(payId)
@@ -203,19 +198,34 @@ router.get('/check-status/:id/:payId', mwIsLoggedIn, catchAsync(async function (
     const data = {
         paymentStatus: 0
     }
-    await axios({
-        method: 'get',
-        url: `https://iapi.iplatebnibrana.csob.cz/api/v1.9/payment/status/${merchantIdUri}/${payIdUri}/${dttmUri}/${signatureStatusUri}`
-    })
-        .then(res => {
-            // console.log(res.data)
-            data.paymentStatus = res?.data?.paymentStatus
-        })
-        .catch(e => {
-            console.error(e)
-        })
 
-    res.set('Cache-Control', 'public, max-age=20, must-revalidate')
+    if (!order.paymentStatus) {
+        await axios({
+            method: 'get',
+            url: `https://iapi.iplatebnibrana.csob.cz/api/v1.9/payment/status/${merchantIdUri}/${payIdUri}/${dttmUri}/${signatureStatusUri}`
+        })
+            .then(async response => {
+                // console.log(res.data)
+                const statusRes = response?.data?.paymentStatus
+                if (!statusRes) return res.status(500).json({ msg: 'Error with receiving a payment status' })
+
+                if (statusRes === 6 || statusRes === 8 || statusRes === 10) {
+                    console.log('save order')
+                    order.paymentStatus = statusRes
+                    await order.save()
+                }
+
+                data.paymentStatus = response.data.paymentStatus
+            })
+            .catch(e => {
+                return res.status(500).json({ msg: 'Error with receiving a payment status' })
+                console.error(e)
+            })
+    } else {
+        console.log('status from db')
+        res.set('Cache-Control', 'public, max-age=200, must-revalidate')
+        data.paymentStatus = order.paymentStatus
+    }
 
     return res.status(200).json(data)
 }))
@@ -225,7 +235,7 @@ router.get('/orders/:ids', mwIsLoggedIn, catchAsync(async function (req, res, ne
     const orders = (await Order.find({ _id: { $in: ids.split(',') }, user: req.user._id }).populate('items.item')).reverse()
     if (!orders) return res.status(400).json({ msg: 'Bad ids or you are not allowed to view this orders', code: 300 })
 
-    res.set('Cache-Control', 'public, max-age=20000, must-revalidate')
+    res.set('Cache-Control', 'public, max-age=300000, must-revalidate')
 
     return res.status(200).json({ orders })
 }))

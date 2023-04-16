@@ -68,9 +68,9 @@ const Pizza = ({ pizza, singleAdd, deleteItem, viewItem, cart, Spinner }) => {
         <div className='pizza-info'>
           <h3>{pizza.title}</h3>
           {pizza.ingredients.length ?
-            <div className='ingredients' key="fd">
+            <p className='ingredients' key="fd">
               {ingredients}
-            </div>
+            </p>
             : ''}
           <div className='pizza-action'>
           </div>

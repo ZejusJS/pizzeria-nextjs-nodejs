@@ -14,6 +14,9 @@ const OrderSchema = Schema({
         type: String,
         required: true
     },
+    paymentStatus: {
+        type: Number
+    },
     items: [
         {
             item: {

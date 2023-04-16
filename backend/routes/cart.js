@@ -150,19 +150,20 @@ router.get('/getCartAndUser', catchAsync(async function (req, res, next) {
     cart.items = cart.items.map(item => {
         // console.log(item)
         if (!item.item || !(item?.item?.show === true)) findNull = true
-        if (item.item) item.totalPrice = item.quantity * item.item.price
-        if (item?.item !== null
-            && item?.item !== undefined
-            && item?.item?.show === true) {
+        if (item.item && item?.item?.show === true) {
             return item
         }
     }).filter(item => item)
     if (findNull) await cart.save()
 
     const user = {
-        email: req.user?.email,
         name: req.user?.name,
-        roles: req.user?.roles
+        email: req.user?.email,
+        roles: req.user?.roles,
+        _id: req.user?._id,
+        invoiceInfo: req.user?.invoiceInfo,
+        shippingAdress: req.user?.shippingAdress,
+        orders: req.user?.orders
     }
     // console.log(cart)
     // console.log(cart.items)
@@ -188,7 +189,7 @@ router.get('/getCartCheckout', catchAsync(async function (req, res, next) {
     }
     findCart.totalCartPrice = totalPrice.toFixed(2)
     // console.log(findCart)
-    
+
     res.status(200).json(findCart)
 }))
 

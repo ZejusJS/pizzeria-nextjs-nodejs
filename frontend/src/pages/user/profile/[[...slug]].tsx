@@ -19,9 +19,8 @@ import Orders from '../../../components/user/Orders'
 
 export const UserContext = createContext('')
 
-const index = ({ userData, viewItem }) => {
+const index = ({ userData, viewItem, fetchFirstData, isLoadingFirstData }) => {
     const router = useRouter()
-    const shippingAdress = userData?.shippingAdress
     const { slug = [null] } = router.query
     const payIdQuery = router.query?.payId
 
@@ -32,95 +31,106 @@ const index = ({ userData, viewItem }) => {
         <>
             <Meta title='Mamma Mia | Profile' />
             <main>
-                <section className="user-container">
-                    <div className="user-card">
-                        <div>
-                            <UserSvg />
+                {
+                    !isLoadingFirstData ?
+                    <section className="user-container">
+                        <div className="user-card">
+                            <div>
+                                <UserSvg />
+                            </div>
+                            <div>
+                                <h1>{userData?.name}</h1>
+                                <h2>{userData?.invoiceInfo?.firstname} {userData?.invoiceInfo?.lastname}</h2>
+                                <h4>{userData?.email}</h4>
+                            </div>
                         </div>
-                        <div>
-                            <h1>{userData.name}</h1>
-                            <h2>{userData.invoiceInfo.firstname} {userData.invoiceInfo.lastname}</h2>
-                            <h4>{userData.email}</h4>
-                        </div>
-                    </div>
 
-                    {!slug[0]
-                        ?
-                        <div className="user-navigation">
-                            <Link href={'/user/profile/details'} shallow={true} prefetch={false}>
-                                <div>
-                                    <UserSvg /><span>User details</span>
-                                </div>
-                            </Link>
-                            <Link href={'/user/profile/orders'} shallow={true} prefetch={false}>
-                                <div>
-                                    <OrderBagSvg /><span>Orders</span>
-                                </div>
-                            </Link>
-                            <Link href={'/user/profile/adress'} shallow={true} prefetch={false}>
-                                <div>
-                                    <HouseSvg /><span>Shipping adress</span>
-                                </div>
-                            </Link>
-                            <Link href={'/user/profile/billing'} shallow={true} prefetch={false}>
-                                <div>
-                                    <DollarSvg /><span>Billing</span>
-                                </div>
-                            </Link>
-                        </div>
-                        :
-                        <>
-                            <button
-                                type="button"
-                                role="navigation"
-                                className="btn-styled back-nav"
-                                onClick={() => router.push(`${backUrl}`,
-                                    null, { shallow: true })}
-                            >
-                                <ArrowLeftSvg />
-                                <span>{backText}</span>
-                            </button>
-                        </>
-                    }
-                    {
-                        slug[0] === 'adress'
+                        {!slug[0]
                             ?
-                            <Adress
-                                shippingAdress={shippingAdress}
-                                router={router}
-                            />
+                            <div className="user-navigation">
+                                <Link href={'/user/profile/details'} shallow={true} prefetch={false}>
+                                    <div>
+                                        <UserSvg /><span>User details</span>
+                                    </div>
+                                </Link>
+                                <Link href={'/user/profile/orders'} shallow={true} prefetch={false}>
+                                    <div>
+                                        <OrderBagSvg /><span>Orders</span>
+                                    </div>
+                                </Link>
+                                <Link href={'/user/profile/adress'} shallow={true} prefetch={false}>
+                                    <div>
+                                        <HouseSvg /><span>Shipping adress</span>
+                                    </div>
+                                </Link>
+                                <Link href={'/user/profile/billing'} shallow={true} prefetch={false}>
+                                    <div>
+                                        <DollarSvg /><span>Billing</span>
+                                    </div>
+                                </Link>
+                            </div>
                             :
-                            slug[0] === 'details'
+                            <>
+                                <button
+                                    type="button"
+                                    role="navigation"
+                                    className="btn-styled back-nav"
+                                    onClick={() => router.push(`${backUrl}`,
+                                        null, { shallow: true })}
+                                >
+                                    <ArrowLeftSvg />
+                                    <span>{backText}</span>
+                                </button>
+                            </>
+                        }
+                        {
+                            slug[0] === 'adress'
                                 ?
-                                <Details
+                                <Adress
+                                    shippingAdress={userData?.shippingAdress}
                                     router={router}
-                                    userData={userData}
+                                    fetchFirstData={fetchFirstData}
+                                    isLoadingFirstData={isLoadingFirstData}
                                 />
                                 :
-                                slug[0] === 'billing'
+                                slug[0] === 'details'
                                     ?
-                                    <Billing
+                                    <Details
                                         router={router}
                                         userData={userData}
+                                        fetchFirstData={fetchFirstData}
+                                        isLoadingFirstData={isLoadingFirstData}
                                     />
                                     :
-                                    ''
-                    }
-                    {
-                        slug[0] === 'orders'
-                            ?
-                            <Orders
-                                userData={userData}
-                                viewItem={viewItem}
-                                slug={slug}
-                                setBackUrl={setBackUrl}
-                                setBackText={setBackText}
-                                payIdQuery={payIdQuery}
-                            />
-                            :
-                            ''
-                    }
-                </section>
+                                    slug[0] === 'billing'
+                                        ?
+                                        <Billing
+                                            router={router}
+                                            userData={userData}
+                                            fetchFirstData={fetchFirstData}
+                                            isLoadingFirstData={isLoadingFirstData}
+                                        />
+                                        :
+                                        ''
+                        }
+                        {
+                            slug[0] === 'orders'
+                                ?
+                                <Orders
+                                    userData={userData}
+                                    viewItem={viewItem}
+                                    slug={slug}
+                                    setBackUrl={setBackUrl}
+                                    setBackText={setBackText}
+                                    payIdQuery={payIdQuery}
+                                />
+                                :
+                                ''
+                        }
+                    </section>
+                    :
+                    ''
+                }
             </main>
         </>
     )
@@ -128,44 +138,44 @@ const index = ({ userData, viewItem }) => {
 
 export default index
 
-export const getServerSideProps = async (ctx) => {
-    let userData = {}
-    let error = false
+// export const getServerSideProps = async (ctx) => {
+//     let userData = {}
+//     let error = false
 
-    await axios({
-        method: 'get',
-        url: `${server}/user/getUser`,
-        // url: `api/cart/getCartAndUser`,
-        withCredentials: true,
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-            'Access-Control-Allow-Origin': `${server}`,
-            Cookie: ctx.req.headers.cookie
-        }
-    })
-        .then(res => userData = res.data)
-        .catch(e => {
-            error = true
-        })
+//     await axios({
+//         method: 'get',
+//         url: `${server}/user/getUser`,
+//         // url: `api/cart/getCartAndUser`,
+//         withCredentials: true,
+//         headers: {
+//             "Content-Type": "application/x-www-form-urlencoded",
+//             'Access-Control-Allow-Origin': `${server}`,
+//             Cookie: ctx.req.headers.cookie
+//         }
+//     })
+//         .then(res => userData = res.data)
+//         .catch(e => {
+//             error = true
+//         })
 
-    if (error) {
-        return {
-            redirect: {
-                permanent: false,
-                destination: '/user/login'
-            }
-        }
-    }
+//     if (error) {
+//         return {
+//             redirect: {
+//                 permanent: false,
+//                 destination: '/user/login'
+//             }
+//         }
+//     }
 
-    ctx.res.setHeader(
-        'Cache-Control',
-        'public, maxage=100, must-revalidate'
-    )
+//     ctx.res.setHeader(
+//         'Cache-Control',
+//         'public, maxage=100, must-revalidate'
+//     )
 
-    // console.log(userData.orders)
-    return {
-        props: {
-            userData
-        }
-    }
-}
+//     // console.log(userData.orders)
+//     return {
+//         props: {
+//             userData
+//         }
+//     }
+// }

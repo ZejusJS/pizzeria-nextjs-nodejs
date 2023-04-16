@@ -1,18 +1,24 @@
 import axios from 'axios'
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import NProgress from 'nprogress'
 
 const Adress = ({
     shippingAdress,
-    router
+    router,
+    fetchFirstData,
+    isLoadingFirstData
 }) => {
-    const [adressData, setAdressData] = useState({
-        firstname: shippingAdress.firstname ? shippingAdress.firstname : '',
-        lastname: shippingAdress.lastname ? shippingAdress.lastname : '',
-        city: shippingAdress.city ? shippingAdress.city : '',
-        zip: shippingAdress.zip ? shippingAdress.zip : '',
-        adress: shippingAdress.adress ? shippingAdress.adress : '',
-    })
+    let initialAdressData = {
+        firstname: shippingAdress?.firstname ? shippingAdress?.firstname : '',
+        lastname: shippingAdress?.lastname ? shippingAdress?.lastname : '',
+        city: shippingAdress?.city ? shippingAdress?.city : '',
+        zip: shippingAdress?.zip ? shippingAdress?.zip : '',
+        adress: shippingAdress?.adress ? shippingAdress?.adress : '',
+    }
+    const [adressData, setAdressData] = useState(initialAdressData)
+    useEffect(() => {
+        setAdressData(initialAdressData)
+    }, [shippingAdress])
 
     const firstnameError = useRef(null)
     const lastnameError = useRef(null)
@@ -22,6 +28,8 @@ const Adress = ({
     const btnSubmit = useRef(null)
 
     function handleChange(e) {
+        if (isLoadingFirstData) return
+        
         const { name, value } = e.target
         setAdressData(prevData => {
             return {
@@ -115,7 +123,11 @@ const Adress = ({
             data: adressData
         })
             .then(res => {
-                router.push('/user/profile')
+                // router.push('/user/profile')
+                fetchFirstData(false)
+                setTimeout(() => {
+                    btnSubmit.current.disabled = false
+                }, 200)
             })
             .catch(e => {
                 console.error(e)
