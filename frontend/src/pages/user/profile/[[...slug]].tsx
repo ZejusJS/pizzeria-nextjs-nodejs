@@ -88,46 +88,46 @@ const index = ({ userData, viewItem, fetchFirstData, isLoadingFirstData }) => {
                         </>
                     }
                     {
-                        slug[0] === 'adress'
-                            ?
-                            <Adress
-                                shippingAdress={userData?.shippingAdress}
-                                router={router}
-                                fetchFirstData={fetchFirstData}
-                                isLoadingFirstData={isLoadingFirstData}
-                            />
-                            :
-                            slug[0] === 'details'
+                        userData?.email ?
+                            slug[0] === 'adress'
                                 ?
-                                <Details
+                                <Adress
+                                    shippingAdress={userData?.shippingAdress}
                                     router={router}
-                                    userData={userData}
                                     fetchFirstData={fetchFirstData}
                                     isLoadingFirstData={isLoadingFirstData}
                                 />
                                 :
-                                slug[0] === 'billing'
+                                slug[0] === 'details'
                                     ?
-                                    <Billing
+                                    <Details
                                         router={router}
                                         userData={userData}
                                         fetchFirstData={fetchFirstData}
                                         isLoadingFirstData={isLoadingFirstData}
                                     />
                                     :
-                                    ''
-                    }
-                    {
-                        slug[0] === 'orders'
-                            ?
-                            <Orders
-                                userData={userData}
-                                viewItem={viewItem}
-                                slug={slug}
-                                setBackUrl={setBackUrl}
-                                setBackText={setBackText}
-                                payIdQuery={payIdQuery}
-                            />
+                                    slug[0] === 'billing'
+                                        ?
+                                        <Billing
+                                            router={router}
+                                            userData={userData}
+                                            fetchFirstData={fetchFirstData}
+                                            isLoadingFirstData={isLoadingFirstData}
+                                        />
+                                        :
+                                        slug[0] === 'orders'
+                                            ?
+                                            <Orders
+                                                userData={userData}
+                                                viewItem={viewItem}
+                                                slug={slug}
+                                                setBackUrl={setBackUrl}
+                                                setBackText={setBackText}
+                                                payIdQuery={payIdQuery}
+                                            />
+                                            :
+                                            ''
                             :
                             ''
                     }
