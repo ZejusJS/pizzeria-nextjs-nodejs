@@ -4,10 +4,16 @@ import { useRef, useState } from 'react'
 import { server } from '../../config/config'
 import NProgress from 'nprogress'
 import Reaptcha from 'reaptcha'
+import { NextPage } from "next"
 
 import { captchaKeyAuth } from '../../config/config'
 
-const Signup = ({ fetchFirstData }) => {
+interface Signup {
+    fetchFirstData,
+    urlsHistory
+}
+
+const Signup: NextPage<Signup> = ({ fetchFirstData, urlsHistory }) => {
     const [signData, setSignData] = useState({
         name: '',
         email: '',
@@ -195,7 +201,11 @@ const Signup = ({ fetchFirstData }) => {
                 // console.log(res)
                 // router.replace('/')
                 if (router.pathname === '/user/signup') {
-                    fetchFirstData().then(router.replace('/'))
+                    fetchFirstData().then(router.replace(
+                        urlsHistory[1] !== '/user/login' || urlsHistory[1] !== '/user/signup'
+                            ? urlsHistory[1]
+                            : '/')
+                    )
                 } else if (router.pathname = '/cart/checkout') {
                     // setUser(res.data?.user)
                     // setOrderDetails(res.data?.invoiceInfo)

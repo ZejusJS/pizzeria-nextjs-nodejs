@@ -342,10 +342,12 @@ const checkout = ({ cartData, setUser, user, fetchFirstData, userData, setCart, 
                                     ?
                                     <Signup
                                         fetchFirstData={() => fetchFirstData(true)}
+                                        urlsHistory={undefined}
                                     />
                                     :
                                     <Login
                                         fetchFirstData={() => fetchFirstData(true)}
+                                        urlsHistory={undefined}
                                     />
                             }
                         </>

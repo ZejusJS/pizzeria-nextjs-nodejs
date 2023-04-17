@@ -1,9 +1,16 @@
 main {
     padding-top: 85px;
     z-index: 0;
+    word-break: break-word;
 
     @media (max-width: 600px) {
         padding-top: 60px;
+    }
+    min-height: 100svh;
+
+    &.signup,
+    &.login {
+        padding-top: 120px;
     }
 }
 

@@ -1,3 +1,22 @@
+@mixin opacity-breathing($duration) {
+    $name: inline-#{unique-id()};
+
+    @keyframes #{$name} {
+        from {
+            opacity: 0.4;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
+    animation-name: $name;
+    animation-duration: $duration;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
 nav {
     position: fixed;
     display: flex;
@@ -61,7 +80,7 @@ nav {
         max-width: 750px;
         margin: 0 auto;
 
-        div {
+        .link-con {
             border-width: 0 1px 0 0;
             border-color: rgba(134, 134, 134, 0.548);
             border-style: solid;
@@ -142,6 +161,16 @@ nav {
             }
         }
 
+        .auth-loading {
+            width: 35%;
+            @include opacity-breathing(1s);
+
+            svg {
+                height: 150%;
+                width: auto;
+            }
+        }
+
         .user {
             svg {
                 width: 30px;
@@ -187,10 +216,19 @@ nav {
             }
         }
 
+        .auth-loading {
+            @include opacity-breathing(1s);
+
+            svg {
+                height: 90px;
+                width: auto;
+            }
+        }
+
         .user-links {
             width: 100%;
             max-width: 100%;
-            
+
             a {
                 color: black;
             }

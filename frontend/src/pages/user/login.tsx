@@ -3,14 +3,15 @@ import { server } from '../../config/config'
 import Login from '../../components/auth/Login'
 import Meta from '../../components/Meta'
 
-const login = ({ fetchFirstData }) => {
+const login = ({ fetchFirstData, urlsHistory }) => {
 
   return (
     <>
       <Meta title='Mamma Mia | Login' />
-      <main>
+      <main className='login'>
         <h1 className='text-cen'>Login</h1>
         <Login
+        urlsHistory={urlsHistory}
         fetchFirstData={() => fetchFirstData(true)}
         />
       </main>

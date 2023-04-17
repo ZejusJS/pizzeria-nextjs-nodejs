@@ -129,9 +129,17 @@ export default function App({ Component, pageProps }) {
     if (!expanded) document.body.classList.remove('margin')
   }, [expanded])
 
+  const [urlsHistory, setUrlsHistory] = useState([])
+
   Router.events.on("routeChangeStart", (url) => {
     NProgress.start()
   })
+
+  useEffect(() => {
+    if (urlsHistory[0] !== router.asPath) {
+      setUrlsHistory(prev => ([...prev, router.asPath]))
+    }
+  }, [router.asPath]);
 
   Router.events.on("routeChangeComplete", (url) => {
     NProgress.done(false)
@@ -189,6 +197,7 @@ export default function App({ Component, pageProps }) {
         user={userData}
         fetchFirstData={() => fetchFirstData(true)}
         router={router}
+        isLoadingFirstData={isLoadingFirstData}
       />
       <div className={`fetcing-spinner-con ${isLoadingFirstData ? 'shown' : ''}`}>
         <div className="lds-dual-ring"></div>
@@ -266,6 +275,7 @@ export default function App({ Component, pageProps }) {
             changeQnt={changeQnt}
             router={router}
             isLoadingFirstData={isLoadingFirstData}
+            urlsHistory={urlsHistory}
           />
         </ErrorBoundary>
       </div>

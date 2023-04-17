@@ -17,10 +17,18 @@ interface withRouter {
   setExpanded,
   expanded,
   user,
-  fetchFirstData
+  fetchFirstData,
+  isLoadingFirstData
 }
 
-const Navbar: NextPage<withRouter> = ({ cart, setExpanded, expanded, user, fetchFirstData, router }) => {
+const Navbar: NextPage<withRouter> = ({
+  cart,
+  setExpanded,
+  expanded,
+  user,
+  fetchFirstData,
+  router,
+  isLoadingFirstData }) => {
   let itemsCount = 0
   cart?.items?.map(item => {
     itemsCount += Number(item.quantity)
@@ -94,12 +102,12 @@ const Navbar: NextPage<withRouter> = ({ cart, setExpanded, expanded, user, fetch
           </div>
 
           <div className='links-row linky'>
-            <div>
+            <div className='link-con'>
               <Link href='/' shallow={false}>
                 Home page
               </Link>
             </div>
-            <div>
+            <div className='link-con'>
               <Link href='/menu'>
                 Menu
               </Link>
@@ -109,35 +117,39 @@ const Navbar: NextPage<withRouter> = ({ cart, setExpanded, expanded, user, fetch
               Cart
             </Link>
           </div> */}
-            {!user.email ?
+            {!user?.email && !isLoadingFirstData ?
               <>
-                <div className='auth'>
+                <div className='link-con auth'>
                   <Link href='/user/signup'>
                     Sign Up
                   </Link>
                 </div>
-                <div className='auth'>
+                <div className='link-con auth'>
                   <Link href='/user/login'>
                     Login
                   </Link>
                 </div>
               </>
-              :
-              <>
-                <div>
-                  <form className='log-out' onSubmit={(e) => logout(e)}>
-                    <button type='submit'>Log Out</button>
-                  </form>
+              : user?.email ?
+                <>
+                  <div className='link-con auth'>
+                    <form className='log-out' onSubmit={(e) => logout(e)}>
+                      <button type='submit'>Log Out</button>
+                    </form>
+                  </div>
+                  <div className='link-con user'>
+                    <Link href='/user/profile'>
+                      <UserCircleSvg />
+                    </Link>
+                  </div>
+                </>
+                :
+                <div className='link-con auth-loading' role='status'>
+                  <UserCircleSvg />
                 </div>
-                <div className='user'>
-                  <Link href='/user/profile'>
-                    <UserCircleSvg />
-                  </Link>
-                </div>
-              </>
             }
             {user.roles?.admin ?
-              <div className='four'>
+              <div className='link-con four'>
                 <Link href='/admin'>
                   Admin
                 </Link>
@@ -162,7 +174,7 @@ const Navbar: NextPage<withRouter> = ({ cart, setExpanded, expanded, user, fetch
               </Link>
             </div>
             <div className='link user-links'>
-              {!user.email ?
+              {!user.email && !isLoadingFirstData?
                 <>
                   <Link href='/user/signup' >
                     Sign Up
@@ -171,19 +183,23 @@ const Navbar: NextPage<withRouter> = ({ cart, setExpanded, expanded, user, fetch
                     Login
                   </Link>
                 </>
-                :
-                <>
-                  <div>
-                    <form className='log-out' onSubmit={(e) => logout(e)}>
-                      <button type='submit'>Log Out</button>
-                    </form>
+                : user?.email ?
+                  <>
+                    <div>
+                      <form className='log-out' onSubmit={(e) => logout(e)}>
+                        <button type='submit'>Log Out</button>
+                      </form>
+                    </div>
+                    <div className='user'>
+                      <Link href='/user/profile'>
+                        <UserCircleSvg /> <span>{user.name}</span>
+                      </Link>
+                    </div>
+                  </>
+                  :
+                  <div className='auth-loading' role='status'>
+                    <UserCircleSvg />
                   </div>
-                  <div className='user'>
-                    <Link href='/user/profile'>
-                      <UserCircleSvg /> <span>{user.name}</span>
-                    </Link>
-                  </div>
-                </>
               }
             </div>
             {user.roles?.admin ?

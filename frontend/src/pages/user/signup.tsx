@@ -6,14 +6,15 @@
 import Signup from '../../components/auth/Signup'
 import Meta from '../../components/Meta'
 
-const signup = ({ fetchFirstData }) => {
+const signup = ({ fetchFirstData, urlsHistory }) => {
     return (
         <>
             <Meta title='Mamma Mia | Signup' />
-            <main>
+            <main className='signup'>
                 <h1 className='text-cen'>Sign Up</h1>
-                <Signup 
-                fetchFirstData={() => fetchFirstData(true)}
+                <Signup
+                    urlsHistory={urlsHistory}
+                    fetchFirstData={() => fetchFirstData(true)}
                 />
             </main>
         </>

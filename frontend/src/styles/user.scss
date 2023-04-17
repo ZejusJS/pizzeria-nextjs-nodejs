@@ -17,9 +17,121 @@
     animation-direction: alternate;
 }
 
+main.user-main {
+    position: relative;
+    min-height: 100svh;
+}
+
+.no-auth {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    top: 120px;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    transform: translate(-50%, 0);
+    transition: opacity 150ms;
+
+    &.hidden {
+        pointer-events: none;
+        opacity: 0;
+    }
+
+    &.shown {
+        pointer-events: auto;
+        opacity: 1;
+    }
+
+    h5 {
+        font-size: 26px;
+        text-align: center;
+    }
+
+    svg.no-auth-svg {
+        max-width: 150px;
+        width: 100%;
+        height: auto;
+    }
+
+    .links-con {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+
+        a {
+            padding: 10px 16px;
+            text-decoration: none;
+            border-radius: 10px;
+            font-size: 19px;
+            font-weight: 600;
+
+            &.login {
+                color: orange;
+                background-color: rgb(53, 53, 53);
+
+                &:hover,
+                :active {
+                    background-color: rgb(82, 82, 82);
+                }
+            }
+
+            &.signup {
+                color: rgb(53, 53, 53);
+                background-color: orange;
+
+                &:hover,
+                :active {
+                    background-color: rgb(255, 181, 44);
+                }
+            }
+        }
+    }
+}
+
+.user-container-loading {
+    display: flex;
+    justify-content: center;
+    transition: opacity 150ms;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 100%;
+    transform: translate(-50%, 0);
+
+    .spinner-border {
+        margin: 0 auto;
+        margin-top: 30%;
+        width: 20vw;
+        height: 20vw;
+    }
+
+    &.hidden {
+        pointer-events: none;
+        opacity: 0;
+    }
+
+    &.shown {
+        pointer-events: auto;
+        opacity: 1;
+    }
+}
+
 .user-container {
     max-width: 900px;
     margin: 0 auto;
+    transition: opacity 150ms;
+
+    &.hidden {
+        pointer-events: none;
+        opacity: 0;
+    }
+
+    &.shown {
+        pointer-events: auto;
+        opacity: 1;
+    }
 
     h1 {
         font-size: 30px;

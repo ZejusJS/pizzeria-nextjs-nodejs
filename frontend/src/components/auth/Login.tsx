@@ -3,8 +3,14 @@ import axios from 'axios'
 import { useState } from 'react'
 import NProgress from 'nprogress'
 import { useRouter } from 'next/router'
+import { NextPage } from "next"
 
-const Login = ({ fetchFirstData }) => {
+interface Login {
+    fetchFirstData,
+    urlsHistory
+}
+
+const Login: NextPage<Login> = ({ fetchFirstData, urlsHistory }) => {
     const router = useRouter()
 
     const [loginData, setLoginData] = useState({
@@ -89,7 +95,11 @@ const Login = ({ fetchFirstData }) => {
                 // router.replace('/')
                 if (router.pathname === '/user/login') {
                     // window.location.href = "/"
-                    fetchFirstData().then(router.replace('/'))
+                    fetchFirstData().then(router.replace(
+                        urlsHistory[1] !== '/user/login' || urlsHistory[1] !== '/user/signup'
+                            ? urlsHistory[1]
+                            : '/')
+                    )
                 } else if (router.pathname === '/cart/checkout') {
                     // setUser(res.data?.user)
                     // setOrderDetails(res.data?.invoiceInfo)

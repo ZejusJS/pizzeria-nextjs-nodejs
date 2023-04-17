@@ -27,7 +27,7 @@ const Details = ({
             }
         })
         if (name === 'name') {
-            if (value.length > 24 || value.length < 1) {
+            if (value.length > 24 || value.length < 5) {
                 usernameError?.current?.classList.add('shown')
             } else {
                 usernameError?.current?.classList.remove('shown')
@@ -102,7 +102,7 @@ const Details = ({
                     <div
                         ref={usernameError}
                         className='error'>
-                        <p>This field is required. Username cannot contain more than 24 characters.</p>
+                        <p>Username cannot contain less than 5 and more than 24 characters.</p>
                     </div>
                 </div>
                 <button className='submit-btn' type='submit' ref={btnSubmit}>

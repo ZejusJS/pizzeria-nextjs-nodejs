@@ -56,7 +56,7 @@ module.exports.userBillingSchema =
 
 module.exports.userDetailsSchema =
     Joi.object({
-        name: Joi.string().max(24).required().trim(),
+        name: Joi.string().min(5).max(24).required().trim(),
     }).required()
 
 module.exports.pizzaSchema =

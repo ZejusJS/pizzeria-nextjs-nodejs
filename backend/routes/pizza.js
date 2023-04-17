@@ -10,6 +10,7 @@ const Ingredients = require('../models/ingredients')
 
 let ingredientsExp = 10000
 let pizzasAllExp = 10000
+let pizzasNumExp = 30000
 let pizzasIngsExp = 9000
 
 router.get('/all', catchAsync(async function (req, res, next) {
@@ -34,9 +35,7 @@ router.get('/all', catchAsync(async function (req, res, next) {
             return await Pizza.find(config).select({ show: 0, createdAt: 0, updatedAt: 0 }).sort({ updatedAt: -1 })
         })
     } else if (ingredients && !q) {
-        console.log('aaaaaaaaaaa')
         pizzas = await getOrSetexCached(`pizzasingrs:${ingredients}`, pizzasIngsExp, async () => {
-            console.log('bbbbbbbb')
             return await Pizza.find(config).select({ show: 0, createdAt: 0, updatedAt: 0 }).sort({ updatedAt: -1 })
         })
     } else {
@@ -51,13 +50,18 @@ router.get('/get-many-number/:num', catchAsync(async function (req, res, next) {
 
     if (!num || isNaN(num)) return res.status(400).json({ code: 300, msg: 'Provide only a number' })
 
-    let pizzas = await Pizza.paginate({ show: true }, {
-        sort: { updatedAt: -1 },
-        limit: num,
-        page: 1,
-        select: { show: 0, createdAt: 0, updatedAt: 0 }
+    let pizzas
+    pizzas = await getOrSetexCached(`pizzasnum:${num}`, pizzasNumExp, async () => {
+        return await Pizza.paginate({ show: true }, {
+            sort: { updatedAt: -1 },
+            limit: num,
+            page: 1,
+            select: { show: 0, createdAt: 0, updatedAt: 0 }
+        })
     })
-    // console.log(pizzas)
+
+    if (pizzas) res.set('Cache-Control', 'public, max-age=500, must-revalidate')
+
     res.status(200).json(pizzas)
 }))
 
