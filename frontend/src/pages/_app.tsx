@@ -72,20 +72,17 @@ export default function App({ Component, pageProps }) {
 
   async function fetchFirstData(loading: boolean = true) {
     setIsLoadingFirstData(true)
-    if (loading) {
-      setLoaded(false)
-      NProgress.start()
-      loaderRef?.current?.classList?.remove('loaded')
-    }
+    // if (loading) {
+    //   setLoaded(false)
+    //   NProgress.start()
+    // }
 
     await axios({
       method: 'get',
       url: `/api2/cart/getCartAndUser`,
-      // url: `api/cart/getCartAndUser`,
       withCredentials: true,
       headers: {
         'Access-Control-Allow-Origin': `${server}`,
-        // Cookie: ctx.req.headers.cookie
       },
       onDownloadProgress: function (progressEvent) {
         setIsLoadingFirstData(false)
@@ -98,13 +95,10 @@ export default function App({ Component, pageProps }) {
         setUserData(res?.data?.user)
         setTotalCartPrice(cartToSet.totalCartPrice)
 
-        if (loading) {
-          NProgress.done(false)
-          loaderRef?.current?.classList?.add('loaded')
-        }
-        setTimeout(() => {
-          if (loading) setLoaded(true)
-        }, 1500);
+        // if (loading) {
+        //   setLoaded(true)
+        //   NProgress.done(false)
+        // }
       })
       .catch(e => {
         console.error(e)
@@ -201,7 +195,7 @@ export default function App({ Component, pageProps }) {
       </div>
 
       <div
-        className='loader'
+        className={`loader ${loaded ? 'loaded' : 'loaded'}`}
         ref={loaderRef}
       >
         {!error ?

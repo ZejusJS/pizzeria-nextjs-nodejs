@@ -208,26 +208,8 @@ label.radio-label-green {
 input.radio-green[type=radio] {
     display: none;
 
+    &:checked+label,
     &:hover+label {
-        border: 0;
-        box-shadow: 0 0 7px -3px black;
-
-        &::before {
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            position: absolute;
-            background-color: rgb(255, 255, 255);
-            border: 20px solid rgba(0, 128, 0, 0.295);
-            display: inline-block;
-            height: 10px;
-            width: 10px;
-            border-radius: 50%;
-            content: '';
-        }
-    }
-
-    &:checked+label {
         // background-color: rgb(0, 255, 13);
         box-shadow: 0 0 7px -3px black;
         border: 0;
@@ -244,6 +226,13 @@ input.radio-green[type=radio] {
             width: 10px;
             border-radius: 50%;
             content: '';
+            box-sizing: content-box;
+        }
+    }
+
+    &:not(:checked):hover+label {
+        &::before {
+            border-color: rgba(0, 128, 0, 0.295);
         }
     }
 }
