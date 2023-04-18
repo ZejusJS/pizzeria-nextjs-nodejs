@@ -13,6 +13,7 @@
     "@next/font": "13.1.4",
     "@react-hook/resize-observer": "^1.2.6",
     "@svgr/webpack": "^6.5.1",
+    "@tanstack/react-query-devtools": "^4.29.3",
     "@vespaiach/axios-fetch-adapter": "^0.3.1",
     "axios": "^1.2.3",
     "bootstrap": "^5.2.3",
@@ -28,6 +29,7 @@
     "react-bootstrap": "^2.7.4",
     "react-dom": "18.2.0",
     "react-google-recaptcha": "^2.1.0",
+    "react-query": "^3.39.3",
     "react-router-dom": "^6.8.0",
     "reaptcha": "^1.12.1",
     "resize-observer-polyfill": "^1.5.1"

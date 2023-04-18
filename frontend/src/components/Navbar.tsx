@@ -79,13 +79,14 @@ const Navbar: NextPage<withRouter> = ({
         <div className={`nav-container ${expanded ? 'expanded' : ''}`}>
           <div>
             <div className='logo-name'>
-              <Link href='/' className='logo-link' shallow={false} prefetch={false}>
+              <Link href='/' className='logo-link' shallow={false} prefetch={false} title='Home Page'>
                 <img className='logo' src="/favicon.svg" alt="" />
                 <h1>Mamma Mia</h1>
               </Link>
               <div className='options-container'>
                 <Link href={'/cart'}
                   className="cart-href"
+                  title='Cart'
                 >
                   <div className='cart'>
                     <CartSvg />
@@ -103,12 +104,12 @@ const Navbar: NextPage<withRouter> = ({
 
           <div className='links-row linky'>
             <div className='link-con'>
-              <Link href='/' shallow={false}>
+              <Link href='/' shallow={false} title='Home Page'>
                 Home page
               </Link>
             </div>
             <div className='link-con'>
-              <Link href='/menu'>
+              <Link href='/menu' title='Food menu'>
                 Menu
               </Link>
             </div>
@@ -120,12 +121,12 @@ const Navbar: NextPage<withRouter> = ({
             {!user?.email && !isLoadingFirstData ?
               <>
                 <div className='link-con auth'>
-                  <Link href='/user/signup'>
+                  <Link href='/user/signup' title='Sign up'>
                     Sign Up
                   </Link>
                 </div>
                 <div className='link-con auth'>
-                  <Link href='/user/login'>
+                  <Link href='/user/login' title='Login'>
                     Login
                   </Link>
                 </div>
@@ -138,7 +139,7 @@ const Navbar: NextPage<withRouter> = ({
                     </form>
                   </div>
                   <div className='link-con user'>
-                    <Link href='/user/profile'>
+                    <Link href='/user/profile' title='Your profile page'>
                       <UserCircleSvg />
                     </Link>
                   </div>
@@ -158,28 +159,28 @@ const Navbar: NextPage<withRouter> = ({
           </div>
           <div className='links linky'>
             <div className='link'>
-              <Link href='/' shallow={false} >
+              <Link href='/' shallow={false} title='Home Page'>
                 Home page
               </Link>
-              <Link href='/menu' shallow={false} >
+              <Link href='/menu' shallow={false} title='Food menu'>
                 Menu
               </Link>
-              <Link href='/about' >
+              <Link href='/about' title='About'>
                 About
               </Link>
             </div>
             <div className='link'>
-              <Link href='/cart' >
+              <Link href='/cart' title='Cart'>
                 Cart
               </Link>
             </div>
             <div className='link user-links'>
               {!user.email && !isLoadingFirstData?
                 <>
-                  <Link href='/user/signup' >
+                  <Link href='/user/signup' title='Sign up'>
                     Sign Up
                   </Link>
-                  <Link href='/user/login' >
+                  <Link href='/user/login' title='Login'>
                     Login
                   </Link>
                 </>
@@ -191,7 +192,7 @@ const Navbar: NextPage<withRouter> = ({
                       </form>
                     </div>
                     <div className='user'>
-                      <Link href='/user/profile'>
+                      <Link href='/user/profile' title='Your profile page'>
                         <UserCircleSvg /> <span>{user.name}</span>
                       </Link>
                     </div>

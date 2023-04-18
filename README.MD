@@ -32,6 +32,7 @@ first project with nextjs + nodejs
 - [ ] Complete landing page
 - [ ] Show pizza by query params
 - [x] Repair user site
+- [ ] Repair SSR of pizza list (pizzas from getserversideprops aren't in use)
 
 ### Links: (last deploy: 16.4.2023)
 (long waiting for fresh starts, free tiers) <br>

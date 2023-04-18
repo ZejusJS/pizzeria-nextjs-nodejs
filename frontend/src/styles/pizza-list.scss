@@ -436,12 +436,12 @@
                     cursor: pointer;
                 }
                 
-                &:focus {
+                &:focus, &:hover {
                     outline: 0;
                     background-color: rgb(248, 190, 0);
 
                     &.remove {
-                        background-color: rgb(2, 255, 2);
+                        background-color: rgb(0, 240, 0);
                     }
                 }
 

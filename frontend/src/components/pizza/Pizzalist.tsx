@@ -1,6 +1,13 @@
 import Pizza from "./Pizza";
 import { Key, useEffect, useRef, useState } from "react";
 import axios from "axios";
+import {
+    useQuery,
+    useQueryClient,
+} from "@tanstack/react-query";
+
+import { server } from '../../config/config'
+
 import Ingredients from "./Ingredients";
 import Spinner from "../Spinner";
 
@@ -10,16 +17,29 @@ import CheckedTickSvg from '../../images/CheckedTick'
 import NoPizzasSvg from '../../images/NoPizzas'
 import ArrowSvg from '../../images/ArrowRight'
 
-import { server } from '../../config/config'
+import { fetchPizzas } from "../../utils/fetch";
 
-const Pizzalist = ({ pizzas, setPizzas, singleAdd, viewItem, cart, router, deleteItem }) => {
+function usePizzas(ingredients: any, searchParam: any) {
+    if (!ingredients) ingredients = ""
+    if (!searchParam) searchParam = ""
+    return useQuery({
+        queryKey: ["posts", String(ingredients), String(searchParam)],
+        queryFn: async (obj) => {
+            return await fetchPizzas(ingredients, searchParam)
+        },
+        staleTime: 1000 * 60 * 100
+    });
+}
 
+const Pizzalist = ({ singleAdd, viewItem, cart, router, deleteItem }) => {
     const [ingrs, setIngrs] = useState([])
     const [selectedIngrs, setSelectedIngrs] = useState([])
     const [viewSort, setViewSort] = useState(false)
     const [search, setSearch] = useState(router.query.q || '')
-    const [loading, setLoading] = useState(false)
     const [showMore, setShowMore] = useState(false)
+
+    const { status, data: pizzas, error, isFetching, fetchStatus } =
+        usePizzas(router?.query?.ingredients, router?.query?.q);
 
     useEffect(() => {
         if (!ingrs.length && viewSort) {
@@ -85,39 +105,19 @@ const Pizzalist = ({ pizzas, setPizzas, singleAdd, viewItem, cart, router, delet
         }
 
         console.log(isFirstRun.current)
-        setLoading(false)
-        if (isFirstRun.current && pizzas.length > 0) {
-            isFirstRun.current = false;
-            setLoading(false)
+        // setLoading(false)
+        if (isFirstRun.current && pizzas?.length > 0) {
+            isFirstRun.current = false
+            // setLoading(false)
             return;
         }
+        isFirstRun.current = false
 
         // NProgress.start()
 
-        setLoading(true)
+        // setLoading(true)
         let data = {}
-        axios({
-            method: 'get',
-            url: `${server}/pizza/all`,
-            headers: {
-                "Content-Type": "application/json",
-            },
-            params: {
-                ingredients: router?.query?.ingredients,
-                q: router?.query?.q
-            }
-        })
-            .then(res => {
-                data = res.data
-                // NProgress.done(false)
-                setPizzas(data)
-                setLoading(false)
-                // console.log(res.data)
-            })
-            .catch(e => {
-                // NProgress.done(false)
-                console.error(e)
-            })
+
     }, [router.query])
 
     return (
@@ -198,11 +198,11 @@ const Pizzalist = ({ pizzas, setPizzas, singleAdd, viewItem, cart, router, delet
                 </form>
             </div>
             {
-                pizzas?.length || loading ?
+                pizzas?.length || isFetching ?
                     <>
                         <div className="pizzas-con">
 
-                            <div className={`spinner-con ${loading ? 'loading' : ''}`}>
+                            <div className={`spinner-con ${isFetching ? 'loading' : ''}`}>
                                 <div className="loading-con">
                                     <div className={`spinner-border`} role="status">
                                     </div>
@@ -210,7 +210,7 @@ const Pizzalist = ({ pizzas, setPizzas, singleAdd, viewItem, cart, router, delet
                             </div>
 
                             <section
-                                className={`pizzas-showcase ${pizzas.length > 20 && !showMore ? 'part-hidden' : ''} ${loading ? 'loading' : ''}`}>
+                                className={`pizzas-showcase ${pizzas?.length > 20 && !showMore ? 'part-hidden' : ''} ${isFetching ? 'loading' : ''}`}>
                                 {pizzas?.map((pizza: {
                                     _id: Key
                                 }) => {
@@ -226,7 +226,7 @@ const Pizzalist = ({ pizzas, setPizzas, singleAdd, viewItem, cart, router, delet
                                 })}
                             </section>
                             {
-                                pizzas.length > 20 && !showMore ?
+                                pizzas?.length > 20 && !showMore ?
                                     <>
                                         <div className="show-more-con">
                                             <button
@@ -242,7 +242,7 @@ const Pizzalist = ({ pizzas, setPizzas, singleAdd, viewItem, cart, router, delet
                         </div>
                     </>
                     :
-                    <div className={`pizzas-not-found ${loading ? 'loading' : ''}`}>
+                    <div className={`pizzas-not-found ${isFetching ? 'loading' : ''}`}>
                         <NoPizzasSvg />
                         <p>No pizzas found <span>:(</span></p>
                         <p>Try different ingredients or keywords in search.</p>

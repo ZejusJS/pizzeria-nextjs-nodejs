@@ -2,7 +2,7 @@ import Meta from '../../components/Meta'
 import { server } from '../../config/config'
 import axios from "axios";
 import Pizzalist from '../../components/pizza/Pizzalist';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 export default function Home({
   cart,
@@ -15,12 +15,12 @@ export default function Home({
   user,
   router,
   pizzas }) {
-  const [pizzasState, setPizzasState] = useState(pizzas)
+  // const [pizzasState, setPizzasState] = useState(pizzas)
 
   return (
     <>
-      <Meta 
-      title="Mamma Mia | Menu"
+      <Meta
+        title="Mamma Mia | Menu"
       />
       <main>
         {
@@ -30,8 +30,8 @@ export default function Home({
               singleAdd={(e, piz) => singleAdd(e, piz)}
               deleteItem={(e, piz) => deleteItem(e, piz)}
               viewItem={(e, i) => viewItem(e, i)}
-              pizzas={pizzasState}
-              setPizzas={setPizzasState}
+              // pizzas={pizzasState}
+              // setPizzas={setPizzasState}
               router={router}
             />
             : ''
@@ -45,20 +45,30 @@ export const getServerSideProps = async (context) => {
   // console.log('GSSD... ', context.req.headers.cookie)ˇ
   let pizzas
   let error: boolean
-  await axios({
-    method: 'get',
-    url: `${server}/pizza/all`,
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-      'Access-Control-Allow-Origin': `${server}`
-    },
-    params: context.query
-  })
-    .then(res => {
-      // console.log(res.data)
-      pizzas = res.data
+
+  const isFirstServerCall = context?.req?.url?.indexOf('/_next/data/') === -1
+  console.log(isFirstServerCall)
+
+  if (isFirstServerCall) {
+    await axios({
+      method: 'get',
+      url: `${server}/pizza/all`,
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        'Access-Control-Allow-Origin': `${server}`
+      },
+      params: context.query
     })
-    .catch(e => '')
+      .then(res => {
+        // console.log(res.data)
+        pizzas = res.data
+      })
+      .catch(e => {
+        error = true
+      })
+  } else {
+    pizzas = null
+  }
 
   // console.log(context.query)
   if (error) {
@@ -69,6 +79,12 @@ export const getServerSideProps = async (context) => {
       }
     }
   } else {
+    context.res.setHeader(
+      'Cache-Control',
+      'public, s-maxage=30, stale-while-revalidate=100'
+    )
+
+    // console.log(pizzas)
     return {
       props: {
         pizzas

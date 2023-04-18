@@ -548,21 +548,21 @@ export const getServerSideProps = async (ctx) => {
         }
     }
 
-    await axios({
-        method: 'get',
-        url: `${server}/user/getUser`,
-        // url: `api/cart/getCartAndUser`,
-        withCredentials: true,
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-            'Access-Control-Allow-Origin': `${server}`,
-            Cookie: ctx.req.headers.cookie
-        }
-    })
-        .then(res => userData = res.data)
-        .catch(e => {
-            userData = {}
-        })
+    // await axios({
+    //     method: 'get',
+    //     url: `${server}/user/getUser`,
+    //     // url: `api/cart/getCartAndUser`,
+    //     withCredentials: true,
+    //     headers: {
+    //         "Content-Type": "application/x-www-form-urlencoded",
+    //         'Access-Control-Allow-Origin': `${server}`,
+    //         Cookie: ctx.req.headers.cookie
+    //     }
+    // })
+    //     .then(res => userData = res.data)
+    //     .catch(e => {
+    //         userData = {}
+    //     })
 
     if (error) {
         return {
@@ -573,12 +573,9 @@ export const getServerSideProps = async (ctx) => {
         }
     }
 
-    console.log(cartData)
-
     return {
         props: {
-            cartData,
-            userData
+            cartData
         }
     }
 

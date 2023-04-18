@@ -5,16 +5,22 @@ import Router, { useRouter } from 'next/router';
 import NProgress from 'nprogress'
 import axios from 'axios'
 import Meta from '../components/Meta'
-import { server } from '../config/config'
-import Navbar from '../components/Navbar'
 import React, { useEffect, useState, useRef } from 'react'
 import { getCookie } from 'cookies-next';
 import { NextRouter } from 'next/router'
+import {
+  QueryClient,
+  QueryClientProvider
+} from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 import deleteItemFunc from '../utils/deleteItem'
 import singleAddFunc from '../utils/singleAdd'
 import changeQntFunc from '../utils/changeQnt'
 import restoreItemFunc from '../utils/restoreItem'
+
+import { server } from '../config/config'
+import ErrorSvg from '../images/Error'
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 import '../styles/loading.scss'
@@ -41,15 +47,23 @@ import '../styles/error-boundary.scss'
 import '../styles/spinners.scss'
 import '../styles/landing-page.scss'
 
-import ErrorSvg from '../images/Error'
-import Product from '../components/pizza/Product';
-import Unfocus from '../components/Unfocus';
-import Footer from '../components/Footer';
-import ErrorBoundary from '../components/Error';
+import Product from '../components/pizza/Product'
+import Unfocus from '../components/Unfocus'
+import Footer from '../components/Footer'
+import ErrorBoundary from '../components/Error'
+import Navbar from '../components/Navbar'
 
 interface Cart {
   totalCartPrice?: number;
 }
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5
+    }
+  }
+})
 
 export default function App({ Component, pageProps }) {
   const [cart, setCart] = useState<Cart>({})
@@ -135,15 +149,15 @@ export default function App({ Component, pageProps }) {
     NProgress.start()
   })
 
+  Router.events.on("routeChangeComplete", (url) => {
+    NProgress.done(false)
+  });
+
   useEffect(() => {
     if (urlsHistory[0] !== router.asPath) {
       setUrlsHistory(prev => ([...prev, router.asPath]))
     }
   }, [router.asPath]);
-
-  Router.events.on("routeChangeComplete", (url) => {
-    NProgress.done(false)
-  });
 
   async function singleAdd(e, piz) {
     await singleAddFunc(e, piz, setTotalCartPrice)
@@ -189,97 +203,100 @@ export default function App({ Component, pageProps }) {
 
   return (
     <>
-      <Meta />
-      <Navbar
-        cart={cart}
-        expanded={expanded}
-        setExpanded={setExpanded}
-        user={userData}
-        fetchFirstData={() => fetchFirstData(true)}
-        router={router}
-        isLoadingFirstData={isLoadingFirstData}
-      />
-      <div className={`fetcing-spinner-con ${isLoadingFirstData ? 'shown' : ''}`}>
-        <div className="lds-dual-ring"></div>
-      </div>
-
-      <div
-        className={`loader ${loaded ? 'loaded' : 'loaded'}`}
-        ref={loaderRef}
-      >
-        {!error ?
-          <div className="spinner-border" role="status"></div>
-          :
-          <ErrorSvg />}
-        <div className='error-msgs'>
-          <p className={`msg ${error ? 'visible' : ''}`}>
-            Something went wrong...
-          </p>
-          <p className={`msg ${error ? 'visible' : ''}`}>
-            Try reloading a page. A problem can be also on our side.
-          </p>
-          <p className={`msg code ${error === 500 ? 'visible' : ''}`}>
-            Error code: <b>500</b> - A problem is on our servers.
-          </p>
-          <p className={`msg code ${error === 400 && getCookie('cart') !== 'error' ? 'visible' : ''}`}>
-            Error code: <b>400</b> - Something went wrong on your side.
-          </p>
-          <p className={`msg code ${getCookie('cart') === 'error' ? 'visible' : ''}`}>
-            <b>Cart error</b> - Something went wrong probably on our side.
-            We can't provide you a cart. Try to refresh a page after 10 seconds.
-          </p>
+      <QueryClientProvider client={queryClient}>
+        <ReactQueryDevtools initialIsOpen={false} />
+        <Meta />
+        <Navbar
+          cart={cart}
+          expanded={expanded}
+          setExpanded={setExpanded}
+          user={userData}
+          fetchFirstData={() => fetchFirstData(true)}
+          router={router}
+          isLoadingFirstData={isLoadingFirstData}
+        />
+        <div className={`fetcing-spinner-con ${isLoadingFirstData ? 'shown' : ''}`}>
+          <div className="lds-dual-ring"></div>
         </div>
-      </div>
 
-      <>
-        <div className={`product-error-con ${productError === 1 || productError === 2 ? 'shown' : ''}`}>
-          <div className='product-error'>
-            {productErrorText}
+        <div
+          className={`loader ${loaded ? 'loaded' : 'loaded'}`}
+          ref={loaderRef}
+        >
+          {!error ?
+            <div className="spinner-border" role="status"></div>
+            :
+            <ErrorSvg />}
+          <div className='error-msgs'>
+            <p className={`msg ${error ? 'visible' : ''}`}>
+              Something went wrong...
+            </p>
+            <p className={`msg ${error ? 'visible' : ''}`}>
+              Try reloading a page. A problem can be also on our side.
+            </p>
+            <p className={`msg code ${error === 500 ? 'visible' : ''}`}>
+              Error code: <b>500</b> - A problem is on our servers.
+            </p>
+            <p className={`msg code ${error === 400 && getCookie('cart') !== 'error' ? 'visible' : ''}`}>
+              Error code: <b>400</b> - Something went wrong on your side.
+            </p>
+            <p className={`msg code ${getCookie('cart') === 'error' ? 'visible' : ''}`}>
+              <b>Cart error</b> - Something went wrong probably on our side.
+              We can't provide you a cart. Try to refresh a page after 10 seconds.
+            </p>
           </div>
         </div>
-      </>
 
-      <div
-        onClick={expanded ? () => setExpanded(!expanded) : (a) => (a)}
-      // className={`${viewProduct ? 'of-h' : ''}`}
-      >
-        {viewProduct ? <Unfocus onClick={(e) => unViewItem(e)} /> : ''}
-        {viewProduct ?
-          <Product
-            onClick={(e) => unViewItem(e)}
-            item={itemToView}
-            cart={cart}
-            deleteItem={(e, piz) => deleteItem(e, piz)}
-            singleAdd={(e, piz) => singleAdd(e, piz)}
-            user={userData}
-            restoreItem={restoreItem}
-          />
-          : ''}
-        <ErrorBoundary>
-          <Component
-            {...pageProps}
-            setCart={setCart}
-            cart={cart}
-            user={userData}
-            userData={userData}
-            setUser={setUserData}
-            viewProduct={viewProduct}
-            itemToView={itemToView}
-            singleAdd={(e, piz) => singleAdd(e, piz)}
-            unViewItem={(e) => unViewItem(e)}
-            deleteItem={(e, piz) => deleteItem(e, piz)}
-            viewItem={(e, i) => viewItem(e, i)}
-            fetchFirstData={(loading: boolean) => fetchFirstData(loading)}
-            totalCartPrice={totalCartPrice}
-            setTotalCartPrice={setTotalCartPrice}
-            changeQnt={changeQnt}
-            router={router}
-            isLoadingFirstData={isLoadingFirstData}
-            urlsHistory={urlsHistory}
-          />
-        </ErrorBoundary>
-      </div>
-      <Footer />
+        <>
+          <div className={`product-error-con ${productError === 1 || productError === 2 ? 'shown' : ''}`}>
+            <div className='product-error'>
+              {productErrorText}
+            </div>
+          </div>
+        </>
+
+        <div
+          onClick={expanded ? () => setExpanded(!expanded) : (a) => (a)}
+        // className={`${viewProduct ? 'of-h' : ''}`}
+        >
+          {viewProduct ? <Unfocus onClick={(e) => unViewItem(e)} /> : ''}
+          {viewProduct ?
+            <Product
+              onClick={(e) => unViewItem(e)}
+              item={itemToView}
+              cart={cart}
+              deleteItem={(e, piz) => deleteItem(e, piz)}
+              singleAdd={(e, piz) => singleAdd(e, piz)}
+              user={userData}
+              restoreItem={restoreItem}
+            />
+            : ''}
+          <ErrorBoundary>
+            <Component
+              {...pageProps}
+              setCart={setCart}
+              cart={cart}
+              user={userData}
+              userData={userData}
+              setUser={setUserData}
+              viewProduct={viewProduct}
+              itemToView={itemToView}
+              singleAdd={(e, piz) => singleAdd(e, piz)}
+              unViewItem={(e) => unViewItem(e)}
+              deleteItem={(e, piz) => deleteItem(e, piz)}
+              viewItem={(e, i) => viewItem(e, i)}
+              fetchFirstData={(loading: boolean) => fetchFirstData(loading)}
+              totalCartPrice={totalCartPrice}
+              setTotalCartPrice={setTotalCartPrice}
+              changeQnt={changeQnt}
+              router={router}
+              isLoadingFirstData={isLoadingFirstData}
+              urlsHistory={urlsHistory}
+            />
+          </ErrorBoundary>
+        </div>
+        <Footer />
+      </QueryClientProvider>
     </>
   )
 }
