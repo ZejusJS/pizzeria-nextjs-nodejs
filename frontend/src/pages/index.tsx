@@ -1,27 +1,25 @@
 import Carousel from 'react-bootstrap/Carousel';
 import CurvedCorner from '../images/CurvedCorner'
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
+import { useState } from 'react';
+import {
+    useQuery,
+} from "@tanstack/react-query";
+
+import { fetchLangingPagePizzas } from '../utils/fetch';
 
 import ArrowRightBasic from '../images/ArrowRightBasic';
 
 const index = () => {
-    const [pizzas, setPizzas] = useState([])
 
-    useEffect(() => {
-        axios({
-            method: 'get',
-            url: '/api2/pizza/get-many-number/7',
+    const { status, data: pizzas, error, isFetching, fetchStatus } =
+        useQuery({
+            queryKey: ["pizzas", ["landing-page"]],
+            queryFn: async (obj) => {
+                return await fetchLangingPagePizzas()
+            },
+            staleTime: 1000 * 60 * 500
         })
-            .then(res => {
-                // console.log(res)
-                setPizzas(res.data?.docs)
-            })
-            .catch(e => {
-                console.error(e)
-            })
-    }, [])
 
     return (
         <main className="landing-page">
@@ -66,8 +64,8 @@ const index = () => {
                                 />
                             </Carousel.Item>
                             {
-                                pizzas?.length ?
-                                    pizzas?.map(pizza => (
+                                pizzas?.docs?.length ?
+                                    pizzas?.docs?.map(pizza => (
                                         pizza?.images[0]?.url ?
                                             <Carousel.Item key={Math.random()}>
                                                 <img
@@ -97,12 +95,12 @@ const index = () => {
                                 />
                             </Carousel.Item>
                         </Carousel>
-                        {pizzas.length ?
+                        {pizzas?.docs?.length ?
                             <div className='pizzas-con'>
                                 <div className='pizzas-show'>
                                     <div className='pizzas-slider'>
                                         <div className='pizzas'>
-                                            {pizzas.map(pizza => (
+                                            {pizzas?.docs?.map(pizza => (
                                                 <div className='pizza' key={Math.random()}>
                                                     <img src={pizza.images[0].url} alt="" />
                                                     <h3>{pizza.title}</h3>

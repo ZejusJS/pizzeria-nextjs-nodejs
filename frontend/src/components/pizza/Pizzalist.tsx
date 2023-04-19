@@ -1,10 +1,7 @@
 import Pizza from "./Pizza";
 import { Key, useEffect, useRef, useState } from "react";
 import axios from "axios";
-import {
-    useQuery,
-    useQueryClient,
-} from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 
 import { server } from '../../config/config'
 
@@ -23,7 +20,7 @@ function usePizzas(ingredients: any, searchParam: any) {
     if (!ingredients) ingredients = ""
     if (!searchParam) searchParam = ""
     return useQuery({
-        queryKey: ["posts", String(ingredients), String(searchParam)],
+        queryKey: ["pizzas", String(ingredients), String(searchParam)],
         queryFn: async (obj) => {
             return await fetchPizzas(ingredients, searchParam)
         },
@@ -38,7 +35,7 @@ const Pizzalist = ({ singleAdd, viewItem, cart, router, deleteItem }) => {
     const [search, setSearch] = useState(router.query.q || '')
     const [showMore, setShowMore] = useState(false)
 
-    const { status, data: pizzas, error, isFetching, fetchStatus } =
+    const { status, data: pizzas, error, isFetching, refetch } =
         usePizzas(router?.query?.ingredients, router?.query?.q);
 
     useEffect(() => {
@@ -112,6 +109,8 @@ const Pizzalist = ({ singleAdd, viewItem, cart, router, deleteItem }) => {
             return;
         }
         isFirstRun.current = false
+
+        // refetch()
 
         // NProgress.start()
 
