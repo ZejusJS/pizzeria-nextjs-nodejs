@@ -7,38 +7,35 @@ import OrderView from "./OrderView"
 
 import PizzaSvg from "../../images/Pizza"
 
+import { fetchUserOrders } from "../../utils/fetch"
+import { useQuery, useInfiniteQuery } from "@tanstack/react-query"
+
 const Orders = ({ userData, viewItem, slug, setBackUrl, setBackText, payIdQuery }) => {
-    const [pageNumber, setPageNumber] = useState(0)
-    const [ordersLoaded, setOrdersLoaded] = useState([])
+    // const [pageNumber, setPageNumber] = useState(0)
+    // const [ordersLoaded, setOrdersLoaded] = useState([])
     const [ordersId, setOrdersId] = useState(userData?.orders)
-    const [isLoading, setIsLoading] = useState(false)
+    // const [isLoading, setIsLoading] = useState(false)
 
     let ordersPerPage = 12
 
+    const { status, error, data: ordersLoaded, isFetching, hasNextPage, fetchNextPage } = useInfiniteQuery({
+        queryKey: ['orders', 'infinite'],
+        getNextPageParam: (prevData: any) => prevData.nextPage,
+        keepPreviousData: true,
+        queryFn: ({pageParam = 0}) => fetchUserOrders(ordersId, pageParam, ordersPerPage)
+    })
+
+    // console.log(ordersLoaded)
+
     function anotherOrders() {
-        setPageNumber(prev => ++prev)
+        // setPageNumber(prev => ++prev)
+        fetchNextPage()
     }
 
-    useEffect(() => {
-        setIsLoading(true)
-
-        axios({
-            method: 'get',
-            url: `/api2/payment/orders/${ordersId.slice(pageNumber * ordersPerPage, pageNumber * ordersPerPage + ordersPerPage)}`
-        })
-            .then(res => {
-                // console.log(res.data)
-                setOrdersLoaded(prev => {
-                    return [...prev, ...res.data.orders]
-                })
-                setIsLoading(false)
-            })
-            .catch(e => {
-                setIsLoading(false)
-                console.error(e)
-            })
-        // console.log(ordersLoaded)
-    }, [pageNumber])
+    // useEffect(() => {
+    //     // setIsLoading(true)
+    //     // console.log(ordersLoaded)
+    // }, [pageNumber])
 
     return (
         <>
@@ -46,12 +43,11 @@ const Orders = ({ userData, viewItem, slug, setBackUrl, setBackText, payIdQuery 
                 <section className={`orders ${payIdQuery ? 'hidden' : ''}`}>
                     <h2>Orders</h2>
                     {
-                        ordersLoaded?.slice(0, pageNumber * ordersPerPage + ordersPerPage)
+                        ordersLoaded?.pages?.flatMap(data => data.orders)
                             .map(orderLoaded => (
                                 <Order
                                     orderId={orderLoaded._id}
                                     orderLoaded={orderLoaded}
-                                    setOrdersLoaded={setOrdersLoaded}
                                     key={orderLoaded._id}
                                     viewItem={viewItem}
                                     PizzaSvg={PizzaSvg}
@@ -60,18 +56,18 @@ const Orders = ({ userData, viewItem, slug, setBackUrl, setBackText, payIdQuery 
                             ))
                     }
                     <div className="orders-footer-con">
-                        {(pageNumber * ordersPerPage + ordersPerPage) < userData?.orders?.length && !isLoading ?
+                        {(ordersLoaded?.pages[ordersLoaded.pages.length - 1]?.page * ordersPerPage + ordersPerPage) < userData?.orders?.length && !isFetching ?
                             <button
-                                onClick={anotherOrders}
+                                onClick={() => anotherOrders()}
                                 className={`btn-styled load-orders`}
                             >
                                 Load Another Orders
                             </button> : ''}
-                        {isLoading ?
+                        {isFetching ?
                             <div className="loading-orders">
                                 <Spinner />
                             </div>
-                            : !userData?.orders?.length && !isLoading ?
+                            : !userData?.orders?.length && !isFetching ?
                                 <>
                                     <div className="no-orders">
                                         <p>You have no orders yet</p>

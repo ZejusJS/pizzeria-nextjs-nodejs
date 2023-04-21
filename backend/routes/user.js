@@ -126,39 +126,39 @@ router.get('/getUser', mwIsLoggedIn, catchAsync(async function (req, res, next) 
 
 router.post('/adress', mwIsLoggedIn, validateShippingAdress, catchAsync(async function (req, res, next) {
     const userId = req.user?._id
-    const findUser = await User.findById(userId)
-    if (!findUser) return res.status(400).json({ code: 350 })
+    // const findUser = await User.findById(userId)
+    // if (!findUser) return res.status(400).json({ code: 350 })
 
     Object.entries(req.body).map(entry => {
-        findUser.shippingAdress[entry[0]] = entry[1]
+        req.user.shippingAdress[entry[0]] = entry[1]
     })
-    await findUser.save()
+    await req.user.save()
 
     return res.sendStatus(200)
 }))
 
 router.post('/details', mwIsLoggedIn, validateUserDetails, catchAsync(async function (req, res, next) {
-    const userId = req.user?._id
-    const findUser = await User.findById(userId)
-    if (!findUser) return res.status(400).json({ code: 350 })
+    // const userId = req.user?._id
+    // const findUser = await User.findById(userId)
+    // if (!findUser) return res.status(400).json({ code: 350 })
 
-    findUser.name = req.body.name
-    await findUser.save()
+    req.user.name = req.body.name
+    await req.user.save()
 
     return res.sendStatus(200)
 }))
 
 router.post('/billing', mwIsLoggedIn, validateUserBilling, catchAsync(async function (req, res, next) {
-    const userId = req.user?._id
-    const findUser = await User.findById(userId)
-    if (!findUser) return res.status(400).json({ code: 350 })
+    // const userId = req.user?._id
+    // const findUser = await User.findById(userId)
+    // if (!findUser) return res.status(400).json({ code: 350 })
 
-    findUser.invoiceInfo.adress = req.body.adress
-    findUser.invoiceInfo.zip = req.body.zip
-    findUser.invoiceInfo.city = req.body.city
-    findUser.invoiceInfo.firstname = req.body.firstname
-    findUser.invoiceInfo.lastname = req.body.lastname
-    await findUser.save()
+    req.user.invoiceInfo.adress = req.body.adress
+    req.user.invoiceInfo.zip = req.body.zip
+    req.user.invoiceInfo.city = req.body.city
+    req.user.invoiceInfo.firstname = req.body.firstname
+    req.user.invoiceInfo.lastname = req.body.lastname
+    await req.user.save()
 
     return res.sendStatus(200)
 }))

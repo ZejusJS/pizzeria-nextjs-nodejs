@@ -2,9 +2,7 @@ import axios from "axios"
 
 import { server } from "../../config/config"
 
-export async function fetchPizzas(ingredients, searchParam) {
-    if (!ingredients) ingredients = ''
-    if (!searchParam) searchParam = ''
+export async function fetchPizzas(ingredients = "", searchParam = "") {
     const res = await axios({
         method: 'get',
         url: `${server}/pizza/all`,
@@ -18,6 +16,31 @@ export async function fetchPizzas(ingredients, searchParam) {
     })
     // console.log(res.data)
     return res.data
+}
+
+export async function fetchUserOrders(ordersId, pageNumber, ordersPerPage) {
+    console.log(ordersId, pageNumber, ordersPerPage)
+    const res = await axios({
+        method: 'get',
+        url: `/api2/payment/orders/${ordersId.slice(pageNumber * ordersPerPage, pageNumber * ordersPerPage + ordersPerPage)}`
+    })
+        // .then(res => {
+        //     // console.log(res.data)
+        //     // setOrdersLoaded(prev => {
+        //     //     return [...prev, ...res.data.orders]
+        //     // })
+        // })
+        // .catch(e => {
+        //     console.error(e)
+        // })
+    // console.log(res.data)
+    let data = {
+        ...res.data,
+        page: pageNumber,
+        nextPage: pageNumber + 1,
+    }
+    if (pageNumber > 0) data.previousPage = pageNumber - 1
+    return data
 }
 
 export async function fetchLangingPagePizzas() {

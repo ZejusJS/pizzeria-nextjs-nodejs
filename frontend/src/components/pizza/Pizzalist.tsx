@@ -80,7 +80,7 @@ const Pizzalist = ({ singleAdd, viewItem, cart, router, deleteItem }) => {
     async function handleSubmit(e) {
         e?.preventDefault()
 
-        await router.replace({
+        await router.push({
             pathname: router.pathname,
             query: { ...router.query, q: search, ingredients: selectedIngrs.toString() }
         }, '', { shallow: true })

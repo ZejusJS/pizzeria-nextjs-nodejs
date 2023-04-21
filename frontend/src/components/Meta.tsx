@@ -9,13 +9,15 @@ const Meta = ({ title, keywords, description }) => {
             <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
             <meta name="twitter:card" content="summary" />
-            <meta name="twitter:image" content="/favicon.svg"></meta>
-            <meta name='twitter:title' content={`${title}`}></meta>
-            <meta name='twitter:description' content={`${description}`}></meta>
+            <meta property="twitter:domain" content="pizzeria-mammamia.netlify.app" />
+            <meta property="twitter:image" content="/favicon.svg" />
+            <meta property='twitter:title' content={`${title}`} />
+            <meta property='twitter:description' content={`${description}`} />
             
-            <meta property="og:image" content="/favicon.svg"></meta>
-            <meta property="og:description" content={`${description}`}></meta>
-            <meta property="og:title" content={`${title}`}></meta>
+            <meta property="og:type" content="restaurant" />
+            <meta property="og:image" content="/favicon.svg" />
+            <meta property="og:description" content={`${description}`} />
+            <meta property="og:title" content={`${title}`} />
 
             <meta charSet='utf-8' />
             <title>{title}</title>

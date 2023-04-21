@@ -18,6 +18,7 @@ import deleteItemFunc from '../utils/deleteItem'
 import singleAddFunc from '../utils/singleAdd'
 import changeQntFunc from '../utils/changeQnt'
 import restoreItemFunc from '../utils/restoreItem'
+import { usePreserveScroll } from '../utils/hooks/preserveScroll';
 
 import { server } from '../config/config'
 import ErrorSvg from '../images/Error'
@@ -78,9 +79,11 @@ export default function App({ Component, pageProps }) {
   const [productError, setProductError] = useState(0)
   const [productErrorText, setProductErrorText] = useState('')
 
-  const loaderRef = useRef(null)
-
   const router: NextRouter = useRouter()
+
+  const preserveScroll = usePreserveScroll()
+
+  const loaderRef = useRef(null)
 
   NProgress.configure({ trickleSpeed: 400, minimum: 0.1 });
 

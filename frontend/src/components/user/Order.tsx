@@ -17,7 +17,7 @@ interface order {
     shippingPrice?: string | number;
 }
 
-const Order = ({ orderId, orderLoaded, viewItem, PizzaSvg, setOrdersId, setOrdersLoaded }) => {
+const Order = ({ orderId, orderLoaded, viewItem, PizzaSvg, setOrdersId }) => {
     const [status, setStatus] = useState(null)
     const [order, setOrder] = useState<order>(orderLoaded)
     const [paymentUrl, setPaymentUrl] = useState('')
