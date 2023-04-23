@@ -34,8 +34,7 @@ export default function Home({
   viewItem,
   user,
   router,
-  dehydratedState,
-  queryClient }) {
+  dehydratedState }) {
 
   return (
     <>

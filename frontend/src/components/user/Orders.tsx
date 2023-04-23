@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react"
-import axios from "axios"
+import { useInfiniteQuery } from "@tanstack/react-query"
 
 import Order from "./Order"
 import Spinner from "../Spinner"
@@ -8,13 +8,9 @@ import OrderView from "./OrderView"
 import PizzaSvg from "../../images/Pizza"
 
 import { fetchUserOrders } from "../../utils/fetch"
-import { useQuery, useInfiniteQuery } from "@tanstack/react-query"
 
 const Orders = ({ userData, viewItem, slug, setBackUrl, setBackText, payIdQuery }) => {
-    // const [pageNumber, setPageNumber] = useState(0)
-    // const [ordersLoaded, setOrdersLoaded] = useState([])
     const [ordersId, setOrdersId] = useState(userData?.orders)
-    // const [isLoading, setIsLoading] = useState(false)
 
     let ordersPerPage = 12
 
@@ -22,20 +18,13 @@ const Orders = ({ userData, viewItem, slug, setBackUrl, setBackText, payIdQuery 
         queryKey: ['orders', 'infinite'],
         getNextPageParam: (prevData: any) => prevData.nextPage,
         keepPreviousData: true,
-        queryFn: ({pageParam = 0}) => fetchUserOrders(ordersId, pageParam, ordersPerPage)
+        queryFn: ({pageParam = 0}) => fetchUserOrders(ordersId, pageParam, ordersPerPage),
+        staleTime: Infinity
     })
 
-    // console.log(ordersLoaded)
-
     function anotherOrders() {
-        // setPageNumber(prev => ++prev)
         fetchNextPage()
     }
-
-    // useEffect(() => {
-    //     // setIsLoading(true)
-    //     // console.log(ordersLoaded)
-    // }, [pageNumber])
 
     return (
         <>

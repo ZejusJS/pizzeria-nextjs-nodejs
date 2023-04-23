@@ -1,3 +1,24 @@
+:root {
+    --liner-gradient-left: left,
+        rgba(0, 0, 0, 0) 40%,
+        rgba(0, 0, 0, 0.37) 140%;
+    --liner-gradient-right: right,
+        rgba(0, 0, 0, 0) 30%,
+        rgba(0, 0, 0, 0.37) 140%;
+    --liner-gradient-bottom: bottom,
+        rgba(0, 0, 0, 0) 30%,
+        rgba(0, 0, 0, 0.37) 140%;
+    --liner-gradient-to-bottom: to bottom,
+        rgba(0, 0, 0, 0) 40%,
+        rgba(0, 0, 0, 0.37) 140%;
+    --liner-gradient-to-right: to right,
+        rgba(0, 0, 0, 0) 30%,
+        rgba(0, 0, 0, 0.37) 140%;
+    --liner-gradient-to-left: to left,
+        rgba(0, 0, 0, 0) 30%,
+        rgba(0, 0, 0, 0.37) 140%;
+}
+
 .hero-panel-con {
     padding: 15px;
 }
@@ -9,6 +30,7 @@
     margin: 0 auto;
     padding: 60px 20px 20px 20px;
     margin-top: 30px;
+    overflow: hidden;
 
     .curved-corner {
         fill: rgb(0, 0, 0);
@@ -120,40 +142,17 @@
 
                 &::before {
                     background-image:
-                        linear-gradient(to right,
-                            rgba(0, 0, 0, 0) 30%,
-                            rgba(0, 0, 0, 0.37) 140%),
-                        linear-gradient(to left,
-                            rgba(0, 0, 0, 0) 30%,
-                            rgba(0, 0, 0, 0.37) 140%);
+                        linear-gradient(var(--liner-gradient-to-left)),
+                        linear-gradient(var(--liner-gradient-to-right)),
+                        -webkit-linear-gradient(var(--liner-gradient-to-bottom));
                     background-image:
-                        -moz-linear-gradient(left,
-                            rgba(0, 0, 0, 0) 30%,
-                            rgba(0, 0, 0, 0.37) 140%),
-                        -moz-linear-gradient(right,
-                            rgba(0, 0, 0, 0) 30%,
-                            rgba(0, 0, 0, 0.37) 140%);
+                        -moz-linear-gradient(var(--liner-gradient-right)),
+                        -moz-linear-gradient(var(--liner-gradient-left)),
+                        -webkit-linear-gradient(var(--liner-gradient-bottom));
                     background-image:
-                        -ms-linear-gradient(left,
-                            rgba(0, 0, 0, 0) 30%,
-                            rgba(0, 0, 0, 0.37) 140%),
-                        -ms-linear-gradient(right,
-                            rgba(0, 0, 0, 0) 30%,
-                            rgba(0, 0, 0, 0.37) 140%);
-                    background-image:
-                        -o-linear-gradient(left,
-                            rgba(0, 0, 0, 0) 30%,
-                            rgba(0, 0, 0, 0.37) 140%),
-                        -o-linear-gradient(right,
-                            rgba(0, 0, 0, 0) 30%,
-                            rgba(0, 0, 0, 0.37) 140%);
-                    background-image:
-                        -webkit-linear-gradient(left,
-                            rgba(0, 0, 0, 0) 50%,
-                            rgba(0, 0, 0, 0.37) 100%),
-                        -webkit-linear-gradient(right,
-                            rgba(0, 0, 0, 0) 50%,
-                            rgba(0, 0, 0, 0.37) 100%);
+                        -webkit-linear-gradient(var(--liner-gradient-right)),
+                        -webkit-linear-gradient(var(--liner-gradient-left)),
+                        -webkit-linear-gradient(var(--liner-gradient-bottom));
                     content: "\00a0";
                     height: 100%;
                     position: absolute;
@@ -166,17 +165,17 @@
 
     @mixin show($duration) {
         $name: inline-#{unique-id()};
-    
+
         @keyframes #{$name} {
             0% {
                 mask-position: right;
             }
-    
+
             100% {
                 mask-position: left;
             }
         }
-    
+
         animation-name: $name;
         animation-duration: $duration;
         animation-iteration-count: 1;
@@ -185,7 +184,7 @@
 
     @mixin pizzas-slide($duration) {
         $name: inline-#{unique-id()};
-    
+
         @keyframes #{$name} {
             0% {
                 transform: translate(0%, 0);
@@ -194,12 +193,12 @@
             20% {
                 transform: translate(0%, 0);
             }
-    
+
             100% {
                 transform: translate(-200%, 0);
             }
         }
-    
+
         animation-name: $name;
         animation-duration: $duration;
         animation-iteration-count: infinite;
@@ -214,7 +213,7 @@
         left: 10px;
         transform: translate(0, -50%);
         z-index: 20;
-        width: 97%;
+        width: 100%;
         mask-image: linear-gradient(90deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 100%);
         mask-size: 50000% 1%;
         mask-position: left;
@@ -224,7 +223,7 @@
             overflow: hidden;
             gap: 10px;
             overflow: hidden;
-            
+
             .pizzas-slider {
                 mask-image: linear-gradient(90deg, rgba(0, 0, 0, 1) 80%, rgba(0, 0, 0, 0) 100%);
                 position: relative;
@@ -248,7 +247,7 @@
                         color: white;
                         width: 140px;
                         text-align: center;
-                        text-shadow: 0 0 8px rgba(0, 0, 0, 0.432);
+                        text-shadow: 0 0 7px rgba(0, 0, 0, 0.644);
                     }
 
                     img {
@@ -268,8 +267,8 @@
                 justify-content: center;
                 align-items: center;
                 color: rgb(255, 255, 255);
-                top: 42%;
-                right: 8px;
+                top: 38%;
+                right: 20px;
                 transform: translate(0, -50%);
                 text-decoration: none;
                 overflow: visible;
@@ -305,6 +304,58 @@
                         left: 10px;
                     }
                 }
+            }
+        }
+    }
+
+    a.open-menu {
+        display: inline-block;
+        position: absolute;
+        top: 20%;
+        left: 50%;
+        transform: translate(-50%, 0%);
+        z-index: 5;
+        width: 100%;
+        max-width: 200px;
+        padding: 4px;
+
+        .open-menu-con {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        svg {
+            fill: white;
+            width: 90%;
+            transition: fill 150ms;
+            z-index: 10;
+        }
+
+        ::after {
+            content: '';
+            display: inline-block;
+            position: absolute;
+            max-width: 0px;
+            width: 105%;
+            aspect-ratio: 1/1;
+            background-color: rgb(255, 255, 255);
+            border-radius: 50%;
+            transition: max-width 250ms, box-shadow 300ms;
+            z-index: 1;
+            box-shadow: 0 0 10px 0px rgba(0, 0, 0, 0);
+        }
+
+        &:hover {
+            svg {
+                fill: black !important;
+            }
+
+            ::after {
+                max-width: 300px;
+                box-shadow: 0 0 10px 0px black;
             }
         }
     }
@@ -346,13 +397,19 @@
         }
 
         .pizzas-con {
-            left: 0px;
+            left: 0;
+            top: auto;
+            bottom: 100px;
+
+            a.more-pizzas {
+                visibility: hidden;
+            }
         }
 
         .carousel {
-            height: 97svh;
+            height: 100svh;
             border-radius: 0;
-            min-height: 700px;
+            min-height: 900px;
 
             .carousel-inner {
                 padding: 0px;

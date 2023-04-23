@@ -1,14 +1,14 @@
 import Carousel from 'react-bootstrap/Carousel';
 import CurvedCorner from '../images/CurvedCorner'
 import Link from 'next/link';
-import { useState } from 'react';
 import {
     useQuery,
 } from "@tanstack/react-query";
 
-import { fetchLangingPagePizzas } from '../utils/fetch';
+import { fetchLangingPagePizzas } from '../utils/fetch'
 
-import ArrowRightBasic from '../images/ArrowRightBasic';
+import ArrowRightBasic from '../images/ArrowRightBasic'
+import MenuSvg from '../images/Menu'
 
 const index = () => {
 
@@ -123,6 +123,11 @@ const index = () => {
                         }
                         <CurvedCorner />
                     </div>
+                    <Link href={'/menu'} className='open-menu'>
+                        <div className='open-menu-con'>
+                            <MenuSvg />
+                        </div>
+                    </Link>
                 </div>
             </div>
         </main>

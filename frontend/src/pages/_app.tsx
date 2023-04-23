@@ -81,7 +81,8 @@ export default function App({ Component, pageProps }) {
 
   const router: NextRouter = useRouter()
 
-  const preserveScroll = usePreserveScroll()
+  const scrollPositions = useRef<{ [url: string]: number }>({})
+  usePreserveScroll(scrollPositions)
 
   const loaderRef = useRef(null)
 
@@ -295,6 +296,7 @@ export default function App({ Component, pageProps }) {
               router={router}
               isLoadingFirstData={isLoadingFirstData}
               urlsHistory={urlsHistory}
+              scrollPositions={scrollPositions}
             />
           </ErrorBoundary>
         </div>

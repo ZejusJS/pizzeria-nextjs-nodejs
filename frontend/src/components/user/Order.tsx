@@ -1,204 +1,52 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useEffect, useRef, useState } from "react"
+import Link from "next/link";
+import { useQuery, UseQueryResult } from "@tanstack/react-query"
 
 import OrderItem from "./OrderItem";
 import LoadingItem from '../../components/user/OrderItemLoading'
 import PaymentStatus from './PaymentStatus'
+import { fetchPaymentStatus } from "../../utils/fetch";
+
+import { IOrder } from '../../utils/types/orders'
 
 import RefreshSvg from '../../images/Refresh'
-import Link from "next/link";
-
-interface order {
-    createdAt?: string;
-    orderNo?: string | number;
-    payId?: string | number;
-    items?: [];
-    totalPrice?: string | number;
-    shippingPrice?: string | number;
-}
 
 const Order = ({ orderId, orderLoaded, viewItem, PizzaSvg, setOrdersId }) => {
-    const [status, setStatus] = useState(null)
-    const [order, setOrder] = useState<order>(orderLoaded)
     const [paymentUrl, setPaymentUrl] = useState('')
-    const [error, setError] = useState(0)
-    // const [items, setItems] = useState(order?.items)
+    const [date, setDate] = useState(null)
+    const [enabledQuery, setEnabledQuery] = useState(false)
+
+    const { status: queryStatus, data: status, error: queryError, isFetching, refetch, isStale, isFetched }: UseQueryResult<IOrder, AxiosError> = useQuery({
+        queryKey: ['paymentStatus', orderLoaded?._id],
+        queryFn: async (obj) => {
+            return await fetchPaymentStatus(orderLoaded?._id, orderLoaded?.payId)
+        },
+        staleTime: 1000 * 60 * 5,
+        retry: 2,
+        enabled: enabledQuery
+    })
 
     const orderRef = useRef(null)
-
-    const [date, setDate] = useState(null)
-
-    useEffect(() => {
-        setDate(new Date(order?.createdAt).toLocaleString())
-    }, [order])
-
-    // useEffect(() => {
-    //     const checkIsInViewPort = e => {
-    //         const element = orderRef?.current
-    //         if (element && !element.isLoaded && isInViewport(element)) {
-    //             element.isLoaded = true
-
-    //             // console.log('asd')
-
-    //             // setTimeout(() => {
-    //             //     element.isLoaded = false
-    //             // }, 30000);
-
-    //             axios({
-    //                 method: 'get',
-    //                 url: `/api2/payment/check-status/${order.payId}`
-    //             })
-    //                 .then(res => {
-    //                     // console.log(res.data?.paymentStatus)
-    //                     // console.log(res.data)
-    //                     setStatus(res.data?.paymentStatus)
-    //                     setPaymentUrl(order?.url)
-    //                 })
-    //                 .catch(e => {
-    //                     console.error(e)
-    //                     setError(e?.response?.status)
-    //                 })
-    //             if (!element.isItemsLoaded) {
-    //                 element.isItemsLoaded = true
-    //                 // console.log(items)
-    //                 axios({
-    //                     method: 'get',
-    //                     url: `/api2/pizza/get-many`,
-    //                     headers: {
-    //                         "Content-Type": "application/json"
-    //                     },
-    //                     data: {
-    //                         ids: items.map(it => it.item)
-    //                     },
-    //                     withCredentials: false
-    //                 })
-    //                     .then(res => {
-    //                         // console.log(res.data)
-    //                         setItems(prevItems => {
-    //                             return prevItems.map(prevItem => {
-    //                                 try {
-    //                                     // let item = res?.data?.map(it => {
-    //                                     //     console.log(prevItem.item, it._id)
-    //                                     //     if (prevItem.item === it._id) {
-    //                                     //         return it
-    //                                     //     }
-    //                                     // })
-    //                                     let item
-    //                                     for (let i = 0; i< res?.data?.length; i++) {
-    //                                         if (res?.data[i]?._id === prevItem.item) {
-    //                                             item = res?.data[i]
-    //                                         }
-    //                                     }
-    //                                     return { ...prevItem, item: item }
-    //                                 } catch {
-    //                                     return prevItem
-    //                                 }
-    //                                 return prevItem
-    //                             })
-    //                         })
-    //                     })
-    //                     .catch(e => {
-    //                         console.error(e)
-    //                     })
-    //             }
-    //         }
-    //     }
-
-    //     checkIsInViewPort(null)
-
-    //     document.addEventListener('scroll', checkIsInViewPort)
-
-    //     return () => {
-    //         document.removeEventListener('scroll', checkIsInViewPort);
-    //     };
-    // }, [])
-
     const refreshRef = useRef(null)
 
-    async function getOrderDetails() {
-        if (refreshRef?.current) refreshRef.current.disabled = true
-
-        await axios({
-            method: 'get',
-            url: `/api2/payment/order/${orderId}`
-        })
-            .then(res => {
-                // console.log(res)
-                setOrder(res.data?.order)
-                setStatus(res.data?.paymentStatus)
-                setPaymentUrl(res.data.order?.url)
-            })
-            .catch(e => {
-                console.error(e)
-                setError(e?.response?.status)
-            })
-        setTimeout(() => {
-            if (refreshRef?.current) refreshRef.current.disabled = false
-        }, 1500);
-
-        return
-    }
+    useEffect(() => {
+        setDate(new Date(orderLoaded?.createdAt).toLocaleString())
+    }, [orderLoaded])
 
     async function getStatus() {
         if (refreshRef?.current) refreshRef.current.disabled = true
 
-        await axios({
-            method: 'get',
-            url: `/api2/payment/check-status/${orderId}/${orderLoaded?.payId}`
-        })
-            .then(res => {
-                // console.log(res)
-                setStatus(res.data?.paymentStatus)
-                setPaymentUrl(orderLoaded?.paymentUrl)
-                setError(0)
-            })
-            .catch(e => {
-                console.error(e)
-                setError(e?.response?.status)
-            })
+        await refetch()
+
         setTimeout(() => {
             if (refreshRef?.current) refreshRef.current.disabled = false
         }, 1500);
         return
     }
 
-    // function isInViewport(element) {
-    //     const rect = element.getBoundingClientRect();
-    //     const offset = 200
-    //     return (
-    //         rect.right >= -offset &&
-    //         rect.bottom >= -offset &&
-    //         rect.left <= (window.innerWidth || document.documentElement.clientWidth) + offset &&
-    //         rect.top <= (window.innerHeight || document.documentElement.clientHeight) + offset
-    //     );
-    // }
-
     useEffect(() => {
         if (orderLoaded?.url) setPaymentUrl(orderLoaded.url)
-
-        // const checkIsInViewPort = async e => {
-        //     let element
-        //     // if (e) element = e.currentTarget
-        //     element = orderRef?.current
-
-        //     if (element && order?.orderNo && order?.totalPrice) element.isLoaded = true
-        //     if (element && !element.isLoaded && isInViewport(element)) {
-        //         element.isLoaded = true
-        //         console.log('loading')
-
-        //         await getOrderDetails()
-        //     }
-
-        //     if (element?.isLoaded && !element?.isStatusLoaded && isInViewport(element)) {
-        //         element.isStatusLoaded = true
-
-        //         await getStatus()
-        //     }
-        // }
-
-        // checkIsInViewPort(null)
-
-        // document.addEventListener('scroll', checkIsInViewPort)
 
         let element
         element = orderRef?.current
@@ -206,21 +54,21 @@ const Order = ({ orderId, orderLoaded, viewItem, PizzaSvg, setOrdersId }) => {
         var observer = new IntersectionObserver(onIntersection, {
             root: null,
             threshold: 0.01,
-            rootMargin: "100px",
+            rootMargin: "200px",
         })
 
         function onIntersection(entries, opts) {
             entries.forEach(async entry => {
-                if (element && order?.orderNo && order?.totalPrice) element.isLoaded = true
+                if (element && orderLoaded?.orderNo && orderLoaded?.totalPrice) element.isLoaded = true
                 if (element && !element.isLoaded && entry.isIntersecting) {
                     element.isLoaded = true
-                    await getOrderDetails()
                 }
 
-                if (element?.isLoaded && !element?.isStatusLoaded && entry.isIntersecting) {
-                    element.isStatusLoaded = true
-
-                    await getStatus()
+                if (element?.isLoaded && entry.isIntersecting) {
+                    // await refetch()
+                    setEnabledQuery(true)
+                } else {
+                    setEnabledQuery(false)
                 }
             }
             )
@@ -229,7 +77,6 @@ const Order = ({ orderId, orderLoaded, viewItem, PizzaSvg, setOrdersId }) => {
         observer.observe(orderRef?.current)
 
         return () => {
-            // document.removeEventListener('scroll', checkIsInViewPort);
             observer.disconnect()
         };
     }, [])
@@ -239,10 +86,10 @@ const Order = ({ orderId, orderLoaded, viewItem, PizzaSvg, setOrdersId }) => {
             <div className="order" ref={orderRef}>
                 <div>
                     <PaymentStatus
-                        status={status}
-                        error={error}
+                        status={status?.paymentStatus}
+                        error={queryError?.response?.status || 0}
                         paymentUrl={paymentUrl}
-                        order={order}
+                        order={orderLoaded}
                     />
                     {
                         orderRef?.current?.isStatusLoaded ?
@@ -257,12 +104,13 @@ const Order = ({ orderId, orderLoaded, viewItem, PizzaSvg, setOrdersId }) => {
                     }
                 </div>
                 <div className="order-details">
-                    {order?.orderNo ?
+                    {orderLoaded?.orderNo ?
                         <h3>
-                            <Link href={`/user/profile/orders?payId=${order?.payId}`}
+                            <Link href={`/user/profile/orders?payId=${orderLoaded?.payId}`}
                                 shallow={true}
+                                scroll={true}
                             >
-                                {order?.orderNo}
+                                {orderLoaded?.orderNo}
                             </Link>
                         </h3>
                         :
@@ -270,8 +118,8 @@ const Order = ({ orderId, orderLoaded, viewItem, PizzaSvg, setOrdersId }) => {
                     }
 
                     <div className="items-order">
-                        {order?.orderNo ?
-                            <>{order?.items?.map((item: any) => (
+                        {orderLoaded?.orderNo ?
+                            <>{orderLoaded?.items?.map((item: any) => (
                                 <OrderItem
                                     key={item.title + item._id}
                                     item={item}
@@ -289,18 +137,19 @@ const Order = ({ orderId, orderLoaded, viewItem, PizzaSvg, setOrdersId }) => {
                             </>
                         }
                         <div className="view-more">
-                            <Link href={`/user/profile/orders?payId=${order?.payId}`}
+                            <Link href={`/user/profile/orders?payId=${orderLoaded?.payId}`}
                                 shallow={true}
+                                scroll={true}
                             >
                                 &#43; View More Information
                             </Link>
                         </div>
                     </div>
                 </div>
-                {order?.totalPrice || order?.shippingPrice ?
+                {orderLoaded?.totalPrice || orderLoaded?.shippingPrice ?
                     <div className="prices">
-                        <p><span>Total</span>: {order?.totalPrice} CZK</p>
-                        <p><span>Shipping</span>: {order?.shippingPrice} CZK</p>
+                        <p><span>Total</span>: {orderLoaded?.totalPrice} CZK</p>
+                        <p><span>Shipping</span>: {orderLoaded?.shippingPrice} CZK</p>
                         <p><span>Created</span>: {date}</p>
                     </div>
                     :

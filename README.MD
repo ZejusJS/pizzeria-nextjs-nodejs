@@ -29,10 +29,11 @@ first project with nextjs + nodejs
 - [x] Fix payment url in orders profile
 - [ ] Calculate time of delivery to user's location (this will be pain)
 - [ ] Restyle the footer (more information, longer)
-- [ ] Complete landing page
+- [ ] Complete landing page... in progress
 - [ ] Show pizza by query params
 - [x] Repair user site
-- [ ] Repair SSR of pizza list (pizzas from getserversideprops aren't in use)
+- [x] Repair SSR of pizza list (pizzas from getserversideprops aren't in use)
+- [ ] Pulse animation on menu a tag in landing page
 
 ### Links: (last deploy: 16.4.2023)
 (long waiting for fresh starts, free tiers) <br>

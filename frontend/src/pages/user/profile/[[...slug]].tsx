@@ -33,6 +33,17 @@ const index = ({ userData, viewItem, fetchFirstData, isLoadingFirstData }) => {
         setFirstLoad(false)
     }, [])
 
+
+    useEffect(() => {
+        if (payIdQuery) {
+            setBackUrl('/user/profile/orders')
+            setBackText('Orders')
+        } else {
+            setBackUrl('/user/profile')
+            setBackText('Back')
+        }
+    }, [router, slug])
+
     return (
         <>
             <Meta title='Mamma Mia | Profile' />

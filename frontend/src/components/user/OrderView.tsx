@@ -1,31 +1,32 @@
 import React, { useEffect, useRef, useState } from 'react'
-import axios from 'axios'
+import { useQuery, UseQueryResult } from "@tanstack/react-query"
+import { AxiosError } from 'axios'
 
 import LoadingItem from '../../components/user/OrderItemLoading'
 import OrderItem from "./OrderItem"
-import Spinner from "../Spinner"
 import PaymentStatus from './PaymentStatus'
+
+import { fetchOrder } from '../../utils/fetch'
+
+import { IOrder } from '../../utils/types/orders'
 
 import PizzaSvg from "../../images/Pizza"
 import RefreshSvg from '../../images/Refresh'
 
-interface order {
-    createdAt?: string;
-    orderNo?: string | number;
-    payId?: string | number;
-    items?: [];
-    totalPrice?: string | number;
-    shippingPrice?: string | number;
-    invoiceInfo?: any;
-    shippingAdress?: any;
-}
-
 const OrderView = ({ setBackUrl, setBackText, payIdQuery, viewItem }) => {
-    const [viewOrder, setViewOrder] = useState<order>()
-    const [viewOrderStatus, setViewOrderStatus] = useState(null)
-    const [isLoadingOrder, setIsLoadingOrder] = useState(true)
-    const [error, setError] = useState(0)
+    // const [viewOrder, setViewOrder] = useState<order>()
     const [date, setDate] = useState(null)
+    const [enabledQuery, setEnabledQuery] = useState(false)
+
+    const { status: queryStatus, data: viewOrder, error: queryError, isFetching, refetch, isStale, isFetched }: UseQueryResult<IOrder, AxiosError> = useQuery({
+        queryKey: ['orderView', payIdQuery],
+        queryFn: async (obj) => {
+            return await fetchOrder(payIdQuery)
+        },
+        staleTime: 1000 * 60 * 10,
+        retry: 3,
+        enabled: payIdQuery?.length && enabledQuery ? true : false
+    })
 
     const refreshRef = useRef(null)
 
@@ -36,28 +37,7 @@ const OrderView = ({ setBackUrl, setBackText, payIdQuery, viewItem }) => {
     async function fetchOrderData() {
         if (refreshRef?.current) refreshRef.current.disabled = true
 
-        if (payIdQuery) {
-            setBackUrl('/user/profile/orders')
-            setBackText('Orders')
-
-            await axios({
-                method: 'get',
-                url: `/api2/payment/order/${payIdQuery}`,
-                withCredentials: true,
-                onDownloadProgress(progressEvent) {
-                    setIsLoadingOrder(false)
-                },
-            })
-                .then(res => {
-                    // console.log(res.data)
-                    setViewOrder(res.data?.order)
-                    setViewOrderStatus(res.data?.paymentStatus)
-                })
-                .catch(e => {
-                    setError(e?.response?.status)
-                    console.error(e)
-                })
-        }
+        refetch()
 
         setTimeout(() => {
             if (refreshRef?.current) refreshRef.current.disabled = false
@@ -65,16 +45,10 @@ const OrderView = ({ setBackUrl, setBackText, payIdQuery, viewItem }) => {
     }
 
     useEffect(() => {
-        setIsLoadingOrder(true)
-        setViewOrder({})
-
-        fetchOrderData()
-
-        return () => {
-            setBackUrl('/user/profile')
-            setBackText('Back')
-            setViewOrderStatus(null)
-            setError(0)
+        if (payIdQuery) {
+            setEnabledQuery(true)
+        } else {
+            setEnabledQuery(false)
         }
     }, [payIdQuery])
 
@@ -84,8 +58,8 @@ const OrderView = ({ setBackUrl, setBackText, payIdQuery, viewItem }) => {
                 <div className="order-status">
                     <div className="payment-status">
                         <PaymentStatus
-                            status={viewOrderStatus}
-                            error={error}
+                            status={viewOrder?.paymentStatus}
+                            error={queryError || 0}
                             paymentUrl={undefined}
                             order={viewOrder}
                         />
@@ -100,7 +74,7 @@ const OrderView = ({ setBackUrl, setBackText, payIdQuery, viewItem }) => {
                     </div>
                 </div>
                 <div className={`order-view`}>
-                    {!isLoadingOrder && viewOrder?.orderNo ?
+                    {isFetched && viewOrder?.orderNo ?
                         <>
                             <h2><span>Order:</span> {viewOrder?.orderNo}</h2>
                             <h4>ID: {viewOrder?.payId}</h4>

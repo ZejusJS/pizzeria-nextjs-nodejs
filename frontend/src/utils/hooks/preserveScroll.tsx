@@ -1,10 +1,9 @@
 import { NextRouter, useRouter } from "next/router"
 import { useEffect, useRef } from "react"
 
-export const usePreserveScroll = () => {
+export const usePreserveScroll = (scrollPositions) => {
     const router: NextRouter = useRouter()
 
-    const scrollPositions = useRef<{ [url: string]: number }>({})
     const isBack = useRef(false)
 
     useEffect(() => {

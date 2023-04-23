@@ -19,21 +19,10 @@ export async function fetchPizzas(ingredients = "", searchParam = "") {
 }
 
 export async function fetchUserOrders(ordersId, pageNumber, ordersPerPage) {
-    console.log(ordersId, pageNumber, ordersPerPage)
     const res = await axios({
         method: 'get',
         url: `/api2/payment/orders/${ordersId.slice(pageNumber * ordersPerPage, pageNumber * ordersPerPage + ordersPerPage)}`
     })
-        // .then(res => {
-        //     // console.log(res.data)
-        //     // setOrdersLoaded(prev => {
-        //     //     return [...prev, ...res.data.orders]
-        //     // })
-        // })
-        // .catch(e => {
-        //     console.error(e)
-        // })
-    // console.log(res.data)
     let data = {
         ...res.data,
         page: pageNumber,
@@ -49,4 +38,30 @@ export async function fetchLangingPagePizzas() {
         url: '/api2/pizza/get-many-number/7',
     })
     return res.data
+}
+
+export async function fetchPaymentStatus(orderId, payId) {
+    let res: any = await axios({
+        method: 'get',
+        url: `/api2/payment/check-status/${orderId}/${payId}`
+    })
+    const data = {
+        paymentStatus: res.data?.paymentStatus,
+        error: 0,
+    }
+    return data
+}
+
+export async function fetchOrder(payId) {
+    const res = await axios({
+        method: 'get',
+        url: `/api2/payment/order/${payId}`,
+        withCredentials: true,
+        onDownloadProgress(progressEvent) {
+
+        },
+    })
+    // console.log(res.data)
+    const data = res.data
+    return data
 }

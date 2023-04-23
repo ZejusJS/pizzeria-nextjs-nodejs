@@ -11,7 +11,7 @@ const PaymentStatus = ({ status, error, paymentUrl, order }) => {
                     <div className="payment-status-error">
                         ERROR with providing status { error ? `(${error})` : ''}
                     </div>
-                    : status === null ?
+                    : status === null || status === undefined ?
                         <div className="payment-status-loading">
                             <span className='svg-con'>
                                 <div className="spinner-border" role="status"></div>
@@ -83,7 +83,7 @@ const PaymentStatus = ({ status, error, paymentUrl, order }) => {
                                                                     </span>
                                                                     Refunded
                                                                 </div>
-                                                                : ''
+                                                                : <div>lol</div>
             }
         </>
     )

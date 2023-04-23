@@ -175,31 +175,30 @@ router.post('/card', mwIsLoggedIn, validatePayment, mwRecaptcha, mwCardPaymentPo
 router.get('/check-status/:id/:payId', mwIsLoggedIn, catchAsync(async function (req, res, next) {
     const { id } = req.params
 
-    let isAuthor = false
     const order = await Order.findOne({ _id: id, user: req.user._id })
-    if (order) isAuthor = true
-    if (!isAuthor) return res.status(403).json({ msg: "You don't have permission to check this payment status" })
+    if (!order) return res.status(404).json({ msg: "Requested order was not found" })
 
     const payId = order.payId
-    const dttm = new Date().toISOString().replace(/(\.\d{3})|[^\d]/g, '')
-
-    const payIdUri = encodeURIComponent(payId)
-    const dttmUri = encodeURIComponent(dttm)
-    const merchantIdUri = encodeURIComponent(merchantId)
-
-    const RETEZEC_STATUS = getRetezec({ merchantId, payId, dttm })
-    const signStatus = crypto.createSign('SHA256')
-    signStatus.update(RETEZEC_STATUS)
-    signStatus.end()
-    const signatureStatus = signStatus.sign(CSOB_PRIVATE)
-    const signatureStatusString = signatureStatus.toString('base64')
-    const signatureStatusUri = encodeURIComponent(signatureStatusString)
 
     const data = {
         paymentStatus: 0
     }
 
     if (!order.paymentStatus) {
+        const dttm = new Date().toISOString().replace(/(\.\d{3})|[^\d]/g, '')
+
+        const payIdUri = encodeURIComponent(payId)
+        const dttmUri = encodeURIComponent(dttm)
+        const merchantIdUri = encodeURIComponent(merchantId)
+    
+        const RETEZEC_STATUS = getRetezec({ merchantId, payId, dttm })
+        const signStatus = crypto.createSign('SHA256')
+        signStatus.update(RETEZEC_STATUS)
+        signStatus.end()
+        const signatureStatus = signStatus.sign(CSOB_PRIVATE)
+        const signatureStatusString = signatureStatus.toString('base64')
+        const signatureStatusUri = encodeURIComponent(signatureStatusString)
+
         await axios({
             method: 'get',
             url: `https://iapi.iplatebnibrana.csob.cz/api/v1.9/payment/status/${merchantIdUri}/${payIdUri}/${dttmUri}/${signatureStatusUri}`
@@ -209,13 +208,15 @@ router.get('/check-status/:id/:payId', mwIsLoggedIn, catchAsync(async function (
                 const statusRes = response?.data?.paymentStatus
                 if (!statusRes) return res.status(500).json({ msg: 'Error with receiving a payment status' })
 
+                console.log(statusRes)
+
                 if (statusRes === 6 || statusRes === 8 || statusRes === 10) {
                     console.log('save order')
                     order.paymentStatus = statusRes
                     await order.save()
                 }
 
-                data.paymentStatus = response.data.paymentStatus
+                data.paymentStatus = statusRes
             })
             .catch(e => {
                 return res.status(500).json({ msg: 'Error with receiving a payment status' })
@@ -243,14 +244,8 @@ router.get('/orders/:ids', mwIsLoggedIn, catchAsync(async function (req, res, ne
 router.get('/order/:payId', mwIsLoggedIn, catchAsync(async function (req, res, next) {
     const { payId } = req.params
 
-    const order = await Order.findOne({ payId }).populate('items.item')
+    const order = await Order.findOne({ payId, user: req.user._id }).populate('items.item')
     if (!order) return res.status(404).json({ msg: "Can't find this order", code: 300 })
-
-    let isAuthor = false
-    req.user?.orders.map(ord => {
-        if (order?.equals(ord._id)) isAuthor = true
-    })
-    if (!isAuthor) return res.status(403).json({ msg: "You don't have permission to this order" })
 
     const dttm = new Date().toISOString().replace(/(\.\d{3})|[^\d]/g, '')
 
@@ -266,10 +261,7 @@ router.get('/order/:payId', mwIsLoggedIn, catchAsync(async function (req, res, n
     const signatureStatusString = signatureStatus.toString('base64')
     const signatureStatusUri = encodeURIComponent(signatureStatusString)
 
-    const data = {
-        paymentStatus: 0,
-        order: {}
-    }
+    let paymentStatus = 0
 
     await axios({
         method: 'get',
@@ -277,11 +269,11 @@ router.get('/order/:payId', mwIsLoggedIn, catchAsync(async function (req, res, n
     })
         .then(res => {
             // console.log(res.data)
-            data.paymentStatus = res?.data?.paymentStatus
+            paymentStatus = res?.data?.paymentStatus
         })
         .catch(e => console.error(e))
 
-    data.order = order
+    const data = {...order._doc, paymentStatus}
     res.status(200).json(data)
 }))
 

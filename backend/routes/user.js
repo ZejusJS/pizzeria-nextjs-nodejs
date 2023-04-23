@@ -125,7 +125,7 @@ router.get('/getUser', mwIsLoggedIn, catchAsync(async function (req, res, next) 
 }))
 
 router.post('/adress', mwIsLoggedIn, validateShippingAdress, catchAsync(async function (req, res, next) {
-    const userId = req.user?._id
+    // const userId = req.user?._id
     // const findUser = await User.findById(userId)
     // if (!findUser) return res.status(400).json({ code: 350 })
 
