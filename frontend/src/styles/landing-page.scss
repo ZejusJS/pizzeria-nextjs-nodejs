@@ -30,7 +30,7 @@
     margin: 0 auto;
     padding: 60px 20px 20px 20px;
     margin-top: 30px;
-    overflow: hidden;
+    // overflow: hidden;
 
     .curved-corner {
         fill: rgb(0, 0, 0);
@@ -109,6 +109,7 @@
 
     .carousel-con {
         position: relative;
+        overflow: hidden;
 
         .curved-corner {
             z-index: 10;
@@ -132,6 +133,8 @@
 
             .carousel-item {
                 height: 100%;
+                border-radius: 11px;
+                overflow: hidden;
 
                 .d-block {
                     border-radius: 11px;
@@ -225,7 +228,7 @@
             overflow: hidden;
 
             .pizzas-slider {
-                mask-image: linear-gradient(90deg, rgba(0, 0, 0, 1) 80%, rgba(0, 0, 0, 0) 100%);
+                mask-image: linear-gradient(90deg, rgba(0, 0, 0, 1) 80%, rgba(0, 0, 0, 0) 97%);
                 position: relative;
             }
 
@@ -311,6 +314,7 @@
     a.open-menu {
         display: inline-block;
         position: absolute;
+        visibility: hidden;
         top: 20%;
         left: 50%;
         transform: translate(-50%, 0%);
@@ -318,6 +322,7 @@
         width: 100%;
         max-width: 200px;
         padding: 4px;
+        aspect-ratio: 1/1;
 
         .open-menu-con {
             display: flex;
@@ -328,34 +333,41 @@
         }
 
         svg {
-            fill: white;
+            fill: black;
             width: 90%;
             transition: fill 150ms;
             z-index: 10;
         }
 
-        ::after {
+        ::before, ::after {
             content: '';
             display: inline-block;
             position: absolute;
-            max-width: 0px;
             width: 105%;
             aspect-ratio: 1/1;
-            background-color: rgb(255, 255, 255);
             border-radius: 50%;
-            transition: max-width 250ms, box-shadow 300ms;
+        }
+
+        ::before {
+            background-color: white;
             z-index: 1;
+            box-shadow: 0 0 10px 0px rgba(0, 0, 0, 0.452);
+            max-width: 300px;
+        }
+
+        ::after {
+            background-color: rgb(255, 188, 63);
+            transition: max-width 250ms, box-shadow 300ms;
+            z-index: 2;
+            max-width: 0px;
             box-shadow: 0 0 10px 0px rgba(0, 0, 0, 0);
         }
 
         &:hover {
-            svg {
-                fill: black !important;
-            }
 
             ::after {
                 max-width: 300px;
-                box-shadow: 0 0 10px 0px black;
+                box-shadow: 0 0 10px 0px rgba(0, 0, 0, 0.726);
             }
         }
     }
@@ -369,6 +381,10 @@
     .hero-con {
         padding: 0 0 0 0;
         margin-top: 0;
+
+        a.open-menu {
+            visibility: visible;
+        }
 
         .curved-corner {
             display: none;
@@ -417,7 +433,7 @@
                 border-radius: 0;
 
                 .carousel-item {
-
+                    border-radius: 0;
                     .d-block {
                         border-radius: 0;
                     }
