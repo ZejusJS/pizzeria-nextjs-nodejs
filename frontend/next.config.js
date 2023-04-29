@@ -6,7 +6,7 @@ const ContentSecurityPolicy = `
   child-src 'self' https://pizzeria-backend-4vij.onrender.com;
   style-src 'self' 'unsafe-hashes' 'unsafe-inline' https://*.googleapis.com https://pizzeria-backend-4vij.onrender.com;
   img-src 'self' blob: https://*.cloudinary.com https://*.unsplash.com https://pizzeria-backend-4vij.onrender.com;
-  frame-src 'self' https://recaptcha.net https://pizzeria-backend-4vij.onrender.com;
+  frame-src 'self' https://*.google.com https://recaptcha.net https://pizzeria-backend-4vij.onrender.com;
 `
 
 const securityHeaders = [

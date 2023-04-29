@@ -23,6 +23,10 @@
     padding: 15px;
 }
 
+.landing-page {
+    overflow: hidden;
+}
+
 .hero-con {
     position: relative;
     // width: 80%;
@@ -271,7 +275,7 @@
                 align-items: center;
                 color: rgb(255, 255, 255);
                 top: 38%;
-                right: 20px;
+                right: 32px;
                 transform: translate(0, -50%);
                 text-decoration: none;
                 overflow: visible;

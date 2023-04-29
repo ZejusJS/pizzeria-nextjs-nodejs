@@ -1,12 +1,16 @@
+#__next {
+    min-height: 100dvh;
+}
+
 main {
     padding-top: 85px;
     z-index: 0;
     word-break: break-word;
+    min-height: 100dvh;
 
     @media (max-width: 600px) {
         padding-top: 60px;
     }
-    min-height: 100svh;
 
     &.signup,
     &.login {

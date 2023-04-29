@@ -1,80 +1,195 @@
 footer {
     word-break: break-word;
-    padding: 10px 8px 20px 8px;
-    border-top: 2px solid rgb(143, 143, 143);
-    margin-top: 10px;
+    position: relative;
 
-    .columns-con {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        align-items: flex-start;
-        column-gap: 25px;
-        row-gap: 15px;
-        max-width: 900px;
-        margin: 0 auto;
-    }
+    .footer-section {
+        position: relative;
+        height: auto;
+        min-height: 150px;
+        z-index: 2;
 
-    ul {
-        list-style-type: "";
-        padding-inline-start: 12px;
-
-        svg {
-            width: 20px;
-            height: auto;
+        &:nth-child(odd) {
+            background-color: rgb(17, 17, 17);
+            margin: 10px 0;
+            padding: 30px 0;
+            color: white;
         }
 
-        p {
+        &:not(:first-child):nth-child(odd) {
+            clip-path: polygon(0 13%, 100% 0, 100% 87%, 0 100%);
+        }
+
+        &:first-child {
+            margin-top: 0;
+            clip-path: polygon(0 0%, 100% 0, 100% 87%, 0 100%);
+        }
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+
+        &.phone-order {
+            .phone-con {
+                display: flex;
+                justify-content: center;
+                margin: 0 auto;
+                max-width: 600px;
+                padding: 4px;
+
+                .phone-svg {
+                    width: 100%;
+                    max-width: 100px;
+                    flex-shrink: 10;
+                    min-width: 45px;
+                    align-self: flex-start;
+                }
+
+                h5 {
+                    font-size: clamp(19px, 9vw, 30px);
+                }
+
+                p {
+                    font-size: 20px;
+                }
+            }
+        }
+
+        &.features {
+            margin-bottom: 50px;
+
+            .features-con {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+                max-width: 1000px;
+                margin: 0 auto;
+                text-align: center;
+                row-gap: 10px;
+                column-gap: 30px;
+                padding: 4px;
+            }
+
+            .feature {
+                svg {
+                    width: 100%;
+                    max-width: 120px;
+                }
+
+                h4 {
+                    font-size: 20px;
+                    max-width: 200px;
+                }
+
+                &.delivery-cover {
+                    .cz-map {
+                        fill: orange;
+                    }
+                }
+
+                &.fast-delivery {
+                    .delivery-van {
+                        fill: black;
+                    }
+                }
+
+                &.chefs {
+                    .hat-chef {
+                        fill: orange;
+                        padding: 4px;
+                    }
+                }
+
+                &.time {
+                    .clock {
+                        fill: black;
+                        padding: 6px;
+                    }
+                }
+            }
+        }
+
+        &.map {
+            overflow: hidden;
+            padding: 30px 0;
+            clip-path: none !important;
+            height: 550px;
+
+            .google-map {
+                width: 100%;
+                height: 100%;
+            }
+        }
+
+        &.payment-methods {
             display: flex;
-            gap: 3px;
-        }
-    }
-
-    a {
-        text-decoration: none;
-        color: rgb(173, 69, 0);
-        font-size: 17px;
-
-        &:hover {
-            text-decoration: underline;
-        }
-    }
-
-    .column {
-        background-color: rgb(245, 245, 245);
-        padding: 4px;
-        border-radius: 8px;
-    }
-
-    .links {
-        display: flex;
-        flex-direction: column;
-        padding: 10px 10px 10px 16px;
-
-        a {
-            display: list-item;
-            list-style-type: "- ";
-            margin: 1px 0 1px 0;
-        }
-    }
-
-    .order-phone {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        gap: 3px;
-        border-radius: 8px;
-
-        .phone-con {
-            display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 8px;
-            font-size: 20px;
+            justify-content: center;
 
-            svg {
-                width: 40px;
-                height: auto;
+            .payment-methods-con {
+                max-width: 800px;
+                margin: 0 auto;
+                padding: 5px;
+            }
+
+            h5 {
+                font-size: 24px;
+                text-align: center;
+            }
+
+            .methods {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+
+                .visa-card {
+                    width: 60px;
+                }
+
+                .master-card {
+                    height: 60px;
+                }
+            }
+        }
+
+        &.links {
+            .links-con {
+                max-width: 1000px;
+                padding: 6px;
+                margin: 0 auto;
+                display: flex;
+                flex-wrap: wrap;
+                row-gap: 25px;
+                column-gap: 35px;
+            }
+
+            h5 {
+                font-size: 21px;
+            }
+
+            a {
+                color: orange;
+                text-decoration: underline;
+                font-size: 17px;
+
+                &:hover {
+                    color: rgb(255, 189, 68);
+                    text-decoration: underline dotted;
+                }
+            }
+        }
+
+        &.logo-section {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            min-height: auto;
+            margin-bottom: 20px;
+
+            .logo {
+                width: 100%;
+                max-width: 300px;
             }
         }
     }

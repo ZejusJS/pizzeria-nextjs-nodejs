@@ -28,7 +28,7 @@ first project with nextjs + nodejs
 - [x] Single order page... in progress
 - [x] Fix payment url in orders profile
 - [ ] Calculate time of delivery to user's location (this will be pain)
-- [ ] Restyle the footer (more information, longer)
+- [ ] Restyle the footer... in progress
 - [ ] Complete landing page... in progress
 - [ ] Show pizza by query params
 - [x] Repair user site

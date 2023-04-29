@@ -52,8 +52,12 @@ const Pizza = ({ pizza, singleAdd, deleteItem, viewItem, cart, Spinner }) => {
 
   return (
     <div className='pizza-thumbnail index' onClick={(e) => viewItem(e, pizza)}>
-      <button className='more-info' onClick={(e) => viewItem(e, pizza)}>
-        <MoreInfoSvg title={pizza?.title}/>
+      <button
+        className='more-info'
+        onClick={(e) => viewItem(e, pizza)}
+        type='button'
+      >
+        <MoreInfoSvg title={pizza?.title} />
       </button>
       <div className='pizza-thumbnail-info'>
         <div className='pizza-img-container'>

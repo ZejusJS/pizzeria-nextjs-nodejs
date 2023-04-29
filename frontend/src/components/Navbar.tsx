@@ -104,12 +104,12 @@ const Navbar: NextPage<withRouter> = ({
 
           <div className='links-row linky'>
             <div className='link-con'>
-              <Link href='/' shallow={false} title='Home Page'>
+              <Link href='/' title='Home Page'>
                 Home page
               </Link>
             </div>
             <div className='link-con'>
-              <Link href='/menu' title='Food menu'>
+              <Link href='/menu' shallow={true} title='Food menu'>
                 Menu
               </Link>
             </div>
@@ -159,10 +159,10 @@ const Navbar: NextPage<withRouter> = ({
           </div>
           <div className='links linky'>
             <div className='link'>
-              <Link href='/' shallow={false} title='Home Page'>
+              <Link href='/' title='Home Page'>
                 Home page
               </Link>
-              <Link href='/menu' shallow={false} title='Food menu'>
+              <Link href='/menu' shallow={true} title='Food menu'>
                 Menu
               </Link>
               <Link href='/about' title='About'>

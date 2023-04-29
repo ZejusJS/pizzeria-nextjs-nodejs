@@ -1,6 +1,6 @@
 export default function MasterCard() {
 	return (
-		<svg height="800px" id="Layer_1" width="800px" version="1.1" viewBox="0 0 750 471" xmlns="http://www.w3.org/2000/svg" xmlSpace="preserve">
+		<svg title='MasterCard' className="master-card" height="800px" id="Layer_1" width="800px" version="1.1" viewBox="0 0 750 471" xmlns="http://www.w3.org/2000/svg" xmlSpace="preserve">
 			<g id="Page-1">
 				<g id="mastercard">
 					<path id="Fill-1" d="M434.008,235.5c0,99.142-80.371,179.504-179.508,179.504&#xA;&#x9;&#x9;&#x9;C155.363,415.004,75,334.642,75,235.5c0-99.133,80.362-179.504,179.5-179.504C353.637,55.996,434.008,136.367,434.008,235.5" fill="#D9222A" />

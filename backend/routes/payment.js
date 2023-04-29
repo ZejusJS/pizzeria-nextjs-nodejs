@@ -210,7 +210,7 @@ router.get('/check-status/:id/:payId', mwIsLoggedIn, catchAsync(async function (
 
                 console.log(statusRes)
 
-                if (statusRes === 6 || statusRes === 8 || statusRes === 10) {
+                if (statusRes === 6 || statusRes === 8 || statusRes === 10 || statusRes === 3) {
                     console.log('save order')
                     order.paymentStatus = statusRes
                     await order.save()

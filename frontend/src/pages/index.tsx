@@ -26,7 +26,7 @@ const index = () => {
             <div className='hero-panel-con'>
                 <div className="hero-con">
                     <div className="logo-con">
-                        <CurvedCorner />
+                        {/* <CurvedCorner /> */}
                         <div className='logo-deep-con'>
                             <img src="https://res.cloudinary.com/dzxwekkvd/image/upload/v1681643117/landing_page/logo.png" alt="" />
                             <div className='links-con'>
@@ -121,7 +121,7 @@ const index = () => {
                             :
                             ''
                         }
-                        <CurvedCorner />
+                        {/* <CurvedCorner /> */}
                     </div>
                     <Link href={'/menu'} className='open-menu'>
                         <div className='open-menu-con'>

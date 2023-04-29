@@ -47,6 +47,7 @@ import '../styles/error.scss'
 import '../styles/error-boundary.scss'
 import '../styles/spinners.scss'
 import '../styles/landing-page.scss'
+import '../styles/terms.scss'
 
 import Product from '../components/pizza/Product'
 import Unfocus from '../components/Unfocus'
